@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>理解 C++ Traits | 不是追风少年</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="C++ 是我学习的第一种编程语言，当时是 2007 年。现在 C++ 标准委员会已经在讨论 2020 年要发布的特性了，我连 2011 年发布的 Traits 都还不知道是啥。今天下定决心了解总结一下。 C++ 之父 Bjarne Stroustrup 说：  Think of a trait as a small object whose main purpose is to carry inf">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解 C++ Traits">
+<meta property="og:url" content="http://blog.formalscience.com/2018/05/02/2018-05-12_%E7%90%86%E8%A7%A3_C++_Traits/index.html">
+<meta property="og:site_name" content="不是追风少年">
+<meta property="og:description" content="C++ 是我学习的第一种编程语言，当时是 2007 年。现在 C++ 标准委员会已经在讨论 2020 年要发布的特性了，我连 2011 年发布的 Traits 都还不知道是啥。今天下定决心了解总结一下。 C++ 之父 Bjarne Stroustrup 说：  Think of a trait as a small object whose main purpose is to carry inf">
+<meta property="og:image" content="http://blog.formalscience.com/uploads/trait1.png">
+<meta property="og:image" content="http://blog.formalscience.com/uploads/trait2.png">
+<meta property="og:image" content="http://blog.formalscience.com/uploads/trait3.png">
+<meta property="article:published_time" content="2018-05-02T19:43:00.000Z">
+<meta property="article:modified_time" content="2021-06-08T17:12:06.721Z">
+<meta property="article:author" content="Bef0rewind">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.formalscience.com/uploads/trait1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="不是追风少年" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon-animate.ico">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">不是追风少年</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.formalscience.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2018-05-12_理解_C++_Traits" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/05/02/2018-05-12_%E7%90%86%E8%A7%A3_C++_Traits/" class="article-date">
+  <time datetime="2018-05-02T19:43:00.000Z" itemprop="datePublished">2018-05-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/">技术记录</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      理解 C++ Traits
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>C++ 是我学习的第一种编程语言，当时是 2007 年。现在 C++ 标准委员会已经在讨论 2020 年要发布的特性了，我连 2011 年发布的 Traits 都还不知道是啥。今天下定决心了解总结一下。</p>
+<p>C++ 之父 Bjarne Stroustrup 说：</p>
+<blockquote>
+<p>Think of a trait as a small object whose main purpose is to carry information used by another object or algorithm to determine “policy” or “implementation details”.</p>
+</blockquote>
+<p>嗯，这段描述也比较抽象。我的理解是，trait 把不同类型的特定信息进行打包，用在算法或者其他对象中。这样算法或者其他对象的设计可以做到更加通用，通过 trait 打包的信息进行策略选择或者实现细节。</p>
+<p><img src="/uploads/trait1.png" alt="trait1"></p>
+<p>这段代码判断两个类型的关系。第 4 行的模板以两个类型作为参数，通过结构体 <code>type_relation</code> 的成员 <code>relation</code> 获取比较结果。当前代码输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">type_relation&lt;bool, int&gt;: different</span><br><span class="line">type_relation&lt;int, int&gt;: different</span><br></pre></td></tr></table></figure>
+
+<p>这段代码并未实现预期功能，因为比较 <code>bool</code> 和 <code>int</code>，以及 <code>int</code> 和 <code>int</code> 时，都输出 <code>&quot;different&quot;</code> 。下面继续完善这个 trait 实现。</p>
+<p><img src="/uploads/trait2.png" alt="trait2"></p>
+<p>第 11 行的类型参数种使用 <code>&lt;T, T&gt;</code> （即两个相同的类型）进行模式匹配。这段代码输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">type_relation&lt;bool, int&gt;: different</span><br><span class="line">type_relation&lt;int, int&gt;: equal</span><br></pre></td></tr></table></figure>
+
+<p>输出结果正确完成了类型比较的功能。</p>
+<hr>
+<p><strong>实现</strong></p>
+<p>trait 的实现基于 C++ 的模板引擎（template engine），能够在<strong>编译时期（compile time）</strong>将模板（基于最匹配的模式）展开。如果要在 Golang 或者 Java 种实现类似功能，可以使用反射或者 interface 之类的方法，而这些方法都是在运行时（runtime）进行判定，不可避免带来性能开销。</p>
+<hr>
+<p><strong>进阶</strong></p>
+<p>除了可以比较两个类型是否相等，还可以在类型参数上添加其他约束，例如：<code>*</code>、<code>[]</code> 等。下面是一个稍微复杂一些的版本：</p>
+<p><img src="/uploads/trait3.png" alt="trait3"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">type_relation&lt;bool, int&gt;: different</span><br><span class="line">type_relation&lt;int, int&gt;: equal</span><br><span class="line">type_relation&lt;int*, int&gt;: is pointer of</span><br><span class="line">type_relation&lt;int[], int&gt;: is array of</span><br><span class="line">type_relation&lt;int[4], int&gt;: is array (length 4) of</span><br></pre></td></tr></table></figure>
+
+<p>当然这个“进阶”仅仅是比上面的例子复杂了一些，trait 还有更多能力。<br>C++ 的模板引擎为 C++ 提供了强大的元编程（meta programming）能力，也使得现代的 C++ 代码看上去比较奇怪。<br>事实上模板引擎是图灵完备的，如果使用好的话，能够将 C++ 的易用性和优雅性提升到一个高度（从那些看不到模板实现细节的用户的视角）。</p>
+<hr>
+<p><strong>感想</strong></p>
+<p>每次 C++ 标准更新的新闻我都看到了，从 C++0X、C++11、C++14 到 C++17，新出的特性一直在关注，可却从来没有真正编写一段程序去试试这些特性。这让我很伤感。</p>
+<p>看到新的语言就想去尝试，OCaml、Clojure、Haskell …… 这些语言都很有特色，OCaml 让我体会到模式匹配的爽快，Clojure 让我体会到 S-表达式的自由和 Lisp 宏的强大，Haskell 让我体会到抽象的威力以及自己脑容量的有限。可是工作中用的最多的还是 Python、Java 和 C，当然还有 PHP （这个不能忘）。</p>
+<p>想我和 C++ 的关系，最初的时候还是看的 Bjarne Stroustrup 的《The C++ Programming Language》。后来怎么就越走越远了呢？虽然现在工作中暂时依旧用不到，还是希望以此为契机，了解更多模板引擎可以做的事情。</p>
+<p>追逐过的其他语言，各有各的契机，或许是缘分，或许是喜欢，或许是虚荣。现在都不敢说自己会 C++ 了。<br>如果当时能够更专注一些，自己目前的职业轨迹会不会有所区别？</p>
+<p>想起最初自己理解 Haskell 里 <code>Monad</code> 概念的时候，一头雾水。后来懂了，就是懂了。为什么偏爱某一种语言呢？我也搞不清楚自己。</p>
+<p>也许爱情也是如此，回忆当初做的不同结果是否能够更好？也许。记住过往，抗拒住回忆的诱惑，很难，但不得不做。喜欢的，就喜欢着吧。有些事情就是不行，正如有些事情莫名其妙地发生。</p>
+<p>Just live with it.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.formalscience.com/2018/05/02/2018-05-12_%E7%90%86%E8%A7%A3_C++_Traits/" data-id="ckpoawmgm0019itp96xoy9a4j" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/06/23/2018-06-23_update_VPS_Ubuntu_version/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Upgrade DigitalOcean&#39;s Ubuntu 17.04 to LTS version in 2018-06
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/02/2018-05-27_2016_%E5%8D%81%E4%B8%80%E5%A1%9E%E7%BD%95%E5%9D%9D%E8%A1%8C%E5%8A%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">2016 十一塞罕坝行动</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BF%86%E4%B8%AD%E8%80%81%E5%8E%BB/">回忆中老去</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BF%86%E4%B8%AD%E8%80%81%E5%8E%BB/%E6%84%9F%E6%82%9F/">感悟</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%87%E5%AE%99%E5%B0%8F%E7%99%BE%E7%A7%91/">宇宙小百科</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B1%B1%E9%87%8E/">山野</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/">技术记录</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/tech-notes/">tech-notes</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%A7%82%E7%82%B9/">观点</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%A7%84%E5%88%92/">规划</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%97%E6%AD%8C/">诗歌</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%97%E6%AD%8C%E7%9A%84%E6%B5%B7%E6%B4%8B/">诗歌的海洋</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E8%A7%82%E5%BD%B1/">读书观影</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Functional-Programming/" rel="tag">Functional Programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Golang/" rel="tag">Golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Haskell/" rel="tag">Haskell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Rust/" rel="tag">Rust</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Travel/" rel="tag">Travel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/note/" rel="tag">note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/programming-language/" rel="tag">programming language</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E8%AF%AD%E8%A8%80/" rel="tag">函数式语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB/" rel="tag">生活</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A7%84%E5%88%92/" rel="tag">规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Functional-Programming/" style="font-size: 10px;">Functional Programming</a> <a href="/tags/Golang/" style="font-size: 20px;">Golang</a> <a href="/tags/Haskell/" style="font-size: 10px;">Haskell</a> <a href="/tags/Rust/" style="font-size: 10px;">Rust</a> <a href="/tags/Travel/" style="font-size: 15px;">Travel</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/note/" style="font-size: 15px;">note</a> <a href="/tags/programming-language/" style="font-size: 15px;">programming language</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E8%AF%AD%E8%A8%80/" style="font-size: 10px;">函数式语言</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">生活</a> <a href="/tags/%E8%A7%84%E5%88%92/" style="font-size: 10px;">规划</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">March 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/10/">October 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/08/">August 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">July 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/06/">June 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/04/">April 2012</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/01/2020-guidelines/">2020 生活规划</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/24/2019-09-24-Rent-in-Edinburgh/">爱丁堡租房</a>
+          </li>
+        
+          <li>
+            <a href="/2019/02/17/2019-02-17_To_Bangkok/">To Bangkok</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/26/2018-12-26-Go-to-Rust/">Go to Rust （一）</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/13/2018-12-13-pip-install-package-offline/">pip 离线安装包</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Bef0rewind<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

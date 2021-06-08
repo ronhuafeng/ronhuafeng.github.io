@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>不是追风少年</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="我在生活中汲取力量">
+<meta property="og:type" content="website">
+<meta property="og:title" content="不是追风少年">
+<meta property="og:url" content="http://blog.formalscience.com/page/4/index.html">
+<meta property="og:site_name" content="不是追风少年">
+<meta property="og:description" content="我在生活中汲取力量">
+<meta property="article:author" content="Bef0rewind">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="不是追风少年" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon-animate.ico">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">不是追风少年</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.formalscience.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-为什么_Haskell_中_函数类型_不是_“Show”_类型类的实例" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/03/%E4%B8%BA%E4%BB%80%E4%B9%88_Haskell_%E4%B8%AD_%E5%87%BD%E6%95%B0%E7%B1%BB%E5%9E%8B_%E4%B8%8D%E6%98%AF_%E2%80%9CShow%E2%80%9D_%E7%B1%BB%E5%9E%8B%E7%B1%BB%E7%9A%84%E5%AE%9E%E4%BE%8B/" class="article-date">
+  <time datetime="2016-02-03T10:01:41.000Z" itemprop="datePublished">2016-02-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/">技术记录</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/03/%E4%B8%BA%E4%BB%80%E4%B9%88_Haskell_%E4%B8%AD_%E5%87%BD%E6%95%B0%E7%B1%BB%E5%9E%8B_%E4%B8%8D%E6%98%AF_%E2%80%9CShow%E2%80%9D_%E7%B1%BB%E5%9E%8B%E7%B1%BB%E7%9A%84%E5%AE%9E%E4%BE%8B/">为什么 Haskell 中 函数类型 不是 “Show” 类型类的实例</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>为什么函数类型不是 <code>show</code> 类型类的实例以显示参数和值的类型？</p>
+<p>为什么我不能在 GHCi 或者 Hugs 中输入 <code>\x -&amp;gt; x + x</code> ，在结果中看到同样的表达式形式作为输出。</p>
+<p>为什么存在一个 Show 实例，却只打印函数的类型？</p>
+<pre><code>Prelude&amp;gt; :m + Text.Show.Functions
+Prelude Text.Show.Functions&amp;gt; show Char.ord
+&quot;&amp;lt;function&amp;gt;&quot;
+`&lt;/pre&gt;
+
+如何让 lambdabot 有如下显示：
+
+&lt;pre&gt;`dons &amp;gt; ord
+lambdabot&amp;gt;  &amp;lt;Char -&amp;gt; Int&amp;gt;
+`&lt;/pre&gt;
+
+# 答案
+
+## 实践中的答案
+
+Haskell 编译器并不保持表达式原本的形式，而是将它们转成机器代码或者其他的底层表示。
+
+函数 `\x -&amp;gt; x - x + x :: Int -&amp;gt; Int` 也许被优化成 `\x -&amp;gt; x :: Int -&amp;gt; Int` 。没有那个地方l存储了变量名 `x` 。
+
+你也许会想，Haskell 是一门脚本语言，在运行时环境中维护着表达式的内容。情况并非如此，[Lambda 表达式](https://wiki.haskell.org/Lambda_abstraction)仅仅是[匿名函数](https://wiki.haskell.org/Anonymous_function)。你没可能在运行时环境中查询变量的名字，或者观察函数定义的结构。你也不能从程序员用户那里接收一个表达式，调用你程序中的变量，然后求值。即，Haskell 不是[反射的](https://wiki.haskell.org/index.php?title=Reflexive_language&amp;amp;action=edit&amp;amp;redlink=1 &quot;Reflexive_language&amp;amp;action=edit&amp;amp;redlink=1&quot;)。一切都是可编译的。一个例外是 [hs-plugins](https://wiki.haskell.org/index.php?title=Hs-plugins&amp;amp;action=edit&amp;amp;redlink=1 &quot;Hs-plugins&amp;amp;action=edit&amp;amp;redlink=1&quot;)
+
+## 理论上的答案
+
+函数式编程是关于函数的。一个数学函数是由它的图通过二元组（参数，值）完全定义的。即：
+- ![\sqrt{\ } = &amp;#123;(0,0), (1,1), (4,2), (9,3), \dots &amp;#125;](https://wiki.haskell.org/wikiupload/math/7/a/9/7a95d49d189193b2987374c4bcd3d186.png)
+- ![ (\lambda x.\ x+x) = &amp;#123;(0,0), (1,2), (2,4), (3,6), \dots &amp;#125; ](https://wiki.haskell.org/wikiupload/math/e/a/f/eaf7cde16e0aa626caa2b0365e0a79b1.png)
+
+既然图 ![ \mathrm{show}(\lambda x.\ x+x) \ne \mathrm{show}(\lambda x.\ 2\cdot x) ](https://wiki.haskell.org/wikiupload/math/5/3/e/53ef58b99d9d9b4a63006980946855b9.png) 和 ![ \lambda x.\ 2\cdot x ](https://wiki.haskell.org/wikiupload/math/e/3/8/e38a5466b5a1b4d3c8339d700ac9d939.png) 是等价的，因为它们都表示了同样的函数。想象一下如果两个项都按照其形式被 GHCi 或 Hugs 显示，这就意味着等价的函数导致了不同的输出。交互式的 Haskell 环境使用通常的 `show` 函数，这也意味着 ![ \mathrm{show}(\lambda x.\ x+x) \ne \mathrm{show}(\lambda x.\ 2\cdot x) ](https://wiki.haskell.org/wikiupload/math/d/2/1/d21e1b708260732dd43095f9f7b1c881.png) 。这将打破[引用透明](https://wiki.haskell.org/Referential_transparency)。这也意味着显示函数的唯一可行方式是显示定义它们的图：
+
+&lt;pre&gt;`Prelude&amp;gt; \x -&amp;gt; x+x
+functionFromGraph [(0,0), (1,2), (2,4), (3,6),
+Interrupted.</code></pre><p>能够实现这个功能的代码在 <a href="http://hackage.haskell.org/package/universe-reverse-instances" target="_blank" rel="noopener">universe-reverse-instances</a> 包中有。（这个包在安装 <a href="http://hackage.haskell.org/package/universe" target="_blank" rel="noopener">universe</a> 包时会被安装）</p>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p><a href="https://wiki.haskell.org/Show_instance_for_functions" target="_blank" rel="noopener">https://wiki.haskell.org/Show_instance_for_functions</a><br><a href="http://www.haskell.org/pipermail/haskell-cafe/2006-April/015161.html" target="_blank" rel="noopener">http://www.haskell.org/pipermail/haskell-cafe/2006-April/015161.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.formalscience.com/2016/02/03/%E4%B8%BA%E4%BB%80%E4%B9%88_Haskell_%E4%B8%AD_%E5%87%BD%E6%95%B0%E7%B1%BB%E5%9E%8B_%E4%B8%8D%E6%98%AF_%E2%80%9CShow%E2%80%9D_%E7%B1%BB%E5%9E%8B%E7%B1%BB%E7%9A%84%E5%AE%9E%E4%BE%8B/" data-id="ckpoawmhl003titp96ou669wz" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2012-04-05_初试妙峰山" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/14/2012-04-05_%E5%88%9D%E8%AF%95%E5%A6%99%E5%B3%B0%E5%B1%B1/" class="article-date">
+  <time datetime="2016-01-14T14:56:14.000Z" itemprop="datePublished">2016-01-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B1%B1%E9%87%8E/">山野</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/14/2012-04-05_%E5%88%9D%E8%AF%95%E5%A6%99%E5%B3%B0%E5%B1%B1/">2012-04-05 初试妙峰山</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>今天突然想起去<a href="http://www.mafengwo.cn/u/1346676.html" target="_blank" rel="noopener">我的蚂蜂窝</a>去看看，当初自己是用人人网关联的，把唯一的一篇游记复制过来吧。</p>
+</blockquote>
+<p>本来想去妙峰山，路线图是这个</p>
+<p><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/1.jpeg" alt="1"></p>
+<p>这样我的出发点就不对了，于是我果断没按照地图走，从东门出发了，准备向从北大南面绕过去。<br>成功绕过去之后，我在密密麻麻的立交下面迷失了。恰好看到两个人要上香山，于是我尾随在他们后面去香山了。没想到他们半路一拐，钻到一家肯德基店去了。于是我果断重新计算路线，自己奔香山去了。<br>一路上各种车，我在其中穿梭。<br>到香山了，这时路线是这样的，共计14.5KM，</p>
+<p><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/2.jpeg" alt="2"></p>
+<p>但是，我不知道香山哪里可以骑车，悲剧了。得了，去妙峰山好了，于是我又计算出去妙峰山的路线，46KM。</p>
+<p><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/3.jpeg" alt="3"></p>
+<p>正是这条路线让我路上被恶狗狂追，穿越拥挤的集市。。。<br>然后我果断走错路线了，走成了这样。。。</p>
+<p><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/4.jpeg" alt="4"></p>
+<p>在妙峰山镇绕了一个圈啊。不过路上有个地方风景很好。</p>
+<p><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/5.jpeg" alt="5"></p>
+<p><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/6.jpeg" alt="6"></p>
+<p>还有30KM，好吧我走的那条路线不止30KM。</p>
+<p><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/7.jpeg" alt="7"></p>
+<p>到达山脚下后，果然和论坛里看到的一样。</p>
+<p><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/8.jpeg" alt="8"></p>
+<p><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/9.jpeg" alt="9"></p>
+<p>然后就开始我的爬山之行。。。<br>这段中不断有山上骑下来的人喊加油，可是他们嗖的一下就下去了，我向乌龟一样用往上挪，这段过程中，我的意志经历了各种纠结，脑子里的N个小人吵个不停。然后我在这个地方下去了，爬了13KM吧。</p>
+<p><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/10.jpeg" alt="10"></p>
+<p>然后下山的时候我也向往上爬的人挥手，但总是觉得哪里不对的样子。。。下山后（下山的过程果然刺激），从后面拍摄</p>
+<p><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/10.5.jpeg" alt="10.5"></p>
+<p>然后我在一个大叔的带领下（手机没电了，没有GPS），走了这样的路线回学校，60.4KM。</p>
+<p><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/11.jpeg" alt="11"></p>
+<p>总结：总计差不多有快130KM了吧。还是要研究好路线的，期间我各种爽过的下坡，发现都爽错了，还要挪回去。<br>不知道明天和妹子联谊还有精神没有，好好睡觉。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.formalscience.com/2016/01/14/2012-04-05_%E5%88%9D%E8%AF%95%E5%A6%99%E5%B3%B0%E5%B1%B1/" data-id="ckpoawmg6000jitp9cisyaoym" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-倚着石头晒太阳" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/12/%E5%80%9A%E7%9D%80%E7%9F%B3%E5%A4%B4%E6%99%92%E5%A4%AA%E9%98%B3/" class="article-date">
+  <time datetime="2016-01-12T10:36:49.000Z" itemprop="datePublished">2016-01-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AF%97%E6%AD%8C%E7%9A%84%E6%B5%B7%E6%B4%8B/">诗歌的海洋</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/12/%E5%80%9A%E7%9D%80%E7%9F%B3%E5%A4%B4%E6%99%92%E5%A4%AA%E9%98%B3/">倚着石头晒太阳</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我想倚着石头<br>晒晒太阳<br>山风吹着面庞<br>除了草木莎莎<br>没个其他声响<br>一会儿驱赶下飞虫<br>一会儿挠挠裤裆<br>就这么晕晕忽忽<br>睡他个一天半晌</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.formalscience.com/2016/01/12/%E5%80%9A%E7%9D%80%E7%9F%B3%E5%A4%B4%E6%99%92%E5%A4%AA%E9%98%B3/" data-id="ckpoawmhq0046itp9eno083d1" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-關於_LLVM_Pass_的一些基本操作" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/09/%E9%97%9C%E6%96%BC_LLVM_Pass_%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" class="article-date">
+  <time datetime="2016-01-09T21:46:48.000Z" itemprop="datePublished">2016-01-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/">技术记录</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/09/%E9%97%9C%E6%96%BC_LLVM_Pass_%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">關於 LLVM Pass 的一些基本操作</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="關於-LLVM-Pass-的一些基本操作"><a href="#關於-LLVM-Pass-的一些基本操作" class="headerlink" title="關於 LLVM Pass 的一些基本操作"></a>關於 LLVM Pass 的一些基本操作</h1><p>記錄一下關於 LLVM Pass 的一些操作，主要是一些配置工作。雖然目前的工作流程不是很優雅，但是可以自定義 LLVM Pass 的處理過程，通過進一步學習可以作出更有意思的東西。</p>
+<p>本文的 GitHub 地址： <a href="https://github.com/ronhuafeng/HandleLLVMPassBasic" target="_blank" rel="noopener">https://github.com/ronhuafeng/HandleLLVMPassBasic</a> ，有這篇文章和一些粗糙的源代碼。</p>
+<p>網絡上已經有一下教程了，我也參考了這些教程。</p>
+<h2 id="使用-clang-加載-LLVM-的-Pass"><a href="#使用-clang-加載-LLVM-的-Pass" class="headerlink" title="使用 clang 加載 LLVM 的 Pass"></a>使用 clang 加載 LLVM 的 Pass</h2><ul>
+<li><a href="http://stackoverflow.com/questions/23130821/llvm-run-own-pass-automatically-with-clang" target="_blank" rel="noopener">LLVM - Run Own Pass automatically with clang</a><br>stack overflow 上的回答，試圖使用 clang 加載 LLVM 的 Pass。</li>
+<li>Polly 库加載 LLVM Pass 的方法也是一个解决思路，我參考了這裏面的很多：<a href="http://polly.llvm.org/example_load_Polly_into_clang.html" target="_blank" rel="noopener">Load Polly into clang and automatically run it at -O3</a></li>
+<li>具体的加載過程參考了 Adrian Sampson 博客 <a href="http://adriansampson.net/blog/clangpass.html" target="_blank" rel="noopener">Run an LLVM Pass Automatically with Clang</a> 中提到的操作。</li>
+</ul>
+<h1 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h1><h2 id="準備工作"><a href="#準備工作" class="headerlink" title="準備工作"></a>準備工作</h2><p>將系統中自帶的 llvm 和 clang 都卸載掉，保證 llvm 和 clang 版本的一致性（非常重要），即保證使用的 clang 和 編譯出的 Pass 的動態鏈接庫文件 .so 的一致性。</p>
+<p>下載 LLVM 帶有 clang 的源碼，解壓縮到某個目錄，我解壓到了 <em>~/Projects/llvm-3.7.0.src</em> 。如果沒有的話可以下載對應版本的 clang 源碼放到 llvm 下的 tools 目錄下面，具體參考這個教程： <a href="http://clang.llvm.org/get_started.html" target="_blank" rel="noopener">Getting Started: Building and Running Clang</a> 。</p>
+<p>應該是使用下面的幾個命令編譯下項目：</p>
+<pre><code>mkdir build
+cd build
+../configure
+cmake ..
+`&lt;/pre&gt;
+
+然後執行 `make` 或者 `make -jn` （n 爲並行編譯參數，我的 CPU 是 _4 核 Intel(R) Xeon(R) CPU E3-1225 V2 @ 3.20GHz_ ，使用了 `make -j2`，因爲還要同時做其他事情）。
+
+編譯完成後就可以使用 `make install` 進行安裝了。由於 Ubuntu 的庫中自帶 clang 是 3.6 版，所以一開始這裏繞了一些彎路。
+
+## 將一個 C 文件編譯成 LLVM 的 Bitcode
+
+`clang -emit-llvm -c hello.c -o hello.bc`
+
+_hello.c_
+
+&lt;pre&gt;`#include &quot;stdio.h&quot;
+
+int main()
+{
+  int a = 0;
+
+  if (a == 1)
+    return 0;
+
+  if (a == 2)
+    return 0;
+
+  if (a == 3)
+    return 0;
+
+  return 0;
+}
+`&lt;/pre&gt;
+
+## 自定義 LLVM Pass
+
+這部分網絡上有很多教程，就不多說了，教程都比較詳細。
+
+我實現了一個 FunctionPass，主要就是給每個 main 函數中的 BasicBlock 添加上名字，然後插入一條打印指令，打印出這個名字和迷之數字 42 。
+
+代碼放在最後吧，畢竟比較長。
+
+[實現代碼](#PassCode)
+
+最後的註冊 Pass 的部分：
+
+&lt;pre&gt;`char MyInstrument::ID = 0;
+static RegisterPass&amp;lt;MyInstrument&amp;gt; Z(&quot;MyInstrument&quot;, &quot;MyInstrument Pass&quot;, false, false);
+
+static void registerMyPass(const PassManagerBuilder &amp;amp;, legacy::PassManagerBase &amp;amp;PM) {
+  PM.add(new MyInstrument());
+}
+static RegisterStandardPasses RegisterMyPass(PassManagerBuilder::EP_EarlyAsPossible, registerMyPass);
+`&lt;/pre&gt;
+
+## 編譯自定義的 LLVM Pass
+
+由於沒有成功爲 LLVM 項目配置好 [_Clion_(a c++ IDE)](https://www.jetbrains.com/clion/) cmake 的 Makefile （這一點是由於對 cmake 和 makefile 不瞭解的緣故），所以只能採用某種方式繞過。
+
+假設已經把 LLVM 的源碼下載在某個目錄，把自己修改的 Pass 文件複製到 LLVM 源碼樹下 Pass 的對應文件夾，然後編譯。
+
+&lt;pre&gt;`cp ~/ClionProjects/LLVMPass/ListBasicBlock/ListBasicBlock.cpp ~/Projects/llvm-3.7.0.src/lib/Transforms/Mypass/Mypass.cpp;
+cd ~/Projects/llvm-3.7.0.src/build/lib/Transforms/Mypass/;
+make
+`&lt;/pre&gt;
+
+這樣會得到 _~/Projects/llvm-3.7.0.src/build/lib/LLVMMypass.so_ 。
+
+## 執行自定義 Pass
+
+&lt;pre&gt;`opt -load ~/Projects/llvm-3.7.0.src/build/lib/LLVMMypass.so -MyInstrument &amp;lt;hello.bc -o new_hello.bc
+`&lt;/pre&gt;
+
+## 編譯得到可執行文件
+
+調用 LLVM 的靜態編譯器 llc，`llc new_hello.bc`，然後編譯得到可執行文件 _a.out_，`clang new_hello.s` 。
+
+## 執行可執行文件
+
+`./a.out` 可以得到輸出
+
+&lt;pre&gt;`main_0  42 
+main_02 42 
+main_04 42 
+main_06 42 
+main_07 42 
+
+`&lt;/pre&gt;
+
+到此爲止就基本結束了，至於如果按照自定義需求修改 Pass 是就要繼續學習了。
+
+* * *
+
+## 附錄
+
+### &lt;a name=&quot;PassCode&quot;/&gt;實現代碼
+
+&lt;pre&gt;`//===- Mypass.cpp - Example code from &quot;Writing an LLVM Pass&quot; ---------------===//
+//
+//                     The LLVM Compiler Infrastructure
+//
+// This file is distributed under the University of Illinois Open Source
+// License. See LICENSE.TXT for details.
+//
+//===----------------------------------------------------------------------===//
+//
+// This file implements two versions of the LLVM &quot;Mypass&quot; pass described
+// in docs/WritingAnLLVMPass.html
+//
+//===----------------------------------------------------------------------===//
+
+#include &quot;llvm/Transforms/Instrumentation.h&quot;
+#include &quot;llvm/ADT/Statistic.h&quot;
+#include &quot;llvm/IR/Function.h&quot;
+#include &quot;llvm/IR/Module.h&quot;
+#include &quot;llvm/Pass.h&quot;
+#include &quot;llvm/IR/BasicBlock.h&quot;
+#include &quot;llvm/IR/DebugInfo.h&quot;
+#include &quot;llvm/IR/DebugLoc.h&quot;
+#include &quot;llvm/IR/IRBuilder.h&quot;
+#include &quot;llvm/IR/InstIterator.h&quot;
+#include &quot;llvm/IR/Instructions.h&quot;
+#include &quot;llvm/IR/IntrinsicInst.h&quot;
+#include &quot;llvm/Support/raw_ostream.h&quot;
+#include &amp;lt;llvm/IR/GlobalVariable.h&amp;gt;
+#include &amp;lt;llvm/IR/LLVMContext.h&amp;gt;
+#include &amp;lt;llvm/Pass.h&amp;gt;
+#include &amp;lt;llvm/ADT/SmallVector.h&amp;gt;
+#include &amp;lt;llvm/IR/CallingConv.h&amp;gt;
+#include &amp;lt;llvm/IR/Constants.h&amp;gt;
+#include &amp;lt;llvm/IR/DerivedTypes.h&amp;gt;
+#include &amp;lt;llvm/IR/Function.h&amp;gt;
+#include &amp;lt;llvm/IR/GlobalVariable.h&amp;gt;
+#include &amp;lt;llvm/IR/IRPrintingPasses.h&amp;gt;
+#include &amp;lt;llvm/IR/InlineAsm.h&amp;gt;
+#include &amp;lt;llvm/IR/Instructions.h&amp;gt;
+#include &amp;lt;llvm/IR/LLVMContext.h&amp;gt;
+#include &amp;lt;llvm/IR/Module.h&amp;gt;
+#include &amp;lt;llvm/Support/FormattedStream.h&amp;gt;
+#include &amp;lt;llvm/Support/MathExtras.h&amp;gt;
+#include &amp;lt;algorithm&amp;gt;
+#include &quot;llvm/IR/Type.h&quot;
+#include &quot;llvm/IR/DerivedTypes.h&quot;
+#include &quot;llvm/IR/LegacyPassManager.h&quot;
+#include &quot;llvm/Transforms/IPO/PassManagerBuilder.h&quot;
+using namespace llvm;
+using namespace llvm;
+
+#define DEBUG_TYPE &quot;mypass&quot;
+
+STATISTIC(MypassCounter, &quot;Counts number of functions greeted&quot;);
+
+namespace {
+    // MyInstrument - Try to construct a pass to instrument log information.
+    struct MyInstrument : public FunctionPass {
+        static char ID;
+
+        MyInstrument() : FunctionPass(ID) {}
+
+        Function * getPrintF(IRBuilder&amp;lt;&amp;gt; &amp;amp;Builder, Module *M) {
+
+            const char *Name = &quot;printf&quot;;
+            Function *F = M-&amp;gt;getFunction(Name);
+
+            if (!F) {
+                GlobalValue::LinkageTypes Linkage = Function::ExternalLinkage;
+                FunctionType *Ty = FunctionType::get(Builder.getInt32Ty(), true);
+                F = Function::Create(Ty, Linkage, Name, M);
+            }
+
+            return F;
+        }
+        void createPrintF(IRBuilder&amp;lt;&amp;gt; &amp;amp;Builder,
+                          std::string Format,
+                          ArrayRef&amp;lt;Value *&amp;gt; Values,
+                          Module *M) {
+            Value *FormatString = Builder.CreateGlobalStringPtr(Format);
+            std::vector&amp;lt;Value *&amp;gt; Arguments;
+
+            Arguments.push_back(FormatString);
+            Arguments.insert(Arguments.end(), Values.begin(), Values.end());
+            Builder.CreateCall(getPrintF(Builder, M), Arguments);
+        }
+
+        bool runOnFunction(Function&amp;amp; F) override {
+            MypassCounter++;
+
+            // 如果不是 main 函數，就不做處理
+            if (F.getName().equals(&quot;main&quot;) == false)
+            {
+                return false;
+            }
+
+            // 獲取 printf 函數
+            Module* m = F.getParent();
+            Function* printFun = m-&amp;gt;getFunction(&quot;printf&quot;);
+            if (nullptr == printFun)
+            {
+                errs() &amp;lt;&amp;lt; &quot;printf function not get.&quot; &amp;lt;&amp;lt; &apos;\n&apos;;
+            }
+
+            ///////////////////////////////////////////
+            Module* mod = F.getParent();
+
+            BasicBlock * pb = nullptr;
+
+            errs() &amp;lt;&amp;lt; &quot;Function is: &quot; &amp;lt;&amp;lt; F.getName() &amp;lt;&amp;lt; &apos;\n&apos;;
+
+            // 按照如下格式重命名 BasicBlock
+            // Name each basic block in the format &apos;FunctionName_BasicBlockID&apos;
+            int count;
+            count = 0;
+            for (Function::iterator b: F)
+            {
+                pb = b;
+                IRBuilder&amp;lt;&amp;gt; Builder(pb);
+                b-&amp;gt;setName(F.getName() + &quot;_&quot; + Twine(count));
+            }
+
+            // 依次在每個 BasicBlock 處插入打印語句
+            count = 0;
+            for (Function::iterator b : F)
+            {
+                pb = b;
+                IRBuilder&amp;lt;&amp;gt; Builder(pb);
+                Builder.SetInsertPoint(pb, pb-&amp;gt;begin());
+
+                std::vector&amp;lt;Value *&amp;gt; ArgsV;
+
+                Twine format(pb-&amp;gt;getName());
+
+                format.concat(&quot; %d\n&quot;);
+                //errs() &amp;lt;&amp;lt; format.str() &amp;lt;&amp;lt; &apos;\n&apos;;
+                std::string formatStr = pb-&amp;gt;getName().str();
+                formatStr += &quot;\t%d \n&quot;;
+
+                Value *FormatString = Builder.CreateGlobalStringPtr(formatStr);
+                ArgsV.push_back(FormatString);
+                ArgsV.push_back(Builder.getInt32(42));
+                Builder.CreateCall(getPrintF(Builder, mod), ArgsV);
+
+            }
+            return true;
+        }
+    };
+}
+
+char MyInstrument::ID = 0;
+static RegisterPass&amp;lt;MyInstrument&amp;gt; Z(&quot;MyInstrument&quot;, &quot;MyInstrument Pass&quot;, false, false);
+
+static void registerMyPass(const PassManagerBuilder &amp;amp;,
+                           legacy::PassManagerBase &amp;amp;PM) {
+    PM.add(new MyInstrument());
+}
+static RegisterStandardPasses
+        RegisterMyPass(PassManagerBuilder::EP_EarlyAsPossible,
+                       registerMyPass);</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.formalscience.com/2016/01/09/%E9%97%9C%E6%96%BC_LLVM_Pass_%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" data-id="ckpoawmis006qitp98cd6azrv" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2015-12-31_山野冬季野营（灵山）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/04/2015-12-31_%E5%B1%B1%E9%87%8E%E5%86%AC%E5%AD%A3%E9%87%8E%E8%90%A5%EF%BC%88%E7%81%B5%E5%B1%B1%EF%BC%89/" class="article-date">
+  <time datetime="2016-01-04T10:32:07.000Z" itemprop="datePublished">2016-01-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B1%B1%E9%87%8E/">山野</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/04/2015-12-31_%E5%B1%B1%E9%87%8E%E5%86%AC%E5%AD%A3%E9%87%8E%E8%90%A5%EF%BC%88%E7%81%B5%E5%B1%B1%EF%BC%89/">2015-12-31 山野冬季野营（灵山）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><p>参加了冬季集训，临近结束得知今年协会冬季野营目的地是灵山，时间是元旦假期。作为由于时间原因（实验室周日组会，雷打不动）从未参加过正式野营的人，我就报名了。另外灵山我也没去过，可以去拍拍照片。不过由于冬季野营不让带单反，我只好携带 LX5 了，轻一点也好，能够挂在脖子上。</p>
+<h2 id="路线"><a href="#路线" class="headerlink" title="路线"></a>路线</h2><p>这次路线是从柏峪村进入，下马威出。具体路线图：<br><a href="http://www.formalscience.com/blog/wp-content/uploads/2016/01/985132285.jpg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/985132285-1024x594.jpg" alt="985132285"></a></p>
+<h2 id="职务分配"><a href="#职务分配" class="headerlink" title="职务分配"></a>职务分配</h2><p>这次我报了 押后。一路上大部分时间都在押我的好基友 zc，也没啥特别的感觉。好处是可以拍一些照片，不用担心卡住后面的队员。对于这个职务我还是比较喜欢，因为有种保护别人的感觉。后来发现走在队伍最后的确很适合拍摄全队照片。<br><a href="http://www.formalscience.com/blog/wp-content/uploads/2016/01/P1110239.jpg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/P1110239-1024x684.jpg" alt="P1110239"></a></p>
+<h2 id="体力分配"><a href="#体力分配" class="headerlink" title="体力分配"></a>体力分配</h2><p>作为押后，要跟在最后一名队员后面，虽然速度不快，但是感觉也没那么轻松的。之前当路线的时候虽然要比别人走得快，但是反而很欢脱。可能是有心态的问题，不过整体而言还是很平和的，因为知道这样的行进强度自己还是没问题的。 雪地走得很有趣，硬雪壳穿着冰爪走得咔咔的，粉雪则不断向下滑需要用大冰镐或者登山杖撑着，湿的雪会沾到鞋子上就不好玩了，鞋子会湿。下坡如果是石头面就能踩着石头一层层下，如果是草甸就踩着草根下，如果是烂泥地或者粉土冰混合地形，就会滑，有人会摔跤。灵山还有其特殊之处，就是路上好多马粪，导致烂泥的成分比较复杂。</p>
+<h2 id="心态"><a href="#心态" class="headerlink" title="心态"></a>心态</h2><p>这次的队员大部分走得快，我上坡的时候觉得自己速度慢，后来发现也不是，而是有状态好坏之分，由于一个决定性的事件，第三天状态就特别好（自我感觉）。以后还是要调整好心态。淡定淡定～<br><a href="http://www.formalscience.com/blog/wp-content/uploads/2016/01/P1110264.jpg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/P1110264-1024x684.jpg" alt="P1110264"></a></p>
+<h2 id="技术训练"><a href="#技术训练" class="headerlink" title="技术训练"></a>技术训练</h2><p>技术训练是沿路绳行军和滑坠制动，我对于上升转横切和横切转下降的操作都比较熟悉，还指导了别人。对于上升前的各项准备步骤，则是向 zc 和 sz 学了很多。滑坠制动，山上雪坡角度并不大，我强行滑下，制动，摆拍。<br><a href="http://www.formalscience.com/blog/wp-content/uploads/2016/01/P1110300.jpg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/P1110300-1024x684.jpg" alt="P1110300"></a></p>
+<h2 id="野营的学习"><a href="#野营的学习" class="headerlink" title="野营的学习"></a>野营的学习</h2><p>虽然之前协会腐败野营我还是名义上的帐篷长，但并没有学到如何当一名帐篷长。这次正式野营中，帐篷长 sz 把各项工作都安排得很好，大家配合很紧密，对于各种注意事项也和大家一一讲解。以后自己成为正式野营帐篷长得时候也要做到才好。</p>
+<h2 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h2><p>主要是押后工作做得不是很好，第三天冲顶东灵山得时候，sqq 脚底有伤，走得慢，我只是一旁鼓励，没有给她分包。</p>
+<h2 id="趣事"><a href="#趣事" class="headerlink" title="趣事"></a>趣事</h2><ul>
+<li>星空很漂亮，可是第一天扎营后很快就到了熄灯时间，没时间拍。第二天晚上感觉星星没那么亮了，可能是旁边有个工地上大灯照射的原因。早上出发很早，看着头顶的北斗七星，特别平和。*   随着行走，看着天空由黑蓝变成灰蓝再到间杂着鱼肚白和黑红的过度，然后就迎来了日出。作为连清华园也不怎么出的我来说，只在东操拍过一次日出延时摄影，其他时间都没欣赏过。不过这次我第二天凌晨行军时还是不是看看东方的天空的，直到走到缆车上站的时候，太阳开始出来，大家拍照。效果肯定比不上专业的摄影者，不过这样的景色只有自己亲眼看过才算数。不得不说山里能看到的星星真是多真是亮啊！日出也是更纯净多彩！</li>
+<li>山的景色到没有特别感受，拍了一些照片回来合成了全景。</li>
+<li>不经意一瞥，发现了蓝色天空和北京的雾霾之间有条明显的界限，心疼日常生活在雾霾中的人（包括我）。 - 不时看到鹰在头顶飞，很漂亮的身姿。</li>
+<li>第二天扎营的时候我找到一个特别避风的地方放大，而且还有 3G 信号，简直是天王坑。在这之后感觉一身轻松，后一天状态极好。</li>
+</ul>
+<h2 id="尾声"><a href="#尾声" class="headerlink" title="尾声"></a>尾声</h2><p>总之也回来了，冬训的餐也聚了。而我在餐后骑车回来的路上和 zc 比赛抬自行车前轮和后轮，再次把手腕挫伤，也是逗逼了。现在写这篇总结也是属于身残志坚的行为了。</p>
+<h2 id="满意的照片"><a href="#满意的照片" class="headerlink" title="满意的照片"></a>满意的照片</h2><p><a href="http://www.formalscience.com/blog/wp-content/uploads/2016/01/P1110281-PANO.jpg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/P1110281-PANO-1024x302.jpg" alt="P1110281-PANO"></a></p>
+<p><a href="http://www.formalscience.com/blog/wp-content/uploads/2016/01/1686117700.jpg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/1686117700-1024x768.jpg" alt="1686117700"></a></p>
+<p><a href="http://www.formalscience.com/blog/wp-content/uploads/2016/01/P1110252.jpg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/P1110252-1024x684.jpg" alt="P1110252"></a></p>
+<p><a href="http://www.formalscience.com/blog/wp-content/uploads/2016/01/P1110244.jpg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/P1110244-1024x684.jpg" alt="P1110244"></a></p>
+<p><a href="http://www.formalscience.com/blog/wp-content/uploads/2016/01/P1110267.jpg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/P1110267-1024x684.jpg" alt="P1110267"></a></p>
+<p><a href="http://www.formalscience.com/blog/wp-content/uploads/2016/01/P1110269.jpg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/P1110269-1024x684.jpg" alt="P1110269"></a></p>
+<p><a href="http://www.formalscience.com/blog/wp-content/uploads/2016/01/P1110271.jpg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/P1110271-1024x684.jpg" alt="P1110271"></a></p>
+<p><a href="http://www.formalscience.com/blog/wp-content/uploads/2016/01/2015-12-31-山野冬季野营及跨年.jpg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2016/01/2015-12-31-%E5%B1%B1%E9%87%8E%E5%86%AC%E5%AD%A3%E9%87%8E%E8%90%A5%E5%8F%8A%E8%B7%A8%E5%B9%B4-1024x640.jpg" alt="2015-12-31 山野冬季野营及跨年"></a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.formalscience.com/2016/01/04/2015-12-31_%E5%B1%B1%E9%87%8E%E5%86%AC%E5%AD%A3%E9%87%8E%E8%90%A5%EF%BC%88%E7%81%B5%E5%B1%B1%EF%BC%89/" data-id="ckpoawmgj0014itp9by6igjoq" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2015-12-19_第一次滑雪" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/12/19/2015-12-19_%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%BB%91%E9%9B%AA/" class="article-date">
+  <time datetime="2015-12-19T15:54:53.000Z" itemprop="datePublished">2015-12-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B1%B1%E9%87%8E/">山野</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/12/19/2015-12-19_%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%BB%91%E9%9B%AA/">2015-12-19 第一次滑雪</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在知乎上看到一个问题，说人年龄大了就会感觉时间啊过得飞快。高票答案分析，这种感觉大体原理就是存在一个度量指标：当前的一年／你的人生已经度过的时间，这个值是越来越低的。当然怎样阐释这种感觉因人而异，我还是想在回望时候记得点什么的，于是写写自己的第一次系列以后看看也是挺好的。</p>
+<p>滑雪很早就想去了，之前也看到同学分享的活动照片啥的，想去，但是没去。以后要注意，这种拖拖拖的态度会在各种角落蔓延，让生活没那么嗨。不过这次去滑雪是提前把实验室的啥基金申请书、年度报告之类的东西刷完才安心去的，想到滑雪回来后在人人上看到的一条新鲜事：</p>
+<p><a href="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_0727.jpeg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_0727.jpeg" alt=""></a>&nbsp;<br>这个同学是周五何添楼爆照事故中去世的博士后的人人状态。自己没个周末的心态差不多也是类似的，不过我比较懒，没有要死要活地工作。事故当天表妹打了一个电话过来，问我事故的事情，看看她哥是不是受到了惊吓。周五一天都在写本子，还没什么感觉，现在感觉有些沉重。<strong>要把时间花在什么事情上？有时候以为自己清楚了，过后又会犹豫。</strong></p>
+<p>这次滑雪是沾了山野协会的光，雪协副会长也在山野，于是我们可以免费入会参加滑雪活动。到了雪场，兰姐教我们基本技能。我对自己的灵活敏捷指数认识很清楚，这种平衡类的我应该要多练一些才能掌握，后来练习动作的时候果然如此。上午两个多小时，下午两个多小时，中午吃了一个小包装的面包，味道还不错。上午的教学内容是装备知识、基本姿势动作、正确摔倒姿势、犁式滑雪、刹车、转弯，当然还有其他的进阶动作，我错过了，这些就够我练习一天了。下午动作讲解结束后，我还是没太掌握要领，一度不敢在坡度大的雪道上滑，怕撞到别人（其实也就是个初级道吧）。在下面缓坡墨迹了一会儿，还是做魔毯上去了，后来发现自己能够找到点自如刹车感觉后胆子就大了，也开始练习转向了。不过我的雪板可能确实有点大，总感觉速度太快，特别是和别人动作类似的情形下，还存在很大可能性是动作不到位。</p>
+<p>摔是摔了的，包括零速度卡摔、速度太快脚撇太开导致失去平衡前滚翻、转向后无法再次回转又没及时刹车只能主动摔。当然还出现过有人站在雪道中间，我绕不过去，只能摔倒避免碰撞的。不过还算皮糙肉厚，没啥事儿。</p>
+<p>回来和去时路上都在听歌睡觉吧，很快就到了。今天雾霾，不好，都红色警报了。</p>
+<p>特别特别感谢兰姐，让我在第一次滑雪就接触了正确的姿势动作理念，避免练偏。</p>
+<p>&nbsp;<a href="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_4992.jpeg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_4992.jpeg" alt=""></a>&nbsp;<br>上面这张照片正中间的就是兰姐啦，正红色的冲锋衣，雪盔外面的毛线套是她自己织的哦。</p>
+<p>另外，也没啥精彩照片了，我也算在专注练习吧，不过也可能是身为小弱鸟没心情。</p>
+<p>&nbsp;<a href="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_4994.jpeg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_4994.jpeg" alt=""></a>&nbsp;<br>2015-12-19</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.formalscience.com/2015/12/19/2015-12-19_%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%BB%91%E9%9B%AA/" data-id="ckpoawmgh0011itp90e1p2ejg" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2015-11-28_户外技能大赛个人感想" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/12/18/2015-11-28_%E6%88%B7%E5%A4%96%E6%8A%80%E8%83%BD%E5%A4%A7%E8%B5%9B%E4%B8%AA%E4%BA%BA%E6%84%9F%E6%83%B3/" class="article-date">
+  <time datetime="2015-12-18T16:51:28.000Z" itemprop="datePublished">2015-12-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B1%B1%E9%87%8E/">山野</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/12/18/2015-11-28_%E6%88%B7%E5%A4%96%E6%8A%80%E8%83%BD%E5%A4%A7%E8%B5%9B%E4%B8%AA%E4%BA%BA%E6%84%9F%E6%83%B3/">2015-11-28 户外技能大赛个人感想</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>参加户外技能大赛也有偶然的成份在其中，毕竟我本来是摄影辅助，后来由于好友赵超约我去参加拿奖品，于是我就无声无息报了名，同时还拉上了另一好友的女朋友，小丫头宋梦迪。然后大雪如期而至，赛事推延。待到比赛之前，我们队伍的发起者觉得太冷于是退出了比赛，替换队员是王阳阳。王大爷，也算一员悍将，至少比退出的人跑得快，虽然同样是攀岩队现役，不能参与攀岩单项。</p>
+<p>不过比赛之日，赵超竟然出现了，他竟然是摄影辅助，不得不说生命真是一种循环。<br>比赛前是填写队名环节，由于之前听说有队伍叫 <strong>老妖怪</strong> 队，于是我们定了 捉妖师 作为队名。后来现场 <strong>老妖怪</strong> 队临时改名叫 <strong>有妖</strong> 队，以及再次被 <strong>小坏</strong> 更名为 <strong>有妖气</strong> 队。不过仍然逃不出我们的手掌心，哪里<strong>有妖气</strong>，哪里就有 <strong>捉妖师</strong> 队。对了，现场还有大叔带来了小萝莉一枚，很是可爱。</p>
+<p>&nbsp;<a href="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_0720.jpeg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_0720.jpeg" alt=""></a>&nbsp;<br>比赛第一项：定向越野。我深知这个项目的核心要义就是要跑得快，跟上前面的队伍；如果你是第一支队伍的话，基本就无缘这个项目的冠军了。所以我们从第三个点开始就紧随其后，从此就再没分开。定向越野找点的过程比较顺利，只有在综合体育馆处有个点在二层平台上，耗费了一点时间。其后就是工作五十年标语前的女神像是最后一个标志点，顺利被拍照（因为手机没电了）后紧随 有妖气队到达终点，顺利夺冠。看看我们的照片吧：</p>
+<p>&nbsp;<a href="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_0721.jpeg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_0721.jpeg" alt=""></a>&nbsp;<br>比赛第二项：答题环节。果然有直觉的小丫头能够找到所有不确定的题目的正确答案，然而我没有听她的，于是错了两个。果然要学习一下队史呀。</p>
+<p>&nbsp;<a href="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_0722.jpeg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_0722.jpeg" alt=""></a>&nbsp;<br>比赛第三项：有备而来，哦不，岩壁芭蕾。我是带了攀岩鞋而来的，主要是竞争对手太强。有妖气队三名选手都和攀岩队有千丝万缕的关系，有现役队员，有前任队员，有曾经队员的女友。当然我们队也是有千丝万缕的关系，就不说了。我和小丫头参加比赛，小丫头爬第一段，我爬第二段。由于有妖气队的廖凌云选手在第二段两次从岩壁脱落，而我靠着大力出奇迹的攀爬方式一气呵成，最后险胜，😄。看不那么英俊的姿势：</p>
+<p>&nbsp;<a href="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_0723.jpeg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_0723.jpeg" alt=""></a>&nbsp;<br>比赛第四项：野营技能。搭帐篷，我其实没有太多野营经验，不过搭帐篷的方式还是牢记在心的。不过在烧水环节我们经历了换炉头，换气罐后还是成为了最后一个 烧开水的组。最后还把内外帐收容顺序弄反了。结果是第三名。</p>
+<p>颁奖环节，我们是综合第二，因为野营占的比重比较大。不过能拿两个单项奖也很开心啦。其实这次技能大赛因为下雪推延了一周，其实来参加比赛的人并不多，工作人员很多。不过大家一起完成了这个活动很开心啦。我的奖品是雪镜，很满足。每个人还领到了严冬冬翻译的一本书《黄金罗盘》，由于我已经有黄色封面的了，于是就选了白色封面的。</p>
+<p>&nbsp;<a href="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_0724.jpeg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_0724.jpeg" alt=""></a>&nbsp;<br>就这样结束吧，其实还有些话想说。记得第一次参加户外技能大赛的时候，我、沈治以及来自台湾的交换生肖紫柔在攀岩环节折腾了半天始终不能完成路线。这次就感觉进步多了。</p>
+<p>两年前的我和某现任部长的<strong>果珍黑马</strong>队：</p>
+<p>&nbsp;<a href="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_0725.jpeg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_0725.jpeg" alt=""></a>&nbsp;&nbsp;<br><img src="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_0726.jpeg" alt="">&nbsp;时间就是这么一点点过去，我也在两年间感觉到心态不断变化。这是真正的结束了，然而生活还是要继续。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.formalscience.com/2015/12/18/2015-11-28_%E6%88%B7%E5%A4%96%E6%8A%80%E8%83%BD%E5%A4%A7%E8%B5%9B%E4%B8%AA%E4%BA%BA%E6%84%9F%E6%83%B3/" data-id="ckpoawmge000witp9efdobls1" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-过去与未来" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/12/18/%E8%BF%87%E5%8E%BB%E4%B8%8E%E6%9C%AA%E6%9D%A5/" class="article-date">
+  <time datetime="2015-12-18T00:56:02.000Z" itemprop="datePublished">2015-12-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AF%97%E6%AD%8C%E7%9A%84%E6%B5%B7%E6%B4%8B/">诗歌的海洋</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/12/18/%E8%BF%87%E5%8E%BB%E4%B8%8E%E6%9C%AA%E6%9D%A5/">过去与未来</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>不知道自己对于未来是什么样的感觉，悲观还是乐观还是无所谓。自己喜欢看的描述未来的电影中无论是机械朋克的末日世界还是科技高度发达的现代化社会，还是人类已经虚拟化的假设，当然还有星际航行和外星文明，都让我内心觉得很愉悦。或许某天地球真的像《银河系漫游指南》中描述的一样，被一炮轰了呢。意义这个词让人平生烦恼，不过一想到自己也不过是一架基因复制机器，也就释然了呢。要超出这种桎梏，恐怕只有永生，无论是肉体永生还是人格虚拟化，甚至与周围的宇宙融合，恐怕就像佛教中每个部分都置换过的战鼓，还能否称为人类。</p>
+<p>两面之神倒下</p>
+<p>过去遗忘</p>
+<p>未来停驻</p>
+<p>废墟上开出花朵</p>
+<p>无主的风吞噬一切</p>
+<p>落下猩红的雨</p>
+<p>利枪穿过胸膛</p>
+<p>乌鸦在树梢环绕</p>
+<p>消失在云雾迷绕的山岭</p>
+<p>祈祷之声隐藏了恐慌</p>
+<p>逝者不死</p>
+<p>为上帝点燃灯烛</p>
+<p>大雪之日无法留下印迹</p>
+<p>凡间之人无需等待救赎</p>
+<p>那是堕落天使曾经抛弃的荣光<br>2015－11－30</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.formalscience.com/2015/12/18/%E8%BF%87%E5%8E%BB%E4%B8%8E%E6%9C%AA%E6%9D%A5/" data-id="ckpoawmiq006mitp96yjca9zy" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2015-09-12_醒狮杯" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/12/18/2015-09-12_%E9%86%92%E7%8B%AE%E6%9D%AF/" class="article-date">
+  <time datetime="2015-12-18T00:52:28.000Z" itemprop="datePublished">2015-12-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B1%B1%E9%87%8E/">山野</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/12/18/2015-09-12_%E9%86%92%E7%8B%AE%E6%9D%AF/">2015-09-12 醒狮杯</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>去年就参加了在卢沟桥举行的 醒狮杯 越野跑比赛，感觉还不错，认识了一群小伙伴，看了卢沟桥的狮子，还免费得了一件 T 恤衫，于是今年又报名了。<br>早上在东北门集合，然后出发去卢沟桥。到了后，领计时芯片，排队进宛平城，晒太阳，看表演，看放飞鸽子。</p>
+<p>期间唯一有趣的事情就是看到一只偷懒的鸽子，被放出来后没有跟随鸽群，而是之间停在旁边楼上歇着了。</p>
+<p>跑步嘛，有大神，有重在参与的小菜。配速 5:26 跑了 5 千米，基本预示着我北马的颓势。前面跑得比较稳健（慢），最后一圈冲了一下（其实那时候大神们都跑完了）。</p>
+<p>跑完后，喝水、放松、聊天、颁奖。这次男团和女团都是第一，虽然女团一开始由于成绩记录错误没有名次。回来的车上大家都觉得分数可能有问题（男团八十个人得了 2 万多分，之前老师说第一名 300 分，这样人均都快300 分了）。不过，我想应该是今年有 500 人参赛，分数上限调整了（500？），大家平均得分应该是比平均分多一些，但是人多就是有力量，谁让咱是体校呢。</p>
+<p>今年由于是反法西斯暨抗日战争胜利七十周年，人比去年要多，然而组织却不好。颁奖之后，也没有游卢沟桥。不过天气还好，心情不错。中午回到学校吃了饭，午睡后明显感觉是感冒了，直接原因是跑完后没有找到来时坐的车，没取到衣服保暖。</p>
+<p>&nbsp;<a href="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_3946.jpeg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_3946.jpeg" alt=""></a>&nbsp;&nbsp;<br><a href="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_3937.jpeg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_3937.jpeg" alt=""></a>&nbsp;&nbsp;<a href="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_3945.jpeg" target="_blank" rel="noopener"><img src="http://www.formalscience.com/blog/wp-content/uploads/2015/12/img_3945.jpeg" alt=""></a>&nbsp;</p>
+<p>今晚好多朋友都去看好妹妹乐队的演唱会了。</p>
+<p>《一个人的北京》</p>
+<p>你有多久单身一人不再去旅行</p>
+<p>喜欢下班回到家里冷冰冰的空气</p>
+<p>爱情着东西</p>
+<p>你已经不再有勇气</p>
+<p>许多人来来去去相聚又别离</p>
+<p>也有人喝醉哭泣在一个人的北京</p>
+<p>能不能让我留下片刻的回忆</p>
+<p>也有人匆匆逃离这一个人的北京</p>
+<p>离开了这里在晴朗的天气</p>
+<p>（当当当当的钢琴声）</p>
+<p>2015-09-12</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.formalscience.com/2015/12/18/2015-09-12_%E9%86%92%E7%8B%AE%E6%9D%AF/" data-id="ckpoawmgd000uitp9aglxa8wr" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-偷偷" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/12/18/%E5%81%B7%E5%81%B7/" class="article-date">
+  <time datetime="2015-12-18T00:39:13.000Z" itemprop="datePublished">2015-12-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AF%97%E6%AD%8C%E7%9A%84%E6%B5%B7%E6%B4%8B/">诗歌的海洋</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/12/18/%E5%81%B7%E5%81%B7/">偷偷</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>风在潜行去通知欢乐的消息</p>
+<p>树呀花呀</p>
+<p>都在咯咯笑</p>
+<p>2015-06-13</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.formalscience.com/2015/12/18/%E5%81%B7%E5%81%B7/" data-id="ckpoawmhr004aitp927peh8ei" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/3/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/5/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BF%86%E4%B8%AD%E8%80%81%E5%8E%BB/">回忆中老去</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BF%86%E4%B8%AD%E8%80%81%E5%8E%BB/%E6%84%9F%E6%82%9F/">感悟</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%87%E5%AE%99%E5%B0%8F%E7%99%BE%E7%A7%91/">宇宙小百科</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B1%B1%E9%87%8E/">山野</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/">技术记录</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/tech-notes/">tech-notes</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%A7%82%E7%82%B9/">观点</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%A7%84%E5%88%92/">规划</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%97%E6%AD%8C/">诗歌</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%97%E6%AD%8C%E7%9A%84%E6%B5%B7%E6%B4%8B/">诗歌的海洋</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E8%A7%82%E5%BD%B1/">读书观影</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Functional-Programming/" rel="tag">Functional Programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Golang/" rel="tag">Golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Haskell/" rel="tag">Haskell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Rust/" rel="tag">Rust</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Travel/" rel="tag">Travel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/note/" rel="tag">note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/programming-language/" rel="tag">programming language</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E8%AF%AD%E8%A8%80/" rel="tag">函数式语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB/" rel="tag">生活</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A7%84%E5%88%92/" rel="tag">规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Functional-Programming/" style="font-size: 10px;">Functional Programming</a> <a href="/tags/Golang/" style="font-size: 20px;">Golang</a> <a href="/tags/Haskell/" style="font-size: 10px;">Haskell</a> <a href="/tags/Rust/" style="font-size: 10px;">Rust</a> <a href="/tags/Travel/" style="font-size: 15px;">Travel</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/note/" style="font-size: 15px;">note</a> <a href="/tags/programming-language/" style="font-size: 15px;">programming language</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E8%AF%AD%E8%A8%80/" style="font-size: 10px;">函数式语言</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">生活</a> <a href="/tags/%E8%A7%84%E5%88%92/" style="font-size: 10px;">规划</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">March 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/10/">October 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/08/">August 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">July 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/06/">June 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/04/">April 2012</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/01/2020-guidelines/">2020 生活规划</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/24/2019-09-24-Rent-in-Edinburgh/">爱丁堡租房</a>
+          </li>
+        
+          <li>
+            <a href="/2019/02/17/2019-02-17_To_Bangkok/">To Bangkok</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/26/2018-12-26-Go-to-Rust/">Go to Rust （一）</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/13/2018-12-13-pip-install-package-offline/">pip 离线安装包</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Bef0rewind<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

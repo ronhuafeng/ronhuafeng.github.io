@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>为什么 Haskell 中 函数类型 不是 “Show” 类型类的实例 | 不是追风少年</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="问题为什么函数类型不是 show 类型类的实例以显示参数和值的类型？ 为什么我不能在 GHCi 或者 Hugs 中输入 \x -&amp;gt; x + x ，在结果中看到同样的表达式形式作为输出。 为什么存在一个 Show 实例，却只打印函数的类型？ Prelude&amp;gt; :m + Text.Show.Functions Prelude Text.Show.Functions&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么 Haskell 中 函数类型 不是 “Show” 类型类的实例">
+<meta property="og:url" content="http://blog.formalscience.com/2016/02/03/%E4%B8%BA%E4%BB%80%E4%B9%88_Haskell_%E4%B8%AD_%E5%87%BD%E6%95%B0%E7%B1%BB%E5%9E%8B_%E4%B8%8D%E6%98%AF_%E2%80%9CShow%E2%80%9D_%E7%B1%BB%E5%9E%8B%E7%B1%BB%E7%9A%84%E5%AE%9E%E4%BE%8B/index.html">
+<meta property="og:site_name" content="不是追风少年">
+<meta property="og:description" content="问题为什么函数类型不是 show 类型类的实例以显示参数和值的类型？ 为什么我不能在 GHCi 或者 Hugs 中输入 \x -&amp;gt; x + x ，在结果中看到同样的表达式形式作为输出。 为什么存在一个 Show 实例，却只打印函数的类型？ Prelude&amp;gt; :m + Text.Show.Functions Prelude Text.Show.Functions&amp;">
+<meta property="article:published_time" content="2016-02-03T10:01:41.000Z">
+<meta property="article:modified_time" content="2021-06-08T17:12:06.725Z">
+<meta property="article:author" content="Bef0rewind">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="不是追风少年" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon-animate.ico">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">不是追风少年</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.formalscience.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-为什么_Haskell_中_函数类型_不是_“Show”_类型类的实例" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/03/%E4%B8%BA%E4%BB%80%E4%B9%88_Haskell_%E4%B8%AD_%E5%87%BD%E6%95%B0%E7%B1%BB%E5%9E%8B_%E4%B8%8D%E6%98%AF_%E2%80%9CShow%E2%80%9D_%E7%B1%BB%E5%9E%8B%E7%B1%BB%E7%9A%84%E5%AE%9E%E4%BE%8B/" class="article-date">
+  <time datetime="2016-02-03T10:01:41.000Z" itemprop="datePublished">2016-02-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/">技术记录</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      为什么 Haskell 中 函数类型 不是 “Show” 类型类的实例
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>为什么函数类型不是 <code>show</code> 类型类的实例以显示参数和值的类型？</p>
+<p>为什么我不能在 GHCi 或者 Hugs 中输入 <code>\x -&amp;gt; x + x</code> ，在结果中看到同样的表达式形式作为输出。</p>
+<p>为什么存在一个 Show 实例，却只打印函数的类型？</p>
+<pre><code>Prelude&amp;gt; :m + Text.Show.Functions
+Prelude Text.Show.Functions&amp;gt; show Char.ord
+&quot;&amp;lt;function&amp;gt;&quot;
+`&lt;/pre&gt;
+
+如何让 lambdabot 有如下显示：
+
+&lt;pre&gt;`dons &amp;gt; ord
+lambdabot&amp;gt;  &amp;lt;Char -&amp;gt; Int&amp;gt;
+`&lt;/pre&gt;
+
+# 答案
+
+## 实践中的答案
+
+Haskell 编译器并不保持表达式原本的形式，而是将它们转成机器代码或者其他的底层表示。
+
+函数 `\x -&amp;gt; x - x + x :: Int -&amp;gt; Int` 也许被优化成 `\x -&amp;gt; x :: Int -&amp;gt; Int` 。没有那个地方l存储了变量名 `x` 。
+
+你也许会想，Haskell 是一门脚本语言，在运行时环境中维护着表达式的内容。情况并非如此，[Lambda 表达式](https://wiki.haskell.org/Lambda_abstraction)仅仅是[匿名函数](https://wiki.haskell.org/Anonymous_function)。你没可能在运行时环境中查询变量的名字，或者观察函数定义的结构。你也不能从程序员用户那里接收一个表达式，调用你程序中的变量，然后求值。即，Haskell 不是[反射的](https://wiki.haskell.org/index.php?title=Reflexive_language&amp;amp;action=edit&amp;amp;redlink=1 &quot;Reflexive_language&amp;amp;action=edit&amp;amp;redlink=1&quot;)。一切都是可编译的。一个例外是 [hs-plugins](https://wiki.haskell.org/index.php?title=Hs-plugins&amp;amp;action=edit&amp;amp;redlink=1 &quot;Hs-plugins&amp;amp;action=edit&amp;amp;redlink=1&quot;)
+
+## 理论上的答案
+
+函数式编程是关于函数的。一个数学函数是由它的图通过二元组（参数，值）完全定义的。即：
+- ![\sqrt{\ } = &amp;#123;(0,0), (1,1), (4,2), (9,3), \dots &amp;#125;](https://wiki.haskell.org/wikiupload/math/7/a/9/7a95d49d189193b2987374c4bcd3d186.png)
+- ![ (\lambda x.\ x+x) = &amp;#123;(0,0), (1,2), (2,4), (3,6), \dots &amp;#125; ](https://wiki.haskell.org/wikiupload/math/e/a/f/eaf7cde16e0aa626caa2b0365e0a79b1.png)
+
+既然图 ![ \mathrm{show}(\lambda x.\ x+x) \ne \mathrm{show}(\lambda x.\ 2\cdot x) ](https://wiki.haskell.org/wikiupload/math/5/3/e/53ef58b99d9d9b4a63006980946855b9.png) 和 ![ \lambda x.\ 2\cdot x ](https://wiki.haskell.org/wikiupload/math/e/3/8/e38a5466b5a1b4d3c8339d700ac9d939.png) 是等价的，因为它们都表示了同样的函数。想象一下如果两个项都按照其形式被 GHCi 或 Hugs 显示，这就意味着等价的函数导致了不同的输出。交互式的 Haskell 环境使用通常的 `show` 函数，这也意味着 ![ \mathrm{show}(\lambda x.\ x+x) \ne \mathrm{show}(\lambda x.\ 2\cdot x) ](https://wiki.haskell.org/wikiupload/math/d/2/1/d21e1b708260732dd43095f9f7b1c881.png) 。这将打破[引用透明](https://wiki.haskell.org/Referential_transparency)。这也意味着显示函数的唯一可行方式是显示定义它们的图：
+
+&lt;pre&gt;`Prelude&amp;gt; \x -&amp;gt; x+x
+functionFromGraph [(0,0), (1,2), (2,4), (3,6),
+Interrupted.</code></pre><p>能够实现这个功能的代码在 <a href="http://hackage.haskell.org/package/universe-reverse-instances" target="_blank" rel="noopener">universe-reverse-instances</a> 包中有。（这个包在安装 <a href="http://hackage.haskell.org/package/universe" target="_blank" rel="noopener">universe</a> 包时会被安装）</p>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p><a href="https://wiki.haskell.org/Show_instance_for_functions" target="_blank" rel="noopener">https://wiki.haskell.org/Show_instance_for_functions</a><br><a href="http://www.haskell.org/pipermail/haskell-cafe/2006-April/015161.html" target="_blank" rel="noopener">http://www.haskell.org/pipermail/haskell-cafe/2006-April/015161.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.formalscience.com/2016/02/03/%E4%B8%BA%E4%BB%80%E4%B9%88_Haskell_%E4%B8%AD_%E5%87%BD%E6%95%B0%E7%B1%BB%E5%9E%8B_%E4%B8%8D%E6%98%AF_%E2%80%9CShow%E2%80%9D_%E7%B1%BB%E5%9E%8B%E7%B1%BB%E7%9A%84%E5%AE%9E%E4%BE%8B/" data-id="ckpoawmhl003titp96ou669wz" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/02/03/%E5%87%BD%E6%95%B0%E5%BC%8F%E8%AF%AD%E8%A8%80%E8%AF%BE%E7%A8%8B%E6%9C%9F%E6%9C%AB%E8%80%83%E8%AF%95%E5%88%A4%E5%8D%B7%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%B8%AA%E9%97%AE%E9%A2%98/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          函数式语言课程期末考试判卷中遇到的一个问题
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/01/14/2012-04-05_%E5%88%9D%E8%AF%95%E5%A6%99%E5%B3%B0%E5%B1%B1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">2012-04-05 初试妙峰山</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BF%86%E4%B8%AD%E8%80%81%E5%8E%BB/">回忆中老去</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BF%86%E4%B8%AD%E8%80%81%E5%8E%BB/%E6%84%9F%E6%82%9F/">感悟</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%87%E5%AE%99%E5%B0%8F%E7%99%BE%E7%A7%91/">宇宙小百科</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B1%B1%E9%87%8E/">山野</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/">技术记录</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/tech-notes/">tech-notes</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%A7%82%E7%82%B9/">观点</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%A7%84%E5%88%92/">规划</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%97%E6%AD%8C/">诗歌</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%97%E6%AD%8C%E7%9A%84%E6%B5%B7%E6%B4%8B/">诗歌的海洋</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E8%A7%82%E5%BD%B1/">读书观影</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Functional-Programming/" rel="tag">Functional Programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Golang/" rel="tag">Golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Haskell/" rel="tag">Haskell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Rust/" rel="tag">Rust</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Travel/" rel="tag">Travel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/note/" rel="tag">note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/programming-language/" rel="tag">programming language</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E8%AF%AD%E8%A8%80/" rel="tag">函数式语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB/" rel="tag">生活</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A7%84%E5%88%92/" rel="tag">规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Functional-Programming/" style="font-size: 10px;">Functional Programming</a> <a href="/tags/Golang/" style="font-size: 20px;">Golang</a> <a href="/tags/Haskell/" style="font-size: 10px;">Haskell</a> <a href="/tags/Rust/" style="font-size: 10px;">Rust</a> <a href="/tags/Travel/" style="font-size: 15px;">Travel</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/note/" style="font-size: 15px;">note</a> <a href="/tags/programming-language/" style="font-size: 15px;">programming language</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E8%AF%AD%E8%A8%80/" style="font-size: 10px;">函数式语言</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">生活</a> <a href="/tags/%E8%A7%84%E5%88%92/" style="font-size: 10px;">规划</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">March 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/10/">October 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/08/">August 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">July 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/06/">June 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/04/">April 2012</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/01/2020-guidelines/">2020 生活规划</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/24/2019-09-24-Rent-in-Edinburgh/">爱丁堡租房</a>
+          </li>
+        
+          <li>
+            <a href="/2019/02/17/2019-02-17_To_Bangkok/">To Bangkok</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/26/2018-12-26-Go-to-Rust/">Go to Rust （一）</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/13/2018-12-13-pip-install-package-offline/">pip 离线安装包</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Bef0rewind<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

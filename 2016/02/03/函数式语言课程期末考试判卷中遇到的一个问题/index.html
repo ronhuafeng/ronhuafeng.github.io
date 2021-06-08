@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>函数式语言课程期末考试判卷中遇到的一个问题 | 不是追风少年</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在使用半自动化 Judge 系统对同学的答题进行评测的时候，遇到了一个奇怪的问题，总是会提示:Test_1: output.txt: openFile: resource busy (file is locked)  起初以为是 haskell 惰性求值导致的 IO 问题，因为搜索引擎也把猜测引导向这个原因，但是始终解决不了。  后来改变了思路，“现在看来好像是模块引入带来的 main 函数重名问">
+<meta property="og:type" content="article">
+<meta property="og:title" content="函数式语言课程期末考试判卷中遇到的一个问题">
+<meta property="og:url" content="http://blog.formalscience.com/2016/02/03/%E5%87%BD%E6%95%B0%E5%BC%8F%E8%AF%AD%E8%A8%80%E8%AF%BE%E7%A8%8B%E6%9C%9F%E6%9C%AB%E8%80%83%E8%AF%95%E5%88%A4%E5%8D%B7%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%B8%AA%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="不是追风少年">
+<meta property="og:description" content="在使用半自动化 Judge 系统对同学的答题进行评测的时候，遇到了一个奇怪的问题，总是会提示:Test_1: output.txt: openFile: resource busy (file is locked)  起初以为是 haskell 惰性求值导致的 IO 问题，因为搜索引擎也把猜测引导向这个原因，但是始终解决不了。  后来改变了思路，“现在看来好像是模块引入带来的 main 函数重名问">
+<meta property="article:published_time" content="2016-02-03T10:36:57.000Z">
+<meta property="article:modified_time" content="2021-06-08T17:12:06.725Z">
+<meta property="article:author" content="Bef0rewind">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="不是追风少年" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon-animate.ico">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">不是追风少年</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.formalscience.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-函数式语言课程期末考试判卷中遇到的一个问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/03/%E5%87%BD%E6%95%B0%E5%BC%8F%E8%AF%AD%E8%A8%80%E8%AF%BE%E7%A8%8B%E6%9C%9F%E6%9C%AB%E8%80%83%E8%AF%95%E5%88%A4%E5%8D%B7%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%B8%AA%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2016-02-03T10:36:57.000Z" itemprop="datePublished">2016-02-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/">技术记录</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      函数式语言课程期末考试判卷中遇到的一个问题
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在使用半自动化 Judge 系统对同学的答题进行评测的时候，遇到了一个奇怪的问题，总是会提示:<br><code>Test_1: output.txt: openFile: resource busy (file is locked)</code></p>
+<hr>
+<p>起初以为是 haskell 惰性求值导致的 IO 问题，因为搜索引擎也把猜测引导向这个原因，但是始终解决不了。</p>
+<hr>
+<p>后来改变了思路，“现在看来好像是模块引入带来的 main 函数重名问题”，这是后面的猜疑。</p>
+<hr>
+<p>继而发现将函数改名字也解决不了问题，实际也不是，就是 IO 的问题。因为如果先移除 output.txt， 那么使用 ghc 执行就不会出现之前的错误提示，不过在 ghci 中执行总是不会出错。</p>
+<p>使用如下代码测试一下：</p>
+<pre><code>dir = &quot;/home/user-name/Downloads/auto_check/work/2015final/ref/tests/words&quot;
+
+main :: IO ()
+main = do print &quot;hehe&quot;
+solution = runTest
+         (map (\f -&amp;gt; combine dir f) [&quot;input1-1.txt&quot;, &quot;input1-2.txt&quot;, &quot;input1-3.txt&quot;])
+         (combine dir &quot;output1.txt&quot;)
+`&lt;/pre&gt;
+
+执行得到如下结果：
+
+&lt;pre&gt;`➜  test  ghci Test_1.hs
+GHCi, version 7.8.4: http://www.haskell.org/ghc/  :? for help
+Loading package ghc-prim ... linking ... done.
+Loading package integer-gmp ... linking ... done.
+Loading package base ... linking ... done.
+[1 of 3] Compiling Main             ( Main.hs, interpreted )
+[2 of 3] Compiling FileBasedTest    ( FileBasedTest.hs, interpreted )
+[3 of 3] Compiling Test             ( Test_1.hs, interpreted )
+Ok, modules loaded: Test, FileBasedTest, Main.
+*Test&amp;gt; main
+Loading package array-0.5.0.0 ... linking ... done.
+Loading package deepseq-1.3.0.2 ... linking ... done.
+Loading package old-locale-1.0.0.6 ... linking ... done.
+Loading package time-1.4.2 ... linking ... done.
+Loading package bytestring-0.10.4.0 ... linking ... done.
+Loading package unix-2.7.0.1 ... linking ... done.
+Loading package filepath-1.3.0.2 ... linking ... done.
+Loading package directory-1.2.1.0 ... linking ... done.
+&quot;hehe&quot;
+*Test&amp;gt; 
+Leaving GHCi.
+➜  test  rm Test_1.hi
+➜  test  ghc Test_1.hs -o Test_1
+[3 of 3] Compiling Test             ( Test_1.hs, Test_1.o )
+Linking Test_1 ...
+➜  test  ./Test_1 
+Test_1: output.txt: openFile: resource busy (file is locked)
+➜  test  </code></pre><p>可以看到直接执行 ghc 编译得到的二进制文件就会出现问题，而在 ghci 中就不会。</p>
+<hr>
+<p>经过了一些过程之后终于修复，根本原因是，整个项目的程序入口是 test01.hs 中 Test 模块的 main 函数，而引入了同学实现的代码中的 Main 模块，导致 ghc 编译的时候使用 Main 模块中的 main 函数作为入口。最后通过指定那个模块中的 main 函数作为入口解决：<br><code>ghc -main-is Test.main Test_1.hs -o Test_1</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.formalscience.com/2016/02/03/%E5%87%BD%E6%95%B0%E5%BC%8F%E8%AF%AD%E8%A8%80%E8%AF%BE%E7%A8%8B%E6%9C%9F%E6%9C%AB%E8%80%83%E8%AF%95%E5%88%A4%E5%8D%B7%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%B8%AA%E9%97%AE%E9%A2%98/" data-id="ckpoawmhs004eitp934q750tz" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/05/15/%E4%B8%80%E7%82%B9%E5%B0%8F%E7%9A%84%E6%84%9F%E6%82%9F/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          一点小的感悟
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/02/03/%E4%B8%BA%E4%BB%80%E4%B9%88_Haskell_%E4%B8%AD_%E5%87%BD%E6%95%B0%E7%B1%BB%E5%9E%8B_%E4%B8%8D%E6%98%AF_%E2%80%9CShow%E2%80%9D_%E7%B1%BB%E5%9E%8B%E7%B1%BB%E7%9A%84%E5%AE%9E%E4%BE%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">为什么 Haskell 中 函数类型 不是 “Show” 类型类的实例</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BF%86%E4%B8%AD%E8%80%81%E5%8E%BB/">回忆中老去</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BF%86%E4%B8%AD%E8%80%81%E5%8E%BB/%E6%84%9F%E6%82%9F/">感悟</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%87%E5%AE%99%E5%B0%8F%E7%99%BE%E7%A7%91/">宇宙小百科</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B1%B1%E9%87%8E/">山野</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/">技术记录</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/tech-notes/">tech-notes</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%A7%82%E7%82%B9/">观点</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%A7%84%E5%88%92/">规划</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%97%E6%AD%8C/">诗歌</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%97%E6%AD%8C%E7%9A%84%E6%B5%B7%E6%B4%8B/">诗歌的海洋</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E8%A7%82%E5%BD%B1/">读书观影</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Functional-Programming/" rel="tag">Functional Programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Golang/" rel="tag">Golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Haskell/" rel="tag">Haskell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Rust/" rel="tag">Rust</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Travel/" rel="tag">Travel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/note/" rel="tag">note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/programming-language/" rel="tag">programming language</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E8%AF%AD%E8%A8%80/" rel="tag">函数式语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB/" rel="tag">生活</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A7%84%E5%88%92/" rel="tag">规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Functional-Programming/" style="font-size: 10px;">Functional Programming</a> <a href="/tags/Golang/" style="font-size: 20px;">Golang</a> <a href="/tags/Haskell/" style="font-size: 10px;">Haskell</a> <a href="/tags/Rust/" style="font-size: 10px;">Rust</a> <a href="/tags/Travel/" style="font-size: 15px;">Travel</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/note/" style="font-size: 15px;">note</a> <a href="/tags/programming-language/" style="font-size: 15px;">programming language</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E8%AF%AD%E8%A8%80/" style="font-size: 10px;">函数式语言</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">生活</a> <a href="/tags/%E8%A7%84%E5%88%92/" style="font-size: 10px;">规划</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">March 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/10/">October 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/08/">August 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">July 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/06/">June 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/04/">April 2012</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/01/2020-guidelines/">2020 生活规划</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/24/2019-09-24-Rent-in-Edinburgh/">爱丁堡租房</a>
+          </li>
+        
+          <li>
+            <a href="/2019/02/17/2019-02-17_To_Bangkok/">To Bangkok</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/26/2018-12-26-Go-to-Rust/">Go to Rust （一）</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/13/2018-12-13-pip-install-package-offline/">pip 离线安装包</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Bef0rewind<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

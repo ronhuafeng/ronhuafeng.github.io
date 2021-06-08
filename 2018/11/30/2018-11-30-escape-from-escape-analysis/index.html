@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Escape from escape analysis | 不是追风少年</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1. 逃逸分析背景Go 语言采用了并发的（Concurrent）、非移动的（Non-Movable）、非分代的（Non-Generational）、基于三色（Tri-color）标记的垃圾回收（Garbage Collection）算法，只在 特定阶段开启写屏障（write barrier）。特点是全局停顿时间比较少，在一些场景下是十微秒级别的。 垃圾回收算法针对的是堆（heap）中的内存。为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Escape from escape analysis">
+<meta property="og:url" content="http://blog.formalscience.com/2018/11/30/2018-11-30-escape-from-escape-analysis/index.html">
+<meta property="og:site_name" content="不是追风少年">
+<meta property="og:description" content="1. 逃逸分析背景Go 语言采用了并发的（Concurrent）、非移动的（Non-Movable）、非分代的（Non-Generational）、基于三色（Tri-color）标记的垃圾回收（Garbage Collection）算法，只在 特定阶段开启写屏障（write barrier）。特点是全局停顿时间比较少，在一些场景下是十微秒级别的。 垃圾回收算法针对的是堆（heap）中的内存。为">
+<meta property="article:published_time" content="2018-11-30T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-08T17:12:06.721Z">
+<meta property="article:author" content="Bef0rewind">
+<meta property="article:tag" content="golang">
+<meta property="article:tag" content="programming language">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="不是追风少年" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon-animate.ico">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">不是追风少年</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.formalscience.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2018-11-30-escape-from-escape-analysis" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/30/2018-11-30-escape-from-escape-analysis/" class="article-date">
+  <time datetime="2018-11-30T00:00:00.000Z" itemprop="datePublished">2018-11-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/">技术记录</a>►<a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/tech-notes/">tech-notes</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Escape from escape analysis
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-逃逸分析背景"><a href="#1-逃逸分析背景" class="headerlink" title="1. 逃逸分析背景"></a>1. 逃逸分析背景</h2><p>Go 语言采用了并发的（Concurrent）、非移动的（Non-Movable）、非分代的（Non-Generational）、基于三色（Tri-color）标记的垃圾回收（Garbage Collection）算法，只在 特定阶段开启写屏障（write barrier）。<br>特点是全局停顿时间比较少，在一些场景下是十微秒级别的。</p>
+<p>垃圾回收算法针对的是堆（heap）中的内存。<br>为了减少垃圾回收的时间消耗，Go 语言在编译阶段通过静态分析算法对程序的结构进行分析，尽可能讲对象分配在栈上（如果这个对象的生命周期在它定义的函数返回时就结束的话）。<br>这一算法也利用了 Go 语言在函数传递参数时总是传递参数的值这一个语言特性。</p>
+<p>而静态分析不总是完备的，会有一些本来可以分配在栈上的对象被 Go 的编译器分配在了堆上。<br>如这篇文章《<a href="http://www.agardner.me/golang/garbage/collection/gc/escape/analysis/2015/10/18/go-escape-analysis.html" target="_blank" rel="noopener">Golang escape analysis</a>》所描述的一些例子一样，有些对象本来可以避免逃逸（Escape，指的是对象被分配在堆上）。</p>
+<p>对于某些场景，我们确定一个对象肯定可以（也应当）被分配在栈上，但是它却逃逸了。<br>这样在某些关键路径上的逃逸的对象会造成大量的分配和垃圾回收。</p>
+<h2 id="2-Go-版本"><a href="#2-Go-版本" class="headerlink" title="2. Go 版本"></a>2. Go 版本</h2><p>使用的 Go 版本为今晚刚从 master 分支上 pull 下的源码直接构建。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ThinkPad-X1-Carbon:bin bef0rewind$ .&#x2F;go version</span><br><span class="line">go version devel +42e8b9c3a4 Fri Nov 30 15:17:34 2018 +0000 darwin&#x2F;amd64</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-示例"><a href="#3-示例" class="headerlink" title="3. 示例"></a>3. 示例</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// file: escape.go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> BigTempObject <span class="keyword">struct</span> &#123;</span><br><span class="line">	<span class="comment">/// ...</span></span><br><span class="line">	field1 <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">causeEscape</span><span class="params">(i <span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">	<span class="keyword">switch</span> i.(<span class="keyword">type</span>) &#123;</span><br><span class="line">	<span class="keyword">case</span> *BigTempObject:</span><br><span class="line">		<span class="built_in">println</span>(i)</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		fmt.Println(i)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	obj := BigTempObject&#123;&#125;</span><br><span class="line">	addrObj := &amp;obj</span><br><span class="line"></span><br><span class="line">	causeEscape(addrObj)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>go run -gcflags=&quot;-m -m&quot; escape.go</code> 可以在运行时输出逃逸分析的结果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;escape.go:10: cannot inline causeEscape: unhandled op TYPESW</span><br><span class="line">.&#x2F;escape.go:19: cannot inline main: non-leaf function</span><br><span class="line">.&#x2F;escape.go:10: leaking param: i</span><br><span class="line">.&#x2F;escape.go:10:         from ... argument (arg to ...) at .&#x2F;escape.go:15</span><br><span class="line">.&#x2F;escape.go:10:         from *(... argument) (indirection) at .&#x2F;escape.go:15</span><br><span class="line">.&#x2F;escape.go:10:         from ... argument (passed to call[argument content escapes]) at .&#x2F;escape.go:15</span><br><span class="line">.&#x2F;escape.go:15: causeEscape ... argument does not escape</span><br><span class="line">.&#x2F;escape.go:23: addrObj escapes to heap</span><br><span class="line">.&#x2F;escape.go:23:         from addrObj (passed to call[argument escapes]) at .&#x2F;escape.go:23</span><br><span class="line">.&#x2F;escape.go:21: &amp;obj escapes to heap</span><br><span class="line">.&#x2F;escape.go:21:         from addrObj (assigned) at .&#x2F;escape.go:21</span><br><span class="line">.&#x2F;escape.go:21:         from addrObj (interface-converted) at .&#x2F;escape.go:23</span><br><span class="line">.&#x2F;escape.go:21:         from addrObj (passed to call[argument escapes]) at .&#x2F;escape.go:23</span><br><span class="line">.&#x2F;escape.go:20: moved to heap: obj</span><br><span class="line">(0x10904e0,0xc420080050)</span><br></pre></td></tr></table></figure>
+
+<p><code>obj</code> 可以分配在栈上，因为在 <code>main</code> 函数返回时（栈退出），这个变量占用的空间就可以安全被用在其他地方了。<br>但是 “./escape.go:20: moved to heap: obj” 说明 <code>obj</code> 被分配在了堆上。</p>
+<h2 id="4-小技巧"><a href="#4-小技巧" class="headerlink" title="4. 小技巧"></a>4. 小技巧</h2><p>如何改变这个分析结果，需要一点小技巧。</p>
+<p>关键词是 <code>uintptr</code> 类型。<br>Go 语言中对 <code>uintptr</code> 是这样描述的：</p>
+<blockquote>
+<p>uintptr is an integer type that is large enough to hold the bit pattern of any pointer.</p>
+</blockquote>
+<p>比如在 64-bit Linux 系统上 <code>uintptr</code> 被定义成为了 <code>uint64</code>。<br>Go 中合法的类型转换为：<code>normal pointer</code> ⟷ <code>unsafe.Pointer</code> ⟷ <code>uintptr</code> 。<br>因此我们可以把上面的程序中的 <code>addrObj</code> 转换为 <code>uintptr</code>。<br>这样 Go 编译器不再认为 <code>addrObj</code> 同后面函数 <code>causeEscape</code> 使用的参数 <code>i</code> 存在引用关系，从而绕过 Escape Analysis Algorithm 。<br>为了防止垃圾回收过程中 <code>obj</code> 被回收，可以使用 <code>obj.field1 = 0</code> 来保持 <code>obj</code> 活跃。</p>
+<p>修改后的代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"unsafe"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> BigTempObject <span class="keyword">struct</span> &#123;</span><br><span class="line">	<span class="comment">/// ...</span></span><br><span class="line">	field1 <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">causeEscape</span><span class="params">(i <span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">	<span class="keyword">switch</span> i.(<span class="keyword">type</span>) &#123;</span><br><span class="line">	<span class="keyword">case</span> *BigTempObject:</span><br><span class="line">		<span class="built_in">println</span>(i)</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		fmt.Println(i)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	obj := BigTempObject&#123;&#125;</span><br><span class="line">	addrObj := &amp;obj</span><br><span class="line">	intAddr := <span class="keyword">uintptr</span>(unsafe.Pointer(addrObj))</span><br><span class="line">	causeEscape((*BigTempObject)(unsafe.Pointer(intAddr)))</span><br><span class="line">	obj.field1 = <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>go run -gcflags=&quot;-m -m&quot; escape.go</code> 运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;escape.go:13: cannot inline causeEscape: unhandled op TYPESW</span><br><span class="line">.&#x2F;escape.go:22: cannot inline main: non-leaf function</span><br><span class="line">.&#x2F;escape.go:13: leaking param: i</span><br><span class="line">.&#x2F;escape.go:13:         from ... argument (arg to ...) at .&#x2F;escape.go:18</span><br><span class="line">.&#x2F;escape.go:13:         from *(... argument) (indirection) at .&#x2F;escape.go:18</span><br><span class="line">.&#x2F;escape.go:13:         from ... argument (passed to call[argument content escapes]) at .&#x2F;escape.go:18</span><br><span class="line">.&#x2F;escape.go:18: causeEscape ... argument does not escape</span><br><span class="line">.&#x2F;escape.go:26: (*BigTempObject)(unsafe.Pointer(intAddr)) escapes to heap</span><br><span class="line">.&#x2F;escape.go:26:         from (*BigTempObject)(unsafe.Pointer(intAddr)) (passed to call[argument escapes]) at .&#x2F;escape.go:26</span><br><span class="line">.&#x2F;escape.go:24: main &amp;obj does not escape</span><br><span class="line">(0x10904e0,0xc42003bf70)</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 <code>obj</code> 不再逃逸，主要是 <code>intAddr</code> 中断了逃逸分析算法构建的指针依赖关系（表示为一个有向图）。</p>
+<h2 id="5-一点感想"><a href="#5-一点感想" class="headerlink" title="5. 一点感想"></a>5. 一点感想</h2><p>我们可以做到不代表一定去做，有风险也不代表禁区，采取什么样的行动是个人权衡后的选择。<br>什么原因导致了人们做了不同的选择，而人们不同的选择又导致了什么结果？<br>多样性是这个世界的现状，黑暗面与光明面同在。<br>May the force be with you.  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.formalscience.com/2018/11/30/2018-11-30-escape-from-escape-analysis/" data-id="ckpoawmgw001oitp9e1myfxgq" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/programming-language/" rel="tag">programming language</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/12/06/2018-12-06-%E8%BF%98%E5%9C%A8%E4%B8%8B%E9%9B%A8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          还在下雨
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/21/2018-11-21-Golang-Receiver-Type/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Golang Receiver Type 探索</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BF%86%E4%B8%AD%E8%80%81%E5%8E%BB/">回忆中老去</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BF%86%E4%B8%AD%E8%80%81%E5%8E%BB/%E6%84%9F%E6%82%9F/">感悟</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%87%E5%AE%99%E5%B0%8F%E7%99%BE%E7%A7%91/">宇宙小百科</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B1%B1%E9%87%8E/">山野</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/">技术记录</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/tech-notes/">tech-notes</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%A7%82%E7%82%B9/">观点</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%A7%84%E5%88%92/">规划</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%97%E6%AD%8C/">诗歌</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%97%E6%AD%8C%E7%9A%84%E6%B5%B7%E6%B4%8B/">诗歌的海洋</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E8%A7%82%E5%BD%B1/">读书观影</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Functional-Programming/" rel="tag">Functional Programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Golang/" rel="tag">Golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Haskell/" rel="tag">Haskell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Rust/" rel="tag">Rust</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Travel/" rel="tag">Travel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/note/" rel="tag">note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/programming-language/" rel="tag">programming language</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E8%AF%AD%E8%A8%80/" rel="tag">函数式语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB/" rel="tag">生活</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A7%84%E5%88%92/" rel="tag">规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Functional-Programming/" style="font-size: 10px;">Functional Programming</a> <a href="/tags/Golang/" style="font-size: 20px;">Golang</a> <a href="/tags/Haskell/" style="font-size: 10px;">Haskell</a> <a href="/tags/Rust/" style="font-size: 10px;">Rust</a> <a href="/tags/Travel/" style="font-size: 15px;">Travel</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/note/" style="font-size: 15px;">note</a> <a href="/tags/programming-language/" style="font-size: 15px;">programming language</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E8%AF%AD%E8%A8%80/" style="font-size: 10px;">函数式语言</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">生活</a> <a href="/tags/%E8%A7%84%E5%88%92/" style="font-size: 10px;">规划</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">March 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/10/">October 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/08/">August 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">July 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/06/">June 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/04/">April 2012</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/01/2020-guidelines/">2020 生活规划</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/24/2019-09-24-Rent-in-Edinburgh/">爱丁堡租房</a>
+          </li>
+        
+          <li>
+            <a href="/2019/02/17/2019-02-17_To_Bangkok/">To Bangkok</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/26/2018-12-26-Go-to-Rust/">Go to Rust （一）</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/13/2018-12-13-pip-install-package-offline/">pip 离线安装包</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Bef0rewind<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

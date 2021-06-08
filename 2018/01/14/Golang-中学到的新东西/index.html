@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Golang 中学到的新东西 | 不是追风少年</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="数据类型string 类型string 类型使用 2 个 word（64 bit 系统为 8 byte * 2）表示：一个 word 是指针，指向字符串存储区域；一个 word 表示长度数据。 slice $\leftrightarrow$ unsafe.Pointer12s :&#x3D; make([]byte, 200)ptr :&#x3D; unsafe.Pointer(&amp;s[0])  12var">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang 中学到的新东西">
+<meta property="og:url" content="http://blog.formalscience.com/2018/01/14/Golang-%E4%B8%AD%E5%AD%A6%E5%88%B0%E7%9A%84%E6%96%B0%E4%B8%9C%E8%A5%BF/index.html">
+<meta property="og:site_name" content="不是追风少年">
+<meta property="og:description" content="数据类型string 类型string 类型使用 2 个 word（64 bit 系统为 8 byte * 2）表示：一个 word 是指针，指向字符串存储区域；一个 word 表示长度数据。 slice $\leftrightarrow$ unsafe.Pointer12s :&#x3D; make([]byte, 200)ptr :&#x3D; unsafe.Pointer(&amp;s[0])  12var">
+<meta property="article:published_time" content="2018-01-14T11:53:30.000Z">
+<meta property="article:modified_time" content="2021-06-08T17:12:06.721Z">
+<meta property="article:author" content="Bef0rewind">
+<meta property="article:tag" content="Golang">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="不是追风少年" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon-animate.ico">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">不是追风少年</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.formalscience.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Golang-中学到的新东西" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/14/Golang-%E4%B8%AD%E5%AD%A6%E5%88%B0%E7%9A%84%E6%96%B0%E4%B8%9C%E8%A5%BF/" class="article-date">
+  <time datetime="2018-01-14T11:53:30.000Z" itemprop="datePublished">2018-01-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/">技术记录</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Golang 中学到的新东西
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><h2 id="string-类型"><a href="#string-类型" class="headerlink" title="string 类型"></a><code>string</code> 类型</h2><p><code>string</code> 类型使用 2 个 word（64 bit 系统为 8 byte * 2）表示：一个 word 是指针，指向字符串存储区域；一个 word 表示长度数据。</p>
+<h2 id="slice-leftrightarrow-unsafe-Pointer"><a href="#slice-leftrightarrow-unsafe-Pointer" class="headerlink" title="slice $\leftrightarrow$ unsafe.Pointer"></a><code>slice</code> $\leftrightarrow$ <code>unsafe.Pointer</code></h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s := <span class="built_in">make</span>([]<span class="keyword">byte</span>, <span class="number">200</span>)</span><br><span class="line">ptr := unsafe.Pointer(&amp;s[<span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ptr unsafe.Pointer</span><br><span class="line">s := ((*[<span class="number">1</span>&lt;&lt;<span class="number">10</span>]<span class="keyword">byte</span>)(ptr))[:<span class="number">200</span>]</span><br></pre></td></tr></table></figure>
+<p>or</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ptr unsafe.Pointer</span><br><span class="line"><span class="keyword">var</span> s1 = <span class="keyword">struct</span> &#123;</span><br><span class="line">    addr <span class="keyword">uintptr</span></span><br><span class="line">    <span class="built_in">len</span>  <span class="keyword">int</span></span><br><span class="line">    <span class="built_in">cap</span>  <span class="keyword">int</span></span><br><span class="line">&#125;&#123;ptr, length, length&#125;</span><br><span class="line"></span><br><span class="line">s := *(*[]<span class="keyword">byte</span>)(unsafe.Pointer(&amp;s1))</span><br></pre></td></tr></table></figure>
+<p>or</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o []<span class="keyword">byte</span></span><br><span class="line">sliceHeader := (*reflect.SliceHeader)((unsafe.Pointer(&amp;o)))</span><br><span class="line">sliceHeader.Cap = length</span><br><span class="line">sliceHeader.Len = length</span><br><span class="line">sliceHeader.Data = <span class="keyword">uintptr</span>(ptr)</span><br></pre></td></tr></table></figure>
+
+<h1 id="map-实现"><a href="#map-实现" class="headerlink" title="map 实现"></a><code>map</code> 实现</h1><p>整个页面的内容对我来说都是新的：<a href="https://tiancaiamao.gitbooks.io/go-internals/content/zh/02.3.html" target="_blank" rel="noopener">https://tiancaiamao.gitbooks.io/go-internals/content/zh/02.3.html</a><br>不过这个页面描述的内容和最新的 Golang source 有一定差别。</p>
+<p>读 <code>HashMap</code> 的实现，里面的一些核心关键词：<code>bucket</code>、<code>overflow</code> 让我理解起来有些困难。查询 <code>HashMap</code> 相关的一些资料后有了进一步了解。</p>
+<ol>
+<li><code>bucket</code> 一般使用某种 <code>array</code> 管理，从 <code>key</code> 经过 <code>hash-function</code> 映射的 <code>hash-value</code>（可能截取一部分，也可以视作 sub-hash，我自己编的）作为 <code>index</code> 直接得到。一个 <code>bucket</code> 中可能包含多个不同的 <code>hash-value</code> ，它们截取那一部分得到的 <code>index</code> 相同。因此 <code>bucket</code> 会用一个数据结构管理这些冲突的值，可能是 <code>linked-list</code> 或者 <code>tree-map</code> 之类的。这些内部的数据结构中的 <code>node</code> 存储着真正对应 <code>map</code> 的 <code>key\value</code> 对(pair)。</li>
+<li>如果 <code>bucket</code> 太满了，比如元素的数量超过 <code>bucket</code> 数量一定倍数（<code>load factor</code>），则会进行扩容，所有元素都被 <code>rehashed</code> 到一个新的值。</li>
+<li>采用这种方式实现 <code>HashMap</code>，<code>bucket</code> 可以有两种选择：<ul>
+<li><strong>Direct chaining</strong> 只存一个指向冲突元素集合的 <code>header</code> </li>
+<li><strong>Seperate Chaining</strong> 在 <code>bucket</code> 存一部分（一个）元素集合（Golang <code>HashMap</code> 实现里放了 8 个），和一个指向剩下冲突元素集合的 <code>header</code></li>
+</ul>
+</li>
+<li>上面 <code>header</code> 指向的元素集合叫 <code>overflow list</code> 或者 <code>overflow some-other-data-structure</code></li>
+</ol>
+<p>有了这些背景后，看代码应该会比较清晰了。</p>
+<p>目前 Golang 中的 <code>bucket</code> 是为 <code>insert</code> 操作优化的，找到第一个空余位置就可以插入，但是删除的时候要把所有相同 <code>key</code> 的元素都删掉，要遍历 <code>bucket</code> 的 <code>overflow</code> 集合。</p>
+<p>如果 key 或者 value 小于 128 字节，那么它们是直接在 <code>bucket</code> 存储值，否则存指向数据的指针。</p>
+<h1 id="nil-语义"><a href="#nil-语义" class="headerlink" title="nil 语义"></a><code>nil</code> 语义</h1><p>按照 Golang 规范，任何类型在未初始化时都对应一个零值：</p>
+<ul>
+<li><code>bool</code> $\rightarrow$ <code>true</code></li>
+<li><code>integer</code> $\rightarrow$ <code>0</code></li>
+<li><code>string</code> $\rightarrow$ <code>&quot;&quot;</code></li>
+<li><code>pointer</code>/<code>function</code>/<code>interface</code>/<code>slice</code>/<code>channel</code>/<code>map</code> $\rightarrow$ <code>nil</code></li>
+</ul>
+<h2 id="关于-interface"><a href="#关于-interface" class="headerlink" title="关于 interface{}"></a>关于 <code>interface{}</code></h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> v *T           <span class="comment">// v == nil</span></span><br><span class="line"><span class="keyword">var</span> i <span class="keyword">interface</span>&#123;&#125;  <span class="comment">// i == nil</span></span><br><span class="line">i = v              <span class="comment">// i != nil</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="关于-channel"><a href="#关于-channel" class="headerlink" title="关于 channel"></a>关于 <code>channel</code></h2><p>一些操作规则：</p>
+<ul>
+<li>读写一个 <code>nil</code> 的 <code>channel</code> 会立即阻塞</li>
+<li>读一个关闭的 <code>channel</code> 会立刻返回一个 <code>channel</code> 元素类型的零值，即 <code>chan int</code> 会返回 <code>0</code></li>
+<li>写一个关闭的 <code>channel</code> 会导致 <code>panic</code></li>
+</ul>
+<h1 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h1><h2 id="汇编"><a href="#汇编" class="headerlink" title="汇编"></a>汇编</h2><p>可以看一下这个 Golang 的官方介绍页面：<a href="https://golang.org/doc/asm" target="_blank" rel="noopener">https://golang.org/doc/asm</a></p>
+<p><strong>add.go</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> add</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Add</span><span class="params">(a, b <span class="keyword">uint64</span>)</span> <span class="title">uint64</span></span></span><br></pre></td></tr></table></figure>
+
+<p><strong>add_amd64.s</strong> 或使用其他平台后缀，和 <strong>add.go</strong> 在同一个目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">TEXT    ·Add+0(SB),$0-24</span><br><span class="line">MOVQ    a+0(FP),BX</span><br><span class="line">MOVQ    b+8(FP),BP</span><br><span class="line">ADDQ    BP,BX</span><br><span class="line">MOVQ    BX,res+16(FP)</span><br><span class="line">RET     ,</span><br></pre></td></tr></table></figure>
+
+<h2 id="Golang-调用-C"><a href="#Golang-调用-C" class="headerlink" title="Golang 调用 C"></a>Golang 调用 C</h2><p><strong>add.c</strong> ，和 <strong>add.go</strong> 在同一个目录</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> ·Add(uint64 a, uint64 b, uint64 ret) &#123;</span><br><span class="line">    ret = a + b;</span><br><span class="line">    FLUSH(&amp;ret);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译这个包：<code>go install add</code></p>
+<p>C 文件中需要包含 <code>runtime.h</code> 头文件。因为 Golang 使用特殊寄存器存放像全局 <code>struct G</code> 和 <code>struct M</code> ，包含这个文件可以让所有链接到 Go 的 C 文件感知这一点，避免编译器使用这些特定的寄存器做其他用途。</p>
+<p>上面示例中返回值为空，使用 <code>ret</code> 作为返回值，<code>FLUSH</code> 在 <code>pkg/runtime/runtime.h</code> 中定义为 <code>USED()</code> ，防止编译器优化掉对某个变量的赋值操作（因为看不到这个变量在后面其他地方使用了）。</p>
+<h2 id="函数调用时的内存布局"><a href="#函数调用时的内存布局" class="headerlink" title="函数调用时的内存布局"></a>函数调用时的内存布局</h2><p>Golang 中使用的 C 编译器是 plan9 的 C 编译器，与 gcc 有一定差异。<br>这个页面中有部分基础介绍：<br><a href="https://tiancaiamao.gitbooks.io/go-internals/content/zh/03.1.html" target="_blank" rel="noopener">https://tiancaiamao.gitbooks.io/go-internals/content/zh/03.1.html</a></p>
+<p>如果返回多个值，<code>func f(a, b int) (d, e int)</code> 内存布局如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">slot for e</span><br><span class="line">slot for d</span><br><span class="line">b</span><br><span class="line">a </span><br><span class="line">&lt;- SP</span><br></pre></td></tr></table></figure>
+<p>调用后为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">slot for e</span><br><span class="line">slot for d</span><br><span class="line">b</span><br><span class="line">a &lt;- FP</span><br><span class="line">PC &lt;- SP</span><br><span class="line">f&#39;s stack</span><br></pre></td></tr></table></figure>
+
+<p>plan9 的 C 汇编器对被调用函数的参数值的修改是会返回到调用函数中的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MOVQ    BX,d+16(FP)</span><br><span class="line">...</span><br><span class="line">MOVQ    BX,e+24(FP)</span><br></pre></td></tr></table></figure>
+
+<h1 id="go-关键字"><a href="#go-关键字" class="headerlink" title="go 关键字"></a><code>go</code> 关键字</h1><p><code>f(1, 2, 3)</code> 的汇编:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MOVL    $1, 0(SP)</span><br><span class="line">MOVL    $2, 4(SP)</span><br><span class="line">MOVL    $3, 8(SP)</span><br><span class="line">CALL    f(SB)</span><br></pre></td></tr></table></figure>
+
+<p><code>go f(1, 2, 3)</code> 的汇编：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">MOVL    $1, 0(SP)</span><br><span class="line">MOVL    $2, 4(SP)</span><br><span class="line">MOVL    $3, 8(SP)</span><br><span class="line">PUSHQ   $f(SB)</span><br><span class="line">PUSHQ   $12</span><br><span class="line">CALL    runtime.newproc(SB)</span><br><span class="line">POPQ    AX</span><br><span class="line">POPQ    AX</span><br></pre></td></tr></table></figure>
+
+<p><code>12</code> 是参数占用的大小，<code>runtime.newproc</code> 函数接受的参数为：参数大小、新的 goroutine 要运行的函数、函数的参数。<code>runtime.newproc</code> 会新建一个栈空间，将栈参数的 12 个字节复制到新的栈空间，并让栈指针指向参数。可以看做 <code>runtime.newproc(size, f, args)</code> 。</p>
+<h1 id="defer-关键字"><a href="#defer-关键字" class="headerlink" title="defer 关键字"></a><code>defer</code> 关键字</h1><p><code>return x</code> 不是原子语句，函数执行顺序为：</p>
+<ol>
+<li>给返回值赋值</li>
+<li><code>defer</code> 调用</li>
+<li><code>return</code></li>
+</ol>
+<p><code>defer</code> 实现对应 <code>runtime.deferproc</code>，其出现的地方插入指令 <code>call runtime.deferproc</code> ，函数返回之前的地方，插入 <code>call runtime.deferreturn</code> 。 goroutine 的控制结构中有一张表记录 <code>defer</code>，表以栈行为运作。</p>
+<h1 id="Continuous-Stack"><a href="#Continuous-Stack" class="headerlink" title="Continuous Stack"></a>Continuous Stack</h1><p>我也基本理解了思路，具体细节可以看：<a href="https://tiancaiamao.gitbooks.io/go-internals/content/zh/03.5.html" target="_blank" rel="noopener">https://tiancaiamao.gitbooks.io/go-internals/content/zh/03.5.html</a></p>
+<p>最后的 <code>runtime.lessstack</code> 有些没看懂。</p>
+<h1 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h1><p>闭包中引用的变量不能在栈上分配，否则闭包函数返回的时候，栈上变量的地址就失效了。</p>
+<h2 id="逃逸分析（escape-analyze）"><a href="#逃逸分析（escape-analyze）" class="headerlink" title="逃逸分析（escape analyze）"></a>逃逸分析（escape analyze）</h2><p>Golang 有个特性，可以自动识别哪些变量在栈上分配，哪些在堆上分配。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">()</span> *<span class="title">Cursor</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> c Cursor</span><br><span class="line">    c.X = <span class="number">500</span></span><br><span class="line">    noinline()</span><br><span class="line">    <span class="keyword">return</span> &amp;c</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">MOVQ      $type.&quot;&quot;.Cursor+0(SB),(SP)    &#x2F;&#x2F; 取变量c的类型，也就是Cursor</span><br><span class="line">PCDATA    $0,$16</span><br><span class="line">PCDATA    $1,$0</span><br><span class="line">CALL      ,runtime.new(SB)    &#x2F;&#x2F; 调用new函数，相当于new(Cursor)</span><br><span class="line">PCDATA    $0,$-1</span><br><span class="line">MOVQ      8(SP),AX    &#x2F;&#x2F; 取c.X的地址放到AX寄存器</span><br><span class="line">MOVQ      $500,(AX)    &#x2F;&#x2F; 将AX存放的内存地址的值赋为500</span><br><span class="line">MOVQ      AX,&quot;&quot;.~r0+24(FP)</span><br><span class="line">ADDQ      $16,SP</span><br></pre></td></tr></table></figure>
+
+<p>在编译的过程中可以通过指令输出哪些变量逃逸了：<code>go build --gcflags=-m main.go</code></p>
+<h2 id="闭包结构体"><a href="#闭包结构体" class="headerlink" title="闭包结构体"></a>闭包结构体</h2><p>闭包将函数和它引用的环境表示为一个结构体：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Closure <span class="keyword">struct</span> &#123;</span><br><span class="line">    F <span class="function"><span class="keyword">func</span><span class="params">()</span><span class="params">()</span></span> </span><br><span class="line">    i *<span class="keyword">int</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>整体思路是返回闭包的时候，返回一个结构体，包含闭包返回函数的地址和引用的环境中的变量地址。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(i <span class="keyword">int</span>)</span> <span class="title">func</span><span class="params">()</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">int</span></span> &#123;</span><br><span class="line">        i++</span><br><span class="line">        <span class="keyword">return</span> i</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">MOVQ    $type.int+0(SB),(SP)</span><br><span class="line">PCDATA    $0,$16</span><br><span class="line">PCDATA    $1,$0</span><br><span class="line">CALL    ,runtime.new(SB)    &#x2F;&#x2F; 是不是很熟悉，这一段就是i &#x3D; new(int)    </span><br><span class="line">...    </span><br><span class="line">MOVQ    $type.struct &#123; F uintptr; A0 *int &#125;+0(SB),(SP)    &#x2F;&#x2F; 这个结构体就是闭包的类型</span><br><span class="line">...</span><br><span class="line">CALL    ,runtime.new(SB)    &#x2F;&#x2F; 接下来相当于 new(Closure)</span><br><span class="line">PCDATA    $0,$-1</span><br><span class="line">MOVQ    8(SP),AX</span><br><span class="line">NOP    ,</span><br><span class="line">MOVQ    $&quot;&quot;.func·001+0(SB),BP</span><br><span class="line">MOVQ    BP,(AX)                &#x2F;&#x2F; 函数地址赋值给Closure的F部分</span><br><span class="line">NOP    ,</span><br><span class="line">MOVQ    &quot;&quot;.&amp;i+16(SP),BP        &#x2F;&#x2F; 将堆中new的变量i的地址赋值给Closure的值部分</span><br><span class="line">MOVQ    BP,8(AX)</span><br><span class="line">MOVQ    AX,&quot;&quot;.~r1+40(FP)</span><br><span class="line">ADDQ    $24,SP</span><br><span class="line">RET    ,</span><br></pre></td></tr></table></figure>
+
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><ol>
+<li><a href="https://tiancaiamao.gitbooks.io/go-internals" target="_blank" rel="noopener">https://tiancaiamao.gitbooks.io/go-internals</a></li>
+<li><a href="http://gki.informatik.uni-freiburg.de/teaching/ss11/theoryI/07_Hashing_Chaining.pdf" target="_blank" rel="noopener">http://gki.informatik.uni-freiburg.de/teaching/ss11/theoryI/07_Hashing_Chaining.pdf</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.formalscience.com/2018/01/14/Golang-%E4%B8%AD%E5%AD%A6%E5%88%B0%E7%9A%84%E6%96%B0%E4%B8%9C%E8%A5%BF/" data-id="ckpoawmh7002hitp9axox0x30" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Golang/" rel="tag">Golang</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/01/15/Golang-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8-Syscall/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Golang 系统调用/Syscall
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/13/%E4%BD%BF%E7%94%A8-Nvidia-%E6%98%BE%E5%8D%A1%E5%8A%A0%E9%80%9F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E7%9A%84%E4%B8%80%E4%BA%9B%E8%B5%84%E6%96%99/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">使用 Nvidia 显卡加速机器学习算法的一些资料</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BF%86%E4%B8%AD%E8%80%81%E5%8E%BB/">回忆中老去</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BF%86%E4%B8%AD%E8%80%81%E5%8E%BB/%E6%84%9F%E6%82%9F/">感悟</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%87%E5%AE%99%E5%B0%8F%E7%99%BE%E7%A7%91/">宇宙小百科</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B1%B1%E9%87%8E/">山野</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/">技术记录</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/tech-notes/">tech-notes</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%A7%82%E7%82%B9/">观点</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%A7%84%E5%88%92/">规划</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%97%E6%AD%8C/">诗歌</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%97%E6%AD%8C%E7%9A%84%E6%B5%B7%E6%B4%8B/">诗歌的海洋</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E8%A7%82%E5%BD%B1/">读书观影</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Functional-Programming/" rel="tag">Functional Programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Golang/" rel="tag">Golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Haskell/" rel="tag">Haskell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Rust/" rel="tag">Rust</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Travel/" rel="tag">Travel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/note/" rel="tag">note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/programming-language/" rel="tag">programming language</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E8%AF%AD%E8%A8%80/" rel="tag">函数式语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB/" rel="tag">生活</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A7%84%E5%88%92/" rel="tag">规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Functional-Programming/" style="font-size: 10px;">Functional Programming</a> <a href="/tags/Golang/" style="font-size: 20px;">Golang</a> <a href="/tags/Haskell/" style="font-size: 10px;">Haskell</a> <a href="/tags/Rust/" style="font-size: 10px;">Rust</a> <a href="/tags/Travel/" style="font-size: 15px;">Travel</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/note/" style="font-size: 15px;">note</a> <a href="/tags/programming-language/" style="font-size: 15px;">programming language</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E8%AF%AD%E8%A8%80/" style="font-size: 10px;">函数式语言</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">生活</a> <a href="/tags/%E8%A7%84%E5%88%92/" style="font-size: 10px;">规划</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">March 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/10/">October 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/08/">August 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">July 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/06/">June 2012</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/04/">April 2012</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/01/2020-guidelines/">2020 生活规划</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/24/2019-09-24-Rent-in-Edinburgh/">爱丁堡租房</a>
+          </li>
+        
+          <li>
+            <a href="/2019/02/17/2019-02-17_To_Bangkok/">To Bangkok</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/26/2018-12-26-Go-to-Rust/">Go to Rust （一）</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/13/2018-12-13-pip-install-package-offline/">pip 离线安装包</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Bef0rewind<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
