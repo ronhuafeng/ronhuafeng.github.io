@@ -1,0 +1,249 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>不是追风少年</title><link>https://blog.formalscience.com/</link><description>Recent content on 不是追风少年</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 29 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.formalscience.com/index.xml" rel="self" type="application/rss+xml"/><item><title>为什么用Clojure，以及一点感悟</title><link>https://blog.formalscience.com/2013/09/02/%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8clojure%E4%BB%A5%E5%8F%8A%E4%B8%80%E7%82%B9%E6%84%9F%E6%82%9F/</link><pubDate>Mon, 02 Sep 2013 12:12:39 +0000</pubDate><guid>https://blog.formalscience.com/2013/09/02/%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8clojure%E4%BB%A5%E5%8F%8A%E4%B8%80%E7%82%B9%E6%84%9F%E6%82%9F/</guid><description>不是追风少年 https://blog.formalscience.com/2013/09/02/%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8clojure%E4%BB%A5%E5%8F%8A%E4%B8%80%E7%82%B9%E6%84%9F%E6%82%9F/ -&lt;p>&lt;!-- raw HTML omitted -->&lt;strong>1.Java互操作&lt;/strong>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>Clojure和Java互操作还是比较简单的，网上有很多案例。&lt;/p>
+&lt;p>首先讲下Java中调用Clojure。&lt;/p>
+&lt;p>一种方式是用过clojure.lang中的一些方法引入一个命名空间中的函数和变量，然后使用，这种方法就要注意ClassPath和ClassLoader的问题，这在Eclipse的RCP开发中还是比较烦的。另外要注意如果有Clojure源码文件被编译成Class文件了，调用这些文件的Clojure.jar和编译出这些文件的Clojure.jar版本一定要一致。&lt;/p>
+&lt;p>另外一种方式就是使用 “:aot :all“ 命令把所有Clojure源码编译成JVM的Class文件，然后调用genclass方法产生的类和函数。这个可以比较方便地把接口暴露出来。&lt;a href="https://kotka.de/blog/2010/02/gen-class_how_it_works_and_how_to_use_it.html" title="这篇文章">这篇文章&lt;/a>针对genclass的各种用法讲得很好。&lt;/p>
+&lt;p>在Clojure中调用Java就很简单了，随便一搜就是一大堆，官方文档也有很多例子。&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;strong>2.编程模式&lt;/strong>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>Clojure本身就是JVM上的一个Lisp方言，所以编程模式主要就是函数式。当然我对函数式这个术语理解也不是很透彻，目前理解的函数式语言的特点就是：函数是第一公民、尽量保持无状态操作、有利于并行化操作、具有较强的作为meta language的能力（可以用来构建DSL）。这个可以看一下&lt;a href="http://book.douban.com/subject/1148282/" title="SCIP（计算机程序的构造和解释）">SCIP（计算机程序的构造和解释）&lt;/a>这本书。&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;strong>3.初衷&lt;/strong>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>我本来想用Scala的好嘛！其实，当时主要想做&lt;a href="http://www-verimag.imag.fr/New-BIP-tools.html?lang=en" title="BIP">BIP&lt;/a>（这个还是高端大气上档次的）这个形式化语言的一个解释器，然后依靠那个不靠谱的方案和一个还不存在的同步形式化语言解释器进行对接，构建一个仿真环境。&lt;/p>
+&lt;p>其实同为JVM上寄生的函数式语言，明显Scala做这个工作更有优势一点：基于OCaml（这个的前身ML我之前用过）、有方便的类型模式匹配机制（这个机制在写解释器时应该比较有用）。Clojure我也调研过，但是当时是没有这个想法用它的。但是呢，但是呢，亚马逊给我推送了一封邮件，里面就有《&lt;a href="http://book.douban.com/subject/21661495/" title="《Clojure编程》">Clojure编程&lt;/a>》这本书，然后我还顺着广告点过去买了。于是在我刚开始做这个工作的时候，Clojure就被选中了。&lt;/p>
+&lt;p>都是缘分啊！&lt;/p>
+&lt;p>&lt;strong>&lt;!-- raw HTML omitted -->4.困难&lt;!-- raw HTML omitted -->&lt;/strong>&lt;/p>
+&lt;p>困难一部分来自对Clojure一些库不了解，对一些常见的实现习惯不了解，后来实践中逐渐搜索学习，也就掌握了。&lt;/p>
+&lt;p>另外一些来自于和实验室主项目集成的时候，Eclipse RCP项目的ClassLoader比较诡异，我之前也没怎么了解过，碰到了各种”ClassNotFound“的错误，后来经过查找还是解决了。&lt;a href="evernote:///view/1204641/s10/3c46b4c5-4bde-4be6-b9c8-753fae940d21/3c46b4c5-4bde-4be6-b9c8-753fae940d21/http://" title="这个是我的一个Evernote笔记">这个是我的一个Evernote笔记&lt;/a>。&lt;/p>
+&lt;p>&lt;strong>&lt;!-- raw HTML omitted -->5.编辑环境的的配置和各种尝试&lt;!-- raw HTML omitted -->&lt;/strong>&lt;/p>
+&lt;p>我先后试过Emacs和Intellij IDEA。&lt;/p>
+&lt;p>Emacs我还是很喜欢的，特别是里面的ParEdit插件，用来进行Lisp中大量的括号相关的操作简直无敌了，就是要先学习一下快捷键，效率会提升很多。但是有一个缺点（我能说Emacs的缺点么？），配置起来麻烦。虽然各种插件我都装上了，用起来也不错，但是过程中遇到的各种陷阱还是很多的，网上的教程也不总是和预想中的一样有效。我还是一直坚持使用Emacs的。后来实验室的另一个工作要在Windows上进行，在Windows下我一直无法用Emacs启动Clojure的REPL，因此转向了神器——Intellij IDEA。&lt;/p>
+&lt;p>神器只要下个LaClojure的插件和Leiningen插件就好了。各种只能提示啦，测试啦都可以很方便使用，我还把keymap改成了Emacs式的，算是一个念想。不过神器下面没有ParEdit插件，没法那么方便地处理括号，有些不开心。&lt;/p>
+&lt;p>&lt;strong>&lt;!-- raw HTML omitted -->6.总结&lt;!-- raw HTML omitted -->&lt;/strong>&lt;/p>
+&lt;p>在学校的一个优势呢，就是可以尝试新的东西（虽然想让我赶快完成项目的老板不这样想）。以前我也学习Lisp，ML等函数式语言，但是一直没有实际动手做个东西。这次虽然使用Clojure做这个解释器有些冲动的成分在里面，整体而言还是很满意的。最后解释器效率可能有些问题（我写的程序有问题，和语言无关），但是程序工作起来还比较正确（至少那些单元测试都还能通过），修改起来也比较容易（还需要一些重构）。我对于Java和Clojure的了解也都稍微深刻了那么一点（是在命名空间这方面）。&lt;/p>
+&lt;p>下次要不要试试其他的语言呢？&lt;/p>
+&lt;p>&lt;strong>&lt;!-- raw HTML omitted -->7.项目&lt;!-- raw HTML omitted -->&lt;/strong>&lt;/p>
+&lt;p>主要是做了一个BIP的解释器，还没有做完，只是完成了核心的语义解释的一部分。前段的语法解析器没有做，不过这个有现成的。&lt;/p>
+&lt;p>&lt;strong>&lt;!-- raw HTML omitted -->8.经验&lt;!-- raw HTML omitted -->&lt;/strong>&lt;/p>
+&lt;p>实践出真知！&lt;/p>
+&lt;p>这首歌我最近一直在单曲循环。&lt;/p>
+&lt;p> 
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/p>
+- https://blog.formalscience.com/2013/09/02/%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8clojure%E4%BB%A5%E5%8F%8A%E4%B8%80%E7%82%B9%E6%84%9F%E6%82%9F/ -</description></item><item><title>建模语言</title><link>https://blog.formalscience.com/2013/05/28/%E5%BB%BA%E6%A8%A1%E8%AF%AD%E8%A8%80/</link><pubDate>Tue, 28 May 2013 16:40:19 +0000</pubDate><guid>https://blog.formalscience.com/2013/05/28/%E5%BB%BA%E6%A8%A1%E8%AF%AD%E8%A8%80/</guid><description>不是追风少年 https://blog.formalscience.com/2013/05/28/%E5%BB%BA%E6%A8%A1%E8%AF%AD%E8%A8%80/ -&lt;p>今天晚上和师兄师弟们一起吃饭。去食堂的路上，一直到食堂为止都特别伤心。自己研究生生活都已经过了快两年，对自己的研究方向依然不能向别人解释清楚。特迷茫，特无助。下面是我的一些理解，不是很全面（不是我全部所想的，未必全部是对的）。&lt;/p>
+&lt;p>1.何谓建模？&lt;/p>
+&lt;p>建模就是对一个表示的抽象表示，使得抽象过的表示在一定假设下可以回答原始表示能够回答的问题。例如：&lt;/p>
+&lt;ul>
+&lt;li>把程序抽象成一个流程图，这个流程图可以回答给定输入产生什么输出的问题；&lt;/li>
+&lt;li>把程序抽象成一个函数依赖图，可以回答关于函数之间调用关系的问题；&lt;/li>
+&lt;li>把一个地表的自由落体抽象成成真空中的自由落体，（忽略掉空气阻力和允许一定误差情况下）回答自由落体从指定高度到达地面的时间问题
+2.建模语言&lt;/li>
+&lt;/ul>
+&lt;p>语言是一种表现形式，就如眼神一样，直达人的灵魂深处。好吧，我文（che）艺（dan）了。写程序需要（编程）语言，刻画物理现象需要（数学）语言，把听到的曲调记录下来也需要（乐谱使用的）语言。建立这些事物的抽象表示（建模过程）也需要一种语言，称为建模语言，例如：UML、Petri Net、自动机（Automata）、正则表达式、上下文无关文法等。&lt;/p>
+&lt;p>3.建模语言分类&lt;/p>
+&lt;p>正如编程语言、数学语言有能力强弱、是否易用、山头派系之分，建模语言也是如此。这里主要针对程序建模语言进行说明。&lt;/p>
+&lt;p>图灵机是一种基础的建模语言，有许多建模语言都用图灵机作为基础来解释自身语义，或者来比较自己的能力。有一些语言表达能力等价于图灵机，有一些语言表达能力则非常有限。能力强弱并不对应语言的好坏。&lt;/p>
+&lt;p>其中一些语言的等价性可以用来出一些题目，例如把一个正则表达式转化为一个DFA（确定有限自动机）。&lt;/p>
+&lt;p>这些语言又可以按照是否有形式化的表示分为：形式化语言（Formal Languages）和非形式化语言（Informal Languages）。形式化语言的形式化表示一般使用数学中的集合和映射表示；非形式化语言一般都会有对应的非形式化的执行语义（即用自然语言说明语言中各种操作的含义，例如普通的C语言）。&lt;/p>
+&lt;p>按照使用范围会有针对嵌入式系统的建模语言（VHDL）、针对需求的建模语言（UML）、针对算法的建模语言（程序流程图）等等。&lt;/p>
+&lt;p>还有其他按照各种方法的各种分类，例如同步建模语言、异步建模语言、全局异步局部同步建模语言。我知道的并不全面，每次和大牛交流都感觉到自己的无知。&lt;/p>
+&lt;p>4.建模语言领域研究什么&lt;/p>
+&lt;p>如何在增加语言表达能力和易用性同时不影响语言其他方面的性质（语法的简洁性等）。例如图灵机中是没有整形变量的表示的，我们能看到的只有0/1的纸带。因此汇编、C等加入了各种数据结构，但是其需要解释的语义就更复杂了。相比之下Lisp的语法语义就比较简洁。&lt;/p>
+&lt;p>如何针对特定领域对语言进行封装优化。近些年比较火热的领域特定语言（DSL）目的就是如此。&lt;/p>
+&lt;p>如何能够支持模型的性质检测。可以参考模型检测领域（Model Checking）的相关知识。&lt;/p>
+&lt;p>如何能够用建模的模型生成一些代码，即用建模语言作为一种编程语言。这样要求建模语言要有和生成代码使用语言的比较优势（较少的代码量、简洁清晰的语义、更简单的并行并发描述等）。这种使用方式有一个相关概念：模型驱动的开发。&lt;/p>
+&lt;p>下面的 #5 内容会和 #4 没有那么正交，请海涵。&lt;/p>
+&lt;p>5.建模语言领域能够贡献的工作&lt;/p>
+&lt;p>写一种全新的建模语言。嗯，这个一般都是持续N（&amp;gt;10）年的工作。&lt;/p>
+&lt;p>在一种建模语言基础上添加/封装一些操作符，从而对一些被建模对象的行为提供直接支持（例如支持建模buffered signal transmission）。DSL。&lt;/p>
+&lt;p>把两种建模语言整合起来。比较难，需要用更低级的语言解释两者语义，以及其他一大堆问题需要处理。&lt;/p>
+&lt;p>对指定的建模语言生成另一种语言的代码。例如：C to Verilog，Esterel to C等。&lt;/p>
+&lt;p>给建模语言建立的模型写simulator，即解释建模语言的执行语义。&lt;/p>
+&lt;p>给建模语言写图形化的编辑器，例如Visual Studio中的GUI绘制工具。&lt;/p>
+&lt;p>等等一系列，一系列。&lt;/p>
+&lt;p>6.我在做啥&lt;/p>
+&lt;p>最近在做对增加了时间表示的BIP模型和增加了时间表示的Esterel模型二者混合模型的执行语义解释。现在正处于用Clojure写没有时间表示的BIP模型执行语义解释的地步。&lt;/p>
+&lt;p>最近在做把BIP模型生成的代码转化成C语言代码，然后在ARM板卡上执行的流程探索。这条路已经基本走通，我能说今天中午什么事都没有做，然后之前bug的程序就能够在ARM板卡上运行了么。这真是上天不负有（gou）心（shi）人（yun）啊。&lt;/p>
+&lt;p> &lt;/p>
+&lt;p> &lt;/p>
+- https://blog.formalscience.com/2013/05/28/%E5%BB%BA%E6%A8%A1%E8%AF%AD%E8%A8%80/ -</description></item><item><title>唯愿不失本心</title><link>https://blog.formalscience.com/2013/04/12/%E5%94%AF%E6%84%BF%E4%B8%8D%E5%A4%B1%E6%9C%AC%E5%BF%83/</link><pubDate>Fri, 12 Apr 2013 12:39:59 +0000</pubDate><guid>https://blog.formalscience.com/2013/04/12/%E5%94%AF%E6%84%BF%E4%B8%8D%E5%A4%B1%E6%9C%AC%E5%BF%83/</guid><description>不是追风少年 https://blog.formalscience.com/2013/04/12/%E5%94%AF%E6%84%BF%E4%B8%8D%E5%A4%B1%E6%9C%AC%E5%BF%83/ -&lt;p>1.还要向前行&lt;/p>
+&lt;p>读博士已经快两年了。两年里学术方面开心的时候不多，成就也不多。每次去见朋友的时候总是暗示自己：不要总是跟他们抱怨自己的不顺。到头来还是忍不住。自己是一个比较容易过于悲观和过于乐观的人，虽然最近心智成长了许多。现在总觉得看不到希望，很多时候都想退出了，去公司工作也还行，比天天在这里郁闷强。还有一个原因是自己确实不努力，科研不顺利有时候就会放纵自己，让自己在游戏（适度游戏还是好的，不要太过就行）中消沉，感觉就像借酒消愁，醒时愁更忧。正确的方式还是要把自己想要做的事情抓紧时间来做，比如这学期报名的托福以及开始写论文。争取在自己做的一切事情（无论喜欢还是不喜欢）中寻求到收获。&lt;/p>
+&lt;p>2.魔本由心生&lt;/p>
+&lt;p>最近在上跳水课，第一次上三米台的时候特别怂，不敢向下跳。老师告诉我们：面对危险的时候，如果它是未知的，那么恐惧时很自然的；如果危险已知并且可控，那么恐惧就是由于内心不坚定产生的了。第二次，我上五米台也较为从容跳下来了。自己的胆怯犹豫不是那么容易克服的，不过这种和自己心灵的抗争也是一种成长。&lt;/p>
+&lt;p>3.乱花渐欲迷人眼&lt;/p>
+&lt;p>室友在微软实习，工资也多，还能做文章，我很是羡慕；很多同学都发了文章；。宽慰自己，每个人都有自己的生活，每个人都行走在自己的轨迹上，却总是意难平。&lt;/p>
+&lt;p>4.愿不失本心&lt;/p>
+&lt;p>总是存在Frost诗中那条未选择的路。我对那些类如“既然选择了，便只顾风雨兼程”的励志句子不是很认同。有时选择确实是错误的，难道还要违背自己的意愿继续前行么？还是只是背负上了世俗的压力，不能转身离开？我不想留下一生叹息——“算了！”这样的生活还是不好的。我自己经常很懦弱，不敢跟随自己的想法，总是害怕别人带来的伤害（虽然我的口头语之一是：反正不会死人！）以及给别人带来伤害（这对我自己也是一种伤害）。但我也不曾放弃自己。唯愿小小绿苗能够快些长成参天大树，能够屹立在风雨之中。&lt;/p>
+&lt;p>—— 张华枫&lt;/p>
+- https://blog.formalscience.com/2013/04/12/%E5%94%AF%E6%84%BF%E4%B8%8D%E5%A4%B1%E6%9C%AC%E5%BF%83/ -</description></item><item><title>读《民国那些人: 鲁迅同时代人》</title><link>https://blog.formalscience.com/2013/04/04/%E8%AF%BB%E6%B0%91%E5%9B%BD%E9%82%A3%E4%BA%9B%E4%BA%BA-%E9%B2%81%E8%BF%85%E5%90%8C%E6%97%B6%E4%BB%A3%E4%BA%BA/</link><pubDate>Thu, 04 Apr 2013 08:43:52 +0000</pubDate><guid>https://blog.formalscience.com/2013/04/04/%E8%AF%BB%E6%B0%91%E5%9B%BD%E9%82%A3%E4%BA%9B%E4%BA%BA-%E9%B2%81%E8%BF%85%E5%90%8C%E6%97%B6%E4%BB%A3%E4%BA%BA/</guid><description>不是追风少年 https://blog.formalscience.com/2013/04/04/%E8%AF%BB%E6%B0%91%E5%9B%BD%E9%82%A3%E4%BA%9B%E4%BA%BA-%E9%B2%81%E8%BF%85%E5%90%8C%E6%97%B6%E4%BB%A3%E4%BA%BA/ -&lt;ol>
+&lt;li>鲁迅的母亲鲁瑞真是一位令人敬佩的女性和母亲&lt;/li>
+&lt;li>鲁迅和他原配朱安是旧时代的牺牲品&lt;a href="http://www.formalscience.com/blog/wp-content/uploads/2013/04/IMG_20130325_192415_19281061.jpg">&lt;img src="http://www.formalscience.com/blog/wp-content/uploads/2013/04/IMG_20130325_192415_19281061-1024x576.jpg" alt="IMG_20130325_192415_1928106">&lt;/a>&lt;/li>
+&lt;li>鲁迅和朱自清是同乡，远房亲戚&lt;/li>
+&lt;li>鲁迅和他弟关系闹僵就是因为他弟媳乱花钱（哥俩一个月600大洋都不够花），还各种编造谣言&lt;/li>
+&lt;li>陈独秀放在宋朝那就是名士风范&lt;/li>
+&lt;/ol>
+&lt;p>[caption id=&amp;quot;&amp;quot; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;720&amp;rdquo;]&lt;img src="http://fmn.rrimg.com/fmn060/20130325/2100/large_y2PU_1a9100001728125f.jpg" alt="陈独秀在杭州作诗《咏鹤》"> 陈独秀在杭州《咏鹤》[/caption]&lt;/p>
+&lt;p>[caption id=&amp;quot;&amp;quot; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;720&amp;rdquo;]&lt;img src="http://fmn.rrfmn.com/fmn058/20130325/2100/large_tDpb_721800001175125d.jpg" alt="陈独秀在杭州作诗 《灵隐寺前》"> 陈独秀在杭州 《灵隐寺前》[/caption]
+6. 杂文在当时的作用就是天涯上互相攻击的帖子，看鲁迅、胡适、李大钊、陈独秀、徐志摩各种互相攻击各种re就感觉很喜感
+7. 徐志摩是真小资
+8. 鲁和许那是真爱情，许很伟大
+9. 郁达夫是真性情，真懒散&lt;/p>
+- https://blog.formalscience.com/2013/04/04/%E8%AF%BB%E6%B0%91%E5%9B%BD%E9%82%A3%E4%BA%9B%E4%BA%BA-%E9%B2%81%E8%BF%85%E5%90%8C%E6%97%B6%E4%BB%A3%E4%BA%BA/ -</description></item><item><title>Archlinux Install Notes</title><link>https://blog.formalscience.com/2013/03/27/2013-03-27_archlinux_install_notes/</link><pubDate>Wed, 27 Mar 2013 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2013/03/27/2013-03-27_archlinux_install_notes/</guid><description>不是追风少年 https://blog.formalscience.com/2013/03/27/2013-03-27_archlinux_install_notes/ -&lt;p>分区格式化
+cfdisk
+mkfs.ext /dev/sda*
+mkswap /dev/sdaX
+swapon /dev/sdaX&lt;/p>
+&lt;p>挂载当前分区
+检查当前磁盘的标识符和布局
+lsblk /dev/sda
+mount /dev/sda1 /mnt
+mkdir /mnt/home
+如果是home独立分区
+mount /dev/sda2 /mnt/home&lt;/p>
+&lt;p>编辑 /etc/pacman.d/mirrorlist
+更新 pacman -Syy&lt;/p>
+&lt;p>使用pacstrap脚本安装基本系统&lt;/p>
+&lt;h1 id="pacstrap-mnt-base-base-devel">pacstrap /mnt base base-devel&lt;/h1>
+&lt;p>如果 pacman 报告安装时遇到错误的签名(error: failed to commit transaction (invalid or corrupted package))，请运行如下命令：&lt;/p>
+&lt;h1 id="pacman-key---init-ampamp-pacman-key---populate-archlinux">pacman-key &amp;ndash;init &amp;amp;&amp;amp; pacman-key &amp;ndash;populate archlinux&lt;/h1>
+&lt;p>base
+来自 [core] 软件源的最小基本系统。
+base-devel
+来自 [core] 的附加工具例如make和 automake。大部分新手都应该安装它，后续扩展系统会用到它，安装AUR中软件包时，base-devel也是必须的&lt;/p>
+&lt;p>生成 fstab&lt;/p>
+&lt;p>用下面命令生成 fstab。如果想使用 UUIDs，使用 -U 选项；如果想使用标签，用 -L 选项，完成后最好检查一下生成的/etc/fstab。
+Note: 后面如果出现问题，请不要再次运行genfstab，如果需要，手动编辑/etc/fstab。&lt;/p>
+&lt;h1 id="genfstab--u--p-mnt--sed-srwrelatimedataordereddefaultsrelatime-gtgt-mntetcfstab">genfstab -U -p /mnt  | sed &amp;rsquo;s/rw,relatime,data=ordered/defaults,relatime/&amp;rsquo; &amp;gt;&amp;gt; /mnt/etc/fstab&lt;/h1>
+&lt;h1 id="nano-mntetcfstab">nano /mnt/etc/fstab&lt;/h1>
+&lt;p>Chroot 到新系统&lt;/p>
+&lt;h1 id="arch-chroot-mnt">arch-chroot /mnt&lt;/h1>
+&lt;p>Locale
+需要编辑两个文件：locale.gen 和 locale.conf.&lt;/p>
+&lt;p>默认情况下 /etc/locale.gen 是一个仅包含注释文档的空文件。选定你需要的本地化类型(移除前面的＃即可), 比如中文系统可以使用:&lt;/p>
+&lt;p>en_US.UTF-8 UTF-8
+zh_CN.GB18030 GB18030
+zh_CN.GBK GBK
+zh_CN.UTF-8 UTF-8
+zh_CN GB2312&lt;/p>
+&lt;p>然后运行：&lt;/p>
+&lt;h1 id="locale-gen">locale-gen&lt;/h1>
+&lt;p>locale.conf 文件默认不存在，一般设置LANG就行了，它是其它设置的默认值。
+/etc/locale.conf&lt;/p>
+&lt;p>LANG=en_US.UTF-8
+LC_TIME=en_GB.UTF-8&lt;/p>
+&lt;p>Hostname&lt;/p>
+&lt;h1 id="echo-myhostname-gt-etchostname">echo myhostname &amp;gt; /etc/hostname&lt;/h1>
+&lt;p>网络查看接口     #ip link
+动态 IP
+If you only use a single fixed wired network connection, you do not need a network management service and
+can simply enable the dhcpcd service, Where &amp;lt;interface&amp;gt; is your wired interface:&lt;/p>
+&lt;h1 id="systemctl-enable-dhcpcdltinterfacegtservice">systemctl enable dhcpcd@&amp;lt;interface&amp;gt;.service&lt;/h1>
+&lt;p>Alternatively, you can use netcfg&amp;rsquo;s net-auto-wired, which gracefully handles dynamic connections to new networks:&lt;/p>
+&lt;p>Install ifplugd, which is required for net-auto-wired:&lt;/p>
+&lt;h1 id="pacman--s-ifplugd">pacman -S ifplugd&lt;/h1>
+&lt;p>Set up the dhcp profile and enable the net-auto-wired service:&lt;/p>
+&lt;h1 id="cd-etcnetworkd">cd /etc/network.d&lt;/h1>
+&lt;h1 id="ln--s-examplesethernet-dhcp-">ln -s examples/ethernet-dhcp .&lt;/h1>
+&lt;h1 id="systemctl-enable-net-auto-wiredservice">systemctl enable net-auto-wired.service&lt;/h1>
+&lt;p>在 Arch x86_64 上运行 32 位应用程序，请在 /etc/pacman.conf 中加入如下内容以启用 [multilib] 源
+[multilib]
+SigLevel = PackageRequired
+Include = /etc/pacman.d/mirrorlist&lt;/p>
+&lt;p>修改完成后需要用pacman 的 -Sy 参数更新服务器信息，否则会出现 &amp;ldquo;warning: database file for &amp;lsquo;multilib&amp;rsquo; does not exist&amp;rdquo; 错误。&lt;/p>
+&lt;p>设置 Root 密码并创建一般用户
+用 passwd 设置一个root密码：&lt;/p>
+&lt;h1 id="passwd">passwd&lt;/h1>
+&lt;p>警告: Linux 是个多用户环境。请不要使用 root 登录进行日常工作。这不仅仅是坏习惯，还非常危险。Root 账户仅是用来做管理任务的。&lt;/p>
+&lt;p>因此，下面将创建用户archie，交互方式请使用adduser。&lt;/p>
+&lt;h1 id="useradd--m--g-users--g-wheel--s-binbash-archie">useradd -m -g users -G wheel -s /bin/bash archie&lt;/h1>
+&lt;h1 id="passwd-archie">passwd archie&lt;/h1>
+&lt;p>新非 root 用户创建完成，同时还建立了用户主目录和登录密码。&lt;/p>
+&lt;p>如果你弄错了账户设置，或者你想删除一个账户，或者你想要换个账户名，或者任何其他什么原因，使用 /usr/sbin/userdel ：&lt;/p>
+&lt;h1 id="userdel--r-archie">userdel -r archie&lt;/h1>
+&lt;p>Grub
+Install the grub-bios package and then run grub-install:&lt;/p>
+&lt;h1 id="pacman--s-grub-bios">pacman -S grub-bios&lt;/h1>
+&lt;h1 id="grub-install---recheck-devsda">grub-install &amp;ndash;recheck /dev/sda&lt;/h1>
+&lt;h1 id="cp-usrsharelocaleenquotlc_messagesgrubmo-bootgrublocaleenmo">cp /usr/share/locale/en@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo&lt;/h1>
+&lt;p>虽然手动配置grub.cfg完全可以工作，建议用户自动生成这个文件。&lt;/p>
+&lt;p>要搜索硬盘上安装的其它操作系统，请先用 # pacman -S os-prober 安装 os-prober。&lt;/p>
+&lt;h1 id="grub-mkconfig--o-bootgrubgrubcfg">grub-mkconfig -o /boot/grub/grub.cfg&lt;/h1>
+&lt;p>卸载分区并重启系统
+如果还在 chroot 环境，先用 exit 命令退出系统：&lt;/p>
+&lt;h1 id="exit">exit&lt;/h1>
+&lt;p>卸载/mnt中挂载的系统：&lt;/p>
+&lt;h1 id="umount-mntboothome">umount /mnt/{boot,home,}&lt;/h1>
+&lt;p>要退出到/mnt目录外面才能卸载
+重启：&lt;/p>
+&lt;h1 id="reboot">reboot&lt;/h1>
+&lt;p>图形用户界面
+安装 X
+X 窗口管理系统(X11或者X) 是基于网络的显示协议，提供了窗口功能，包含建立图形用户界面(GUI)的标准工具和协议。&lt;/p>
+&lt;p>安装基础的 Xorg 包：&lt;/p>
+&lt;h1 id="pacman--s-xorg-server-xorg-xinit-xorg-utils-xorg-server-utils">pacman -S xorg-server xorg-xinit xorg-utils xorg-server-utils&lt;/h1>
+&lt;p>安装 mesa 以获得 3D 支持:&lt;/p>
+&lt;h1 id="pacman--s-mesa">pacman -S mesa&lt;/h1>
+&lt;p>安装显卡驱动
+注意: 如果是从 Virtualbox 虚拟机安装，则不需要安装显卡驱动，参见 此文，然后跳到下面的配置部分。&lt;/p>
+&lt;p>Linux 内核包含了开源的视频驱动，支持硬件加速的 framebuffers。OpenGL 和 X11 的 2D 加速需要用户空间工具。&lt;/p>
+&lt;p>如果不知道显卡类型，请执行如下命令进行查询：&lt;/p>
+&lt;p>$ lspci | grep VGA&lt;/p>
+&lt;p>输入下面命令，查看所有开源驱动:&lt;/p>
+&lt;p>$ pacman -Ss xf86-video | less&lt;/p>
+&lt;p>vesa是一个支持大部分显卡的通用驱动，不提供任何 2D 和 3D 加速功能。如果无法找到显卡芯片组的对应驱动或载入失败，Xorg 会使用vesa：要安装：&lt;/p>
+&lt;h1 id="pacman--s-xf86-video-vesa">pacman -S xf86-video-vesa&lt;/h1>
+&lt;p>Intel     开源     xf86-video-intel     lib32-intel-dri
+Nvidia
+开源
+xf86-video-nouveau     lib32-nouveau-dri
+86-video-nv         –
+闭源
+nvidia             lib32-nvidia-utils
+nvidia-304xx     lib32-nvidia-304xx-utils&lt;/p>
+&lt;p>笔记本(或触摸屏)用户需要 synaptics 软件包以支持触摸板/触摸屏：&lt;/p>
+&lt;h1 id="pacman--s-xf86-input-synaptics">pacman -S xf86-input-synaptics&lt;/h1>
+&lt;p>最小安装kde&lt;/p>
+&lt;p>如果你想最小安装KDE SC，安装 kdebase， phonon-vlc 或 phonon-gstreamer 以及，可选的语言包 kde-l10n-yourlanguagehere （对于简体中文语言数据，它是kde-l10n-zh_cn）。
+注意: 各种后端需要一个 ttf-* 字体软件包。 phonon-vlc 已经依赖于 ttf-freefont，但你使用 phonon-gstreamer 时，你还应该安装 ttf-dejavu 或者别的字体。更多信息可以浏览 FS#26012。&lt;/p>
+&lt;p>使用 xinitrc
+xinitrc的意义和用途在这里有详细描述。&lt;/p>
+&lt;p>安装 kdebase-workspace 编辑 ~/.xinitrc。然后取消注释：&lt;/p>
+&lt;p>exec startkde&lt;/p>
+&lt;p>启动不了X
+copy file
+I just looked in /etc/skel/.xinitrc and copied it to my home directory.&lt;/p>
+- https://blog.formalscience.com/2013/03/27/2013-03-27_archlinux_install_notes/ -</description></item><item><title>我果然还是喜欢写日记胜于写博客</title><link>https://blog.formalscience.com/2013/02/01/%E6%88%91%E6%9E%9C%E7%84%B6%E8%BF%98%E6%98%AF%E5%96%9C%E6%AC%A2%E5%86%99%E6%97%A5%E8%AE%B0%E8%83%9C%E4%BA%8E%E5%86%99%E5%8D%9A%E5%AE%A2/</link><pubDate>Fri, 01 Feb 2013 10:20:44 +0000</pubDate><guid>https://blog.formalscience.com/2013/02/01/%E6%88%91%E6%9E%9C%E7%84%B6%E8%BF%98%E6%98%AF%E5%96%9C%E6%AC%A2%E5%86%99%E6%97%A5%E8%AE%B0%E8%83%9C%E4%BA%8E%E5%86%99%E5%8D%9A%E5%AE%A2/</guid><description>不是追风少年 https://blog.formalscience.com/2013/02/01/%E6%88%91%E6%9E%9C%E7%84%B6%E8%BF%98%E6%98%AF%E5%96%9C%E6%AC%A2%E5%86%99%E6%97%A5%E8%AE%B0%E8%83%9C%E4%BA%8E%E5%86%99%E5%8D%9A%E5%AE%A2/ -&lt;p>这是自恋的表现么？&lt;/p>
+&lt;p>现在每天都在有道笔记里写写日记和自己的些许想法，对博客没有什么太大的兴趣了。于是乎，感觉自己还不够专一啊。&lt;/p>
+- https://blog.formalscience.com/2013/02/01/%E6%88%91%E6%9E%9C%E7%84%B6%E8%BF%98%E6%98%AF%E5%96%9C%E6%AC%A2%E5%86%99%E6%97%A5%E8%AE%B0%E8%83%9C%E4%BA%8E%E5%86%99%E5%8D%9A%E5%AE%A2/ -</description></item><item><title>Python使用smtplib发送邮件</title><link>https://blog.formalscience.com/2012/11/13/python%E4%BD%BF%E7%94%A8smtplib%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/</link><pubDate>Tue, 13 Nov 2012 10:50:48 +0000</pubDate><guid>https://blog.formalscience.com/2012/11/13/python%E4%BD%BF%E7%94%A8smtplib%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/</guid><description>不是追风少年 https://blog.formalscience.com/2012/11/13/python%E4%BD%BF%E7%94%A8smtplib%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/ -&lt;p>from smtplib import SMTP&lt;/p>
+&lt;p>#这些库是邮件格式使用的
+from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
+from email.mime.multipart import MIMEMultipart&lt;/p>
+&lt;p>smtp = SMTP()&lt;/p>
+&lt;p>smtp.connect(&amp;lsquo;smtp.163.com&amp;rsquo;)&lt;/p>
+&lt;p>#这句话是必不可少的
+smtp.helo()&lt;/p>
+&lt;p>#选择认证方式
+smtp.esmtp_features[&amp;lsquo;auth&amp;rsquo;] = &amp;lsquo;LOGIN&amp;rsquo;
+smtp.login(&amp;rsquo;####@163.com&amp;rsquo;, &amp;lsquo;password&amp;rsquo;)&lt;/p>
+&lt;p>message = MIMEMultipart()
+message.attach(MIMEText(&amp;lsquo;content&amp;rsquo;))
+message[&amp;ldquo;Subject&amp;rdquo;] = &amp;lsquo;subject&amp;rsquo;&lt;/p>
+&lt;p>smtp.sendmail(&amp;rsquo;####@163.com&amp;rsquo;, [&amp;lsquo;mail_to@163.com&amp;rsquo;], message.as_string())&lt;/p>
+&lt;p>差不多邮件这样就可以发送出去了&lt;/p>
+- https://blog.formalscience.com/2012/11/13/python%E4%BD%BF%E7%94%A8smtplib%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/ -</description></item><item><title>基于OpenShift搭建MediaWiki</title><link>https://blog.formalscience.com/2012/11/12/%E5%9F%BA%E4%BA%8Eopenshift%E6%90%AD%E5%BB%BAmediawiki/</link><pubDate>Mon, 12 Nov 2012 15:45:19 +0000</pubDate><guid>https://blog.formalscience.com/2012/11/12/%E5%9F%BA%E4%BA%8Eopenshift%E6%90%AD%E5%BB%BAmediawiki/</guid><description>不是追风少年 https://blog.formalscience.com/2012/11/12/%E5%9F%BA%E4%BA%8Eopenshift%E6%90%AD%E5%BB%BAmediawiki/ -&lt;p>1.按照&lt;a href="https://openshift.redhat.com/app/" title="OpenShift">OpenShift&lt;/a>建立用用的过程新建一个PHP 5.3应用，可以通过网页方式创建（推荐）；本地完成一些初始化工作（参考官方&lt;a href="https://openshift.redhat.com/community/get-started" title="OpenShift本地设置的一些步骤">教程&lt;/a>）&lt;/p>
+&lt;p>2.按照应用页面给出的git地址，把代码库clone到本地，然后把MediaWiki代码push到Master库中。（&lt;a href="http://rogerdudler.github.com/git-guide/index.zh.html" title="git使用方法">git使用方法&lt;/a>）&lt;/p>
+&lt;p>3.在应用页面点击那个“Add a Cartridge”，然后加上一个MySql数据库（应该是这样，我在命令行中添加的）和一个phpMyAdmin；把获得的数据库root用户名和密码记下来；
+但是如何重新访问这些Cartridge，我还不知道啊，也许从命令行可以过去。&lt;/p>
+&lt;p>4.进入phpMyAdmin进行管理，左上方有MediaWiki连接数据库要使用的数据库地址（这个地方寻找地址卡了好久，直到安装了phpMyAdmin才得到的sql连接地址，应该还有其他方法的）&lt;/p>
+&lt;p>5.进入应用URL进行MediaWiki的初始化工作，剩下的就很简单了&lt;/p>
+- https://blog.formalscience.com/2012/11/12/%E5%9F%BA%E4%BA%8Eopenshift%E6%90%AD%E5%BB%BAmediawiki/ -</description></item><item><title>2012-10-26</title><link>https://blog.formalscience.com/2012/10/26/2012-10-26_%E5%AE%87%E5%AE%99%E5%B0%8F%E7%99%BE%E7%A7%91/</link><pubDate>Fri, 26 Oct 2012 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2012/10/26/2012-10-26_%E5%AE%87%E5%AE%99%E5%B0%8F%E7%99%BE%E7%A7%91/</guid><description>不是追风少年 https://blog.formalscience.com/2012/10/26/2012-10-26_%E5%AE%87%E5%AE%99%E5%B0%8F%E7%99%BE%E7%A7%91/ -&lt;p>小宇宙百科12302 1)黄莺莺于今年6月22日推出了第51张专辑《摇篮曲》，是她继1998年《为爱疯狂》后，暌违14年的新作品，也是告别歌坛之作。当今年轻人也许不知道这位老牌天后的传奇。上世纪八十年代是华语流行音乐的一个黄金年代，五十年代出生、七十年代出道、八十年代成名的一代歌手中，注定留下了三位天后的名字：黄莺莺，蔡琴，邓丽君。黄莺莺1951年8月29日出生于台湾宜兰礁溪，因孕育在莺歌，故取名“莺莺”。早年艺名为黄露仪，于1974年推出第一张唱片《云河》，踏足乐坛以来，黄莺莺共发行了50张个人专辑，包括中文、英文与粤语专辑。黄莺莺的唱片发行至台湾、香港、新加坡、马来西亚、文莱等等亚洲各地区，近年来专辑更发行至中国及欧洲、美加一带。她的歌曲大多深情款款，是台湾歌坛中少数中英文歌曲皆有佳绩的歌手之一，对很多经典英文曲目的诠释不仅保留了原作的情趣，更平添一份中国风的典雅与细腻。推荐专辑《红伶心事》《摇篮曲》，推荐曲目《哭砂》《葬心》《All I ask of you》。蔡琴1957年12月22日出生，上世纪70年代以民歌歌手身份开始涉足歌坛，随后出版了第一张唱片《出塞曲》，30年间发行唱片近50余张，获奖无数，被誉为“华人乐坛的芭芭拉·史翠珊”。蔡琴的歌声低回委婉，丰满克制，却如陈酒一样，越久远越香醇。多首曲目被惠威收做测试hifi器材曲目，如测试中频密度的《张三的歌》，测试乐器定位的《渡口》。推荐专辑《民歌蔡琴》《鲍比达&amp;amp;蔡琴 -遇见》，推荐曲目《被遗忘的时光》《你的眼神》《恰似你的温柔》。邓丽君1953年1月29日出生， 1967年9月在台湾出道，1974年3月在日本出道，是20世纪后半叶最负盛名的华语和日语女歌手。生前发表国语、粤语、闽南语、英语、日语、印尼语歌曲3000多首，被称作“永远的邓丽君”，赢得了“有中国人的地方，就有邓丽君的歌声”的美誉。邓丽君的声音甜美圆润，温婉动人，这样完美的音色演绎出无数传唱至今的情歌。推荐曲目《小城故事》《在水一方》《但愿人长久》。从歌曲的传唱长度、广度和被hifi(高仿真音质)界接受的程度，这三位风华绝代的红伶，虽然歌曲主题无非是情爱离愁，却传唱大江南北；现今黄莺莺正式退出歌坛，邓丽君早已与世长辞，只剩蔡琴还在各地偶尔举行演唱会。面对选秀节目层出不穷，噱头闹剧惨不忍睹的当今华语乐坛，不禁令人怀念那个余音绕梁的黄金年代。AD/编·我心深处的交响乐&lt;/p>
+- https://blog.formalscience.com/2012/10/26/2012-10-26_%E5%AE%87%E5%AE%99%E5%B0%8F%E7%99%BE%E7%A7%91/ -</description></item><item><title>我的MSTC生涯-此生若只如初见</title><link>https://blog.formalscience.com/2012/08/23/%E6%88%91%E7%9A%84mstc%E7%94%9F%E6%B6%AF-%E6%AD%A4%E7%94%9F%E8%8B%A5%E5%8F%AA%E5%A6%82%E5%88%9D%E8%A7%81/</link><pubDate>Thu, 23 Aug 2012 14:58:23 +0000</pubDate><guid>https://blog.formalscience.com/2012/08/23/%E6%88%91%E7%9A%84mstc%E7%94%9F%E6%B6%AF-%E6%AD%A4%E7%94%9F%E8%8B%A5%E5%8F%AA%E5%A6%82%E5%88%9D%E8%A7%81/</guid><description>不是追风少年 https://blog.formalscience.com/2012/08/23/%E6%88%91%E7%9A%84mstc%E7%94%9F%E6%B6%AF-%E6%AD%A4%E7%94%9F%E8%8B%A5%E5%8F%AA%E5%A6%82%E5%88%9D%E8%A7%81/ -&lt;p>五年前的时候，还是懵懂少年。&lt;/p>
+&lt;p>&lt;a href="http://www.formalscience.com/blog/wp-content/uploads/2012/08/IMG0058.jpg.jpg">&lt;img src="http://www.formalscience.com/blog/wp-content/uploads/2012/08/IMG0058.jpg_thumb.jpg" alt="IMG0058.jpg" title="IMG0058.jpg">&lt;/a>&lt;/p>
+&lt;p>军训结束后，就是各个社团招新的时候，我记得当时我报了IBM技术俱乐部，电视台，还有MSTC。&lt;/p>
+&lt;p>MSTC的招新最先举行（面试短信通知），面试那天晚上下着雨。从文治经过南门到俱乐部，听着雨滴打在伞上沙沙的声音，我的心也是很忐忑。提前15分钟到达，我不知道怎么就进去面试了，是吴书会学姐面试的我。我申请上写的是会C++，其实只会一点基本的概念。具体学姐问了什么技术问题，我就记不得了；只记得她问我是不是大一的，现在回想起来当时好青葱啊。在大家开始面之前我就出来了。后来怎么得到通知说录取也只是模糊的记忆了。不过录取之后，我就没有去ISTC和电视台面试了。&lt;/p>
+&lt;p>第一年，我也贴过海报，布置会场，搞各种事情，还参加了俱乐部的招新活动。这一年里印象深刻的就是徐瑾姐姐（副部长哦）了，还有IB、昭（要是这个字写错了。。。）哥、斐爷等人。&lt;/p>
+&lt;p>第二年，俱乐部搞技术组，我就加入了一个，好像就遇到了大卉（组长）、嘉霖、彪哥等人。每次开组会都很欢乐，俱乐部屋子里发现一大袋花生我会乱说么。虽然最后我们搞的那个东西没弄出来，不过还是很开心的一年。&lt;/p>
+&lt;p>后来我就很少出现了，除了俱乐部周年庆的时候，里面的人就逐渐陌生了。徐瑾姐姐离开了。&lt;/p>
+&lt;p>后来徐瑾姐姐又回来了，不过那时我也大四了，去北京做毕设去了。&lt;/p>
+&lt;p>后来就是永远离开了。&lt;/p>
+&lt;p>&lt;a href="http://www.formalscience.com/blog/wp-content/uploads/2012/08/P1030924-640x427.jpg">&lt;img src="http://www.formalscience.com/blog/wp-content/uploads/2012/08/P1030924-640x427_thumb.jpg" alt="P1030924 (640x427)" title="P1030924 (640x427)">&lt;/a>&lt;/p>
+&lt;p>我这四年是酱油的四年，不过我跟其他人说起自己的俱乐部都是很自豪的。作为我唯一加入过的一个社团，对于少年的我来说，俱乐部的活动极大开阔了我的眼界，对于大叔的我来说，那些人那些事都是不可磨灭的美好回忆。&lt;/p>
+- https://blog.formalscience.com/2012/08/23/%E6%88%91%E7%9A%84mstc%E7%94%9F%E6%B6%AF-%E6%AD%A4%E7%94%9F%E8%8B%A5%E5%8F%AA%E5%A6%82%E5%88%9D%E8%A7%81/ -</description></item></channel></rss>

@@ -1,0 +1,299 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>不是追风少年</title><link>https://blog.formalscience.com/</link><description>Recent content on 不是追风少年</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 29 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.formalscience.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Call/CC (call-with-current-continuation) 概念学习</title><link>https://blog.formalscience.com/drafts/call-cc/</link><pubDate>Mon, 19 Nov 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/drafts/call-cc/</guid><description>不是追风少年 https://blog.formalscience.com/drafts/call-cc/ -&lt;p>动机：不知道第一次听到这个名词是什么时候，以前也尝试学习过，没学会，加上当时兴趣众多，也就没有钻研。现在看到了，发现可以学了，借用朋友的话，也许是到了“赏味期”。&lt;/p>
+&lt;p>Wiki 上介绍说：&lt;/p>
+&lt;blockquote>
+&lt;p>In Scheme programming, the function call-with-current-continuation, abbreviated call/cc, is used as a control operator. It has been adopted by several other programming languages.&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>Taking a function f as its only argument, (call/cc f) within an expression is applied to the current continuation of the expression.&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;code>call/cc&lt;/code> 是一个控制操作符，用来控制当前表达式的 continuation 。&lt;/p>
+&lt;h2 id="continuation">continuation&lt;/h2>
+&lt;p>词典中的一个含义是 “the action of carrying something on over a period of time or the process of being carried on”，而在计算机科学中，“a continuation is an abstract representation of the control state of a computer program”。&lt;/p>
+&lt;p>下面是放飞自我后的解读：&lt;/p>
+&lt;p>先说下自己当前的理解，continuation 的字面意义是“继续的过程”。在程序中，这个“过程”大概是指“计算”。&lt;/p>
+&lt;p>（这个地方本来有一个蹩脚的例子）&lt;/p>
+&lt;p>在 Scheme 中什么是计算？&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-scheme" data-lang="scheme">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">; BiwaScheme Interpreter version 0.6.4&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">; Copyright (C) 2007-2014 Yutaka HARA and the BiwaScheme team&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;gt; (+ &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">=&amp;gt; &lt;/span>&lt;span style="color:#ae81ff">3&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在这段交互中，&lt;code>(+ 1 2)&lt;/code> 可以视为一个计算过程，将两个数字相加得到另外一个数字。也可以定义为一个函数：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-scheme" data-lang="scheme">&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
+&lt;p>有一篇关于 &lt;code>call/cc&lt;/code> 的讨论：《&lt;a href="http://okmij.org/ftp/continuations/against-callcc.html">An argument against call/cc&lt;/a>》。其中提到了诸多关于 &lt;code>call/cc&lt;/code> 限制，有些内容没有看懂，但对于理解其概念和适用场景会有帮助。&lt;/p>
+&lt;p>&lt;a href="https://repl.it/repls/SpecificStridentRatio">https://repl.it/repls/SpecificStridentRatio&lt;/a>&lt;/p>
+- https://blog.formalscience.com/drafts/call-cc/ -</description></item><item><title>亚庇游记</title><link>https://blog.formalscience.com/2018/10/17/2018-10-17-%E4%BA%9A%E5%BA%87%E6%B8%B8%E8%AE%B0/</link><pubDate>Wed, 17 Oct 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/10/17/2018-10-17-%E4%BA%9A%E5%BA%87%E6%B8%B8%E8%AE%B0/</guid><description>不是追风少年 https://blog.formalscience.com/2018/10/17/2018-10-17-%E4%BA%9A%E5%BA%87%E6%B8%B8%E8%AE%B0/ -&lt;p>计划很早就定下了，中秋节请了节后一天调休假，去沙巴亚庇玩。航程为：杭州-新加坡-亚庇-杭州，之所以在新加坡转机，是为了和新加坡的同学汇合，一起去马拉西亚。&lt;/p>
+&lt;p>由于是第一次出国去玩，所以本着自己遇事就慌的态度，还是好好做了一下攻略。主要有以下几部分内容：&lt;/p>
+&lt;pre>&lt;code>1. 玩的内容
+2. 出行方式
+3. 签证
+4. 装备
+&lt;/code>&lt;/pre>
+&lt;p>沙巴州（Negeri Sabah）旧称北婆罗洲，在 1963 年加入马拉西亚，之前一直在英国的统治之下，有风下之乡（Land Below The Wind）的美誉。其首府为亚庇，旧称哥打京那巴鲁（Kota Kinabalu），杭州机场仍然使用这个称呼。主要旅游城市除了首府亚庇外还有仙本那（Semporna），是著名的潜水目的地。由于去往仙本那需要在斗湖（Tawau）转机，而且这次去玩也不是为了 OW 潜水证，因此等以后有机会再造访。&lt;/p>
+&lt;p>亚庇的景点主要有马来西亚第一高峰（东南亚第五）京那巴鲁山（Mount Kinabalu Gunung Kinabalu）、周围的一些离岛、本地的湿地保护区、清真寺以及一些博物馆。这次计划去京那巴鲁山体验滑翔伞和去美人鱼岛（Mantanani Island）潜水（Discovery Scuba），各自需要耗费一天行程。其他的时间就在市区内逛一下，看看亚庇的物价以及号称可以看到最美落日之一的丹绒亚路海滩。&lt;/p>
+&lt;p>去新加坡的航班需要新加坡签证，淘宝找旅行社代办即可。去往马来西亚的的航班可以使用 eENTRI 或者 eVisa。我用的 eENTRI，按照规定填写完资料，使用支付宝付款后返回页面就生成了 eENTRI 的文件页。需要注意的是申请资料中提到的往返航班行程单需要事先打印好，过关需要用到。至于酒店预订单，我也打印了，但是没有用到。&lt;/p>
+&lt;p>机票全部都是在飞猪买的，酷航-亚航-亚航。当然可以去官网买，但是我图省事，以后可以尝试其他购买渠道。酷航的飞机是波音 789，一排九个座位，不拥挤也不宽敞，不舒服也不难受。亚航的是空客 320，座位是皮革材质，稍微舒服一点。由于是廉价航空，机上都没有免费的水和食物，在回杭州的航班上我用 37 元人民币购买了马来椰浆饭，不是很好吃。机上的乘务人员比较专业，在展示安全带和救生衣使用的时候都有动作示范，这是我在乘坐国内航班的时候没有见过的。&lt;/p>
+&lt;p>杭州萧山机场 T2 异常简陋，出关后只有一些（简陋的）免税店。此时出发的航班大都是廉航的红眼航班。到达新加坡樟宜机场 T2 后在机场换了手机卡，联系了新加坡的同学，简单逛了一下，然后打 Grab 去了东海岸公园。车上师傅跟我聊天，不知道为什么我隐约感觉他可以说中文，但是我俩还是用英语聊了一路。到东海岸公园才六点多吧，看到很多人跑步、骑行。海岸不远处停着许多船。已经有一个大哥拿着单反拍照，似乎是在拍摄日出延时。过了一会儿还有一个女孩子坐到堤坝上和她的狗狗不停自拍。她离开的时候还让我给她和她的狗狗拍了一张照片。我也支起三脚架用手机自拍了一些照片，用单反拍了一些日出（主要是云）和沙滩上呆呆的鸟的照片。&lt;/p>
+&lt;p>同学赶来后一起吃了点东西（我已经很饿了），很甜的咖啡和已经忘记名字的马来酸甜汤粉。然后就是走路逛了逛，坐公交回了机场 T4。机场高架桥上都是鲜花，路旁都是高大的树，让只见过国内机场的我赞叹不已。需要先到亚航的柜台上盖一个章才能出关，我只带了一个背包，不用受 7kg 的行李额度限制。出关后两个人逛优衣库差点忘了登记时间，结果一件都没买。&lt;/p>
+&lt;p>亚庇的机场在海边，飞机降落的时候一边是居民房，一边是海，颇为有趣。下了飞机记得走境外旅客的通道，否则离开的时候出关就有麻烦。出了机场打 Grab 到青年旅舍旁边的商场，后来在附近的一个小店吃了海鲜面和酸柑水。这个酸柑水下面是温水，上面是冰块，有种诡异的酸甜。道理上讲这么流行的饮品应该有其独到之处，我确实感觉到有奇妙的味道，只是欣赏不来。海鲜面可能炒糊了。&lt;/p>
+&lt;p>青年旅舍的老板不会中文，不过同学经验很多，交流完后就办理了入住。稍事休整后去了沙巴州博物馆，花费 15 RM 买票之后，就溜了进去。门厅是个大鲸鱼的骨架，里面比较好玩的是一些原住民乐器还有动物标本模型。动物模型看上去都很生动，布置得也很有趣，还原了一些自然场景。至于其他的展品，会介绍一些沙巴的历史以及与外界的互动交流之类的内容。博物馆外面有个车展，列出了一些老车。除了博物馆本身，附近还有一些其他可逛的地方，比如包含不同族群的本地传统民居还原，其中也有华族的屋子，很有南方传统民居的风味。&lt;/p>
+&lt;p>离开博物馆后，打 Grab 去了丹绒亚路海滩，时间刚刚好，看了落日。从 First Beach 走到 Second Beach，然后打车去了大茄来海鲜餐厅吃饭，没有点奶油老虎虾。去逛了几个本地市场，说实话感觉比较乡土化，里面各种卖水果、烤串（主要是鸡翅膀之类的）还有旧衣服的商贩。后来离开的时候，同学买了几个莲雾，接下来的几天吃的时候发现味道还不错。&lt;/p>
+&lt;p>第二天的行程是美人鱼岛深潜、红树林看长鼻猿和萤火虫。同学磨磨唧唧起床后我们坐着小巴车上路了，一路风光接近我老家鲁西北农村。中途停车买东西和吃饭，我们买了一瓶防蚊喷雾，吃了一份面。没吃饱，去买第二份面的时候就没了…… 吃了一个忘记了什么馅儿的包子。到了码头就是等更多的人来，齐了之后坐船。附近有猴子过来讨吃的，导游把它们赶走，否则游客的包有可能被顺走了。上船后，现在河上航行，行驶比较缓慢。因为快艇会在河中掀起浪，冲击到岸边停靠的船，导致船翻倒的话会被投诉。出海后由于我坐在船头，基本上就是船头扬起在落下的循环，每次都是硬着陆的感觉，脊椎受到极大冲击。&lt;/p>
+- https://blog.formalscience.com/2018/10/17/2018-10-17-%E4%BA%9A%E5%BA%87%E6%B8%B8%E8%AE%B0/ -</description></item><item><title/><link>https://blog.formalscience.com/2018/08/21/2018-08-21_golang_exception_handling/</link><pubDate>Tue, 21 Aug 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/08/21/2018-08-21_golang_exception_handling/</guid><description>不是追风少年 https://blog.formalscience.com/2018/08/21/2018-08-21_golang_exception_handling/ -&lt;p>title: defer, panic and recover in Golang
+date: 2018-08-21
+categories:&lt;/p>
+&lt;ul>
+&lt;li>技术记录&lt;/li>
+&lt;li>tech-notes
+tags: golang&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="1-什么是异常处理">1. 什么是异常处理&lt;/h2>
+&lt;p>程序在执行过程中有可能出现异常状态，比如获取一个不再有效指针指向的内容、除零等。
+一般语言都提供了异常处理机制来应对这些情形，例如 Java 的 &lt;code>try&lt;/code>/&lt;code>catch&lt;/code>/&lt;code>finally&lt;/code> 机制（https://docs.oracle.com/javase/tutorial/essential/exceptions/catch.html）、
+Python 的 &lt;code>try&lt;/code>/&lt;code>raise&lt;/code>/&lt;code>except&lt;/code>/&lt;code>finally&lt;/code> 机制（https://docs.python.org/3/tutorial/errors.html）等。&lt;/p>
+&lt;h2 id="2-go-语言中的异常处理机制">2. Go 语言中的异常处理机制&lt;/h2>
+&lt;p>Go 语言中使用的是 &lt;code>defer&lt;/code>/&lt;code>panic&lt;/code>/&lt;code>recover&lt;/code> 机制来处理异常。Go 语言官方博客的《&lt;a href="https://blog.golang.org/defer-panic-and-recover">Defer, Panic, and Recover&lt;/a>》讲述了这个机制的具体应用方式。&lt;/p>
+&lt;p>还有一些其他教程对这个机制的使用方法、适用场景进行了进一步阐述：&lt;/p>
+&lt;ul>
+&lt;li>The Right Places To Call The recover Function：https://go101.org/article/panic-and-recover-more.html ，几种使用 &lt;code>recover&lt;/code> 恢复 Go 语言中 &lt;code>panic&lt;/code> 的适用场景&lt;/li>
+&lt;li>7.异常处理：https://www.kancloud.cn/liupengjie/go/578555 ，看云发布的 Go 语言教程中涉及到异常处理的章节，里面涉及到很多使用示例细节&lt;/li>
+&lt;/ul>
+&lt;p>如果搜索 “golang 异常处理”，类似的教程有很多。里面的核心思想大体就是：用 &lt;code>defer&lt;/code> + &lt;code>recover&lt;/code> 处理一个 &lt;code>panic&lt;/code>，&lt;code>defer&lt;/code> 结构要在 &lt;code>panic&lt;/code> 触发之前被定义而且 &lt;code>recover&lt;/code> 要直接在在 &lt;code>defer&lt;/code> 结构定义的函数中被调用（而不是被直接调用或者在函数内部的其他函数中被调用）。&lt;/p>
+&lt;h2 id="3-defer-语法糖的部分原理">3. &lt;code>defer&lt;/code> 语法糖的部分原理&lt;/h2>
+&lt;p>在讲述 &lt;code>defer&lt;/code> 机制的文章中，都会提到一个函数中多个 &lt;code>defer&lt;/code> 结构执行的顺序和定义顺序是相反的，即后定义的 &lt;code>defer&lt;/code> 结构总是先被执行。为什么会出现这样的情况？例如下面的代码：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">g&lt;/span>(&lt;span style="color:#a6e22e">n&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> println(&lt;span style="color:#a6e22e">n&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">h&lt;/span>(&lt;span style="color:#a6e22e">str&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> println(&lt;span style="color:#a6e22e">str&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">f&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">defer&lt;/span> &lt;span style="color:#a6e22e">g&lt;/span>(&lt;span style="color:#ae81ff">0&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">defer&lt;/span> &lt;span style="color:#a6e22e">h&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;h&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>调用 &lt;code>f&lt;/code> 输出为：&lt;/p>
+&lt;pre tabindex="0">&lt;code>h
+0
+&lt;/code>&lt;/pre>&lt;p>常见的函数调用流程为：&lt;/p>
+&lt;ul>
+&lt;li>将函数使用的参数压入栈&lt;/li>
+&lt;li>执行函数指令&lt;/li>
+&lt;li>函数执行结束返回到调用点&lt;/li>
+&lt;/ul>
+&lt;p>如果 &lt;code>defer&lt;/code> 相关的代码也是这么执行的话，那么为什么不是： &lt;code>0&lt;/code> 入栈 - 执行 &lt;code>g&lt;/code> - &lt;code>g&lt;/code> 返回 - &lt;code>&amp;quot;h&amp;quot;&lt;/code> 入栈 - 执行 &lt;code>h&lt;/code> - &lt;code>h&lt;/code> 返回 这个顺序呢？
+按照这个顺序执行，调用 &lt;code>f&lt;/code> 输出应该是 &lt;code>0&lt;/code> 在 &lt;code>h&lt;/code> 前面符合预期。是不是 Go 语言中执行 &lt;code>defer&lt;/code> 时采用了特殊的处理流程？&lt;/p>
+&lt;p>是，也不是。&lt;/p>
+&lt;p>太阳底下无新鲜事，&lt;code>defer&lt;/code> 不过是一个语法糖，用来对一个函数 &lt;code>deferproc&lt;/code> 进行包装。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// Create a new deferred function fn with siz bytes of arguments.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// The compiler turns a defer statement into a call to this.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">//go:nosplit
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">deferproc&lt;/span>(&lt;span style="color:#a6e22e">siz&lt;/span> &lt;span style="color:#66d9ef">int32&lt;/span>, &lt;span style="color:#a6e22e">fn&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">funcval&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>deferproc&lt;/code> 创建一个延迟调用的函数，其参数为 &lt;code>siz&lt;/code> （延迟调用的函数的参数占用的字节数量）和 &lt;code>fn&lt;/code>（被延迟调用的函数本身）。
+当 Go 程序的编译器遇到 &lt;code>defer f()&lt;/code>，会将这条语句翻译为一条 &lt;code>deferproc&lt;/code> 和一条 &lt;code>deferreturn&lt;/code> 。
+其中 &lt;code>deferproc&lt;/code> 把被调用的函数及其参数挂载在 goroutine （Go 中的并发单元，协程）结构的一个链表上；
+&lt;code>deferreturn&lt;/code> 从链表上取下一个挂载的被延迟执行的函数，执行它。&lt;/p>
+&lt;p>如何使用技巧绕过 &lt;code>defer&lt;/code> 关键字，模拟类似效果？
+可以使用 &lt;code>linkname&lt;/code> 方法来把 Go 语言运行时的一些关键函数导出，从而进行某些不常见的操作。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> (
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">_&lt;/span> &lt;span style="color:#e6db74">&amp;#34;runtime&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;unsafe&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Eface&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">_type&lt;/span> &lt;span style="color:#66d9ef">uintptr&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Data&lt;/span> &lt;span style="color:#a6e22e">unsafe&lt;/span>.&lt;span style="color:#a6e22e">Pointer&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">EfaceOf&lt;/span>(&lt;span style="color:#a6e22e">ep&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#66d9ef">interface&lt;/span>{}) &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">Eface&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">Eface&lt;/span>)(&lt;span style="color:#a6e22e">unsafe&lt;/span>.&lt;span style="color:#a6e22e">Pointer&lt;/span>(&lt;span style="color:#a6e22e">ep&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Funcval&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fn&lt;/span> &lt;span style="color:#66d9ef">uintptr&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// variable-size, fn-specific data here
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">//go:linkname Deferproc runtime.deferproc
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">Deferproc&lt;/span>(&lt;span style="color:#a6e22e">siz&lt;/span> &lt;span style="color:#66d9ef">int32&lt;/span>, &lt;span style="color:#a6e22e">fn&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">Funcval&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">//go:linkname Deferreturn runtime.deferreturn
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">Deferreturn&lt;/span>(&lt;span style="color:#a6e22e">arg0&lt;/span> &lt;span style="color:#66d9ef">uintptr&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">f&lt;/span> = &lt;span style="color:#66d9ef">func&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> println(&lt;span style="color:#e6db74">&amp;#34;hacked defer&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">fI&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span>{} = &lt;span style="color:#a6e22e">f&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Attach a defer struct to the current goroutine struct
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">Deferproc&lt;/span>(&lt;span style="color:#ae81ff">0&lt;/span>, (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">Funcval&lt;/span>)(&lt;span style="color:#a6e22e">EfaceOf&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">fI&lt;/span>).&lt;span style="color:#a6e22e">Data&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">defer&lt;/span> &lt;span style="color:#66d9ef">func&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> println(&lt;span style="color:#e6db74">&amp;#34;original defer&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Run a deferred function if there is one
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">Deferreturn&lt;/span>(&lt;span style="color:#ae81ff">0&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>这段代码会输出：&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-output" data-lang="output">original defer
+hacked defer
+&lt;/code>&lt;/pre>&lt;p>当然，如果是使用 &lt;code>defer&lt;/code> 关键字，Go 语言的编译器会选择合适的位置插入 &lt;code>deferreturn&lt;/code> 语句，而不是像上述代码中一样手动放在结束位置处。&lt;/p>
+&lt;h2 id="4-recover-生效位置的设计原因推测">4. &lt;code>recover&lt;/code> 生效位置的设计原因推测&lt;/h2>
+&lt;p>言归正传，&lt;code>panic&lt;/code> 发生后，会根据函数调用顺序逐层上报，直到最后一层被抛出到系统导致崩溃或者被 &lt;code>recover&lt;/code> 机制处理。
+那么如果被 &lt;code>recover&lt;/code> 处理，这个过程是怎么生效的？&lt;/p>
+&lt;p>很多教程中都提到 &lt;code>recover&lt;/code> 一定要在 &lt;code>defer&lt;/code> 声明的函数里面（既不是这个函数本身也不能是函数里面的其他函数里面）才能正确处理当前的 &lt;code>panic&lt;/code> 。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// case 1, not work
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">defer&lt;/span> recover()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// case 2, not work
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">defer&lt;/span> &lt;span style="color:#66d9ef">func&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">func&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> recover()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// case 3, work
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">defer&lt;/span> &lt;span style="color:#66d9ef">func&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> recover()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}()
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>为什么呢？&lt;/p>
+&lt;p>先不考虑实现，先从理念上分析一下。&lt;/p>
+&lt;ol>
+&lt;li>&lt;code>defer&lt;/code> 直接作用于 &lt;code>recover()&lt;/code>：无法根据 &lt;code>recover()&lt;/code> 的返回值来进行不同类型的 &lt;code>panic&lt;/code> 处理&lt;/li>
+&lt;li>在被 &lt;code>defer&lt;/code> 作用的函数内部的函数 &lt;code>g&lt;/code> 中使用 &lt;code>recover()&lt;/code>：如果 &lt;code>g&lt;/code> 是一个第三方库的函数，无法保证其中没有未知的 &lt;code>recover&lt;/code> 意外处理了系统中的 &lt;code>panic&lt;/code>。&lt;/li>
+&lt;/ol>
+&lt;p>因此事实上也只能通过这样的约束来使这个异常处理机制看上去直观易处理一些。当然通过对 Go 编译器进行修改，还是有办法使得上面三种情况下 &lt;code>recover&lt;/code> 都可以中断 &lt;code>panic&lt;/code> 向上层传递过程的。&lt;/p>
+&lt;p>此外，由于被 &lt;code>defer&lt;/code> 处理的函数被挂载在 goroutine 结构的一个链表上，因此当 &lt;code>panic&lt;/code> 发生时，可以直接从这个链表上取下被延迟执行的函数一个个执行。
+这也是 &lt;code>recover&lt;/code> 要放在 &lt;code>deferred function&lt;/code> 中的原因，因为这些函数是肯定可以执行到的。&lt;/p>
+&lt;h2 id="5-总结">5. 总结&lt;/h2>
+&lt;p>不能说 Go 中这个异常处理机制有多高明，基本上属于现代语言标配。了解更多背后的原理，在使用时可以更坚定一些。&lt;/p>
+&lt;p>此外，最近看到一本书《最好的告别》（https://book.douban.com/subject/26576861/）。&lt;/p>
+&lt;p>&lt;img src="https://images-na.ssl-images-amazon.com/images/I/41rwxKTGwXL._SX308_BO1,204,203,200_.jpg" alt="Being Mortal">&lt;/p>
+&lt;p>豆瓣上的介绍：&lt;/p>
+&lt;blockquote>
+&lt;p>当独立、自助的生活不能再维持时，我们该怎么办？在生命临近终点的时刻，我们该和医生谈些什么？应该如何优雅地跨越生命的终点？对于这些问题，大多数人缺少清晰的观念，而只是把命运交由医学、技术和陌生人来掌控。影响世界的医生阿图•葛文德结合其多年的外科医生经验与流畅的文笔，讲述了一个个伤感而发人深省的故事，对在21世纪变老意味着什么进行了清醒、深入的探索。&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;code>defer&lt;/code> / &lt;code>finally&lt;/code> 这些关键字让我们可以控制函数退出时的行为，但是我们自身呢？也许考虑这些问题可以让我们自身活得有意义一些。&lt;/p>
+&lt;p>推荐大家看一下。&lt;/p>
+- https://blog.formalscience.com/2018/08/21/2018-08-21_golang_exception_handling/ -</description></item><item><title/><link>https://blog.formalscience.com/drafts/golang_context/</link><pubDate>Mon, 20 Aug 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/drafts/golang_context/</guid><description>不是追风少年 https://blog.formalscience.com/drafts/golang_context/ -- https://blog.formalscience.com/drafts/golang_context/ -</description></item><item><title>golang pprof profiler label</title><link>https://blog.formalscience.com/drafts/golang_pprof_label/</link><pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/drafts/golang_pprof_label/</guid><description>不是追风少年 https://blog.formalscience.com/drafts/golang_pprof_label/ -&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>git clone -b release-branch.go1.10 https://github.com/golang/go.git release-branch.go1.10
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cd release-branch.go1.10/src
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./make.bash
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre tabindex="0">&lt;code>Building Go cmd/dist using /usr/lib/go-1.10.
+Building Go toolchain1 using /usr/lib/go-1.10.
+Building Go bootstrap cmd/go (go_bootstrap) using Go toolchain1.
+Building Go toolchain2 using go_bootstrap and Go toolchain1.
+Building Go toolchain3 using go_bootstrap and Go toolchain2.
+Building packages and commands for linux/amd64.
+---
+Installed Go for linux/amd64 in ~/Projects/release-branch.go1.10
+Installed commands in ~/Projects/release-branch.go1.10/bin
+&lt;/code>&lt;/pre>- https://blog.formalscience.com/drafts/golang_pprof_label/ -</description></item><item><title>Useful Commands</title><link>https://blog.formalscience.com/2018/07/22/commands/</link><pubDate>Sun, 22 Jul 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/07/22/commands/</guid><description>不是追风少年 https://blog.formalscience.com/2018/07/22/commands/ -&lt;h2 id="convert-images-to-a-video">Convert images to a video&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>ffmpeg -r &lt;span style="color:#ae81ff">30&lt;/span> -start_number &lt;span style="color:#ae81ff">3455&lt;/span> -i _IMG%d.jpg -s 960X600 -pix_fmt yuv420p 30fps-960.mov
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>-r 30&lt;/code>: 30 frames per second&lt;/li>
+&lt;li>&lt;code>-s 960X600&lt;/code>: resolution&lt;/li>
+&lt;li>&lt;code>-pix_fmt yuv420p&lt;/code>: for OsX&lt;/li>
+&lt;/ul>
+&lt;h2 id="youtube-dl-video-and-extract-audio-file">youtube-dl video and extract audio file&lt;/h2>
+&lt;p>&lt;code>youtube-dl --proxy socks5://127.0.0.1:1080 -x --audio-format mp3 youtube-url&lt;/code>&lt;/p>
+&lt;h2 id="virtualenvwrapper">virtualenvwrapper&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>WORKON_HOME&lt;/code>: which directory your environments are created in&lt;/li>
+&lt;li>&lt;code>/usr/local/bin/virtualenvwrapper.sh&lt;/code>: default location for its configuration file&lt;/li>
+&lt;li>&lt;code>mkvirtualenv test --python=python3&lt;/code>: make a virtual environment &amp;rsquo;test&amp;rsquo; with python3&lt;/li>
+&lt;li>&lt;code>rmvirtualenv test&lt;/code>: remove a virtual environment &amp;rsquo;test'&lt;/li>
+&lt;li>&lt;code>workon test3&lt;/code> or &lt;code>lsvirtualenv -b test3&lt;/code>: activate a virtual environment &amp;rsquo;test'&lt;/li>
+&lt;li>&lt;code>deactivate&lt;/code>: exit current environment&lt;/li>
+&lt;li>more details: search engine
+&lt;ul>
+&lt;li>how to avoid globa packages&lt;/li>
+&lt;li>how to copy an environment&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="node--npm">node &amp;amp;&amp;amp; npm&lt;/h2>
+&lt;p>npm complains: &lt;code>Error: Cannot find module 'process-nextick-args'&lt;/code>&lt;/p>
+&lt;p>Uninstall node, &lt;code>brew uninstall node&lt;/code>, then by &lt;a href="https://stackoverflow.com/questions/11177954/how-do-i-completely-uninstall-node-js-and-reinstall-from-beginning-mac-os-x">this stackoverflow post&lt;/a>:&lt;/p>
+&lt;pre tabindex="0">&lt;code>sudo rm -rf /usr/local/bin/npm /usr/local/share/man/man1/node* /usr/local/lib/dtrace/node.d ~/.npm ~/.node-gyp
+sudo rm -rf /opt/local/bin/node /opt/local/include/node /opt/local/lib/node_modules
+sudo rm -rf /usr/local/bin/npm /usr/local/share/man/man1/node.1 /usr/local/lib/dtrace/node.d
+&lt;/code>&lt;/pre>&lt;p>Just delete something, then &lt;code>brew install npm&lt;/code>.&lt;/p>
+&lt;h2 id="delve-dlv-tips">delve (dlv) tips&lt;/h2>
+&lt;ul>
+&lt;li>funcs [regexp] : get function list&lt;/li>
+&lt;li>call : call a function (in a newer a go version, dlv should be installed in the newer go version too)&lt;/li>
+&lt;/ul>
+&lt;h2 id="shadowsocks">shadowsocks&lt;/h2>
+&lt;p>&lt;code>ssserver -c /etc/shadowsocks/config.json&lt;/code>&lt;/p>
+&lt;p>&lt;code>sslocal&lt;/code> and &lt;code>ssserver&lt;/code> are all from &lt;code>apt-get install shadowsocks&lt;/code>.&lt;/p>
+&lt;h2 id="wsl-2--vmware-switch">WSL 2 &amp;amp;&amp;amp; VMware switch&lt;/h2>
+&lt;p>After enabling WSL 2 on Windows 10 insider preview, VMware virtual machine is disabled.
+This is because collision between Hyper-V and VMware.&lt;/p>
+&lt;p>Turn on VMware&lt;/p>
+&lt;pre tabindex="0">&lt;code> bcdedit /set hypervisorlaunchtype off
+&lt;/code>&lt;/pre>&lt;p>Turn on Hyper-V &amp;amp;&amp;amp; WSL 2&lt;/p>
+&lt;pre tabindex="0">&lt;code> bcdedit /set hypervisorlaunchtype auto
+&lt;/code>&lt;/pre>&lt;p>reference: &lt;a href="https://blog.minirplus.com/10268/">https://blog.minirplus.com/10268/&lt;/a>&lt;/p>
+- https://blog.formalscience.com/2018/07/22/commands/ -</description></item><item><title>爬虫</title><link>https://blog.formalscience.com/drafts/%E7%88%AC%E8%99%AB/</link><pubDate>Sat, 21 Jul 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/drafts/%E7%88%AC%E8%99%AB/</guid><description>不是追风少年 https://blog.formalscience.com/drafts/%E7%88%AC%E8%99%AB/ -&lt;p>&lt;a href="https://stackoverflow.com/questions/21455349/xpath-query-get-attribute-href-from-a-tag">https://stackoverflow.com/questions/21455349/xpath-query-get-attribute-href-from-a-tag&lt;/a>&lt;/p>
+&lt;p>For the following HTML document:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-html" data-lang="html">&lt;span style="display:flex;">&lt;span>&amp;lt;&lt;span style="color:#f92672">html&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &amp;lt;&lt;span style="color:#f92672">body&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &amp;lt;&lt;span style="color:#f92672">a&lt;/span> &lt;span style="color:#a6e22e">href&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;http://www.example.com&amp;#34;&lt;/span>&amp;gt;Example&amp;lt;/&lt;span style="color:#f92672">a&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &amp;lt;&lt;span style="color:#f92672">a&lt;/span> &lt;span style="color:#a6e22e">href&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;http://www.stackoverflow.com&amp;#34;&lt;/span>&amp;gt;SO&amp;lt;/&lt;span style="color:#f92672">a&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &amp;lt;/&lt;span style="color:#f92672">body&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;/&lt;span style="color:#f92672">html&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The xpath query &lt;code>/html/body//a/@href&lt;/code> (or simply &lt;code>//a/@href&lt;/code>) will return:&lt;/p>
+&lt;pre tabindex="0">&lt;code> http://www.example.com
+http://www.stackoverflow.com
+&lt;/code>&lt;/pre>&lt;p>To select a specific instance use &lt;code>/html/body//a[N]/@href&lt;/code>,&lt;/p>
+&lt;pre tabindex="0">&lt;code> $ /html/body//a[2]/@href
+http://www.stackoverflow.com
+&lt;/code>&lt;/pre>&lt;p>To test for strings contained in the attribute and return the attribute itself place the check on the tag not on the attribute:&lt;/p>
+&lt;pre tabindex="0">&lt;code> $ /html/body//a[contains(@href,&amp;#39;example&amp;#39;)]/@href
+http://www.example.com
+&lt;/code>&lt;/pre>&lt;p>Mixing the two:&lt;/p>
+&lt;pre tabindex="0">&lt;code> $ /html/body//a[contains(@href,&amp;#39;com&amp;#39;)][2]/@href
+http://www.stackoverflow.com
+&lt;/code>&lt;/pre>- https://blog.formalscience.com/drafts/%E7%88%AC%E8%99%AB/ -</description></item><item><title>电池人生</title><link>https://blog.formalscience.com/2018/07/06/2018-07-06-battery-life/</link><pubDate>Fri, 06 Jul 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/07/06/2018-07-06-battery-life/</guid><description>不是追风少年 https://blog.formalscience.com/2018/07/06/2018-07-06-battery-life/ -&lt;blockquote>
+&lt;p>电池，一般狭义上的定义是将本身储存的化学能转成电能的装置，广义的定义为将预先储存起的能量转化为可供外用电能的装置。因此，像太阳能电池只有转化而无储存功能的装置不算是电池。其他名称有电瓶、电芯，而中文池及瓶也有储存作用之意。&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>《维基百科》&lt;/p>
+&lt;/blockquote>
+&lt;p>5 月份上海校友会来杭州参观，我带队去云栖景区玩，后来大家一起去了阿里西溪园区。园区很漂亮，中间有一块地被高墙围起，据说马云在那里开董事会。后面有个讨论环节，那时我已经昏昏欲睡了，只记得那个阿里 P11 说今后公司要拓展的方向是娱乐和健康。&lt;/p>
+&lt;p>娱乐和健康都是人生活的必需品。&lt;/p>
+&lt;p>最近认识一些朋友去今日头条工作了。这个公司的应用通过算法构建消息流推送到人们的移动终端。在信息泛滥的今天，可以永远向下滑动手指，看到无尽的“新”闻。可算法知道，这些新闻的类型是你喜欢的，同样的主题是你的老朋友了。&lt;/p>
+&lt;p>当然这样的应用通常不需要你付费，因为你就是它们的商品。一次次的滑动中除了那些通过视网膜输入的新闻还有各式各样的广告，都是基于你的“兴趣”进行筛选后的结果。它们攫取你的时间卖给了肯花钱展示商品的人，赚到了差价。&lt;/p>
+&lt;p>以前看黑客帝国的时候，总是不明白 Matrix 那么发达，却还是需要将人关在营养仓里当做电池使用。人是消耗能量的啊！最近才逐渐有所领悟，人体不一定可以拿来产生能量。人作为进化的产物，智能依赖生物结构，Matrix 可以将一个个的人作为基础的计算组件，用来支撑虚拟世界中的各种计算。现在我们使用人工智能也是如此，用来识别人脸、用来预测天气 ……&lt;/p>
+&lt;p>《海伯利安》中有一个设定，机器智能帮助人类构建了可以在宇宙各处穿梭的跃迁节点，而这种技术远远超出了人类的理解范围。人们以为这是机器智能回馈给它们的“造物主”的礼物，但实际上这是一个陷阱。人穿梭过跃迁节点从另一侧出来并不是瞬间完成的。在节点中度过的无法感知到的时间中，人的大脑的计算能力被机器智能利用，完成了自身的不断进化，来追求它们的终极目标。&lt;/p>
+&lt;p>在阿西莫夫的经典作品《我，机器人》改编的电影中，威尔•史密斯扮演的黑人警探戴尔•斯普纳不相信人类能和机器人和平共处，故事的各种冲突也从此展开。这部作品的底线是机器人还遵守“机器人三定律”，虽然是被以某种人类意想不到的方式施行的。现实中，我们能对机器人有所期待吗？我们能对创造机器人的人有所期待吗？&lt;/p>
+&lt;p>总是有人对新的技术保持怀疑 —— 有些人因为未知而恐惧，有些人因为远见而忧虑，只有中间的人享受着生活。&lt;/p>
+&lt;p>有时候想人的一生好短暂，也就一百年。昨天看到淡豹的一篇文章《近日新闻有感》，中间有一大段对日常种种琐事的描述，读的过程中仿佛头被浸在水中。究竟是什么（强大的）力量在驱使我们生活？&lt;/p>
+&lt;p>在我看来这种力量里又加入了一方势力，有些人在尽最大努力使用着智能算法来侵占人的生命。以前他们也这样做，通过编辑人们喜欢的花边新闻和轶事来吸引人们注意，不过那种方式毕竟低效。现在算法可以让人们通过滑动手指，自己戴上镣铐，出卖生命。&lt;/p>
+&lt;p>小的时候，有段时间我很喜欢四驱车，当然是在看了《四驱小子》之后。终于有了一辆（无影剑）后，我发现了一个现实的问题：这车跑起来很费电池，于是又攒钱买充电电池。最终电池的能量变成了车在赛道上前进的动力以及我的回忆。&lt;/p>
+&lt;p>我对四驱车的欲望肯定是来自动画片，后来我弟弟那时候买的就是悠悠球了。人的大脑是可以被外界信息影响的，现代科技也会以某种方式对人的大脑进行编程。现在人脑运行的机制还不清楚，如果可行的话，那些广告商肯定想通过某种方式对你的大脑进行编程，让你看一遍广告就下单购物。&lt;/p>
+&lt;p>我前段时间在想：如果总是接受这样被算法（你的手指）选择过的信息，会变傻吗？至少我体会过那种无效信息过载的时刻，就是大脑没什么感觉了。&lt;/p>
+&lt;p>在这个过程中我们到底付出了什么呢？我们的时间，我们的未来。&lt;/p>
+&lt;p>随着时间的推移，人的未来就逐渐坍缩，直到生命终点，也就没有未来了。每一秒过去，我们的未来就少了几分可能性。&lt;/p>
+&lt;p>如果明天不值得期待，就继续燃烧自己吧。&lt;/p>
+- https://blog.formalscience.com/2018/07/06/2018-07-06-battery-life/ -</description></item><item><title>Multi Websites in One Host (Ubuntu 18.04)</title><link>https://blog.formalscience.com/drafts/multi_websites_in_one_host_ubuntu_18/</link><pubDate>Sat, 30 Jun 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/drafts/multi_websites_in_one_host_ubuntu_18/</guid><description>不是追风少年 https://blog.formalscience.com/drafts/multi_websites_in_one_host_ubuntu_18/ -&lt;p>The configuration for Apache on my Ubuntu 18.04 (DigitialOcean) is &lt;code>/etc/apache2/apache2.conf&lt;/code>.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-conf" data-lang="conf"># This is the main Apache server configuration file. It contains the
+# configuration directives that give the server its instructions.
+# See http://httpd.apache.org/docs/2.4/ for detailed information about
+# the directives and /usr/share/doc/apache2/README.Debian about Debian specific
+# hints.
+#
+#
+# Summary of how the Apache 2 configuration works in Debian:
+# The Apache 2 web server configuration in Debian is quite different to
+# upstream&amp;#39;s suggested way to configure the web server. This is because Debian&amp;#39;s
+# default Apache2 installation attempts to make adding and removing modules,
+# virtual hosts, and extra configuration directives as flexible as possible, in
+# order to make automating the changes and administering the server as easy as
+# possible.
+&lt;/code>&lt;/pre>- https://blog.formalscience.com/drafts/multi_websites_in_one_host_ubuntu_18/ -</description></item><item><title>Understanding Linux Schedule Domain</title><link>https://blog.formalscience.com/drafts/linux_schedule_domain/</link><pubDate>Thu, 28 Jun 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/drafts/linux_schedule_domain/</guid><description>不是追风少年 https://blog.formalscience.com/drafts/linux_schedule_domain/ -- https://blog.formalscience.com/drafts/linux_schedule_domain/ -</description></item></channel></rss>
