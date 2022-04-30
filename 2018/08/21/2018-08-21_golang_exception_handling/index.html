@@ -1,0 +1,99 @@
+<!doctype html><html lang=zh-cn><head><title>defer, panic and recover in Golang // 不是追风少年</title><link rel="shortcut icon" href=/favicon.ico><meta charset=utf-8><meta name=generator content="Hugo 0.98.0"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content="bef0rewind"><meta name=description content><link rel=stylesheet href=https://blog.formalscience.com/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css><meta name=twitter:card content="summary"><meta name=twitter:title content="defer, panic and recover in Golang"><meta name=twitter:description content="1. 什么是异常处理 程序在执行过程中有可能出现异常状态，比如获取一个不再有效指针指向的内容、除零等。 一般语言都提供了异常处理机制来应对这些情形，例如 Java 的 try/catch/finally 机制（https://docs.oracle.com/javase/tutorial/essential/exceptions/catch.html）、 Python 的 try/raise/except/finally 机制（https://docs.python.org/3/tutorial/errors.html）等。
+2. Go 语言中的异常处理机制 Go 语言中使用的是 defer/panic/recover 机制来处理异常。Go 语言官方博客的《Defer, Panic, and Recover》讲述了这个机制的具体应用方式。
+还有一些其他教程对这个机制的使用方法、适用场景进行了进一步阐述：
+ The Right Places To Call The recover Function：https://go101.org/article/panic-and-recover-more.html ，几种使用 recover 恢复 Go 语言中 panic 的适用场景 7.异常处理：https://www.kancloud.cn/liupengjie/go/578555 ，看云发布的 Go 语言教程中涉及到异常处理的章节，里面涉及到很多使用示例细节  如果搜索 “golang 异常处理”，类似的教程有很多。里面的核心思想大体就是：用 defer + recover 处理一个 panic，defer 结构要在 panic 触发之前被定义而且 recover 要直接在在 defer 结构定义的函数中被调用（而不是被直接调用或者在函数内部的其他函数中被调用）。
+3. defer 语法糖的部分原理 在讲述 defer 机制的文章中，都会提到一个函数中多个 defer 结构执行的顺序和定义顺序是相反的，即后定义的 defer 结构总是先被执行。为什么会出现这样的情况？例如下面的代码："><meta property="og:title" content="defer, panic and recover in Golang"><meta property="og:description" content="1. 什么是异常处理 程序在执行过程中有可能出现异常状态，比如获取一个不再有效指针指向的内容、除零等。 一般语言都提供了异常处理机制来应对这些情形，例如 Java 的 try/catch/finally 机制（https://docs.oracle.com/javase/tutorial/essential/exceptions/catch.html）、 Python 的 try/raise/except/finally 机制（https://docs.python.org/3/tutorial/errors.html）等。
+2. Go 语言中的异常处理机制 Go 语言中使用的是 defer/panic/recover 机制来处理异常。Go 语言官方博客的《Defer, Panic, and Recover》讲述了这个机制的具体应用方式。
+还有一些其他教程对这个机制的使用方法、适用场景进行了进一步阐述：
+ The Right Places To Call The recover Function：https://go101.org/article/panic-and-recover-more.html ，几种使用 recover 恢复 Go 语言中 panic 的适用场景 7.异常处理：https://www.kancloud.cn/liupengjie/go/578555 ，看云发布的 Go 语言教程中涉及到异常处理的章节，里面涉及到很多使用示例细节  如果搜索 “golang 异常处理”，类似的教程有很多。里面的核心思想大体就是：用 defer + recover 处理一个 panic，defer 结构要在 panic 触发之前被定义而且 recover 要直接在在 defer 结构定义的函数中被调用（而不是被直接调用或者在函数内部的其他函数中被调用）。
+3. defer 语法糖的部分原理 在讲述 defer 机制的文章中，都会提到一个函数中多个 defer 结构执行的顺序和定义顺序是相反的，即后定义的 defer 结构总是先被执行。为什么会出现这样的情况？例如下面的代码："><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/2018/08/21/2018-08-21_golang_exception_handling/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2018-08-21T00:00:00+00:00"><meta property="article:modified_time" content="2018-08-21T00:00:00+00:00"></head><body><header class=app-header><a href=https://blog.formalscience.com/><img class=app-header-avatar src=/avatar.jpg alt=bef0rewind></a><h1>不是追风少年</h1><nav class=app-header-menu><a class=app-header-menu-item href=/>Home</a>
+-
+<a class=app-header-menu-item href=/tags/>Tags</a>
+-
+<a class=app-header-menu-item href=/about/>About</a></nav><p>当你在追着风，风也在推着你</p><div class=app-header-social><a href=https://github.com/ronhuafeng target=_blank rel="noreferrer noopener"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github"><title>我的 GitHub</title><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg></a></div></header><main class=app-container><article class=post><header class=post-header><h1 class=post-title>defer, panic and recover in Golang</h1><div class=post-meta><div><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar"><title>calendar</title><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Aug 21, 2018</div><div><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock"><title>clock</title><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>2 min read</div><div><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag"><title>tag</title><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><a class=tag href=https://blog.formalscience.com/tags/golang/>golang</a></div></div></header><div class=post-content><h2 id=1-什么是异常处理>1. 什么是异常处理</h2><p>程序在执行过程中有可能出现异常状态，比如获取一个不再有效指针指向的内容、除零等。
+一般语言都提供了异常处理机制来应对这些情形，例如 Java 的 <code>try</code>/<code>catch</code>/<code>finally</code> 机制（https://docs.oracle.com/javase/tutorial/essential/exceptions/catch.html）、
+Python 的 <code>try</code>/<code>raise</code>/<code>except</code>/<code>finally</code> 机制（https://docs.python.org/3/tutorial/errors.html）等。</p><h2 id=2-go-语言中的异常处理机制>2. Go 语言中的异常处理机制</h2><p>Go 语言中使用的是 <code>defer</code>/<code>panic</code>/<code>recover</code> 机制来处理异常。Go 语言官方博客的《<a href=https://blog.golang.org/defer-panic-and-recover>Defer, Panic, and Recover</a>》讲述了这个机制的具体应用方式。</p><p>还有一些其他教程对这个机制的使用方法、适用场景进行了进一步阐述：</p><ul><li>The Right Places To Call The recover Function：https://go101.org/article/panic-and-recover-more.html ，几种使用 <code>recover</code> 恢复 Go 语言中 <code>panic</code> 的适用场景</li><li>7.异常处理：https://www.kancloud.cn/liupengjie/go/578555 ，看云发布的 Go 语言教程中涉及到异常处理的章节，里面涉及到很多使用示例细节</li></ul><p>如果搜索 “golang 异常处理”，类似的教程有很多。里面的核心思想大体就是：用 <code>defer</code> + <code>recover</code> 处理一个 <code>panic</code>，<code>defer</code> 结构要在 <code>panic</code> 触发之前被定义而且 <code>recover</code> 要直接在在 <code>defer</code> 结构定义的函数中被调用（而不是被直接调用或者在函数内部的其他函数中被调用）。</p><h2 id=3-defer-语法糖的部分原理>3. <code>defer</code> 语法糖的部分原理</h2><p>在讲述 <code>defer</code> 机制的文章中，都会提到一个函数中多个 <code>defer</code> 结构执行的顺序和定义顺序是相反的，即后定义的 <code>defer</code> 结构总是先被执行。为什么会出现这样的情况？例如下面的代码：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>g</span>(<span style=color:#a6e22e>n</span> <span style=color:#66d9ef>int</span>) {
+</span></span><span style=display:flex><span>  println(<span style=color:#a6e22e>n</span>)
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>h</span>(<span style=color:#a6e22e>str</span> <span style=color:#66d9ef>string</span>) {
+</span></span><span style=display:flex><span>  println(<span style=color:#a6e22e>str</span>)
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>f</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>g</span>(<span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>h</span>(<span style=color:#e6db74>&#34;h&#34;</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>调用 <code>f</code> 输出为：</p><pre tabindex=0><code>h
+0
+</code></pre><p>常见的函数调用流程为：</p><ul><li>将函数使用的参数压入栈</li><li>执行函数指令</li><li>函数执行结束返回到调用点</li></ul><p>如果 <code>defer</code> 相关的代码也是这么执行的话，那么为什么不是： <code>0</code> 入栈 - 执行 <code>g</code> - <code>g</code> 返回 - <code>"h"</code> 入栈 - 执行 <code>h</code> - <code>h</code> 返回 这个顺序呢？
+按照这个顺序执行，调用 <code>f</code> 输出应该是 <code>0</code> 在 <code>h</code> 前面符合预期。是不是 Go 语言中执行 <code>defer</code> 时采用了特殊的处理流程？</p><p>是，也不是。</p><p>太阳底下无新鲜事，<code>defer</code> 不过是一个语法糖，用来对一个函数 <code>deferproc</code> 进行包装。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// Create a new deferred function fn with siz bytes of arguments.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// The compiler turns a defer statement into a call to this.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>//go:nosplit
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>deferproc</span>(<span style=color:#a6e22e>siz</span> <span style=color:#66d9ef>int32</span>, <span style=color:#a6e22e>fn</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>funcval</span>)
+</span></span></code></pre></div><p><code>deferproc</code> 创建一个延迟调用的函数，其参数为 <code>siz</code> （延迟调用的函数的参数占用的字节数量）和 <code>fn</code>（被延迟调用的函数本身）。
+当 Go 程序的编译器遇到 <code>defer f()</code>，会将这条语句翻译为一条 <code>deferproc</code> 和一条 <code>deferreturn</code> 。
+其中 <code>deferproc</code> 把被调用的函数及其参数挂载在 goroutine （Go 中的并发单元，协程）结构的一个链表上；
+<code>deferreturn</code> 从链表上取下一个挂载的被延迟执行的函数，执行它。</p><p>如何使用技巧绕过 <code>defer</code> 关键字，模拟类似效果？
+可以使用 <code>linkname</code> 方法来把 Go 语言运行时的一些关键函数导出，从而进行某些不常见的操作。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> (
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>_</span> <span style=color:#e6db74>&#34;runtime&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;unsafe&#34;</span>
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Eface</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>_type</span> <span style=color:#66d9ef>uintptr</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Data</span>  <span style=color:#a6e22e>unsafe</span>.<span style=color:#a6e22e>Pointer</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>EfaceOf</span>(<span style=color:#a6e22e>ep</span> <span style=color:#f92672>*</span><span style=color:#66d9ef>interface</span>{}) <span style=color:#f92672>*</span><span style=color:#a6e22e>Eface</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> (<span style=color:#f92672>*</span><span style=color:#a6e22e>Eface</span>)(<span style=color:#a6e22e>unsafe</span>.<span style=color:#a6e22e>Pointer</span>(<span style=color:#a6e22e>ep</span>))
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Funcval</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fn</span> <span style=color:#66d9ef>uintptr</span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// variable-size, fn-specific data here
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>//go:linkname Deferproc runtime.deferproc
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Deferproc</span>(<span style=color:#a6e22e>siz</span> <span style=color:#66d9ef>int32</span>, <span style=color:#a6e22e>fn</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Funcval</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>//go:linkname Deferreturn runtime.deferreturn
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Deferreturn</span>(<span style=color:#a6e22e>arg0</span> <span style=color:#66d9ef>uintptr</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>f</span> = <span style=color:#66d9ef>func</span>() {
+</span></span><span style=display:flex><span>		println(<span style=color:#e6db74>&#34;hacked defer&#34;</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>fI</span> <span style=color:#66d9ef>interface</span>{} = <span style=color:#a6e22e>f</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// Attach a defer struct to the current goroutine struct
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>Deferproc</span>(<span style=color:#ae81ff>0</span>, (<span style=color:#f92672>*</span><span style=color:#a6e22e>Funcval</span>)(<span style=color:#a6e22e>EfaceOf</span>(<span style=color:#f92672>&amp;</span><span style=color:#a6e22e>fI</span>).<span style=color:#a6e22e>Data</span>))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>defer</span> <span style=color:#66d9ef>func</span>() {
+</span></span><span style=display:flex><span>		println(<span style=color:#e6db74>&#34;original defer&#34;</span>)
+</span></span><span style=display:flex><span>	}()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// Run a deferred function if there is one
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>Deferreturn</span>(<span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>这段代码会输出：</p><pre tabindex=0><code class=language-output data-lang=output>original defer
+hacked defer
+</code></pre><p>当然，如果是使用 <code>defer</code> 关键字，Go 语言的编译器会选择合适的位置插入 <code>deferreturn</code> 语句，而不是像上述代码中一样手动放在结束位置处。</p><h2 id=4-recover-生效位置的设计原因推测>4. <code>recover</code> 生效位置的设计原因推测</h2><p>言归正传，<code>panic</code> 发生后，会根据函数调用顺序逐层上报，直到最后一层被抛出到系统导致崩溃或者被 <code>recover</code> 机制处理。
+那么如果被 <code>recover</code> 处理，这个过程是怎么生效的？</p><p>很多教程中都提到 <code>recover</code> 一定要在 <code>defer</code> 声明的函数里面（既不是这个函数本身也不能是函数里面的其他函数里面）才能正确处理当前的 <code>panic</code> 。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// case 1, not work
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>defer</span> recover()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// case 2, not work
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>defer</span> <span style=color:#66d9ef>func</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>func</span>() {
+</span></span><span style=display:flex><span>    recover()
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// case 3, work
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>defer</span> <span style=color:#66d9ef>func</span>() {
+</span></span><span style=display:flex><span>  recover()
+</span></span><span style=display:flex><span>}()
+</span></span></code></pre></div><p>为什么呢？</p><p>先不考虑实现，先从理念上分析一下。</p><ol><li><code>defer</code> 直接作用于 <code>recover()</code>：无法根据 <code>recover()</code> 的返回值来进行不同类型的 <code>panic</code> 处理</li><li>在被 <code>defer</code> 作用的函数内部的函数 <code>g</code> 中使用 <code>recover()</code>：如果 <code>g</code> 是一个第三方库的函数，无法保证其中没有未知的 <code>recover</code> 意外处理了系统中的 <code>panic</code>。</li></ol><p>因此事实上也只能通过这样的约束来使这个异常处理机制看上去直观易处理一些。当然通过对 Go 编译器进行修改，还是有办法使得上面三种情况下 <code>recover</code> 都可以中断 <code>panic</code> 向上层传递过程的。</p><p>此外，由于被 <code>defer</code> 处理的函数被挂载在 goroutine 结构的一个链表上，因此当 <code>panic</code> 发生时，可以直接从这个链表上取下被延迟执行的函数一个个执行。
+这也是 <code>recover</code> 要放在 <code>deferred function</code> 中的原因，因为这些函数是肯定可以执行到的。</p><h2 id=5-总结>5. 总结</h2><p>不能说 Go 中这个异常处理机制有多高明，基本上属于现代语言标配。了解更多背后的原理，在使用时可以更坚定一些。</p><p>此外，最近看到一本书《最好的告别》（https://book.douban.com/subject/26576861/）。</p><p><img src=https://images-na.ssl-images-amazon.com/images/I/41rwxKTGwXL._SX308_BO1,204,203,200_.jpg alt="Being Mortal"></p><p>豆瓣上的介绍：</p><blockquote><p>当独立、自助的生活不能再维持时，我们该怎么办？在生命临近终点的时刻，我们该和医生谈些什么？应该如何优雅地跨越生命的终点？对于这些问题，大多数人缺少清晰的观念，而只是把命运交由医学、技术和陌生人来掌控。影响世界的医生阿图•葛文德结合其多年的外科医生经验与流畅的文笔，讲述了一个个伤感而发人深省的故事，对在21世纪变老意味着什么进行了清醒、深入的探索。</p></blockquote><p><code>defer</code> / <code>finally</code> 这些关键字让我们可以控制函数退出时的行为，但是我们自身呢？也许考虑这些问题可以让我们自身活得有意义一些。</p><p>推荐大家看一下。</p></div><div class=post-footer><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//bef0rewind-blog.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></article></main></body></html>
