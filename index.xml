@@ -1,494 +1,652 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>不是追风少年</title><link>https://blog.formalscience.com/</link><description>Recent content on 不是追风少年</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 29 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.formalscience.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Encounter Kubernetes</title><link>https://blog.formalscience.com/drafts/encounter_kubernetes/</link><pubDate>Fri, 29 Apr 2022 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/drafts/encounter_kubernetes/</guid><description>不是追风少年 https://blog.formalscience.com/drafts/encounter_kubernetes/ -- https://blog.formalscience.com/drafts/encounter_kubernetes/ -</description></item><item><title>2020 生活规划</title><link>https://blog.formalscience.com/2020/01/01/2020-guidelines/</link><pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2020/01/01/2020-guidelines/</guid><description>不是追风少年 https://blog.formalscience.com/2020/01/01/2020-guidelines/ -&lt;h2 id="指导原则">指导原则&lt;/h2>
-&lt;p>适当精简，包括日常生活用品，生活中从事的事情，工作中要处理的事情，自己阅读、观影等时间话费，感情方面也是重要一环，把精力放在有价值的关系上。&lt;/p>
-&lt;ul>
-&lt;li>身体健康&lt;/li>
-&lt;li>读书、读论文&lt;/li>
-&lt;li>多游览各方&lt;/li>
-&lt;li>创作（文学、摄影）&lt;/li>
-&lt;/ul>
-- https://blog.formalscience.com/2020/01/01/2020-guidelines/ -</description></item><item><title>爱丁堡租房</title><link>https://blog.formalscience.com/2019/09/24/2019-09-24-rent-in-edinburgh/</link><pubDate>Tue, 24 Sep 2019 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2019/09/24/2019-09-24-rent-in-edinburgh/</guid><description>不是追风少年 https://blog.formalscience.com/2019/09/24/2019-09-24-rent-in-edinburgh/ -&lt;p>生活就是一场旅行，这算是一个重大决定。到爱丁堡工作已经一周，时差基本倒过来了。
-第一周住在酒店，最紧迫的事情就是租房，因为后续用来发工资的银行卡、办理警察局的手续都需要一个租房地址。&lt;/p>
-&lt;p>出国前了解过这边的租房市场，主要通过 Zoopla 或者 Rightmove 等软件。不过都是隔岸观火，还是要实地考察才靠谱。
-这边看房不像国内有一个看房小哥，一下午能带你看十几套房子。
-我在软件上看到想去瞧一下的房子，都是要打电话去预约、APP 内发消息等。
-等收到电话回访或者邮件回复后，约定一个看房时间（viewing arrangement），然后去看房。
-一般会有很多人一起看房，热门的房型可能会有十几人。不过中介机构也不会无限量地拉人看房，有时就告诉你没有看房名额了。
-等看房满意后就可以邮件或者网站填写申请，如果房主（landlord）同意，那么就可以交定金成交了。&lt;/p>
-&lt;p>房租一般根据地理位置、装修等价格会有一些差别。
-本来最初的目标是租一个一人间，比较难租到。后来和同事商量后，租了一个两人间。&lt;/p>
-&lt;p>听同事讲爱丁堡房产的租售比不错，也许可以考虑在这边投资一下房子。&lt;/p>
-- https://blog.formalscience.com/2019/09/24/2019-09-24-rent-in-edinburgh/ -</description></item><item><title>To Bangkok</title><link>https://blog.formalscience.com/2019/02/17/2019-02-17_to_bangkok/</link><pubDate>Sun, 17 Feb 2019 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2019/02/17/2019-02-17_to_bangkok/</guid><description>不是追风少年 https://blog.formalscience.com/2019/02/17/2019-02-17_to_bangkok/ -&lt;ul>
-&lt;li>&lt;a href="#%E6%99%AE%E9%80%9A%E8%90%BD%E5%9C%B0%E7%AD%BE%E8%AF%81visa-on-arrival-voa">普通落地签证/Visa on Arrival (VOA)&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#%E8%90%BD%E5%9C%B0%E7%AD%BE%E9%9C%80%E8%A6%81%E7%9A%84%E6%9D%A1%E4%BB%B6">落地签需要的条件&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#%E7%AD%BE%E8%AF%81%E6%9C%89%E6%95%88%E6%9C%9F">签证有效期&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>&lt;a href="#%E7%94%B5%E5%AD%90%E8%90%BD%E5%9C%B0%E7%AD%BE%E8%AF%81e-visa-on-arrivale-voa">电子落地签证/E-Visa on Arrival(E-VOA)&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#%E5%AE%9E%E9%99%85%E6%93%8D%E4%BD%9C">实际操作&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>&lt;a href="#%E6%8D%A2%E6%B1%87">换汇&lt;/a>
-&lt;ul>
-&lt;li>&lt;a href="#%E5%AE%9E%E9%99%85%E6%93%8D%E4%BD%9C-1">实际操作&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>&lt;a href="#%E5%AE%9E%E7%94%A8%E4%BF%A1%E6%81%AF">实用信息&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h2 id="普通落地签证visa-on-arrival-voa">普通落地签证/Visa on Arrival (VOA)&lt;/h2>
-&lt;p>中国公民适用普通落地签政策，相关政策链接：&lt;/p>
-&lt;blockquote>
-&lt;p>&lt;a href="http://www.thaiembassy.com/thailand/visa-on-arrival.php">http://www.thaiembassy.com/thailand/visa-on-arrival.php&lt;/a>&lt;/p>
-&lt;/blockquote>
-&lt;ol>
-&lt;li>《申请表》(Application forVisa on Arrival)、1张白/蓝底4*6cm照片、15天内往返机票、有效期超过6个月的护照。(注：表格可下载并事先用英文填好;在泰如无联系人，可填写拟住酒店地址、电话)。&lt;/li>
-&lt;li>签证申请费每人1000铢。现场拍照另交费。申请落地签时，需备1万铢、每个家庭2万铢或等值外币以证明旅游期间有经济能力。泰移民官将抽查。&lt;/li>
-&lt;/ol>
-&lt;h3 id="落地签需要的条件">落地签需要的条件&lt;/h3>
-&lt;ul>
-&lt;li>持有泰国政府批准国家的护照者。&lt;/li>
-&lt;li>护照必须是真实的，不低于 30 天有效期。&lt;/li>
-&lt;li>泰国旅游的期限不超过 15 天。&lt;/li>
-&lt;li>有到达泰国时，不超过 15 天的回程机票。&lt;/li>
-&lt;li>报实际和能查询的泰国地址。&lt;/li>
-&lt;li>非佛历 2522 年的入境黑名单者&lt;/li>
-&lt;li>签证费仅收泰铢（现金）/不可退款&lt;/li>
-&lt;li>入境时个人必须随身携有外币不低于 10,000 泰铢， 家庭不低于 20,000 泰铢&lt;/li>
-&lt;/ul>
-&lt;p>参考：https://ask.qyer.com/question/788823.html&lt;/p>
-&lt;p>另外，2019/01/14 到 2020/04/30 落地签时免费的。&lt;/p>
-&lt;h3 id="签证有效期">签证有效期&lt;/h3>
-&lt;p>落地签有效期15天(包括入境当天)，如为以旅游为目的则不可延期。离境时签证过期需向移民局缴纳罚款，1天500铢，最高不超2万铢。&lt;/p>
-&lt;h2 id="电子落地签证e-visa-on-arrivale-voa">电子落地签证/E-Visa on Arrival(E-VOA)&lt;/h2>
-&lt;p>根据实际经验，落地泰国后如果走普通落地签的通道，队伍比较长，特别是航班密集落地的时候。
-还有一种可以在网上预先申请的电子落地签，较为方便。&lt;/p>
-&lt;p>优点：&lt;/p>
-&lt;ol>
-&lt;li>仅需要护照信息&lt;/li>
-&lt;li>不需要提供实体照片&lt;/li>
-&lt;/ol>
-&lt;p>费用：普通落地签费用 + 提供服务的公司的服务费用&lt;/p>
-&lt;p>参考：&lt;/p>
-&lt;ol>
-&lt;li>&lt;a href="https://zhuanlan.zhihu.com/p/50974628">不排队，1分钟快速入境！泰国电子落地签证（EVOA）申请攻略&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://bbs.qyer.com/thread-3104742-1.html">不要办e-visa落地签，没有任何意义- 泰国- 论坛- 穷游网&lt;/a>&lt;/li>
-&lt;/ol>
-&lt;p>有两家公司可以提供这项服务：&lt;/p>
-&lt;ol>
-&lt;li>VFS Global: &lt;a href="http://www.evisathailand.com">http://www.evisathailand.com&lt;/a>
-&lt;ul>
-&lt;li>普通服务：525 THB&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>evisathailand: &lt;a href="https://thailandevoa.vfsevisa.com">https://thailandevoa.vfsevisa.com&lt;/a>
-&lt;ul>
-&lt;li>普通服务：600 THB&lt;/li>
-&lt;li>快速服务（24 小时出结果）：2500 THB&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ol>
-&lt;h3 id="实际操作">实际操作&lt;/h3>
-&lt;p>使用 &lt;a href="https://thailandevoa.vfsevisa.com">https://thailandevoa.vfsevisa.com&lt;/a> 申请，交了普通服务费 600 THB 。&lt;/p>
-&lt;h2 id="换汇">换汇&lt;/h2>
-&lt;ol>
-&lt;li>机场 ATM 每次要收 150B 手续费&lt;/li>
-&lt;li>国内银行预约（https://ask.qyer.com/question/3452511.html）&lt;/li>
-&lt;/ol>
-&lt;ul>
-&lt;li>国内一般只要提前一天预约就可以，不一定要本人换，其他人也可以帮你换，如果分行储备很充足，当天也可以换到，你试试不一定来不及吧&lt;/li>
-&lt;li>机场也有换，就是汇率不是很划算，如果担心那边没人可以再出发的机场换，你早点到机场，先换一点够用就行，剩下你过了关再换。&lt;/li>
-&lt;li>华夏银行卡 &lt;a href="http://wenzhang.16fan.com/a/98638.html">http://wenzhang.16fan.com/a/98638.html&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;ol start="3">
-&lt;li>换汇处，之后去 super rich 换汇率最划算&lt;/li>
-&lt;/ol>
-&lt;h3 id="实际操作-1">实际操作&lt;/h3>
-&lt;p>就在机场换了一点，汇率不太好。
-同伴从其他地方换了泰铢使用，我主要负责各种信用卡付款，所以最后使用现金也不是太多。&lt;/p>
-&lt;h2 id="实用信息">实用信息&lt;/h2>
-&lt;ol>
-&lt;li>VFS Global 和 evisathailand 是两个不同的电子落地签代办公司。这两家公司在素万那普机场有各自独立的窗口，在普通的落地签证队伍旁边。我深夜到达的时候人很少，只有几个人在电子落地签队伍，入关很快。&lt;/li>
-&lt;li>VFS Global 最后打出来的纸上没有二维码，evisathailand 的有。&lt;/li>
-&lt;li>入关只需要那张纸、护照和入境卡三样东西。&lt;/li>
-&lt;li>Grab 很方便，到市区 300 多泰铢吧。&lt;/li>
-&lt;li>中国银行长城 Visa 白金信用卡汇率还不错。&lt;/li>
-&lt;li>不要尝试曼谷的中餐馆，贵而且不好吃。&lt;/li>
-&lt;li>大皇宫人很多，暹罗博物馆还不错，学生 50 泰铢（英文学生证就可以），其他外国人 200 泰铢。&lt;/li>
-&lt;/ol>
-- https://blog.formalscience.com/2019/02/17/2019-02-17_to_bangkok/ -</description></item><item><title>Go to Rust （一）</title><link>https://blog.formalscience.com/2018/12/26/2018-12-26-go-to-rust/</link><pubDate>Wed, 26 Dec 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/12/26/2018-12-26-go-to-rust/</guid><description>不是追风少年 https://blog.formalscience.com/2018/12/26/2018-12-26-go-to-rust/ -&lt;p>这几天看了 Rust 文档，把一些概念整理一下。&lt;/p>
-&lt;ul>
-&lt;li>通过 &lt;code>cargo&lt;/code> 新建一个项目，然后去管理其生命流程，这种现代做法很方便。&lt;/li>
-&lt;li>对于 &lt;code>statement&lt;/code> 和 &lt;code>expression&lt;/code> 的使用方式和 scheme 有些类似，可以返回最后一个 &lt;code>expression&lt;/code> 的值。&lt;/li>
-&lt;li>可能返回错误的地方使用 &lt;code>Result&lt;/code> 类型，很类似 Haskell 的处理流程。&lt;/li>
-&lt;li>模式匹配的方式很像 Ocaml 。&lt;/li>
-&lt;li>ownership 机制很新颖，限制能够带来巨大的力量。让我想到了《全职猎人》中对某项能力增加限制条件可以增加这个能力的威力的设定。&lt;/li>
-&lt;li>&lt;code>Option&lt;/code> 类型就是 Haskell 的 &lt;code>Maybe&lt;/code> 。&lt;/li>
-&lt;li>generics 的设计不知道有没有参考 C++ 的 template 概念。&lt;/li>
-&lt;/ul>
-&lt;p>目前只看到文档的第 11 章，Rust 语言的很多概念都能够在其他语言找到对应，只有 ownership 机制是我第一次见到，觉得新颖有趣。&lt;/p>
-- https://blog.formalscience.com/2018/12/26/2018-12-26-go-to-rust/ -</description></item><item><title>pip 离线安装包</title><link>https://blog.formalscience.com/2018/12/13/2018-12-13-pip-install-package-offline/</link><pubDate>Thu, 13 Dec 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/12/13/2018-12-13-pip-install-package-offline/</guid><description>不是追风少年 https://blog.formalscience.com/2018/12/13/2018-12-13-pip-install-package-offline/ -&lt;h2 id="1-使用场景">1. 使用场景&lt;/h2>
-&lt;p>在没有网络的设备上使用 pip 安装包。下面以 &lt;code>sklearn&lt;/code> 包为例展示如何在没有网络的环境下安装包。&lt;/p>
-&lt;h2 id="2-下载包到本地缓存">2. 下载包到本地缓存&lt;/h2>
-&lt;p>首先进入一个目录，在这个例子里是 &lt;code>/Users/bef0rewind/Downloads/pip-tmp&lt;/code> 目录。&lt;/p>
-&lt;pre tabindex="0">&lt;code>pip download sklearn
-&lt;/code>&lt;/pre>&lt;p>我这里下载到了一个缓存目录 &lt;code>/Users/bef0rewind/Downloads/pip-tmp&lt;/code>，随便选一个就好。&lt;code>pip download&lt;/code> 只会下载对应的包，不会进行安装。&lt;/p>
-&lt;p>此时使用，&lt;code>pip freeze&lt;/code> 可以看到已经安装的包，如果之前没有安装过 &lt;code>sklearn&lt;/code>，显示的列表里是没有这个包的。&lt;/p>
-&lt;h2 id="3-断网安装">3. 断网安装&lt;/h2>
-&lt;p>为了展示没有网络的情况下如何安装，我断开网络进行了验证。&lt;/p>
-&lt;pre tabindex="0">&lt;code>pip install --no-index --find-links=/Users/bef0rewind/Downloads/pip-tmp sklearn
-&lt;/code>&lt;/pre>&lt;p>其中 &lt;code>--find-links&lt;/code> 要 &lt;code>pip&lt;/code> 从指定的目录里寻找安装包。&lt;/p>
-&lt;h2 id="4-其他">4. 其他&lt;/h2>
-&lt;p>如果要用 Python3，而系统默认的版本是 Python 2，则可以将 &lt;code>pip&lt;/code> 命令换成 &lt;code>pip3&lt;/code>。&lt;/p>
-- https://blog.formalscience.com/2018/12/13/2018-12-13-pip-install-package-offline/ -</description></item><item><title/><link>https://blog.formalscience.com/drafts/deeplearningnotes/</link><pubDate>Fri, 07 Dec 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/drafts/deeplearningnotes/</guid><description>不是追风少年 https://blog.formalscience.com/drafts/deeplearningnotes/ -&lt;ol>
-&lt;li>Learn similar words - unsupervised learning - similar words tend to occur in similar contexts&lt;/li>
-&lt;li>word embeddings - word2vec - t-SNE&lt;/li>
-&lt;li>semantic analogy, syntactic analogy&lt;/li>
-&lt;/ol>
-&lt;p>Python 3.7 is not supported by TF at 2018/12/07.&lt;br>
-&lt;a href="https://pytorch.org/get-started/locally/">https://pytorch.org/get-started/locally/&lt;/a>&lt;br>
-pip3 install torch torchvision&lt;/p>
-&lt;p>Document oriented programming&lt;/p>
-- https://blog.formalscience.com/drafts/deeplearningnotes/ -</description></item><item><title>还在下雨</title><link>https://blog.formalscience.com/2018/12/06/2018-12-06-%E8%BF%98%E5%9C%A8%E4%B8%8B%E9%9B%A8/</link><pubDate>Thu, 06 Dec 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/12/06/2018-12-06-%E8%BF%98%E5%9C%A8%E4%B8%8B%E9%9B%A8/</guid><description>不是追风少年 https://blog.formalscience.com/2018/12/06/2018-12-06-%E8%BF%98%E5%9C%A8%E4%B8%8B%E9%9B%A8/ -&lt;p>早上闹钟还没响，就收到学弟从美东发来的微信消息，高管在加拿大被扣留，感觉刚释放的贸易战缓和信号瞬间消失无影。接着看到同学发送的新闻，张首晟教授去世，又给学弟把这则消息转了过去。&lt;/p>
-&lt;p>到了公司也没获得更多信息。一天工作下来，解决了几个问题，心情是近来最平静的一天。雨一直下个不停，沿着玻璃幕墙下来，汇成一条条水线流下。&lt;/p>
-&lt;p>各类信息媒介上也是消息攒动，同样没获得更多有效信息。前段时间看到一个问题：为什么感觉今年逝去的名人特别多？我想，也许是他们的时代逝去了，也许是我们的时代逝去了。&lt;/p>
-&lt;p>小学、初中、高中的时候喜欢数学和诗歌。现在对一些人向往的“诗意的栖居”这种描述不怎么向往了。在这个世界，不可能所有人都能到达那种美好的彼岸。现实还是要战斗，在枪炮中让玫瑰绽放。&lt;/p>
-&lt;p>有观点说外面的世界再乱，只要自己的小环境能保持美好就够了。我也不知道要怎么选择，一是我不知道什么叫好的小环境，而是我可能也没能力隔绝外界的干扰，也就无所谓选择。&lt;/p>
-&lt;p>晚上从公司回来，雨还是在下，风吹在手上冻得不行。&lt;/p>
-&lt;p>寒冷 / 困顿 / 饥饿&lt;br>
-树影 / 摇曳 / 零落&lt;br>
-混乱 / 猜测 / 迷惑&lt;br>
-启程 / 归来 / 此刻&lt;/p>
-- https://blog.formalscience.com/2018/12/06/2018-12-06-%E8%BF%98%E5%9C%A8%E4%B8%8B%E9%9B%A8/ -</description></item><item><title>Escape from escape analysis</title><link>https://blog.formalscience.com/2018/11/30/2018-11-30-escape-from-escape-analysis/</link><pubDate>Fri, 30 Nov 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/11/30/2018-11-30-escape-from-escape-analysis/</guid><description>不是追风少年 https://blog.formalscience.com/2018/11/30/2018-11-30-escape-from-escape-analysis/ -&lt;h2 id="1-逃逸分析背景">1. 逃逸分析背景&lt;/h2>
-&lt;p>Go 语言采用了并发的（Concurrent）、非移动的（Non-Movable）、非分代的（Non-Generational）、基于三色（Tri-color）标记的垃圾回收（Garbage Collection）算法，只在 特定阶段开启写屏障（write barrier）。
-特点是全局停顿时间比较少，在一些场景下是十微秒级别的。&lt;/p>
-&lt;p>垃圾回收算法针对的是堆（heap）中的内存。
-为了减少垃圾回收的时间消耗，Go 语言在编译阶段通过静态分析算法对程序的结构进行分析，尽可能讲对象分配在栈上（如果这个对象的生命周期在它定义的函数返回时就结束的话）。
-这一算法也利用了 Go 语言在函数传递参数时总是传递参数的值这一个语言特性。&lt;/p>
-&lt;p>而静态分析不总是完备的，会有一些本来可以分配在栈上的对象被 Go 的编译器分配在了堆上。
-如这篇文章《&lt;a href="http://www.agardner.me/golang/garbage/collection/gc/escape/analysis/2015/10/18/go-escape-analysis.html">Golang escape analysis&lt;/a>》所描述的一些例子一样，有些对象本来可以避免逃逸（Escape，指的是对象被分配在堆上）。&lt;/p>
-&lt;p>对于某些场景，我们确定一个对象肯定可以（也应当）被分配在栈上，但是它却逃逸了。
-这样在某些关键路径上的逃逸的对象会造成大量的分配和垃圾回收。&lt;/p>
-&lt;h2 id="2-go-版本">2. Go 版本&lt;/h2>
-&lt;p>使用的 Go 版本为今晚刚从 master 分支上 pull 下的源码直接构建。&lt;/p>
-&lt;pre tabindex="0">&lt;code>ThinkPad-X1-Carbon:bin bef0rewind$ ./go version
-go version devel +42e8b9c3a4 Fri Nov 30 15:17:34 2018 +0000 darwin/amd64
-&lt;/code>&lt;/pre>&lt;h2 id="3-示例">3. 示例&lt;/h2>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// file: escape.go
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#e6db74">&amp;#34;fmt&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">BigTempObject&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/// ...
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">field1&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">causeEscape&lt;/span>(&lt;span style="color:#a6e22e">i&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span>{}) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">switch&lt;/span> &lt;span style="color:#a6e22e">i&lt;/span>.(&lt;span style="color:#66d9ef">type&lt;/span>) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">BigTempObject&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> println(&lt;span style="color:#a6e22e">i&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">default&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#a6e22e">i&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">obj&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">BigTempObject&lt;/span>{}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">addrObj&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">obj&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">causeEscape&lt;/span>(&lt;span style="color:#a6e22e">addrObj&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>使用 &lt;code>go run -gcflags=&amp;quot;-m -m&amp;quot; escape.go&lt;/code> 可以在运行时输出逃逸分析的结果。&lt;/p>
-&lt;pre tabindex="0">&lt;code>./escape.go:10: cannot inline causeEscape: unhandled op TYPESW
-./escape.go:19: cannot inline main: non-leaf function
-./escape.go:10: leaking param: i
-./escape.go:10: from ... argument (arg to ...) at ./escape.go:15
-./escape.go:10: from *(... argument) (indirection) at ./escape.go:15
-./escape.go:10: from ... argument (passed to call[argument content escapes]) at ./escape.go:15
-./escape.go:15: causeEscape ... argument does not escape
-./escape.go:23: addrObj escapes to heap
-./escape.go:23: from addrObj (passed to call[argument escapes]) at ./escape.go:23
-./escape.go:21: &amp;amp;obj escapes to heap
-./escape.go:21: from addrObj (assigned) at ./escape.go:21
-./escape.go:21: from addrObj (interface-converted) at ./escape.go:23
-./escape.go:21: from addrObj (passed to call[argument escapes]) at ./escape.go:23
-./escape.go:20: moved to heap: obj
-(0x10904e0,0xc420080050)
-&lt;/code>&lt;/pre>&lt;p>&lt;code>obj&lt;/code> 可以分配在栈上，因为在 &lt;code>main&lt;/code> 函数返回时（栈退出），这个变量占用的空间就可以安全被用在其他地方了。
-但是 “./escape.go:20: moved to heap: obj” 说明 &lt;code>obj&lt;/code> 被分配在了堆上。&lt;/p>
-&lt;h2 id="4-小技巧">4. 小技巧&lt;/h2>
-&lt;p>如何改变这个分析结果，需要一点小技巧。&lt;/p>
-&lt;p>关键词是 &lt;code>uintptr&lt;/code> 类型。
-Go 语言中对 &lt;code>uintptr&lt;/code> 是这样描述的：&lt;/p>
-&lt;blockquote>
-&lt;p>uintptr is an integer type that is large enough to hold the bit pattern of any pointer.&lt;/p>
-&lt;/blockquote>
-&lt;p>比如在 64-bit Linux 系统上 &lt;code>uintptr&lt;/code> 被定义成为了 &lt;code>uint64&lt;/code>。
-Go 中合法的类型转换为：&lt;code>normal pointer&lt;/code> ⟷ &lt;code>unsafe.Pointer&lt;/code> ⟷ &lt;code>uintptr&lt;/code> 。
-因此我们可以把上面的程序中的 &lt;code>addrObj&lt;/code> 转换为 &lt;code>uintptr&lt;/code>。
-这样 Go 编译器不再认为 &lt;code>addrObj&lt;/code> 同后面函数 &lt;code>causeEscape&lt;/code> 使用的参数 &lt;code>i&lt;/code> 存在引用关系，从而绕过 Escape Analysis Algorithm 。
-为了防止垃圾回收过程中 &lt;code>obj&lt;/code> 被回收，可以使用 &lt;code>obj.field1 = 0&lt;/code> 来保持 &lt;code>obj&lt;/code> 活跃。&lt;/p>
-&lt;p>修改后的代码如下：&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> (
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;fmt&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;unsafe&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">BigTempObject&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/// ...
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">field1&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">causeEscape&lt;/span>(&lt;span style="color:#a6e22e">i&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span>{}) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">switch&lt;/span> &lt;span style="color:#a6e22e">i&lt;/span>.(&lt;span style="color:#66d9ef">type&lt;/span>) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">BigTempObject&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> println(&lt;span style="color:#a6e22e">i&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">default&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#a6e22e">i&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">obj&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">BigTempObject&lt;/span>{}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">addrObj&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">obj&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">intAddr&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> uintptr(&lt;span style="color:#a6e22e">unsafe&lt;/span>.&lt;span style="color:#a6e22e">Pointer&lt;/span>(&lt;span style="color:#a6e22e">addrObj&lt;/span>))
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">causeEscape&lt;/span>((&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">BigTempObject&lt;/span>)(&lt;span style="color:#a6e22e">unsafe&lt;/span>.&lt;span style="color:#a6e22e">Pointer&lt;/span>(&lt;span style="color:#a6e22e">intAddr&lt;/span>)))
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">obj&lt;/span>.&lt;span style="color:#a6e22e">field1&lt;/span> = &lt;span style="color:#ae81ff">0&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>使用 &lt;code>go run -gcflags=&amp;quot;-m -m&amp;quot; escape.go&lt;/code> 运行结果：&lt;/p>
-&lt;pre tabindex="0">&lt;code>./escape.go:13: cannot inline causeEscape: unhandled op TYPESW
-./escape.go:22: cannot inline main: non-leaf function
-./escape.go:13: leaking param: i
-./escape.go:13: from ... argument (arg to ...) at ./escape.go:18
-./escape.go:13: from *(... argument) (indirection) at ./escape.go:18
-./escape.go:13: from ... argument (passed to call[argument content escapes]) at ./escape.go:18
-./escape.go:18: causeEscape ... argument does not escape
-./escape.go:26: (*BigTempObject)(unsafe.Pointer(intAddr)) escapes to heap
-./escape.go:26: from (*BigTempObject)(unsafe.Pointer(intAddr)) (passed to call[argument escapes]) at ./escape.go:26
-./escape.go:24: main &amp;amp;obj does not escape
-(0x10904e0,0xc42003bf70)
-&lt;/code>&lt;/pre>&lt;p>可以看到 &lt;code>obj&lt;/code> 不再逃逸，主要是 &lt;code>intAddr&lt;/code> 中断了逃逸分析算法构建的指针依赖关系（表示为一个有向图）。&lt;/p>
-&lt;h2 id="5-一点感想">5. 一点感想&lt;/h2>
-&lt;p>我们可以做到不代表一定去做，有风险也不代表禁区，采取什么样的行动是个人权衡后的选择。&lt;br>
-什么原因导致了人们做了不同的选择，而人们不同的选择又导致了什么结果？&lt;br>
-多样性是这个世界的现状，黑暗面与光明面同在。
-May the force be with you.&lt;/p>
-- https://blog.formalscience.com/2018/11/30/2018-11-30-escape-from-escape-analysis/ -</description></item><item><title>Golang Receiver Type 探索</title><link>https://blog.formalscience.com/2018/11/21/2018-11-21-golang-receiver-type/</link><pubDate>Wed, 21 Nov 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/11/21/2018-11-21-golang-receiver-type/</guid><description>不是追风少年 https://blog.formalscience.com/2018/11/21/2018-11-21-golang-receiver-type/ -&lt;h2 id="1-参考">1. 参考&lt;/h2>
-&lt;p>在 Go 的官方 spec 中有以下涉及到类型和方法的章节，如果需要了解具体的细节，可以参考阅读。&lt;/p>
-&lt;ul>
-&lt;li>&lt;a href="https://golang.google.cn/ref/spec#Method_sets">https://golang.google.cn/ref/spec#Method_sets&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://golang.google.cn/ref/spec#Types">https://golang.google.cn/ref/spec#Types&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://golang.google.cn/ref/spec#Struct_types">https://golang.google.cn/ref/spec#Struct_types&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://golang.google.cn/ref/spec#Composite_literals">https://golang.google.cn/ref/spec#Composite_literals&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;p>核心的概念是 method sets：&lt;/p>
-&lt;blockquote>
-&lt;p>A type may have a method set associated with it. The method set of an interface type is its interface. The method set of any other type T consists of all methods declared with receiver type T. The method set of the corresponding pointer type *T is the set of all methods declared with receiver *T or T (that is, it also contains the method set of T). Further rules apply to structs containing embedded fields, as described in the section on struct types. Any other type has an empty method set. In a method set, each method must have a unique non-blank method name.&lt;/p>
-&lt;p>The method set of a type determines the interfaces that the type implements and the methods that can be called using a receiver of that type.&lt;/p>
-&lt;/blockquote>
-&lt;p>下面的一些细节基本上都和这段描述相关。&lt;/p>
-&lt;h2 id="2-duck-typing-与方法调用">2. Duck typing 与方法调用&lt;/h2>
-&lt;p>在很多面向对象的语言中，一个对象都可以“拥有”一些方法，使用例如 &lt;code>obj.f(a, b, c)&lt;/code> 的形式进行调用。结合语言的类型系统，通过“扩展”、“继承”、“实现”等术语，我们可以将不同的类组织起来。在 Go 语言中采用的是 “duck typing”，没有显式的类型关系定义关键字。当一个类型实现了一个接口的全部方法时，那这个类型就被视为实现了这个接口。&lt;/p>
-&lt;p>例如：&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#e6db74">&amp;#34;fmt&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Duck&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Bark&lt;/span>()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">A&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">B&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">A&lt;/span>) &lt;span style="color:#a6e22e">Bark&lt;/span>() {}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">iA&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span>{} = &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">A&lt;/span>{}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">_&lt;/span>, &lt;span style="color:#a6e22e">ok&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> (&lt;span style="color:#a6e22e">iA&lt;/span>).(&lt;span style="color:#a6e22e">Duck&lt;/span>); &lt;span style="color:#a6e22e">ok&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;&amp;amp;A{} is Duck&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#66d9ef">else&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;&amp;amp;A{} is not Duck&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">iB&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span>{} = &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">B&lt;/span>{}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">_&lt;/span>, &lt;span style="color:#a6e22e">ok&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> (&lt;span style="color:#a6e22e">iB&lt;/span>).(&lt;span style="color:#a6e22e">Duck&lt;/span>); &lt;span style="color:#a6e22e">ok&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;&amp;amp;B{} is Duck&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#66d9ef">else&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;&amp;amp;B{} is not Duck&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre tabindex="0">&lt;code>&amp;amp;A{} is Duck
-&amp;amp;B{} is not Duck
-&lt;/code>&lt;/pre>&lt;p>我们可以用原始的类型去调用一个方法，也可以使用一个接口去调用方法。这里就涉及到方法调用者的问题：什么样的对象是一个合法的方法调用者？&lt;/p>
-&lt;p>至少 &lt;code>A{}&lt;/code> 不是，因为我们实现 &lt;code>Duck&lt;/code> 接口的时候，使用的是 &lt;code>func (*A) Bark()&lt;/code> 进行的定义，而非 &lt;code>func (A) Bark()&lt;/code>。这样就导致了只有 &lt;code>A&lt;/code> 类型对象的指针类型才能作为方法调用者去调用 &lt;code>Bark&lt;/code> 方法。&lt;/p>
-&lt;h2 id="3-成员函数的参数">3. 成员函数的参数&lt;/h2>
-&lt;p>在实现中，调用某个类型的成员方法，第一个参数其实是这个方法的实现对象自身，即如果是一个指针的方法，就是这个指针的值，如果是一个对象，就是这个对象的值。&lt;/p>
-&lt;p>下面使用 Go 1.8.3 展示，因为当前最新的 Go 编译器在打印 stack trace 的时候不再打印函数的参数（这个例子中）。&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">R1&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">n&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">r&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">R1&lt;/span>) &lt;span style="color:#a6e22e">f&lt;/span>(&lt;span style="color:#a6e22e">n&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> println(&lt;span style="color:#e6db74">&amp;#34;received&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">n&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> panic(&lt;span style="color:#e6db74">&amp;#34;just a panic&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">r&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">R1&lt;/span>{}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">a&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> println(&lt;span style="color:#a6e22e">r&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">r&lt;/span>.&lt;span style="color:#a6e22e">f&lt;/span>(&lt;span style="color:#a6e22e">a&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre tabindex="0">&lt;code>0xc420039f70
-received 1
-panic: just a panic
-goroutine 1 [running]:
-main.(*R1).f(0xc420039f70, 0x1)
-/Users/bef0rewind/Projects/net example/src/main/receiver_type.go:9 +0xa3
-main.main()
-/Users/bef0rewind/Projects/net example/src/main/receiver_type.go:16 +0x5a
-&lt;/code>&lt;/pre>&lt;p>Stack trace 中函数 &lt;code>f&lt;/code> 第一个值是指针 &lt;code>r&lt;/code> 的值。&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">R1&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">n&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">m&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">r&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">R1&lt;/span>) &lt;span style="color:#a6e22e">f&lt;/span>(&lt;span style="color:#a6e22e">n&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> println(&lt;span style="color:#e6db74">&amp;#34;received&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">n&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> panic(&lt;span style="color:#e6db74">&amp;#34;just a panic&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">r&lt;/span> &lt;span style="color:#a6e22e">R1&lt;/span>) &lt;span style="color:#a6e22e">g&lt;/span>(&lt;span style="color:#a6e22e">n&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> println(&lt;span style="color:#e6db74">&amp;#34;received&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">n&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> panic(&lt;span style="color:#e6db74">&amp;#34;just a panic&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">r&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">R1&lt;/span>{&lt;span style="color:#ae81ff">7&lt;/span>, &lt;span style="color:#ae81ff">9&lt;/span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">a&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> println(&lt;span style="color:#a6e22e">r&lt;/span>.&lt;span style="color:#a6e22e">n&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (&lt;span style="color:#a6e22e">r&lt;/span>).&lt;span style="color:#a6e22e">g&lt;/span>(&lt;span style="color:#a6e22e">a&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre tabindex="0">&lt;code>7
-received 1
-panic: just a panic
-goroutine 1 [running]:
-main.R1.g(0x7, 0x9, 0x1)
-/Users/bef0rewind/Projects/net example/src/receiver_type/main/args.go:15 +0xa3
-main.main()
-/Users/bef0rewind/Projects/net example/src/receiver_type/main/args.go:22 +0x58
-&lt;/code>&lt;/pre>&lt;p>Stack trace 中函数 &lt;code>g&lt;/code> 第一个值是 &lt;code>r&lt;/code> 的值 &lt;code>7&lt;/code> 和 &lt;code>9&lt;/code>。&lt;/p>
-&lt;p>从这个实现方式中我们可以推断以下几点：&lt;/p>
-&lt;ul>
-&lt;li>Go 语言采用参数传值的方式进行函数调用，因此如果对象很大，使用的对象本身调用函数会带来大量的复制&lt;/li>
-&lt;li>不可能在函数调用中改变函数外的调用者，因为传到函数内部的只是调用者的副本&lt;/li>
-&lt;/ul>
-&lt;h2 id="4-使用接口调用函数">4. 使用接口调用函数&lt;/h2>
-&lt;p>基于这样的成员函数实现方式，我们可以尝试另外一种调用方式：使用接口类型调用一个函数。
-这里不是将一个对象转换成特定的接口然后去调用函数，而是使用接口类型本身去进行函数调用。
-这种方式在 Go 1.9 中开始支持，在 Go 1.10 开始写入 Go 的 specs。这个例子使用的是 Go master 分支的版本，可能是 Go 1.11。&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">M&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">M&lt;/span>) &lt;span style="color:#a6e22e">f&lt;/span>(&lt;span style="color:#a6e22e">n&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> println(&lt;span style="color:#e6db74">&amp;#34;I;m M, with&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">n&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">IM&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">f&lt;/span>(&lt;span style="color:#a6e22e">n&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">m&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">M&lt;/span>{}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">IM&lt;/span>.&lt;span style="color:#a6e22e">f&lt;/span>(&lt;span style="color:#a6e22e">m&lt;/span>, &lt;span style="color:#ae81ff">7&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre tabindex="0">&lt;code>I;m M, with 7
-&lt;/code>&lt;/pre>&lt;p>此外还能使用匿名接口类型去调用函数，例如：&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">M&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">M&lt;/span>) &lt;span style="color:#a6e22e">f&lt;/span>(&lt;span style="color:#a6e22e">n&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> println(&lt;span style="color:#e6db74">&amp;#34;I;m M, with&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">n&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">m&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">M&lt;/span>{}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">interface&lt;/span>{&lt;span style="color:#a6e22e">f&lt;/span>(&lt;span style="color:#a6e22e">n&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>)}.&lt;span style="color:#a6e22e">f&lt;/span>(&lt;span style="color:#a6e22e">m&lt;/span>, &lt;span style="color:#ae81ff">7&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>运行结果与上面的一段采用 &lt;code>IM&lt;/code> 接口定义的例子是一样的。&lt;/p>
-&lt;h2 id="5-注入依赖">5. 注入依赖&lt;/h2>
-&lt;p>有时候一个对象在实例化的时候，它的一些成员方法的行为可能还没有确定，需要依赖外界注入。此时我们可以在对象类型定义中内嵌一个接口，然后在后期传入一个接口的实例来确定其行为。&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">BinaryOp&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Compute&lt;/span>(&lt;span style="color:#a6e22e">a&lt;/span>, &lt;span style="color:#a6e22e">b&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>) &lt;span style="color:#66d9ef">int&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">ComputeNode&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">x&lt;/span>, &lt;span style="color:#a6e22e">y&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">BinaryOp&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">node&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">ComputeNode&lt;/span>) &lt;span style="color:#a6e22e">Result&lt;/span>() &lt;span style="color:#66d9ef">int&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">node&lt;/span>.&lt;span style="color:#a6e22e">BinaryOp&lt;/span>.&lt;span style="color:#a6e22e">Compute&lt;/span>(&lt;span style="color:#a6e22e">node&lt;/span>.&lt;span style="color:#a6e22e">x&lt;/span>, &lt;span style="color:#a6e22e">node&lt;/span>.&lt;span style="color:#a6e22e">y&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Add&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">Add&lt;/span>) &lt;span style="color:#a6e22e">Compute&lt;/span>(&lt;span style="color:#a6e22e">a&lt;/span>, &lt;span style="color:#a6e22e">b&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>) &lt;span style="color:#66d9ef">int&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">a&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#a6e22e">b&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Multi&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">Multi&lt;/span>) &lt;span style="color:#a6e22e">Compute&lt;/span>(&lt;span style="color:#a6e22e">a&lt;/span>, &lt;span style="color:#a6e22e">b&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>) &lt;span style="color:#66d9ef">int&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">a&lt;/span> &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#a6e22e">b&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">node&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">ComputeNode&lt;/span>{&lt;span style="color:#a6e22e">x&lt;/span>:&lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#a6e22e">y&lt;/span>:&lt;span style="color:#ae81ff">3&lt;/span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">node&lt;/span>.&lt;span style="color:#a6e22e">BinaryOp&lt;/span> = &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">Add&lt;/span>{}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> println(&lt;span style="color:#a6e22e">node&lt;/span>.&lt;span style="color:#a6e22e">Result&lt;/span>())
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">node&lt;/span>.&lt;span style="color:#a6e22e">BinaryOp&lt;/span> = &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">Multi&lt;/span>{}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> println(&lt;span style="color:#a6e22e">node&lt;/span>.&lt;span style="color:#a6e22e">Result&lt;/span>())
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre tabindex="0">&lt;code>5
-6
-&lt;/code>&lt;/pre>&lt;p>注意一定要记得传入接口的实例，在这个例子中如果不给 &lt;code>node&lt;/code> 传入一个 &lt;code>BinaryOp&lt;/code> 接口实例，那 &lt;code>node.BinaryOp&lt;/code> 是 &lt;code>nil&lt;/code>，在调用 &lt;code>Compute&lt;/code> 方法的时候就会发生异常。例如将上面的 &lt;code>main&lt;/code> 函数稍作修改：&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">node&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">ComputeNode&lt;/span>{&lt;span style="color:#a6e22e">x&lt;/span>:&lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#a6e22e">y&lt;/span>:&lt;span style="color:#ae81ff">3&lt;/span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//node.BinaryOp = &amp;amp;Add{}
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> println(&lt;span style="color:#a6e22e">node&lt;/span>.&lt;span style="color:#a6e22e">Result&lt;/span>())
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre tabindex="0">&lt;code>panic: runtime error: invalid memory address or nil pointer dereference
-[signal SIGSEGV: segmentation violation code=0x1 addr=0x0 pc=0x104d8d7]
-goroutine 1 [running]:
-main.(*ComputeNode).Result(...)
-/Users/bef0rewind/Projects/net example/src/receiver_type/main/injection.go:13
-main.main()
-/Users/bef0rewind/Projects/net example/src/receiver_type/main/injection.go:32 +0x47
-&lt;/code>&lt;/pre>&lt;h2 id="6-内部机制">6. 内部机制&lt;/h2>
-&lt;p>内部机制有一些细节。大体就是一个接口 &lt;code>i&lt;/code> 包含两部分内容（指针），一个是接口代表的方法的集合，一个实现这个接口的具体对象；而一个对象 &lt;code>obj&lt;/code>，它包含了自己的内存中的值，也能通过其类型获取到 &lt;code>obj&lt;/code> 实现的方法集合。&lt;/p>
-&lt;p>将这两个概念记住，在实现一些模式的时候就会少很多心智负担。&lt;/p>
-&lt;h2 id="7-总结">7. 总结&lt;/h2>
-&lt;p>Go 语言的这套基于 “duck typing” 的机制好不好，争论有很多。不过我一向对这些争论没有特别的倾向，至少理解其机制之后按照其设计思路来用还可以正常使用，而且里面没有复杂的概念和例外情形。&lt;/p>
-&lt;p>也许我的理解有偏差，但现在还没有发现什么矛盾的地方。&lt;/p>
-- https://blog.formalscience.com/2018/11/21/2018-11-21-golang-receiver-type/ -</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>不是追风少年</title><link>https://blog.formalscience.com/</link><description>Recent content on 不是追风少年</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 29 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.formalscience.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Encounter Kubernetes</title><link>https://blog.formalscience.com/drafts/encounter_kubernetes/</link><pubDate>Fri, 29 Apr 2022 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/drafts/encounter_kubernetes/</guid><description/></item><item><title>2020 生活规划</title><link>https://blog.formalscience.com/2020/01/01/2020-guidelines/</link><pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2020/01/01/2020-guidelines/</guid><description>指导原则 适当精简，包括日常生活用品，生活中从事的事情，工作中要处理的事情，自己阅读、观影等时间话费，感情方面也是重要一环，把精力放在有价值的关系上。
+身体健康 读书、读论文 多游览各方 创作（文学、摄影）</description></item><item><title>爱丁堡租房</title><link>https://blog.formalscience.com/2019/09/24/2019-09-24-rent-in-edinburgh/</link><pubDate>Tue, 24 Sep 2019 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2019/09/24/2019-09-24-rent-in-edinburgh/</guid><description>生活就是一场旅行，这算是一个重大决定。到爱丁堡工作已经一周，时差基本倒过来了。 第一周住在酒店，最紧迫的事情就是租房，因为后续用来发工资的银行卡、办理警察局的手续都需要一个租房地址。
+出国前了解过这边的租房市场，主要通过 Zoopla 或者 Rightmove 等软件。不过都是隔岸观火，还是要实地考察才靠谱。 这边看房不像国内有一个看房小哥，一下午能带你看十几套房子。 我在软件上看到想去瞧一下的房子，都是要打电话去预约、APP 内发消息等。 等收到电话回访或者邮件回复后，约定一个看房时间（viewing arrangement），然后去看房。 一般会有很多人一起看房，热门的房型可能会有十几人。不过中介机构也不会无限量地拉人看房，有时就告诉你没有看房名额了。 等看房满意后就可以邮件或者网站填写申请，如果房主（landlord）同意，那么就可以交定金成交了。
+房租一般根据地理位置、装修等价格会有一些差别。 本来最初的目标是租一个一人间，比较难租到。后来和同事商量后，租了一个两人间。
+听同事讲爱丁堡房产的租售比不错，也许可以考虑在这边投资一下房子。</description></item><item><title>To Bangkok</title><link>https://blog.formalscience.com/2019/02/17/2019-02-17_to_bangkok/</link><pubDate>Sun, 17 Feb 2019 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2019/02/17/2019-02-17_to_bangkok/</guid><description>普通落地签证/Visa on Arrival (VOA) 落地签需要的条件 签证有效期 电子落地签证/E-Visa on Arrival(E-VOA) 实际操作 换汇 实际操作 实用信息 普通落地签证/Visa on Arrival (VOA) 中国公民适用普通落地签政策，相关政策链接：
+http://www.thaiembassy.com/thailand/visa-on-arrival.php
+《申请表》(Application forVisa on Arrival)、1张白/蓝底4*6cm照片、15天内往返机票、有效期超过6个月的护照。(注：表格可下载并事先用英文填好;在泰如无联系人，可填写拟住酒店地址、电话)。 签证申请费每人1000铢。现场拍照另交费。申请落地签时，需备1万铢、每个家庭2万铢或等值外币以证明旅游期间有经济能力。泰移民官将抽查。 落地签需要的条件 持有泰国政府批准国家的护照者。 护照必须是真实的，不低于 30 天有效期。 泰国旅游的期限不超过 15 天。 有到达泰国时，不超过 15 天的回程机票。 报实际和能查询的泰国地址。 非佛历 2522 年的入境黑名单者 签证费仅收泰铢（现金）/不可退款 入境时个人必须随身携有外币不低于 10,000 泰铢， 家庭不低于 20,000 泰铢 参考：https://ask.qyer.com/question/788823.html
+另外，2019/01/14 到 2020/04/30 落地签时免费的。
+签证有效期 落地签有效期15天(包括入境当天)，如为以旅游为目的则不可延期。离境时签证过期需向移民局缴纳罚款，1天500铢，最高不超2万铢。</description></item><item><title>Go to Rust （一）</title><link>https://blog.formalscience.com/2018/12/26/2018-12-26-go-to-rust/</link><pubDate>Wed, 26 Dec 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/12/26/2018-12-26-go-to-rust/</guid><description>这几天看了 Rust 文档，把一些概念整理一下。
+通过 cargo 新建一个项目，然后去管理其生命流程，这种现代做法很方便。 对于 statement 和 expression 的使用方式和 scheme 有些类似，可以返回最后一个 expression 的值。 可能返回错误的地方使用 Result 类型，很类似 Haskell 的处理流程。 模式匹配的方式很像 Ocaml 。 ownership 机制很新颖，限制能够带来巨大的力量。让我想到了《全职猎人》中对某项能力增加限制条件可以增加这个能力的威力的设定。 Option 类型就是 Haskell 的 Maybe 。 generics 的设计不知道有没有参考 C++ 的 template 概念。 目前只看到文档的第 11 章，Rust 语言的很多概念都能够在其他语言找到对应，只有 ownership 机制是我第一次见到，觉得新颖有趣。</description></item><item><title>pip 离线安装包</title><link>https://blog.formalscience.com/2018/12/13/2018-12-13-pip-install-package-offline/</link><pubDate>Thu, 13 Dec 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/12/13/2018-12-13-pip-install-package-offline/</guid><description>1. 使用场景 在没有网络的设备上使用 pip 安装包。下面以 sklearn 包为例展示如何在没有网络的环境下安装包。
+2. 下载包到本地缓存 首先进入一个目录，在这个例子里是 /Users/bef0rewind/Downloads/pip-tmp 目录。
+pip download sklearn 我这里下载到了一个缓存目录 /Users/bef0rewind/Downloads/pip-tmp，随便选一个就好。pip download 只会下载对应的包，不会进行安装。
+此时使用，pip freeze 可以看到已经安装的包，如果之前没有安装过 sklearn，显示的列表里是没有这个包的。
+3. 断网安装 为了展示没有网络的情况下如何安装，我断开网络进行了验证。
+pip install --no-index --find-links=/Users/bef0rewind/Downloads/pip-tmp sklearn 其中 --find-links 要 pip 从指定的目录里寻找安装包。
+4. 其他 如果要用 Python3，而系统默认的版本是 Python 2，则可以将 pip 命令换成 pip3。</description></item><item><title/><link>https://blog.formalscience.com/drafts/deeplearningnotes/</link><pubDate>Fri, 07 Dec 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/drafts/deeplearningnotes/</guid><description>Learn similar words - unsupervised learning - similar words tend to occur in similar contexts word embeddings - word2vec - t-SNE semantic analogy, syntactic analogy Python 3.7 is not supported by TF at 2018/12/07.
+https://pytorch.org/get-started/locally/
+pip3 install torch torchvision
+Document oriented programming</description></item><item><title>还在下雨</title><link>https://blog.formalscience.com/2018/12/06/2018-12-06-%E8%BF%98%E5%9C%A8%E4%B8%8B%E9%9B%A8/</link><pubDate>Thu, 06 Dec 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/12/06/2018-12-06-%E8%BF%98%E5%9C%A8%E4%B8%8B%E9%9B%A8/</guid><description>早上闹钟还没响，就收到学弟从美东发来的微信消息，高管在加拿大被扣留，感觉刚释放的贸易战缓和信号瞬间消失无影。接着看到同学发送的新闻，张首晟教授去世，又给学弟把这则消息转了过去。
+到了公司也没获得更多信息。一天工作下来，解决了几个问题，心情是近来最平静的一天。雨一直下个不停，沿着玻璃幕墙下来，汇成一条条水线流下。
+各类信息媒介上也是消息攒动，同样没获得更多有效信息。前段时间看到一个问题：为什么感觉今年逝去的名人特别多？我想，也许是他们的时代逝去了，也许是我们的时代逝去了。
+小学、初中、高中的时候喜欢数学和诗歌。现在对一些人向往的“诗意的栖居”这种描述不怎么向往了。在这个世界，不可能所有人都能到达那种美好的彼岸。现实还是要战斗，在枪炮中让玫瑰绽放。
+有观点说外面的世界再乱，只要自己的小环境能保持美好就够了。我也不知道要怎么选择，一是我不知道什么叫好的小环境，而是我可能也没能力隔绝外界的干扰，也就无所谓选择。
+晚上从公司回来，雨还是在下，风吹在手上冻得不行。
+寒冷 / 困顿 / 饥饿
+树影 / 摇曳 / 零落
+混乱 / 猜测 / 迷惑
+启程 / 归来 / 此刻</description></item><item><title>Escape from escape analysis</title><link>https://blog.formalscience.com/2018/11/30/2018-11-30-escape-from-escape-analysis/</link><pubDate>Fri, 30 Nov 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/11/30/2018-11-30-escape-from-escape-analysis/</guid><description>1. 逃逸分析背景 Go 语言采用了并发的（Concurrent）、非移动的（Non-Movable）、非分代的（Non-Generational）、基于三色（Tri-color）标记的垃圾回收（Garbage Collection）算法，只在 特定阶段开启写屏障（write barrier）。 特点是全局停顿时间比较少，在一些场景下是十微秒级别的。
+垃圾回收算法针对的是堆（heap）中的内存。 为了减少垃圾回收的时间消耗，Go 语言在编译阶段通过静态分析算法对程序的结构进行分析，尽可能讲对象分配在栈上（如果这个对象的生命周期在它定义的函数返回时就结束的话）。 这一算法也利用了 Go 语言在函数传递参数时总是传递参数的值这一个语言特性。
+而静态分析不总是完备的，会有一些本来可以分配在栈上的对象被 Go 的编译器分配在了堆上。 如这篇文章《Golang escape analysis》所描述的一些例子一样，有些对象本来可以避免逃逸（Escape，指的是对象被分配在堆上）。
+对于某些场景，我们确定一个对象肯定可以（也应当）被分配在栈上，但是它却逃逸了。 这样在某些关键路径上的逃逸的对象会造成大量的分配和垃圾回收。
+2. Go 版本 使用的 Go 版本为今晚刚从 master 分支上 pull 下的源码直接构建。
+ThinkPad-X1-Carbon:bin bef0rewind$ ./go version go version devel +42e8b9c3a4 Fri Nov 30 15:17:34 2018 +0000 darwin/amd64 3. 示例 // file: escape.go package main import &amp;#34;fmt&amp;#34; type BigTempObject struct { /// ... field1 int } func causeEscape(i interface{}) { switch i.</description></item><item><title>Golang Receiver Type 探索</title><link>https://blog.formalscience.com/2018/11/21/2018-11-21-golang-receiver-type/</link><pubDate>Wed, 21 Nov 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/11/21/2018-11-21-golang-receiver-type/</guid><description>1. 参考 在 Go 的官方 spec 中有以下涉及到类型和方法的章节，如果需要了解具体的细节，可以参考阅读。
+https://golang.google.cn/ref/spec#Method_sets https://golang.google.cn/ref/spec#Types https://golang.google.cn/ref/spec#Struct_types https://golang.google.cn/ref/spec#Composite_literals 核心的概念是 method sets：
+A type may have a method set associated with it. The method set of an interface type is its interface. The method set of any other type T consists of all methods declared with receiver type T. The method set of the corresponding pointer type *T is the set of all methods declared with receiver *T or T (that is, it also contains the method set of T).</description></item><item><title>Call/CC (call-with-current-continuation) 概念学习</title><link>https://blog.formalscience.com/drafts/call-cc/</link><pubDate>Mon, 19 Nov 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/drafts/call-cc/</guid><description>动机：不知道第一次听到这个名词是什么时候，以前也尝试学习过，没学会，加上当时兴趣众多，也就没有钻研。现在看到了，发现可以学了，借用朋友的话，也许是到了“赏味期”。
+Wiki 上介绍说：
+In Scheme programming, the function call-with-current-continuation, abbreviated call/cc, is used as a control operator. It has been adopted by several other programming languages.
+Taking a function f as its only argument, (call/cc f) within an expression is applied to the current continuation of the expression.
+call/cc 是一个控制操作符，用来控制当前表达式的 continuation 。
+continuation 词典中的一个含义是 “the action of carrying something on over a period of time or the process of being carried on”，而在计算机科学中，“a continuation is an abstract representation of the control state of a computer program”。</description></item><item><title>亚庇游记</title><link>https://blog.formalscience.com/2018/10/17/2018-10-17-%E4%BA%9A%E5%BA%87%E6%B8%B8%E8%AE%B0/</link><pubDate>Wed, 17 Oct 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/10/17/2018-10-17-%E4%BA%9A%E5%BA%87%E6%B8%B8%E8%AE%B0/</guid><description>计划很早就定下了，中秋节请了节后一天调休假，去沙巴亚庇玩。航程为：杭州-新加坡-亚庇-杭州，之所以在新加坡转机，是为了和新加坡的同学汇合，一起去马拉西亚。
+由于是第一次出国去玩，所以本着自己遇事就慌的态度，还是好好做了一下攻略。主要有以下几部分内容：
+1. 玩的内容 2. 出行方式 3. 签证 4. 装备 沙巴州（Negeri Sabah）旧称北婆罗洲，在 1963 年加入马拉西亚，之前一直在英国的统治之下，有风下之乡（Land Below The Wind）的美誉。其首府为亚庇，旧称哥打京那巴鲁（Kota Kinabalu），杭州机场仍然使用这个称呼。主要旅游城市除了首府亚庇外还有仙本那（Semporna），是著名的潜水目的地。由于去往仙本那需要在斗湖（Tawau）转机，而且这次去玩也不是为了 OW 潜水证，因此等以后有机会再造访。
+亚庇的景点主要有马来西亚第一高峰（东南亚第五）京那巴鲁山（Mount Kinabalu Gunung Kinabalu）、周围的一些离岛、本地的湿地保护区、清真寺以及一些博物馆。这次计划去京那巴鲁山体验滑翔伞和去美人鱼岛（Mantanani Island）潜水（Discovery Scuba），各自需要耗费一天行程。其他的时间就在市区内逛一下，看看亚庇的物价以及号称可以看到最美落日之一的丹绒亚路海滩。
+去新加坡的航班需要新加坡签证，淘宝找旅行社代办即可。去往马来西亚的的航班可以使用 eENTRI 或者 eVisa。我用的 eENTRI，按照规定填写完资料，使用支付宝付款后返回页面就生成了 eENTRI 的文件页。需要注意的是申请资料中提到的往返航班行程单需要事先打印好，过关需要用到。至于酒店预订单，我也打印了，但是没有用到。
+机票全部都是在飞猪买的，酷航-亚航-亚航。当然可以去官网买，但是我图省事，以后可以尝试其他购买渠道。酷航的飞机是波音 789，一排九个座位，不拥挤也不宽敞，不舒服也不难受。亚航的是空客 320，座位是皮革材质，稍微舒服一点。由于是廉价航空，机上都没有免费的水和食物，在回杭州的航班上我用 37 元人民币购买了马来椰浆饭，不是很好吃。机上的乘务人员比较专业，在展示安全带和救生衣使用的时候都有动作示范，这是我在乘坐国内航班的时候没有见过的。
+杭州萧山机场 T2 异常简陋，出关后只有一些（简陋的）免税店。此时出发的航班大都是廉航的红眼航班。到达新加坡樟宜机场 T2 后在机场换了手机卡，联系了新加坡的同学，简单逛了一下，然后打 Grab 去了东海岸公园。车上师傅跟我聊天，不知道为什么我隐约感觉他可以说中文，但是我俩还是用英语聊了一路。到东海岸公园才六点多吧，看到很多人跑步、骑行。海岸不远处停着许多船。已经有一个大哥拿着单反拍照，似乎是在拍摄日出延时。过了一会儿还有一个女孩子坐到堤坝上和她的狗狗不停自拍。她离开的时候还让我给她和她的狗狗拍了一张照片。我也支起三脚架用手机自拍了一些照片，用单反拍了一些日出（主要是云）和沙滩上呆呆的鸟的照片。
+同学赶来后一起吃了点东西（我已经很饿了），很甜的咖啡和已经忘记名字的马来酸甜汤粉。然后就是走路逛了逛，坐公交回了机场 T4。机场高架桥上都是鲜花，路旁都是高大的树，让只见过国内机场的我赞叹不已。需要先到亚航的柜台上盖一个章才能出关，我只带了一个背包，不用受 7kg 的行李额度限制。出关后两个人逛优衣库差点忘了登记时间，结果一件都没买。
+亚庇的机场在海边，飞机降落的时候一边是居民房，一边是海，颇为有趣。下了飞机记得走境外旅客的通道，否则离开的时候出关就有麻烦。出了机场打 Grab 到青年旅舍旁边的商场，后来在附近的一个小店吃了海鲜面和酸柑水。这个酸柑水下面是温水，上面是冰块，有种诡异的酸甜。道理上讲这么流行的饮品应该有其独到之处，我确实感觉到有奇妙的味道，只是欣赏不来。海鲜面可能炒糊了。
+青年旅舍的老板不会中文，不过同学经验很多，交流完后就办理了入住。稍事休整后去了沙巴州博物馆，花费 15 RM 买票之后，就溜了进去。门厅是个大鲸鱼的骨架，里面比较好玩的是一些原住民乐器还有动物标本模型。动物模型看上去都很生动，布置得也很有趣，还原了一些自然场景。至于其他的展品，会介绍一些沙巴的历史以及与外界的互动交流之类的内容。博物馆外面有个车展，列出了一些老车。除了博物馆本身，附近还有一些其他可逛的地方，比如包含不同族群的本地传统民居还原，其中也有华族的屋子，很有南方传统民居的风味。
+离开博物馆后，打 Grab 去了丹绒亚路海滩，时间刚刚好，看了落日。从 First Beach 走到 Second Beach，然后打车去了大茄来海鲜餐厅吃饭，没有点奶油老虎虾。去逛了几个本地市场，说实话感觉比较乡土化，里面各种卖水果、烤串（主要是鸡翅膀之类的）还有旧衣服的商贩。后来离开的时候，同学买了几个莲雾，接下来的几天吃的时候发现味道还不错。
+第二天的行程是美人鱼岛深潜、红树林看长鼻猿和萤火虫。同学磨磨唧唧起床后我们坐着小巴车上路了，一路风光接近我老家鲁西北农村。中途停车买东西和吃饭，我们买了一瓶防蚊喷雾，吃了一份面。没吃饱，去买第二份面的时候就没了…… 吃了一个忘记了什么馅儿的包子。到了码头就是等更多的人来，齐了之后坐船。附近有猴子过来讨吃的，导游把它们赶走，否则游客的包有可能被顺走了。上船后，现在河上航行，行驶比较缓慢。因为快艇会在河中掀起浪，冲击到岸边停靠的船，导致船翻倒的话会被投诉。出海后由于我坐在船头，基本上就是船头扬起在落下的循环，每次都是硬着陆的感觉，脊椎受到极大冲击。</description></item><item><title/><link>https://blog.formalscience.com/2018/08/21/2018-08-21_golang_exception_handling/</link><pubDate>Tue, 21 Aug 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/08/21/2018-08-21_golang_exception_handling/</guid><description>title: defer, panic and recover in Golang date: 2018-08-21 categories:
+技术记录 tech-notes tags: golang 1. 什么是异常处理 程序在执行过程中有可能出现异常状态，比如获取一个不再有效指针指向的内容、除零等。 一般语言都提供了异常处理机制来应对这些情形，例如 Java 的 try/catch/finally 机制（https://docs.oracle.com/javase/tutorial/essential/exceptions/catch.html）、 Python 的 try/raise/except/finally 机制（https://docs.python.org/3/tutorial/errors.html）等。
+2. Go 语言中的异常处理机制 Go 语言中使用的是 defer/panic/recover 机制来处理异常。Go 语言官方博客的《Defer, Panic, and Recover》讲述了这个机制的具体应用方式。
+还有一些其他教程对这个机制的使用方法、适用场景进行了进一步阐述：
+The Right Places To Call The recover Function：https://go101.org/article/panic-and-recover-more.html ，几种使用 recover 恢复 Go 语言中 panic 的适用场景 7.异常处理：https://www.kancloud.cn/liupengjie/go/578555 ，看云发布的 Go 语言教程中涉及到异常处理的章节，里面涉及到很多使用示例细节 如果搜索 “golang 异常处理”，类似的教程有很多。里面的核心思想大体就是：用 defer + recover 处理一个 panic，defer 结构要在 panic 触发之前被定义而且 recover 要直接在在 defer 结构定义的函数中被调用（而不是被直接调用或者在函数内部的其他函数中被调用）。</description></item><item><title/><link>https://blog.formalscience.com/drafts/golang_context/</link><pubDate>Mon, 20 Aug 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/drafts/golang_context/</guid><description/></item><item><title>golang pprof profiler label</title><link>https://blog.formalscience.com/drafts/golang_pprof_label/</link><pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/drafts/golang_pprof_label/</guid><description>git clone -b release-branch.go1.10 https://github.com/golang/go.git release-branch.go1.10 cd release-branch.go1.10/src ./make.bash Building Go cmd/dist using /usr/lib/go-1.10. Building Go toolchain1 using /usr/lib/go-1.10. Building Go bootstrap cmd/go (go_bootstrap) using Go toolchain1. Building Go toolchain2 using go_bootstrap and Go toolchain1. Building Go toolchain3 using go_bootstrap and Go toolchain2. Building packages and commands for linux/amd64. --- Installed Go for linux/amd64 in ~/Projects/release-branch.go1.10 Installed commands in ~/Projects/release-branch.go1.10/bin</description></item><item><title>Useful Commands</title><link>https://blog.formalscience.com/2018/07/22/commands/</link><pubDate>Sun, 22 Jul 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/07/22/commands/</guid><description>Convert images to a video ffmpeg -r 30 -start_number 3455 -i _IMG%d.jpg -s 960X600 -pix_fmt yuv420p 30fps-960.mov -r 30: 30 frames per second -s 960X600: resolution -pix_fmt yuv420p: for OsX youtube-dl video and extract audio file youtube-dl --proxy socks5://127.0.0.1:1080 -x --audio-format mp3 youtube-url
+virtualenvwrapper WORKON_HOME: which directory your environments are created in /usr/local/bin/virtualenvwrapper.sh: default location for its configuration file mkvirtualenv test --python=python3: make a virtual environment &amp;rsquo;test&amp;rsquo; with python3 rmvirtualenv test: remove a virtual environment &amp;rsquo;test' workon test3 or lsvirtualenv -b test3: activate a virtual environment &amp;rsquo;test' deactivate: exit current environment more details: search engine how to avoid globa packages how to copy an environment node &amp;amp;&amp;amp; npm npm complains: Error: Cannot find module 'process-nextick-args'</description></item><item><title>爬虫</title><link>https://blog.formalscience.com/drafts/%E7%88%AC%E8%99%AB/</link><pubDate>Sat, 21 Jul 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/drafts/%E7%88%AC%E8%99%AB/</guid><description>https://stackoverflow.com/questions/21455349/xpath-query-get-attribute-href-from-a-tag
+For the following HTML document:
+&amp;lt;html&amp;gt; &amp;lt;body&amp;gt; &amp;lt;a href=&amp;#34;http://www.example.com&amp;#34;&amp;gt;Example&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;#34;http://www.stackoverflow.com&amp;#34;&amp;gt;SO&amp;lt;/a&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt; The xpath query /html/body//a/@href (or simply //a/@href) will return:
+http://www.example.com http://www.stackoverflow.com To select a specific instance use /html/body//a[N]/@href,
+$ /html/body//a[2]/@href http://www.stackoverflow.com To test for strings contained in the attribute and return the attribute itself place the check on the tag not on the attribute:
+$ /html/body//a[contains(@href,&amp;#39;example&amp;#39;)]/@href http://www.example.com Mixing the two:</description></item><item><title>电池人生</title><link>https://blog.formalscience.com/2018/07/06/2018-07-06-battery-life/</link><pubDate>Fri, 06 Jul 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/07/06/2018-07-06-battery-life/</guid><description>电池，一般狭义上的定义是将本身储存的化学能转成电能的装置，广义的定义为将预先储存起的能量转化为可供外用电能的装置。因此，像太阳能电池只有转化而无储存功能的装置不算是电池。其他名称有电瓶、电芯，而中文池及瓶也有储存作用之意。
+《维基百科》
+5 月份上海校友会来杭州参观，我带队去云栖景区玩，后来大家一起去了阿里西溪园区。园区很漂亮，中间有一块地被高墙围起，据说马云在那里开董事会。后面有个讨论环节，那时我已经昏昏欲睡了，只记得那个阿里 P11 说今后公司要拓展的方向是娱乐和健康。
+娱乐和健康都是人生活的必需品。
+最近认识一些朋友去今日头条工作了。这个公司的应用通过算法构建消息流推送到人们的移动终端。在信息泛滥的今天，可以永远向下滑动手指，看到无尽的“新”闻。可算法知道，这些新闻的类型是你喜欢的，同样的主题是你的老朋友了。
+当然这样的应用通常不需要你付费，因为你就是它们的商品。一次次的滑动中除了那些通过视网膜输入的新闻还有各式各样的广告，都是基于你的“兴趣”进行筛选后的结果。它们攫取你的时间卖给了肯花钱展示商品的人，赚到了差价。
+以前看黑客帝国的时候，总是不明白 Matrix 那么发达，却还是需要将人关在营养仓里当做电池使用。人是消耗能量的啊！最近才逐渐有所领悟，人体不一定可以拿来产生能量。人作为进化的产物，智能依赖生物结构，Matrix 可以将一个个的人作为基础的计算组件，用来支撑虚拟世界中的各种计算。现在我们使用人工智能也是如此，用来识别人脸、用来预测天气 ……
+《海伯利安》中有一个设定，机器智能帮助人类构建了可以在宇宙各处穿梭的跃迁节点，而这种技术远远超出了人类的理解范围。人们以为这是机器智能回馈给它们的“造物主”的礼物，但实际上这是一个陷阱。人穿梭过跃迁节点从另一侧出来并不是瞬间完成的。在节点中度过的无法感知到的时间中，人的大脑的计算能力被机器智能利用，完成了自身的不断进化，来追求它们的终极目标。
+在阿西莫夫的经典作品《我，机器人》改编的电影中，威尔•史密斯扮演的黑人警探戴尔•斯普纳不相信人类能和机器人和平共处，故事的各种冲突也从此展开。这部作品的底线是机器人还遵守“机器人三定律”，虽然是被以某种人类意想不到的方式施行的。现实中，我们能对机器人有所期待吗？我们能对创造机器人的人有所期待吗？
+总是有人对新的技术保持怀疑 —— 有些人因为未知而恐惧，有些人因为远见而忧虑，只有中间的人享受着生活。
+有时候想人的一生好短暂，也就一百年。昨天看到淡豹的一篇文章《近日新闻有感》，中间有一大段对日常种种琐事的描述，读的过程中仿佛头被浸在水中。究竟是什么（强大的）力量在驱使我们生活？
+在我看来这种力量里又加入了一方势力，有些人在尽最大努力使用着智能算法来侵占人的生命。以前他们也这样做，通过编辑人们喜欢的花边新闻和轶事来吸引人们注意，不过那种方式毕竟低效。现在算法可以让人们通过滑动手指，自己戴上镣铐，出卖生命。
+小的时候，有段时间我很喜欢四驱车，当然是在看了《四驱小子》之后。终于有了一辆（无影剑）后，我发现了一个现实的问题：这车跑起来很费电池，于是又攒钱买充电电池。最终电池的能量变成了车在赛道上前进的动力以及我的回忆。
+我对四驱车的欲望肯定是来自动画片，后来我弟弟那时候买的就是悠悠球了。人的大脑是可以被外界信息影响的，现代科技也会以某种方式对人的大脑进行编程。现在人脑运行的机制还不清楚，如果可行的话，那些广告商肯定想通过某种方式对你的大脑进行编程，让你看一遍广告就下单购物。
+我前段时间在想：如果总是接受这样被算法（你的手指）选择过的信息，会变傻吗？至少我体会过那种无效信息过载的时刻，就是大脑没什么感觉了。
+在这个过程中我们到底付出了什么呢？我们的时间，我们的未来。
+随着时间的推移，人的未来就逐渐坍缩，直到生命终点，也就没有未来了。每一秒过去，我们的未来就少了几分可能性。
+如果明天不值得期待，就继续燃烧自己吧。</description></item><item><title>Multi Websites in One Host (Ubuntu 18.04)</title><link>https://blog.formalscience.com/drafts/multi_websites_in_one_host_ubuntu_18/</link><pubDate>Sat, 30 Jun 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/drafts/multi_websites_in_one_host_ubuntu_18/</guid><description>The configuration for Apache on my Ubuntu 18.04 (DigitialOcean) is /etc/apache2/apache2.conf.
+# This is the main Apache server configuration file. It contains the # configuration directives that give the server its instructions. # See http://httpd.apache.org/docs/2.4/ for detailed information about # the directives and /usr/share/doc/apache2/README.Debian about Debian specific # hints. # # # Summary of how the Apache 2 configuration works in Debian: # The Apache 2 web server configuration in Debian is quite different to # upstream&amp;#39;s suggested way to configure the web server.</description></item><item><title>Understanding Linux Schedule Domain</title><link>https://blog.formalscience.com/drafts/linux_schedule_domain/</link><pubDate>Thu, 28 Jun 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/drafts/linux_schedule_domain/</guid><description/></item><item><title>Upgrade DigitalOcean's Ubuntu 17.04 to LTS version in 2018-06</title><link>https://blog.formalscience.com/2018/06/23/2018-06-23_update_vps_ubuntu_version/</link><pubDate>Sat, 23 Jun 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/06/23/2018-06-23_update_vps_ubuntu_version/</guid><description>What happened? I found my proxy for accessing some websites stopped working today, so I had to change my VPS&amp;rsquo;s IP address. After some trials, everything seemed OK and I started watching a skiing video made by NorthFace on Youtube.
+Emmmm, I noticed 12 packages needed to be updated. Well, I typed sudo apt-get update and got messages like this (I didn&amp;rsquo;t save the error messages then):
+404 Not Found [IP: 91.</description></item><item><title>2016 十一塞罕坝行动</title><link>https://blog.formalscience.com/2018/05/27/2018-05-27_2016_%E5%8D%81%E4%B8%80%E5%A1%9E%E7%BD%95%E5%9D%9D%E8%A1%8C%E5%8A%A8/</link><pubDate>Sun, 27 May 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/05/27/2018-05-27_2016_%E5%8D%81%E4%B8%80%E5%A1%9E%E7%BD%95%E5%9D%9D%E8%A1%8C%E5%8A%A8/</guid><description>这是很久之前应该出现的一篇日志，当时忙于处理照片、毕业论文之类的事情，加上强烈的懈怠情绪，一直没写。
+2016 年暑假过后开学不久，政委喊大家出去骑车，这注定会很有趣。目的地是承德的塞罕坝，不是张家口的坝上草原。 主题是骑行、赏秋景。大家确认好时间后，大家定了火车票，提前去西直门北京北站托运了自行车。剩下的就是等待出行了。
+塞罕坝国家森林公园位于承德北部，毗邻内蒙古（上面），是清代皇家猎苑一部分，集满蒙汉三民族文化。 景区内有七星湖、太阳湖、泰丰湖、白桦林、月亮湖等较大的景点和多个小景点，自然风光和人文遗迹于一体。 （注：这些湖我们一个也没去，人文遗迹也没看到） 另外，还珠格格就是在这个地方被他皇阿玛一箭射中的。
+整体路线规划为：
+北京北 - 四合永镇 （火车） 四合永镇 - 围场县 （骑车、住宿） 围场县 - 机械林场 （骑车、住宿） 机械林场 - 半截塔镇 （骑车、住宿） 半截塔镇 - 隆化县 （骑车） 隆化县 - 北京北 （火车） Day 0 火车上的旅行总是欢快的，小帅哥 YL 拿了很多桌游，大家玩啊玩。 在玩阿瓦隆的时候，某个女博士一脸愁容，明显就是脑细胞不够用的表现。 路上路过了很多听过但是没去过的地方，比如古北口。
+到了四合永镇，取车合影。
+到围场县很近，我们很快就骑到了，安顿好了住宿。肚子饿的呱呱叫，出去觅食，集体决定吃火锅（作为吃饭不挑剔的我当然也给不出什么建设性意见）。 一行人吃得热火朝天，风生水起，生龙活虎。最后算账，人均三十。
+然后去附近的超市准备接下来几天的食粮。水果、面包、零食、饮料，各种东西都来点。 逛超市比较有意思的是看到各种东西分门别类堆在一起，那么多，又都很光鲜。虽然不能都买了，但总有种莫名的愉悦感。
+晚上还是玩玩玩，时刻压制住情绪，以免吵到其他人。
+Day 1 第二天按时起床，旁边小店吃了早饭，准备出发。 说到这个出发，还是有些字面意义上的周折。小城在修路，大家凭着感觉和导航终于骑了出去。
+骑车嘛，还是为了拍照。一路上大家各种互拍、自拍，对着天空、河流、群山拍。
+骑车嘛，总会爆胎，尤其是漂亮的那种车，比如鲜红的挑战者 300。一路上补过胎的，没经验的，也基本都学会了。
+这样的景色大家拍来拍去，怎么也拍不厌。骑在这样的路上，也感觉不累（假的，毕竟在爬大坡）。
+接近傍晚，天空的颜色变得多彩，而眼前原野的景色淡下去了。
+剩下的就是赶路了，还要走一段公路到机械林场。虽然路上的景色也很美，但是看不到，只能通过黑黢黢的树影摇曳想象了。路上发生了一起意外，美女 GY 摔车了。 简单处理了一下，也只能继续骑车。到了机械林场后买了创可贴和碘酒暂时顶一下。
+晚上十点多大家吃了羊腿饭，景区物价高，不过仍不及五道口。住宿的话，还停暖和的，三个大男生挤一挤了，另外的妹子们怎么睡都随意了，虽然大家都是在一间屋子里吧。
+Day 2 第二天早上在店家吃了早餐，馒头、稀饭、饼、鸡蛋、炒小菜，典型的住店组合套餐（甚至在西藏也是这种组合……）。 出去后，开始下小雪，然后是小雨。大家都披上了雨衣。不过这注定是狼狈的、凄惨的、励志的一天 …… 我不说别人了，就说我自己吧。首先我的鞋子是登山鞋，防水的那种，可以避免水从外面进来，也可以防止水从里面出去。于是我就相当于穿着一个便携泡脚盆在骑车。 总之就是一种说不清道不明的酸楚与傻乐呵在心中交织。</description></item><item><title>理解 C++ Traits</title><link>https://blog.formalscience.com/2018/05/12/2018-05-12_%E7%90%86%E8%A7%A3_c-_traits/</link><pubDate>Sat, 12 May 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/05/12/2018-05-12_%E7%90%86%E8%A7%A3_c-_traits/</guid><description>C++ 是我学习的第一种编程语言，当时是 2007 年。现在 C++ 标准委员会已经在讨论 2020 年要发布的特性了，我连 2011 年发布的 Traits 都还不知道是啥。今天下定决心了解总结一下。
+C++ 之父 Bjarne Stroustrup 说：
+Think of a trait as a small object whose main purpose is to carry information used by another object or algorithm to determine “policy” or “implementation details”.
+嗯，这段描述也比较抽象。我的理解是，trait 把不同类型的特定信息进行打包，用在算法或者其他对象中。这样算法或者其他对象的设计可以做到更加通用，通过 trait 打包的信息进行策略选择或者实现细节。
+这段代码判断两个类型的关系。第 4 行的模板以两个类型作为参数，通过结构体 type_relation 的成员 relation 获取比较结果。当前代码输出：
+type_relation&amp;lt;bool, int&amp;gt;: different type_relation&amp;lt;int, int&amp;gt;: different 这段代码并未实现预期功能，因为比较 bool 和 int，以及 int 和 int 时，都输出 &amp;quot;different&amp;quot; 。下面继续完善这个 trait 实现。</description></item><item><title>‘How Does Monero Work?' 笔记</title><link>https://blog.formalscience.com/2018/01/21/how-does-monero-work-%E7%AC%94%E8%AE%B0/</link><pubDate>Sun, 21 Jan 2018 15:46:20 +0000</pubDate><guid>https://blog.formalscience.com/2018/01/21/how-does-monero-work-%E7%AC%94%E8%AE%B0/</guid><description>Monero 门罗币的一个介绍视频
+我刚买到 1070Ti 显卡时曾经想要挖过这个币，后来放弃了，觉得没有意义。不过了解这个技术的一些原理还是有价值的。
+Siraj Raval 的免责声明： 
+Monero 是一种不可追踪的加密货币，网络上很多非法买卖东西的人会使用它。他介绍这个技术的原因是：你应当对你的数据有控制权，而很多数据是交易数据（transactional data）。目前很多公司可以从中免费挖掘信息，用来预测你的购买行为，以便向你展示广告。理想情况下他们应当为你的数据付费，而他们付费的唯一可能是你控制着数据，而唯一控制数据的方式为数据是匿名的。为了查阅你的交易历史，</description></item><item><title>两个玻璃球（网上流传的面试题）</title><link>https://blog.formalscience.com/2018/01/17/%E4%B8%A4%E4%B8%AA%E7%8E%BB%E7%92%83%E7%90%83%E7%BD%91%E4%B8%8A%E6%B5%81%E4%BC%A0%E7%9A%84%E9%9D%A2%E8%AF%95%E9%A2%98/</link><pubDate>Wed, 17 Jan 2018 19:57:18 +0000</pubDate><guid>https://blog.formalscience.com/2018/01/17/%E4%B8%A4%E4%B8%AA%E7%8E%BB%E7%92%83%E7%90%83%E7%BD%91%E4%B8%8A%E6%B5%81%E4%BC%A0%E7%9A%84%E9%9D%A2%E8%AF%95%E9%A2%98/</guid><description>据说这是 Google 的一个面试题：
+有一栋 100 层高的大楼，有两个完全相同的玻璃球。假设从某一层开始丢下玻璃球会摔碎，利用手中的两个玻璃球确定是第几层。最少扔几次玻璃球可以确定这个临界楼层（玻璃球在这一层以及更高的楼层扔下会摔碎）？
+就如孔子说过的那句名言 &amp;ldquo;I Never Said All That Shit&amp;rdquo; 一样，这个题目出自哪里我也没有去考证。下面把我的思路整理一下。
+如果只有一个玻璃球，能做的就是从 1 层开始尝试扔下玻璃球，然后尝试 2 层、3 层 ……，直到某一层扔下玻璃球后摔碎。而现在有两个玻璃球，我们可以用一个玻璃球从 1 层、11 层、21 层 …… 扔下去，确定一个较小的破碎范围，然后使用第二个玻璃球确定具体的楼层。
+假如总共 N 层，我们从第 X 层扔下第一个玻璃球，有两种可能性：玻璃球摔碎或者没碎。如果玻璃球摔碎，说明临界楼层在 1~X 中；如果没摔碎，则临界楼层在 X+1~N 中。
+如果临界楼层在 1~N 中是均匀分布的，那么 $N &amp;gt; 2$ 时确定临界楼层需要扔玻璃球的最少次数可以由以下公式表示：
+$$ f(N)= \min_{X \in [1, N]} {1 + f(N-X)\frac{N-X}{N} + g(X)\frac{X}{N}} $$
+$f(N)$ 为使用两个玻璃球确定区间长度为 N 时的临界楼层所用次数，$g(X)$ 为使用一个玻璃球确定区间长度为 N 时的临界楼层所用次数。这个公式的三部分分别对应：
+一次扔玻璃球的尝试 玻璃球未摔碎概率$\times$此时继续尝试需要的次数 $f(N-X)$（两个玻璃球） 玻璃球摔碎概率$\times$此时继续尝试需要的次数 $g(X)$（一个玻璃球）。 显然有 $f(1)=0$，$g(N)=N-1$。可以用动态规划求解 $N=100$ 时需要的最少次数。</description></item><item><title>Golang 系统调用/Syscall</title><link>https://blog.formalscience.com/2018/01/15/golang-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8-syscall/</link><pubDate>Mon, 15 Jan 2018 20:59:11 +0000</pubDate><guid>https://blog.formalscience.com/2018/01/15/golang-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8-syscall/</guid><description>概述 很多和系统相关的函数都需要调用系统 API，例如读写文件的函数。Golang 对一些系统调用接口进行了封装，提供了 Golang 函数让用户调用，例如：
+func Read(fd int, p []byte) (n int, err error) func Write(fd int, p []byte) (n int, err error) 同时，Golang 也提供了对 Syscall 的直接调用支持：
+func Syscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno) func Syscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno) func RawSyscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno) func RawSyscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno) RawSyscall 和 RawSyscall6 是对操作系统 Syscall 的直接调用；Syscall 和 Syscall6 会在调用操作系统 Syscall 前调用 runtime·entersyscall ，在操作系统 Syscall 返回后调用 runtime·exitsyscall 。</description></item><item><title>Golang 中学到的新东西</title><link>https://blog.formalscience.com/2018/01/14/golang-%E4%B8%AD%E5%AD%A6%E5%88%B0%E7%9A%84%E6%96%B0%E4%B8%9C%E8%A5%BF/</link><pubDate>Sun, 14 Jan 2018 11:53:30 +0000</pubDate><guid>https://blog.formalscience.com/2018/01/14/golang-%E4%B8%AD%E5%AD%A6%E5%88%B0%E7%9A%84%E6%96%B0%E4%B8%9C%E8%A5%BF/</guid><description>数据类型 string 类型 string 类型使用 2 个 word（64 bit 系统为 8 byte * 2）表示：一个 word 是指针，指向字符串存储区域；一个 word 表示长度数据。
+slice $\leftrightarrow$ unsafe.Pointer s := make([]byte, 200) ptr := unsafe.Pointer(&amp;amp;s[0]) var ptr unsafe.Pointer s := ((*[1&amp;lt;&amp;lt;10]byte)(ptr))[:200] or
+var ptr unsafe.Pointer var s1 = struct { addr uintptr len int cap int }{ptr, length, length} s := *(*[]byte)(unsafe.Pointer(&amp;amp;s1)) or
+var o []byte sliceHeader := (*reflect.SliceHeader)((unsafe.Pointer(&amp;amp;o))) sliceHeader.Cap = length sliceHeader.Len = length sliceHeader.</description></item><item><title>使用 Nvidia 显卡加速机器学习算法的一些资料</title><link>https://blog.formalscience.com/2018/01/13/%E4%BD%BF%E7%94%A8-nvidia-%E6%98%BE%E5%8D%A1%E5%8A%A0%E9%80%9F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E7%9A%84%E4%B8%80%E4%BA%9B%E8%B5%84%E6%96%99/</link><pubDate>Sat, 13 Jan 2018 13:14:09 +0000</pubDate><guid>https://blog.formalscience.com/2018/01/13/%E4%BD%BF%E7%94%A8-nvidia-%E6%98%BE%E5%8D%A1%E5%8A%A0%E9%80%9F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E7%9A%84%E4%B8%80%E4%BA%9B%E8%B5%84%E6%96%99/</guid><description>Nnidia 显卡可以用来加速机器学习算法（特别是深度学习），但安装驱动过程中总会碰到这样或者那样的问题。 一个难点是安装库的时候没有下载链接，比如 Nvidia 的 Cuda/cuDNN 主页经常会出现这样的提示：
+NVIDIA Developer Site is under going maintenance. The site will be back by shortly. We apologize for any inconvenience. 虽然不能按照官方路径进行下载，但经过搜索总能找到一些入口。下面是我收集的一些链接：
+cuDNN 下载页面：https://developer.nvidia.com/rdp/cudnn-download 这个页面需要注册 Nvidia 开发者账号并登录，当前包含从 cuDNN v5.1 到 cuDNN 7.0.5 的版本 CUDA 下载页面：https://developer.nvidia.com/cuda-toolkit-archive 这个页面需要注册 Nvidia 开发者账号并登录，当前包含从 CUDA Toolkit 1.0 到 CUDA Toolkit 9.0 的版本，最新的 CUDA Toolkit 9.1 的链接仍然指向正在维护的提示页面 Ubuntu 16.04 CUDA Toolkit 9.1 下载链接：http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_9.1.85-1_amd64.deb 此外可以在这个页面找到其他 Linux 发行版的安装包：http://developer.download.nvidia.com/compute/cuda/repos/ Windows 10 版本的 CUDA Toolkit 9.</description></item><item><title>一些有趣的项目 Protocol Labs</title><link>https://blog.formalscience.com/2018/01/12/%E4%B8%80%E4%BA%9B%E6%9C%89%E8%B6%A3%E7%9A%84%E9%A1%B9%E7%9B%AE_protocol_labs/</link><pubDate>Fri, 12 Jan 2018 21:37:21 +0000</pubDate><guid>https://blog.formalscience.com/2018/01/12/%E4%B8%80%E4%BA%9B%E6%9C%89%E8%B6%A3%E7%9A%84%E9%A1%B9%E7%9B%AE_protocol_labs/</guid><description>最初在 3Blue1Brown 发布的一个介绍区块链原理的视频中看到了这个组织的连接。发现比较有意思，给大家分享一下~
+项目的使命：
+We believe the internet has become humanity&amp;rsquo;s most important technology. We build protocols, systems, and tools to improve how it works. Today, we are focused on how we store, locate, and move information.
+我们相信互联网已成为人类最重要的技术。我们构建提升互联网工作能力的协议、系统和工具。当前我们集中在如何存储、定位和移动信息的工作上。
+这段文字翻译得有点机器翻译风格。
+项目地址：https://protocol.ai/projects/ ，目前上面有 5 个项目：
+Filecoin 加密货币，Miners 通过向网络提供存储空间来获取 Filecoin ，使用者通过消耗 Filecoin 来在去中心化的网络中存储加密后的文件。 IPFS (InterPlanetary File System) 一种新型协议，用来使网络去中心化。IPFS 通过内容寻址和数字签名来创建完全去中心化和分布式的应用。IPFS 使得网络更快、更安全以及更加开放。 这是一段 YouTube 上的介绍视频：https://www.youtube.com/watch?v=8CMxDNuuAiQ ，介绍了 IPFS 的一些基本使用方法。根据我的理解，这是通过 content-address（immutable hash） 访问的分布式加密文件系统，可以通过命令行、网页界面等多种方式进行访问，有点类似 Samba，不过是分布式的。Siraj Raval 制作的一个视频：https://www.</description></item><item><title>Bar</title><link>https://blog.formalscience.com/2017/11/11/2017-11-11-bar/</link><pubDate>Sat, 11 Nov 2017 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2017/11/11/2017-11-11-bar/</guid><description>import &amp;#34;blog.formalscience.com/nothing&amp;#34; func main() { nothing.bar() } I dreamed about death this morning.
+I dreamed about false dreams this morning.
+I woke up tired.
+I made some coffee with milk or without milk.
+I saw some videos on Youtube and Bilibili.
+I wrote this blog.</description></item><item><title>我一生的故事</title><link>https://blog.formalscience.com/2017/01/24/%E6%88%91%E4%B8%80%E7%94%9F%E7%9A%84%E6%95%85%E4%BA%8B/</link><pubDate>Tue, 24 Jan 2017 01:07:28 +0000</pubDate><guid>https://blog.formalscience.com/2017/01/24/%E6%88%91%E4%B8%80%E7%94%9F%E7%9A%84%E6%95%85%E4%BA%8B/</guid><description>我一生的故事 我终于去看了《降临》。最初知道 特德·姜／Ted Chiang 的《你一生的故事 ／Story of Your Life》要被搬上银幕的时候，我内心很激动，因为这是我非常喜欢的一篇科幻小说。不过担忧也是有的，很多科幻小说以电影的形式展现时，感觉上总是有些残缺，或囿于电影技术，或囿于艺术表现形式，或者就是书的读者有不切实际的期望。
+再次听说相关消息时，已经是在美国上映的消息了，影片名称是《降临》，相比原书的标题这个名称显得更加科幻一些。然后听说到的就是各种好评，我本来期待着北邮人上什么时候会有下载资源，因为感觉国内没可能上映了。后来知道的就是上映的消息，直到今天观影结束。
+我相信关注一些电影公众号的人肯定已经被剧透了，在此我就不再描述剧情了。对于我来说，看过中文版的小说，又看了英文版的小说，然后看了电影。在已经知道了剧情的前提下看电影，和已经知道了未来的人生的前提下继续生活有些相似之处。不过我头脑仍然只能处理从过去向未来流动的线形时间，而不是书中／电影中的 没有方向的文字。
+语言真的可以影响人的思考方式吗？
+作为《你一生的故事》理论基石的是语言相对性原理（萨丕尔-沃夫假说）。这是一个关于人类语言的假说：
+认为不同语言裡所包含的文化概念和分类会影响语言使用者对于现实世界的认知，也就是说不同的语言的使用者会因语言差异而产生思考方式，行为方式的不同。
+七肢桶（书中外星人因其外形得到的称呼）的文字是非线形的文字，复杂的文字在简单的文字之上通过改变结构得到，它们在表达一个思想之前就获得了这个思想对应文字的全部形状。同样对于它们来说，复杂的物理学定律，特别是人类目前没有掌握的关于时间空间的部分，比基础的牛顿定律来说更容易理解。光为什么沿着时间最短路径行进？我们可能需要量子理论来计算光行进所有可能路径然后对每一条路径进行积分算出其概率。对于七肢桶来说，光沿着最短路径行进就是其目的。
+每个文明的科技进展路线和其环境有很大关系，一个内陆国家是发展出强大航海科技的可能性是很小的。对于七肢桶来说谈论过去和未来是没有意义的，它们只是向着目的前进。（即使这个“目的”在“未来”发生）也许这是看待世界的两种方式，就像在在时域和频域对一个信号进行不同的观察。
+女主角在和七肢桶接触以及学习了其文字 —— “七文” 后，逐渐领悟了自己的未来。电影或书中出现未来的地方就容易出现矛盾。特别集中在人知道了未来之后能否改变未来这一问题上。有一种观点认为预知未来和自由意志之间只能二择其一。女主角在学习文字语言的过程中，到底是获取了预知未来的能力，还是放弃了自由意志？
+预知未来的人不会奢谈未来，读过岁月之书的人不会承认自己读过它。 —— 《你一生的故事 ／Story of Your Life》 特德·姜／Ted Chiang
+人们讴歌自由意志，然而又同时梦想可以预知未来。 —— 《我一生的故事》 乱说话的跳跳 ／ Bef0rewind
+女主角在知道自己女儿将来会因为罕见病去世之后，依然（此处用选择或者决定都不合适）生下了她。后来她把自己对未来的预知告诉丈夫后，丈夫对她的行为感到愤怒，他们的婚姻也结束了。
+对于电影中出现的一个小高潮，商将军告诉女主角自己的私人号码。有人质疑，女主角既然能够看见未来，为什么需要在未来的商将军告诉她这一信息。也许语言对她的影响是逐步产生的，未来的画面满满展开在了她面前，而在此刻她注定不知道这一信息。未来的商将军也受到了 “七文” 的影响，对女主角说：你应该（should）给我打电话。
+书中最后没有提到七肢桶来到地球的目的，电影中给出了一个目的：三千年后七肢桶需要人类的帮助（它们在未来里看不到自己的目的了吗？）。电影中女主角对七肢桶的文字出版了教科书，讲授相关知识，也许会对地球人的思维产生影响吧。我也想过，七文会主导世界吗，地球人也会出现某种进化吧。好多语言会消失啊，对应的文明也消失了吧。
+我讲过的两段话：
+时间旅行故事中最美妙的因素就是时间。我在过去种下一颗种子，现在收获了一棵大树。
+一个能够沿着时间轴前进后退的生命和一个只能单向前进的生命，哪个更有趣？前者已知所有，后者并不知道未来。如果前者眼中时间是一条线段（端点可能在无穷处），线段两端是其诞生和终结，可能还是对前面是否有尽头的未知有意思一点。
+在英剧《奇异博士》五十周年特别篇 The Day Of The Doctor 中，三代博士使用的是同一个计算终端。当最老的博士在他的终端启动了计算，到了第三代博士手中的终端就处于计算了几百年之后的状态，得到了计算结果。
+时间，只有时间。
+我如果在书中，会是一个什么角色呢？我会有什么样的行为？作为一个希望与外星智慧生命接触的人，如果真有外星飞船降临，我得不到与它们见面的机会，毕竟我不是有特殊技能的人士。除非我是男主角，那外星生命可能出于某种目的同我接触。
+有一点特别感动，父母会走到生命的尽头，孩子也会。我想到自己未来的孩子，我与你的故事，我会成为一个怎样的父亲，也许很久之前我就知道了呀。
+一些相关的科幻小说
+《与拉玛相会／Rendezvous with Rama》 阿瑟·克拉克／Arthur C.</description></item><item><title>Ingress_Passcode_自动提交</title><link>https://blog.formalscience.com/2017/01/18/ingress-passcode-%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4/</link><pubDate>Wed, 18 Jan 2017 13:10:10 +0000</pubDate><guid>https://blog.formalscience.com/2017/01/18/ingress-passcode-%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4/</guid><description>什么是 Passcode？ 根据 Ingress 中文游戏指南 的讲解，Passcode 是 Ingress 提供的一种奖励。
+使用 Investigation Board 来了解 Ingress 的最新剧情并寻求对 Niantic Project, NIA, XM, Shapers 以及各阵营不同问题的答案。 可以使用隐藏在这些报告之中的 Passcode 来兑换道具（Resonator，XMP 等），XM 或者 AP。
+另外，一些官方活动会向到场者赠送包含 Passcode 的卡片，特定的官方周边也会赠送此类卡片。卡片上的 Passcode 一般能够兑换活动徽章。
+注：在很多社交网站上可以找到有效的 Passcode
+在 iOS 平台的 Ingress 客户端上 Passcode 兑换功能不可用，因此只能使用 Intel Map 来兑换。
+在 Intel Map 上兑换 在右上方点击 Passcode 输入你的 passcode，然后点击 SUBMIT 兑换 自动化 Intel Map 兑换过程 可以通过浏览器的调试页面，自动将搜寻到的 passcode 提交，进行物品兑换。
+表单提交 document.</description></item><item><title>如何构建一个 Java Agent</title><link>https://blog.formalscience.com/2017/01/16/%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA_java_agent/</link><pubDate>Mon, 16 Jan 2017 18:58:28 +0000</pubDate><guid>https://blog.formalscience.com/2017/01/16/%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA_java_agent/</guid><description>First. Implement a static premain (as an analogy to main) method, like this:
+import java.lang.instrument.Instrumentation; class Example { public static void premain(String args, Instrumentation inst) { ... } } Second. Create a manifest file (say, manifest.txt) marking this class for pre-main execution. Its contents are:
+Premain-Class: Example
+Third. Compile the class and package this class into a JAR archive:
+javac Example.java jar cmf manifest.txt yourAwesomeAgent.jar *.class</description></item><item><title>相思 - 头被按入水里</title><link>https://blog.formalscience.com/2017/01/10/%E7%9B%B8%E6%80%9D_-_%E5%A4%B4%E8%A2%AB%E6%8C%89%E5%85%A5%E6%B0%B4%E9%87%8C/</link><pubDate>Tue, 10 Jan 2017 00:07:33 +0000</pubDate><guid>https://blog.formalscience.com/2017/01/10/%E7%9B%B8%E6%80%9D_-_%E5%A4%B4%E8%A2%AB%E6%8C%89%E5%85%A5%E6%B0%B4%E9%87%8C/</guid><description>佛教公案：“师父将弟子头按入水中良久，泛沫渐少；师父将弟子拽起，复其元气，曰：汝求真谛如空气时，便知何为真谛矣。”
+不见对方，就像我的头被按入水里一样滋味；我快要溺死了，呼吸不济了，经过这种窒息，我才重新认识我要寻求的“真谛”并练就了爱情中必不可缺的执着。
+《恋人絮语·相思》
+​ 相思是纯粹的痛苦，一个人在一个人不在，对方并不知晓留下人的感受，守望之人陷入煎熬不能自已。
+这是一场不知道何时终止的对抗，与时间同命运的战争，游戏已经开始。
+我尝试我嘲笑过的行为
+一只，两只，三只
+绵羊都是乖乖的吗？
+就如你摇头晃脑的样子
+//
+夜晚并不宁静
+至少在我的城市里不是
+晚上的月光可真耀眼
+我没有想到地上的霜
+我的相思要温暖一点点
+//
+或早或晚
+不知何时
+我捡回了我的睡眠
+//
+或早或晚
+不知何时
+我想我永远失去了你</description></item><item><title>Windows 推荐软件</title><link>https://blog.formalscience.com/2016/09/16/windows_%E6%8E%A8%E8%8D%90%E8%BD%AF%E4%BB%B6/</link><pubDate>Fri, 16 Sep 2016 10:56:11 +0000</pubDate><guid>https://blog.formalscience.com/2016/09/16/windows_%E6%8E%A8%E8%8D%90%E8%BD%AF%E4%BB%B6/</guid><description>在知乎上看了一些推荐
+Total Commander Listary AutoHotKey Internet Download Manager paint.net pot player Tickeys 7-zip Beyond Compare PowerTab (Powershell auto complete) Fiddler ZoomIt Postman - Chrome 里的 HTTP/REST 客户端，Web 服务专用神器 Pixie - 简单，可爱，便携的取色器 快捷键
+Windows+Tab调出虚拟桌面 Alt+Tab 切换不同的窗口 Windows+Ctrl+D 创建新的虚拟桌面 Windows+Ｃtrl+F4 关闭当前虚拟桌面 Ctrl＋Windows＋左右箭头　虚拟桌面切换</description></item><item><title>欲辩已忘言</title><link>https://blog.formalscience.com/2016/08/25/%E6%AC%B2%E8%BE%A9%E5%B7%B2%E5%BF%98%E8%A8%80/</link><pubDate>Thu, 25 Aug 2016 20:33:11 +0000</pubDate><guid>https://blog.formalscience.com/2016/08/25/%E6%AC%B2%E8%BE%A9%E5%B7%B2%E5%BF%98%E8%A8%80/</guid><description>前段时间，收获了两篇论文的接收通知。
+目前正在学习 Verilog 语言，应对老板提出的 FPGA 项目减少功耗 10% 的任务。据说这是毕业前提之一，我暂且先接下来，学习一门新的语言还是比较有趣的，而且复习一下 FPGA 相关的开发还是有意思的。未来硬件会有更大的发挥空间，软件硬件化和硬件软件化应该是两个趋势。不过可能未来的 FPGA 硬件应该使用更抽象的语言来开发的。
+最近开始面试工作了
+网易在线机试后要去杭州面试，放弃了，而且听说只报销 600￥ 路费，就不去凑 G20 的热闹了 微软亚研，报的研发岗位，在线机试后，由于水平太差被刷，不能去提前招人的夏令营 Google 的机试轮现在我自己的算法水平通过不了 华为的话，我去 FIT 签出国开会的请假条时，听胡杰说了给的钱不少，而且有很多方向可以选，于是联系了四个部门，都在接触中 整体而言，华为的面试倾向于沟通彼此研究开发的背景。面试官会问一些读博期间的研究方向和参与的项目，也会介绍公司的一些研究开发方向和项目应用场景。整体而言不像互联网公司涉及太多算法题目和语言细节（这一点我是听闻的，毕竟我只在六年前电面过一次腾讯）。几个方向都有匹配的地方，我觉得都可以去做一些事情。不过对于华为在工作环境和氛围方面的口碑，评价分化很严重。不过我搜索了一下知乎上相关的问题和华为的内部论坛“心声”。发现评价并没有分化太严重。
+累是大家一致认同的。部门合作不畅，企业加班严重，考评不合理，PPT 和会议都很多等问题都是员工身心劳累。分歧在于，是否觉得这样的付出是否有价值吧。有些人认为提供了还不错的收入，让穷苦的人能够有所收获；有些人认为，为了这点钱牺牲掉自己的生活并不值得。另外有些人认为自己成长很快；有些人认为里面更多的是学习华为的业务，其中使用的很多技术是极其落后的。此外不同部门之间的评价也是有很多差别。
+这些都在预期范围内。不过具体到部门的工作环境还是要具体沟通一下。对于钱，希望多一些；对于工作内容，希望有挑战性有趣一些；对于工作氛围，希望（在可能情况下），高效一些。不过降低预期是幸福之源，也要有心理准备。我懒得很，估计也不符合人家对“奋斗者”的期望，如果要去的话可能只是为了钱和钱。
+华为在松山湖搞的仿 Google 的欧洲小镇风园区效果图还不错，而且也许我可以去松山湖划皮划艇。这样光想着玩可不好。
+其他的工作慢慢搞吧，还有其他计划，比如去读个博后，继续思考下人生什么的。别人问题你未来有什么规划呢？对不同的人有不同的回答。在老家，就说找个赚钱多的工作；对一些人说想去公司看看；对一些人说希望可以出国工作。这么多的回答可能是我内心矛盾和虚伪的体现吧。目前的主要问题其实是对找工作没有激情。
+有些人还是听我提过有种我向往的生活的，不过目前来看很遥远。在其境，谋其事吧。
+题目要继续刷，就算暂时去不了相关公司，也算培养一个乐趣吧。
+注：现在微软默认的输入法真是差劲，“机试”这个词我已经用输入法手工合成了多遍，仍然不能在输入全拼时前排显示，每个字都要翻好几页才能选中；“通过不了”中的“了”在非常后面的选字页。</description></item><item><title>对江苏高考减少招生名额的一点看法</title><link>https://blog.formalscience.com/2016/05/17/%E5%AF%B9%E6%B1%9F%E8%8B%8F%E9%AB%98%E8%80%83%E5%87%8F%E5%B0%91%E6%8B%9B%E7%94%9F%E5%90%8D%E9%A2%9D%E7%9A%84%E4%B8%80%E7%82%B9%E7%9C%8B%E6%B3%95/</link><pubDate>Tue, 17 May 2016 11:03:22 +0000</pubDate><guid>https://blog.formalscience.com/2016/05/17/%E5%AF%B9%E6%B1%9F%E8%8B%8F%E9%AB%98%E8%80%83%E5%87%8F%E5%B0%91%E6%8B%9B%E7%94%9F%E5%90%8D%E9%A2%9D%E7%9A%84%E4%B8%80%E7%82%B9%E7%9C%8B%E6%B3%95/</guid><description>关注了一下高考名额调配事件。分别看了一本录取率、985/211 录取率、本科录取率等统计数据和一些解读。
+** 一本线 **
+网上有一张各省一本录取率的图，其中几乎所有帖子都把山东拿出来吊打一番。你看，这厮还老说高考难，看那一本上线率！
+山东一本录取率排全国第五，还是有点反直觉的。看解读的过程知道了一本线是各省自己定的，不同省份对一本线覆盖学校的定义也不一样。以前我以为山东只有两所一本…… 后来发现有许多学校竟然也是或者近些年进入了一本线。包括老家的德州大学都想改名“鲁北大学进入一本。我也是很无语。
+说实话，把江苏的录取计划和山东对调一下，估计山东考生还是很开心的…… 我觉得这是山东考生被虐惯了，有些受虐综合症了。隔壁两个省的德性也都差不多，也许是因为本省没什么民营经济，都是官僚治下的国有大企业吧，人民没有发声的底气。
+** 抗议 **
+被施舍的心态
+无论如何，家长的愤怒并不一定完全是针对这次事件，也是对某些特权省份的控诉。这种控诉，敝省人民最擅长了，不过也招致了高分低能的评价。而江苏的口碑明显好很多，卷子确实难啊。
+而且教育相关部门发布政策的方式也不好，不过我也怀疑沟通的可能性。毕竟很容易进入“我不听，就是你冷酷无情”的情形。
+前两年山东高考要把体育成绩也算到高考里，学生都开始练了，后来管教育的副省长被纪委搞进去了，也就没后文了。
+我觉得就算抗议的人，也会有一部人觉得教育资源是“青天老爷”们施舍过来的。因此就请求老爷们公正一点。不过把政府视为老爷，人家就会视你为屁民。
+** 思考 **
+这个世界肯定不是平的，充斥着各种阶级、财富差距、种族、地域的鸿沟。挺支持江苏家长抗议的，每个人都发出自己的声音，大家才可以协商，构建稳定的底线。不过中国现今这种制度下，恐怕没有抗议的空间。即便如此，有声音也是好的，而且也没有更好的办法了，权利不是可以通过和平手段取得的。第一次出手也许无效，可以为以后的行动积累经验。
+其实知道事情真相如何与觉得事情应该如何是两件事。公平、正义、利益、权利，怎么理解和处理都依赖于一个个具体的人。即使自己很渣，我也总时刻提醒自己《了不起的盖茨比》开卷的话：“每当你想批评人的时候，要记得，世上不是所有人都像你一样拥有许多优势。”
+一些事情，我觉得是正确的，其中有些也涉及到我自身，我“希望”别人也认同，然而社会中很多人恐怕不会认可。我也接受每个人的观点都有其局限性，我的肯定也是。我想，在不强迫不使用暴力的情况下进行说服，也是可以的吧。
+自己以后也要加强数据收集、分析和解读的能力，形成客观的观点。</description></item><item><title>一点小的感悟</title><link>https://blog.formalscience.com/2016/05/15/%E4%B8%80%E7%82%B9%E5%B0%8F%E7%9A%84%E6%84%9F%E6%82%9F/</link><pubDate>Sun, 15 May 2016 11:16:50 +0000</pubDate><guid>https://blog.formalscience.com/2016/05/15/%E4%B8%80%E7%82%B9%E5%B0%8F%E7%9A%84%E6%84%9F%E6%82%9F/</guid><description>前段时间碰到二老板，被“教育”了一番。让我放下自己的“爱好”（虽然她不知道我在干啥）；她在实验室总看不到我人（实际上没人能在实验室的楼上经常看到她，所以反向来看，这句话也不错，她谁也看不着）。
+在 Quora 上看到一个问题：Do Ph.D students get time to pursue their hobbies? 里面有个回答的一句话：
+&amp;ldquo;You make time for hobbies,&amp;rdquo; she told me. &amp;ldquo;This isn&amp;rsquo;t undergrad anymore. This is the rest of your life.&amp;rdquo;
+诚然如此。我兴趣很多，也做过很多尝试，疆场半途而废，逐渐不再为自己的不能坚持而自责（对自己的愤怒不能解决什么问题）。
+最近在参加协会的攀岩集训，体会到力量不够、体重过大、技术太烂的苦闷，不过依旧兴趣盎然。攀岩技术里注重平衡，要通过核心力量在岩壁上进行重心的转换，我做得不好。生活中把各种事情平衡也是挺难的一件事情，一是要学会一些技巧，另外也要有支撑这些技巧的力量。
+同样的一条路，不同的人有不同的走法，生活不是比赛，可以看看风景。
+配个图吧，我很喜欢的电影 《Meru》
+电影海报
+The North Face Meru Expedition, 2011
+Exhausted, Renan Ozturk contemplates the long descent after making the summit. The top is only half way.</description></item><item><title>函数式语言课程期末考试判卷中遇到的一个问题</title><link>https://blog.formalscience.com/2016/02/03/%E5%87%BD%E6%95%B0%E5%BC%8F%E8%AF%AD%E8%A8%80%E8%AF%BE%E7%A8%8B%E6%9C%9F%E6%9C%AB%E8%80%83%E8%AF%95%E5%88%A4%E5%8D%B7%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%B8%AA%E9%97%AE%E9%A2%98/</link><pubDate>Wed, 03 Feb 2016 10:36:57 +0000</pubDate><guid>https://blog.formalscience.com/2016/02/03/%E5%87%BD%E6%95%B0%E5%BC%8F%E8%AF%AD%E8%A8%80%E8%AF%BE%E7%A8%8B%E6%9C%9F%E6%9C%AB%E8%80%83%E8%AF%95%E5%88%A4%E5%8D%B7%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%B8%AA%E9%97%AE%E9%A2%98/</guid><description>在使用半自动化 Judge 系统对同学的答题进行评测的时候，遇到了一个奇怪的问题，总是会提示: Test_1: output.txt: openFile: resource busy (file is locked)
+起初以为是 haskell 惰性求值导致的 IO 问题，因为搜索引擎也把猜测引导向这个原因，但是始终解决不了。
+后来改变了思路，“现在看来好像是模块引入带来的 main 函数重名问题”，这是后面的猜疑。
+继而发现将函数改名字也解决不了问题，实际也不是，就是 IO 的问题。因为如果先移除 output.txt， 那么使用 ghc 执行就不会出现之前的错误提示，不过在 ghci 中执行总是不会出错。
+使用如下代码测试一下：
+dir = &amp;quot;/home/user-name/Downloads/auto_check/work/2015final/ref/tests/words&amp;quot; main :: IO () main = do print &amp;quot;hehe&amp;quot; solution = runTest (map (\f -&amp;amp;gt; combine dir f) [&amp;quot;input1-1.txt&amp;quot;, &amp;quot;input1-2.txt&amp;quot;, &amp;quot;input1-3.txt&amp;quot;]) (combine dir &amp;quot;output1.txt&amp;quot;) `&amp;lt;/pre&amp;gt; 执行得到如下结果： &amp;lt;pre&amp;gt;`➜ test ghci Test_1.hs GHCi, version 7.8.4: http://www.haskell.org/ghc/ :? for help Loading package ghc-prim .</description></item><item><title>为什么 Haskell 中 函数类型 不是 “Show” 类型类的实例</title><link>https://blog.formalscience.com/2016/02/03/%E4%B8%BA%E4%BB%80%E4%B9%88_haskell_%E4%B8%AD_%E5%87%BD%E6%95%B0%E7%B1%BB%E5%9E%8B_%E4%B8%8D%E6%98%AF_show_%E7%B1%BB%E5%9E%8B%E7%B1%BB%E7%9A%84%E5%AE%9E%E4%BE%8B/</link><pubDate>Wed, 03 Feb 2016 10:01:41 +0000</pubDate><guid>https://blog.formalscience.com/2016/02/03/%E4%B8%BA%E4%BB%80%E4%B9%88_haskell_%E4%B8%AD_%E5%87%BD%E6%95%B0%E7%B1%BB%E5%9E%8B_%E4%B8%8D%E6%98%AF_show_%E7%B1%BB%E5%9E%8B%E7%B1%BB%E7%9A%84%E5%AE%9E%E4%BE%8B/</guid><description>问题 为什么函数类型不是 show 类型类的实例以显示参数和值的类型？
+为什么我不能在 GHCi 或者 Hugs 中输入 \x -&amp;amp;gt; x + x ，在结果中看到同样的表达式形式作为输出。
+为什么存在一个 Show 实例，却只打印函数的类型？
+Prelude&amp;amp;gt; :m + Text.Show.Functions Prelude Text.Show.Functions&amp;amp;gt; show Char.ord &amp;quot;&amp;amp;lt;function&amp;amp;gt;&amp;quot; `&amp;lt;/pre&amp;gt; 如何让 lambdabot 有如下显示： &amp;lt;pre&amp;gt;`dons &amp;amp;gt; ord lambdabot&amp;amp;gt; &amp;amp;lt;Char -&amp;amp;gt; Int&amp;amp;gt; `&amp;lt;/pre&amp;gt; # 答案 ## 实践中的答案 Haskell 编译器并不保持表达式原本的形式，而是将它们转成机器代码或者其他的底层表示。 函数 `\x -&amp;amp;gt; x - x + x :: Int -&amp;amp;gt; Int` 也许被优化成 `\x -&amp;amp;gt; x :: Int -&amp;amp;gt; Int` 。没有那个地方l存储了变量名 `x` 。 你也许会想，Haskell 是一门脚本语言，在运行时环境中维护着表达式的内容。情况并非如此，[Lambda 表达式](https://wiki.</description></item><item><title>倚着石头晒太阳</title><link>https://blog.formalscience.com/2016/01/12/%E5%80%9A%E7%9D%80%E7%9F%B3%E5%A4%B4%E6%99%92%E5%A4%AA%E9%98%B3/</link><pubDate>Tue, 12 Jan 2016 10:36:49 +0000</pubDate><guid>https://blog.formalscience.com/2016/01/12/%E5%80%9A%E7%9D%80%E7%9F%B3%E5%A4%B4%E6%99%92%E5%A4%AA%E9%98%B3/</guid><description>我想倚着石头 晒晒太阳 山风吹着面庞 除了草木莎莎 没个其他声响 一会儿驱赶下飞虫 一会儿挠挠裤裆 就这么晕晕忽忽 睡他个一天半晌</description></item><item><title>關於 LLVM Pass 的一些基本操作</title><link>https://blog.formalscience.com/2016/01/09/%E9%97%9C%E6%96%BC_llvm_pass_%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</link><pubDate>Sat, 09 Jan 2016 21:46:48 +0000</pubDate><guid>https://blog.formalscience.com/2016/01/09/%E9%97%9C%E6%96%BC_llvm_pass_%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</guid><description>關於 LLVM Pass 的一些基本操作 記錄一下關於 LLVM Pass 的一些操作，主要是一些配置工作。雖然目前的工作流程不是很優雅，但是可以自定義 LLVM Pass 的處理過程，通過進一步學習可以作出更有意思的東西。
+本文的 GitHub 地址： https://github.com/ronhuafeng/HandleLLVMPassBasic ，有這篇文章和一些粗糙的源代碼。
+網絡上已經有一下教程了，我也參考了這些教程。
+使用 clang 加載 LLVM 的 Pass LLVM - Run Own Pass automatically with clang stack overflow 上的回答，試圖使用 clang 加載 LLVM 的 Pass。 Polly 库加載 LLVM Pass 的方法也是一个解决思路，我參考了這裏面的很多：Load Polly into clang and automatically run it at -O3 具体的加載過程參考了 Adrian Sampson 博客 Run an LLVM Pass Automatically with Clang 中提到的操作。 工作流程 準備工作 將系統中自帶的 llvm 和 clang 都卸載掉，保證 llvm 和 clang 版本的一致性（非常重要），即保證使用的 clang 和 編譯出的 Pass 的動態鏈接庫文件 .</description></item><item><title>2015-12-31 山野冬季野营（灵山）</title><link>https://blog.formalscience.com/2015/12/31/2015-12-31_%E5%B1%B1%E9%87%8E%E5%86%AC%E5%AD%A3%E9%87%8E%E8%90%A5%E7%81%B5%E5%B1%B1/</link><pubDate>Thu, 31 Dec 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/12/31/2015-12-31_%E5%B1%B1%E9%87%8E%E5%86%AC%E5%AD%A3%E9%87%8E%E8%90%A5%E7%81%B5%E5%B1%B1/</guid><description>动机 参加了冬季集训，临近结束得知今年协会冬季野营目的地是灵山，时间是元旦假期。作为由于时间原因（实验室周日组会，雷打不动）从未参加过正式野营的人，我就报名了。另外灵山我也没去过，可以去拍拍照片。不过由于冬季野营不让带单反，我只好携带 LX5 了，轻一点也好，能够挂在脖子上。
+路线 这次路线是从柏峪村进入，下马威出。具体路线图：
+职务分配 这次我报了 押后。一路上大部分时间都在押我的好基友 zc，也没啥特别的感觉。好处是可以拍一些照片，不用担心卡住后面的队员。对于这个职务我还是比较喜欢，因为有种保护别人的感觉。后来发现走在队伍最后的确很适合拍摄全队照片。
+体力分配 作为押后，要跟在最后一名队员后面，虽然速度不快，但是感觉也没那么轻松的。之前当路线的时候虽然要比别人走得快，但是反而很欢脱。可能是有心态的问题，不过整体而言还是很平和的，因为知道这样的行进强度自己还是没问题的。 雪地走得很有趣，硬雪壳穿着冰爪走得咔咔的，粉雪则不断向下滑需要用大冰镐或者登山杖撑着，湿的雪会沾到鞋子上就不好玩了，鞋子会湿。下坡如果是石头面就能踩着石头一层层下，如果是草甸就踩着草根下，如果是烂泥地或者粉土冰混合地形，就会滑，有人会摔跤。灵山还有其特殊之处，就是路上好多马粪，导致烂泥的成分比较复杂。
+心态 这次的队员大部分走得快，我上坡的时候觉得自己速度慢，后来发现也不是，而是有状态好坏之分，由于一个决定性的事件，第三天状态就特别好（自我感觉）。以后还是要调整好心态。淡定淡定～
+技术训练 技术训练是沿路绳行军和滑坠制动，我对于上升转横切和横切转下降的操作都比较熟悉，还指导了别人。对于上升前的各项准备步骤，则是向 zc 和 sz 学了很多。滑坠制动，山上雪坡角度并不大，我强行滑下，制动，摆拍。
+野营的学习 虽然之前协会腐败野营我还是名义上的帐篷长，但并没有学到如何当一名帐篷长。这次正式野营中，帐篷长 sz 把各项工作都安排得很好，大家配合很紧密，对于各种注意事项也和大家一一讲解。以后自己成为正式野营帐篷长得时候也要做到才好。
+不足 主要是押后工作做得不是很好，第三天冲顶东灵山得时候，sqq 脚底有伤，走得慢，我只是一旁鼓励，没有给她分包。
+趣事 星空很漂亮，可是第一天扎营后很快就到了熄灯时间，没时间拍。第二天晚上感觉星星没那么亮了，可能是旁边有个工地上大灯照射的原因。早上出发很早，看着头顶的北斗七星，特别平和。* 随着行走，看着天空由黑蓝变成灰蓝再到间杂着鱼肚白和黑红的过度，然后就迎来了日出。作为连清华园也不怎么出的我来说，只在东操拍过一次日出延时摄影，其他时间都没欣赏过。不过这次我第二天凌晨行军时还是不是看看东方的天空的，直到走到缆车上站的时候，太阳开始出来，大家拍照。效果肯定比不上专业的摄影者，不过这样的景色只有自己亲眼看过才算数。不得不说山里能看到的星星真是多真是亮啊！日出也是更纯净多彩！ 山的景色到没有特别感受，拍了一些照片回来合成了全景。 不经意一瞥，发现了蓝色天空和北京的雾霾之间有条明显的界限，心疼日常生活在雾霾中的人（包括我）。 - 不时看到鹰在头顶飞，很漂亮的身姿。 第二天扎营的时候我找到一个特别避风的地方放大，而且还有 3G 信号，简直是天王坑。在这之后感觉一身轻松，后一天状态极好。 尾声 总之也回来了，冬训的餐也聚了。而我在餐后骑车回来的路上和 zc 比赛抬自行车前轮和后轮，再次把手腕挫伤，也是逗逼了。现在写这篇总结也是属于身残志坚的行为了。
+满意的照片</description></item><item><title>2015-12-19 第一次滑雪</title><link>https://blog.formalscience.com/2015/12/19/2015-12-19_%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%BB%91%E9%9B%AA/</link><pubDate>Sat, 19 Dec 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/12/19/2015-12-19_%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%BB%91%E9%9B%AA/</guid><description>在知乎上看到一个问题，说人年龄大了就会感觉时间啊过得飞快。高票答案分析，这种感觉大体原理就是存在一个度量指标：当前的一年／你的人生已经度过的时间，这个值是越来越低的。当然怎样阐释这种感觉因人而异，我还是想在回望时候记得点什么的，于是写写自己的第一次系列以后看看也是挺好的。
+滑雪很早就想去了，之前也看到同学分享的活动照片啥的，想去，但是没去。以后要注意，这种拖拖拖的态度会在各种角落蔓延，让生活没那么嗨。不过这次去滑雪是提前把实验室的啥基金申请书、年度报告之类的东西刷完才安心去的，想到滑雪回来后在人人上看到的一条新鲜事：
+ 这个同学是周五何添楼爆照事故中去世的博士后的人人状态。自己没个周末的心态差不多也是类似的，不过我比较懒，没有要死要活地工作。事故当天表妹打了一个电话过来，问我事故的事情，看看她哥是不是受到了惊吓。周五一天都在写本子，还没什么感觉，现在感觉有些沉重。要把时间花在什么事情上？有时候以为自己清楚了，过后又会犹豫。
+这次滑雪是沾了山野协会的光，雪协副会长也在山野，于是我们可以免费入会参加滑雪活动。到了雪场，兰姐教我们基本技能。我对自己的灵活敏捷指数认识很清楚，这种平衡类的我应该要多练一些才能掌握，后来练习动作的时候果然如此。上午两个多小时，下午两个多小时，中午吃了一个小包装的面包，味道还不错。上午的教学内容是装备知识、基本姿势动作、正确摔倒姿势、犁式滑雪、刹车、转弯，当然还有其他的进阶动作，我错过了，这些就够我练习一天了。下午动作讲解结束后，我还是没太掌握要领，一度不敢在坡度大的雪道上滑，怕撞到别人（其实也就是个初级道吧）。在下面缓坡墨迹了一会儿，还是做魔毯上去了，后来发现自己能够找到点自如刹车感觉后胆子就大了，也开始练习转向了。不过我的雪板可能确实有点大，总感觉速度太快，特别是和别人动作类似的情形下，还存在很大可能性是动作不到位。
+摔是摔了的，包括零速度卡摔、速度太快脚撇太开导致失去平衡前滚翻、转向后无法再次回转又没及时刹车只能主动摔。当然还出现过有人站在雪道中间，我绕不过去，只能摔倒避免碰撞的。不过还算皮糙肉厚，没啥事儿。
+回来和去时路上都在听歌睡觉吧，很快就到了。今天雾霾，不好，都红色警报了。
+特别特别感谢兰姐，让我在第一次滑雪就接触了正确的姿势动作理念，避免练偏。
+  上面这张照片正中间的就是兰姐啦，正红色的冲锋衣，雪盔外面的毛线套是她自己织的哦。
+另外，也没啥精彩照片了，我也算在专注练习吧，不过也可能是身为小弱鸟没心情。
+  2015-12-19</description></item><item><title>过去与未来</title><link>https://blog.formalscience.com/2015/12/18/%E8%BF%87%E5%8E%BB%E4%B8%8E%E6%9C%AA%E6%9D%A5/</link><pubDate>Fri, 18 Dec 2015 00:56:02 +0000</pubDate><guid>https://blog.formalscience.com/2015/12/18/%E8%BF%87%E5%8E%BB%E4%B8%8E%E6%9C%AA%E6%9D%A5/</guid><description>不知道自己对于未来是什么样的感觉，悲观还是乐观还是无所谓。自己喜欢看的描述未来的电影中无论是机械朋克的末日世界还是科技高度发达的现代化社会，还是人类已经虚拟化的假设，当然还有星际航行和外星文明，都让我内心觉得很愉悦。或许某天地球真的像《银河系漫游指南》中描述的一样，被一炮轰了呢。意义这个词让人平生烦恼，不过一想到自己也不过是一架基因复制机器，也就释然了呢。要超出这种桎梏，恐怕只有永生，无论是肉体永生还是人格虚拟化，甚至与周围的宇宙融合，恐怕就像佛教中每个部分都置换过的战鼓，还能否称为人类。
+两面之神倒下
+过去遗忘
+未来停驻
+废墟上开出花朵
+无主的风吞噬一切
+落下猩红的雨
+利枪穿过胸膛
+乌鸦在树梢环绕
+消失在云雾迷绕的山岭
+祈祷之声隐藏了恐慌
+逝者不死
+为上帝点燃灯烛
+大雪之日无法留下印迹
+凡间之人无需等待救赎
+那是堕落天使曾经抛弃的荣光 2015－11－30</description></item><item><title>偷偷</title><link>https://blog.formalscience.com/2015/12/18/%E5%81%B7%E5%81%B7/</link><pubDate>Fri, 18 Dec 2015 00:39:13 +0000</pubDate><guid>https://blog.formalscience.com/2015/12/18/%E5%81%B7%E5%81%B7/</guid><description>风在潜行去通知欢乐的消息
+树呀花呀
+都在咯咯笑
+2015-06-13</description></item><item><title>时光如歌，你我来和</title><link>https://blog.formalscience.com/2015/12/17/%E6%97%B6%E5%85%89%E5%A6%82%E6%AD%8C%E4%BD%A0%E6%88%91%E6%9D%A5%E5%92%8C/</link><pubDate>Thu, 17 Dec 2015 16:42:01 +0000</pubDate><guid>https://blog.formalscience.com/2015/12/17/%E6%97%B6%E5%85%89%E5%A6%82%E6%AD%8C%E4%BD%A0%E6%88%91%E6%9D%A5%E5%92%8C/</guid><description>顾城写到，“一个彻底诚实的人是从不面对选择的，那条路永远会清楚无二地呈现在你面前，这和你憧憬无关，就像你是一颗苹果树，你憧憬橘子，但是你还是诚实地结出苹果一样。”  人是怎样走到一起的呢？世间会有一些机缘巧合，让彼此相遇。就像我不是甲醛助教的话，估计加入协会要晚很多。然而就像爱情一样，一瞬的四目相对，电光火石四射。加入的理由并不是山，我的动力一开始就很单纯，就是觉得和这样的一群人在一起一定会很开心，只是后来才渐渐发现了山野之间的快乐。有时我总是反思自己做事情没有什么目的性，也不追求什么回报结果。不过现在看来，由着自己的内心的偏好去选择，也许是最具有目的性的行为。  由于实验室的原因，只去过一次腐败野营。每次听到大家野营回来讲那些好玩的故事，总是很羡慕，也想自己参与其中。拉练倒是参加了一些，在路上总是拍好多植物的照片，回来发一发。拉练过程中认识了好多人，有很多人只参加过一次活动就不再来了，有些还有联系，有些就没有联系了。去翻那时的拉练合照，虽然也就是一两年，还是能够感觉出一些人确实年轻过呀。  最近版上一大堆毕业纪念册涌现。分别就是令人伤感的事情，很多时候就是很难再见面了。还好现在交通发达了，山山水水并不能成为阻隔。之前雪山报告会，zhengnan 远程接入，我想到的就是“海上生明月，天涯共此时”，虽然并不在一个时区，高原上的月亮尚未升起。（不过我仔细想了一下，可能说的也不对，毕竟很多时候月亮一出现，就悬在半空了。）然而，我们都踏着自由的脚步向前行，即使远离，连接不断。  我一直很喜欢听许巍的歌，前天去海坨归来路上科考队还讨论今年选什么队歌来着，提到了之前用过的《礼物》。有时我想，重新历经这段时光，我还是会选择这样的生活。我也希望自己，能够成为别人生命中的礼物。 http://newsmth.net/nForum/#!article/BraveHeart/1667489171
+2015－06－14</description></item><item><title>游云</title><link>https://blog.formalscience.com/2015/12/17/%E6%B8%B8%E4%BA%91/</link><pubDate>Thu, 17 Dec 2015 16:37:33 +0000</pubDate><guid>https://blog.formalscience.com/2015/12/17/%E6%B8%B8%E4%BA%91/</guid><description>湛蓝的天空 游过一朵朵云相互追逐
+拖着影子
+忽暗 忽明 沉寂的思绪
+闯进了一个人
+举手投足
+扰动心弦
+时忧 时喜 云朵累了
+四仰躺在天上
+叠成茫茫一片
+轻轻挪离 地上看的人也倦了
+阳光和树影下的梦里
+斑驳跳跃的音符
+奏起乐曲
+2015－06－14</description></item><item><title>2015-12-17 一点杂思</title><link>https://blog.formalscience.com/2015/12/17/2015-12-17_%E4%B8%80%E7%82%B9%E6%9D%82%E6%80%9D/</link><pubDate>Thu, 17 Dec 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/12/17/2015-12-17_%E4%B8%80%E7%82%B9%E6%9D%82%E6%80%9D/</guid><description>今天一位同学下午听了周源源教授的一个讲座，在朋友圈发了周源源教授的一些感悟，我看了感觉很受教。
+其中提到用 50％ 时间做自己不喜欢的事情，如果可以换来 50％ 的时间可以做感兴趣的事，这个代价已经很值得了。这个道理我以前不明白，也经常抱怨实验室做的东西不喜欢。最近一两年多感觉到生活中还是有很多出彩之处的，也经常在朋友圈分享自己经历的好玩的事情。看到周源源教授的这番话，会更坚定一些了吧。
+想了一下，自己以前包括现在仅仅是不喜欢实验室不自由的氛围（尤其是周日下午开组会），并非不喜欢自己做的东西。前面几年接触了很多建模语言，有严格形式化语义的以及那些只有解释语义的，觉得很有趣。虽然说实验室不自由，可是节奏并不快，自己平日时间还比较充足（也许是我本人确实没有一心学术或者半心也难算得上），能够看看自己喜欢的各种信技术，跟着山野训练和去山里游荡，跟着小伙伴去健身房玩（腹肌等着我），看自己喜欢的书，写写这种胡乱的感想。
+前段时间在日记中提到自己突然有了面向未来的勇气，那种站在船头面对惊涛骇浪不动于色的坚定。（从未坐过船，我就是这么能想象。）而最近做事却依然拖沓，不过能够开始有计划地写自己以前想写的项目了。我自己看得比较轻松，人生要七八十年呢（响应国家推延退休年龄），多花些时间做自己喜欢的事情也是不错的。当然了我觉得自己选择的未来的路并不容易，且不论周围人的声音，人自己脑子里就有好多小人嚷嚷着要认怂是吧。不过只有接受自己软弱的一面才能更好地做出决策，在自己精神和身体痛苦的时候更要照顾自己的感受。
+另外就是每次看到大牛的时候，就会反思一下自己是否不够努力。我觉得这是人对 *我是谁 *这个终极问题的一种自然反应，通过他人的形象来对自身进行确认的一种信号反馈。如果认同这种心理机制，就能更好地按照自己的节奏来前进了，毕竟一个稳定的内心对外界这种频发（毕竟猛人到处是）冲击响应不能太大。
+写东西的时候总是假象有个读者，其实也不过是我脑子中的一部分神经回路的幻想，想想也是好玩。</description></item><item><title>攀岩视频教程收集</title><link>https://blog.formalscience.com/2015/12/15/%E6%94%80%E5%B2%A9%E8%A7%86%E9%A2%91%E6%95%99%E7%A8%8B%E6%94%B6%E9%9B%86/</link><pubDate>Tue, 15 Dec 2015 13:34:08 +0000</pubDate><guid>https://blog.formalscience.com/2015/12/15/%E6%94%80%E5%B2%A9%E8%A7%86%E9%A2%91%E6%95%99%E7%A8%8B%E6%94%B6%E9%9B%86/</guid><description>[embed]https://www.youtube.com/watch?v=gLfvk2SSj1c[/embed] [embed]https://www.youtube.com/watch?v=tXwV0YD222g[/embed] [embed]https://www.youtube.com/watch?v=QfTIUKyqCWc[/embed] [embed]https://www.youtube.com/watch?v=m-FbtppVC7w[/embed] [embed]https://www.youtube.com/watch?v=jbIDnMmSLsc[/embed] [embed]https://www.youtube.com/watch?v=gkMngYYadjE[/embed] [embed]https://www.youtube.com/watch?v=ddSTXPZuff8[/embed] [embed]https://www.youtube.com/watch?v=q4rVY3sLQqA[/embed]
+百度盘链接：http://pan.baidu.com/s/1bnioG2　n7tp</description></item><item><title>Thinkpad T430 Windows&amp;Ubuntu Dual Boot</title><link>https://blog.formalscience.com/2015/12/11/thinkpad_t430_windowsubuntu_dual_boot/</link><pubDate>Fri, 11 Dec 2015 10:03:56 +0000</pubDate><guid>https://blog.formalscience.com/2015/12/11/thinkpad_t430_windowsubuntu_dual_boot/</guid><description>在 Thinkpad T430 带有原装操作系统（其实是原声的 EFI 分区）的情形下，UEFI 模式下安装 Ubuntu 并成功启动进入 Ubuntu 系统。主要难度是原装电脑启动时会首先加载一个 “LenovoBT.efi” 的文件，然后 Lenovo 直接会去找 Windows 系统相关的 efi 文件，然后忽略其他的系统。T440s 预装win8.1 GPT+EFI ubuntu 双系统 图文过程中提到这样的启动处理：
+加载 /EFI/Boot/LenovoBT.EFI /EFI/Boot/bootx64.efi，加载windows的boot loader /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi，启动windows 因此这个文档记录了如何把这个流程给截断，使得 Ubuntu 的启动引导文件可以被看到。
+首先说明没有起作用的教程：
+Windows 10 Pro + Ubuntu 14.04.3 LTS 雙系統安裝 中提到最后在 Windows 的命令行中使用如下命令 bcdedit /set {bootmgr} path \EFI\ubuntu\grubx64.efi 并没有生效 百度贴吧一个教程 - T440s 预装win8.1 GPT+EFI ubuntu 双系统 图文过程 中提到使用 Ubuntu 的引导文件 “grubx64.efi” 替换 “EFI/Boot” 里面的 “bootx64.efi”，没有效果，可能是 “LenovoBT.efi” 没有走前文提到的处理流程。 有效的教程 Windows 8 removes Grub as default boot manager：</description></item><item><title>2015-11-28 户外技能大赛个人感想</title><link>https://blog.formalscience.com/2015/11/28/2015-11-28_%E6%88%B7%E5%A4%96%E6%8A%80%E8%83%BD%E5%A4%A7%E8%B5%9B%E4%B8%AA%E4%BA%BA%E6%84%9F%E6%83%B3/</link><pubDate>Sat, 28 Nov 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/11/28/2015-11-28_%E6%88%B7%E5%A4%96%E6%8A%80%E8%83%BD%E5%A4%A7%E8%B5%9B%E4%B8%AA%E4%BA%BA%E6%84%9F%E6%83%B3/</guid><description>参加户外技能大赛也有偶然的成份在其中，毕竟我本来是摄影辅助，后来由于好友赵超约我去参加拿奖品，于是我就无声无息报了名，同时还拉上了另一好友的女朋友，小丫头宋梦迪。然后大雪如期而至，赛事推延。待到比赛之前，我们队伍的发起者觉得太冷于是退出了比赛，替换队员是王阳阳。王大爷，也算一员悍将，至少比退出的人跑得快，虽然同样是攀岩队现役，不能参与攀岩单项。
+不过比赛之日，赵超竟然出现了，他竟然是摄影辅助，不得不说生命真是一种循环。 比赛前是填写队名环节，由于之前听说有队伍叫 老妖怪 队，于是我们定了 捉妖师 作为队名。后来现场 老妖怪 队临时改名叫 有妖 队，以及再次被 小坏 更名为 有妖气 队。不过仍然逃不出我们的手掌心，哪里有妖气，哪里就有 捉妖师 队。对了，现场还有大叔带来了小萝莉一枚，很是可爱。
+  比赛第一项：定向越野。我深知这个项目的核心要义就是要跑得快，跟上前面的队伍；如果你是第一支队伍的话，基本就无缘这个项目的冠军了。所以我们从第三个点开始就紧随其后，从此就再没分开。定向越野找点的过程比较顺利，只有在综合体育馆处有个点在二层平台上，耗费了一点时间。其后就是工作五十年标语前的女神像是最后一个标志点，顺利被拍照（因为手机没电了）后紧随 有妖气队到达终点，顺利夺冠。看看我们的照片吧：
+  比赛第二项：答题环节。果然有直觉的小丫头能够找到所有不确定的题目的正确答案，然而我没有听她的，于是错了两个。果然要学习一下队史呀。
+  比赛第三项：有备而来，哦不，岩壁芭蕾。我是带了攀岩鞋而来的，主要是竞争对手太强。有妖气队三名选手都和攀岩队有千丝万缕的关系，有现役队员，有前任队员，有曾经队员的女友。当然我们队也是有千丝万缕的关系，就不说了。我和小丫头参加比赛，小丫头爬第一段，我爬第二段。由于有妖气队的廖凌云选手在第二段两次从岩壁脱落，而我靠着大力出奇迹的攀爬方式一气呵成，最后险胜，😄。看不那么英俊的姿势：
+  比赛第四项：野营技能。搭帐篷，我其实没有太多野营经验，不过搭帐篷的方式还是牢记在心的。不过在烧水环节我们经历了换炉头，换气罐后还是成为了最后一个 烧开水的组。最后还把内外帐收容顺序弄反了。结果是第三名。
+颁奖环节，我们是综合第二，因为野营占的比重比较大。不过能拿两个单项奖也很开心啦。其实这次技能大赛因为下雪推延了一周，其实来参加比赛的人并不多，工作人员很多。不过大家一起完成了这个活动很开心啦。我的奖品是雪镜，很满足。每个人还领到了严冬冬翻译的一本书《黄金罗盘》，由于我已经有黄色封面的了，于是就选了白色封面的。
+  就这样结束吧，其实还有些话想说。记得第一次参加户外技能大赛的时候，我、沈治以及来自台湾的交换生肖紫柔在攀岩环节折腾了半天始终不能完成路线。这次就感觉进步多了。
+两年前的我和某现任部长的果珍黑马队：
+  时间就是这么一点点过去，我也在两年间感觉到心态不断变化。这是真正的结束了，然而生活还是要继续。</description></item><item><title>那些关于函数式编程和函数式编程语言的神话（译）</title><link>https://blog.formalscience.com/2015/10/22/%E9%82%A3%E4%BA%9B%E5%85%B3%E4%BA%8E%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E5%92%8C%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E7%9A%84%E7%A5%9E%E8%AF%9D%E8%AF%91/</link><pubDate>Thu, 22 Oct 2015 07:37:41 +0000</pubDate><guid>https://blog.formalscience.com/2015/10/22/%E9%82%A3%E4%BA%9B%E5%85%B3%E4%BA%8E%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E5%92%8C%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E7%9A%84%E7%A5%9E%E8%AF%9D%E8%AF%91/</guid><description>这是翻译自 Quora 一个问题“What are some myths about functional programming and functional programming languages?” 的一个高票答案，我也不记得当初决定翻译它时的心情，不过历经多次组会，最终完工了。
+下面是我能想到的，更具体的一些细节会在后面给出：
+“函数式编程”是定义明确的概念 函数式编程仅仅是命令式编程的特殊形式 函数式编程本来就很难 函数式编程本来就是复杂的 函数式编程不宜编写图形用户界面 Haskell 仅仅是函数式的 你需要大量的数学知识来进行函数式编程 函数式程序员必须非常聪明而且擅长计算机科学 “函数式编程” 是一个（明确的）概念 它不是。它是计算机科学中定义最糟糕的术语之一 —— 甚至不如“面向对象”，但比“声明式编程”好一点点。弄清楚一种语言是否是“函数式的”是一个人类学（anthropology）上的练习而非计算机科学。
+没有任何一种“函数式编程”的技术定义不会引发众人抱怨。有些定义过于宽泛 —— 如果你想要的是 lambda 表达式，那么一切从 C ++ 到 Java 到 Python 的语言突然都变得“函数式”了，只有 C 和汇编不是！如果你要一个数学上的定义，那么只有 Coq、Agda 和它们的朋友们是函数式的，因为就算是 Haskell 都允许部分函数和非终止性。还有异常。哦，上帝，异常！
+就我个人来讲，称每一种带有“脉冲”的语言（即任何具有 lambda 表达式的语言，lambda 的符号为 λ，像一个脉冲）为“函数式的”并没什么用。当我说“函数式的”，我通常是指像 Haskell 或至少是 ML 的语言，而不是像 Java、Python、 JavaScript，或者甚至是 Common Lisp 的语言。Scheme 和 Clojure 有点是函数式的，但我不会对它们谈论过多，即便我的确有大量关于前者（Scheme）的经验。
+好吧，实话说，我的意思只是“Haskell”，除非我明确提出不是。是啊，这是为了你们的语言学上的定义。（脑补出这个翻译）如果你花更少的时间用命令式语言和更多的时间阅读我的思维，你就会明白3。
+当然，有些人倾向于给“函数式编程”一个更杂糅的定义！
+函数式编程仅仅是少了某些东西的命令式编程 这也许是最有害的神话，因为它广泛流传，特别具有误导性，通常未被明确说出。人们随意假设进行函数式编程就像一个穿着紧身衣的“正常”编程。并不是！一点也不。相反，函数式编程为编程提供了一个新的基础。你使用不同的方式表达事情。通常是全然不同的。事实上，大多数时间，在你使用命令式方法完成的事情和使用函数式方法完成的事情之间，不存在一个一一映射。</description></item><item><title>2015-09-12 醒狮杯</title><link>https://blog.formalscience.com/2015/09/12/2015-09-12_%E9%86%92%E7%8B%AE%E6%9D%AF/</link><pubDate>Sat, 12 Sep 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/09/12/2015-09-12_%E9%86%92%E7%8B%AE%E6%9D%AF/</guid><description>去年就参加了在卢沟桥举行的 醒狮杯 越野跑比赛，感觉还不错，认识了一群小伙伴，看了卢沟桥的狮子，还免费得了一件 T 恤衫，于是今年又报名了。 早上在东北门集合，然后出发去卢沟桥。到了后，领计时芯片，排队进宛平城，晒太阳，看表演，看放飞鸽子。
+期间唯一有趣的事情就是看到一只偷懒的鸽子，被放出来后没有跟随鸽群，而是之间停在旁边楼上歇着了。
+跑步嘛，有大神，有重在参与的小菜。配速 5:26 跑了 5 千米，基本预示着我北马的颓势。前面跑得比较稳健（慢），最后一圈冲了一下（其实那时候大神们都跑完了）。
+跑完后，喝水、放松、聊天、颁奖。这次男团和女团都是第一，虽然女团一开始由于成绩记录错误没有名次。回来的车上大家都觉得分数可能有问题（男团八十个人得了 2 万多分，之前老师说第一名 300 分，这样人均都快300 分了）。不过，我想应该是今年有 500 人参赛，分数上限调整了（500？），大家平均得分应该是比平均分多一些，但是人多就是有力量，谁让咱是体校呢。
+今年由于是反法西斯暨抗日战争胜利七十周年，人比去年要多，然而组织却不好。颁奖之后，也没有游卢沟桥。不过天气还好，心情不错。中午回到学校吃了饭，午睡后明显感觉是感冒了，直接原因是跑完后没有找到来时坐的车，没取到衣服保暖。
+    今晚好多朋友都去看好妹妹乐队的演唱会了。
+《一个人的北京》
+你有多久单身一人不再去旅行
+喜欢下班回到家里冷冰冰的空气
+爱情着东西
+你已经不再有勇气
+许多人来来去去相聚又别离
+也有人喝醉哭泣在一个人的北京
+能不能让我留下片刻的回忆
+也有人匆匆逃离这一个人的北京
+离开了这里在晴朗的天气
+（当当当当的钢琴声）
+2015-09-12</description></item><item><title>夜来忽梦少年事（一）</title><link>https://blog.formalscience.com/2015/08/22/%E5%A4%9C%E6%9D%A5%E5%BF%BD%E6%A2%A6%E5%B0%91%E5%B9%B4%E4%BA%8B%E4%B8%80/</link><pubDate>Sat, 22 Aug 2015 00:34:51 +0000</pubDate><guid>https://blog.formalscience.com/2015/08/22/%E5%A4%9C%E6%9D%A5%E5%BF%BD%E6%A2%A6%E5%B0%91%E5%B9%B4%E4%BA%8B%E4%B8%80/</guid><description>今天看到高中同学朋友圈转发的介绍高中的知乎回答，突然想起来印象比较深刻的几件事。这也算是夜深忽梦少年事吧。
+孔雀 高中教学楼和操场之间有个小园子，里面有好几个连通的小池塘，里面有好多金鱼。这些金鱼但凡出现，就是密密麻麻一大片，很挤。我认为那些纯情少年少女们经常把吃不完的面包馒头拿来投喂，才使得这些鱼如此肥硕。不过到了冬天，它们大约也是被捞走吃掉了吧。
+而我从来没喂过鱼，我喜欢喂孔雀。
+孔雀养在笼子里的，比较高大的笼子。它们平日就在里面吃吃逛逛，也算悠闲。当然也养肥了附近的麻雀，因为笼子的网眼很是粗疏。孔雀的邻居有鸽子，还有很多品种的肥鸡（珍珠鸡、芦花鸡啥的），我都不太关心。唯独孔雀，我经常去看。
+孔雀在春天会叫春，声音尖锐犀利，安静的自习伴着这样的声音，也算是一种情趣。接下来的日子，孔雀就会经常开屏了。其实四只孔雀有两三只公的，一只母的，不太均衡。也许就是竞争的因素存在，我们得以经常看到孔雀的屁股和美丽的羽毛。
+我一般看到四周无人，就会从地上拔一些草，招呼孔雀过来，把草从笼子网眼塞进去，喂给它们吃。大约还是有些心虚的，不敢正大光明地做。现在想来，那孔雀大约是爱吃草的吧，可是它们吃不到（笼子里没有），别人不晓得喂不喂。也许还是做了一件不坏的事情？
+踢球 我是喜欢踢球的，特别是和小伙伴一起。高中的室友有四个主要踢球，两个主要打篮球。当时经常在体育课，周六日去踢。班级与班级之间，班级内部，甚至两个人的时候，我和室友 S 都可以玩 1 V 1。因为踢多了，就有了配合，这是很开心的一件事情，毕竟两个人发动的组合技更加炫酷一点。
+有一次五一（可能是别的假期）放假，于是课就来回调，体育课都堆到了一起。虽然平时大家上得开心，不过连踢几场，有些人就有点萎了，肌肉酸痛。我当时不晓得从哪里看到，说出现肌肉酸痛之后应该继续运动，消除乳酸堆积。于是我就一个宿舍一个宿舍去说，号召大家在干一场。我室友 D 听了之后很相信，于是再战一场，于是他就从萎变成残了，抱怨了我好长时间。当时的理念应该还是正确的，不过恢复锻炼还是要温和一点才好。
+打牌 我很喜欢打牌，特别是够级和刮风。
+**够级**是山东特产，风靡省内，六个人四副牌，三人一队，交次而坐。特点是进贡体系复杂，不但要求打牌技巧，而且还要使用言语进行挑逗攻击，很是欢快。
+刮风呢，是地方版本的双升（升级、八十分、炒地皮）。特点是二三五十常主，成套的牌（对牌、连牌）如果不能匹配，就要从大往小出，很是刺激。而且套牌都有比较好玩的名字：刮风、下雨、打雷、飘雪，也算是有点意境了。
+这两种打得最多，有时会用应急灯打通宵。而老师会查房，会从窗口吼一下，因为有时确实很喧哗（这是为了打牌的乐趣）。训我们最多的就是高大帅气幽默的苗 Sir，而我们一般也会怂一会儿。后来就很少在学校打牌那么欢乐了，去外地后够级很难凑齐人，双升规则和家里也有一些区别了。
+之前看到有学长写过一篇《十年上下》来介绍他的高中时光，很精彩。
+在人人网的日志草稿里有一些之前写的回忆文章，没有发出来过，也许现在可以发一发。以前在日记里自我反思，总是回往之事，不免伤怀，踌躇不前。现在也坦然接受了自己这样的特点，从前的事，会一日日变得模糊（我的长期记忆烂得一塌糊涂），而偶尔有这样的瞬间闪现在脑海，推着自己动手写下，算一种慰借。做个一只脚踩在过去的人，也还不算糟糕吧？</description></item><item><title>情书</title><link>https://blog.formalscience.com/2015/08/15/%E6%83%85%E4%B9%A6/</link><pubDate>Sat, 15 Aug 2015 08:28:47 +0000</pubDate><guid>https://blog.formalscience.com/2015/08/15/%E6%83%85%E4%B9%A6/</guid><description>✺◟(∗❛ัᴗ❛ั∗)◞✺ 前段时间从一个学弟那里得了一张电影票，电影的名字是《时空恋旅人》。剧透这事就不干了，只能说这是一个美好的故事。不知道从什么时候开始就不喜欢看悲伤的爱情电影了，看了总觉得不开心。这部电影不是，看了之后很愉快。
+此外还读了两本科幻小说，阿西莫夫《永恒的终结》，克拉克的《遥远地球之歌》。这两本书作者本人都很喜欢，自我评价都比较高。
+我比较喜欢其中的《永恒的终结》。当人类面临可以改变自己的过去与未来时，到底怎样做才是好的。回到过去去修改历史以避免未来的灾难，是否同时也扼杀了人类未来有希望的发展之路。或许顺其自然才是最好的，否则做得太过分，未来的人类可能会奋起反抗呢。
+《遥远地球之歌》里人类送到一个星球上的种子文明，在接受了设计好的政治文化制度后发展出快乐单纯又积极向上的社会，让人有点向往。当然这样的社会里没有宗教存在啦。今天在食堂遇到一个发放基督教问卷的人，蛮有趣的。
+这两本书里都有爱情故事，我觉得都很美好。阿西莫夫的《永恒的终结》中男女主人公沿着时空之井回到 20 世纪的美国，然后将时空之井摧毁。作为未来的人这样做也是挺重大的决定，不过能够长厢厮守也是很好的。卡拉克的《遥远地球之歌》就好玩一点。摘其中一段吧： &amp;ldquo;外间有传闻说，库玛尔和萨拉萨星上的所有女孩，外加半数男孩都上过床，这无疑是严重的夸大，但也并非无稽之谈。&amp;rdquo;
+另外书中对于宗教也有有趣的讨论。这一点我也比较认同书中的观点，宗教的影响很难完全消除，不同的时代会有不同的宗教理论，与时俱进。
+前两天好朋友说看了《模仿游戏》，这部电影之前我也在北邮人上下载看了。影评我就不做了，豆瓣还有各大购票软件下面都有很多。摘一个猫眼电影资料里对图灵的评论吧：
+克拉克从英国搬到斯里兰卡的一个原因也是如此吧，从此之后再也没有离开。有记者问他的性取向时，他的那句 &amp;ldquo;No, merely mildly cheerful.&amp;rdquo; 也是很幽默啊，直接变成了一个梗。他的好朋友阿西莫夫则直接说：啊，他就是啊，他很真诚的，别人问他他就说。不懂的可以看下图。
+文章总是离题千万里，最后强行也点不上题了。这样也好，不是所有的出发都能到达，不忘初心，方做好梦。</description></item><item><title>2015-06-13 腐败野营总结 黑夜里当高歌</title><link>https://blog.formalscience.com/2015/06/13/2015-06-13_%E8%85%90%E8%B4%A5%E9%87%8E%E8%90%A5%E6%80%BB%E7%BB%93_%E9%BB%91%E5%A4%9C%E9%87%8C%E5%BD%93%E9%AB%98%E6%AD%8C/</link><pubDate>Sat, 13 Jun 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/06/13/2015-06-13_%E8%85%90%E8%B4%A5%E9%87%8E%E8%90%A5%E6%80%BB%E7%BB%93_%E9%BB%91%E5%A4%9C%E9%87%8C%E5%BD%93%E9%AB%98%E6%AD%8C/</guid><description>今天回来不知为何特别累，在组会上睡着了四五次。开完后补了一个小时觉，也没完全缓过来。
+和自己喜欢的人，做自己喜欢的事，何时何地都会令我开心。
+文章会很长么？也许吧，渐渐我们都有了自己的故事可以讲。
+感情建设环节比较温和，作为去年感建的最大输家，我表示今年完全没有感觉。
+总结环节，大家更关注于自己内心情感的表述，让人感觉很亲切。
+睡帐篷今年很满意，里面有睡袋可以盖，也不像去年被搞到别人帐篷还被嫌弃。这次睡得很踏实，也很开心。
+吃饭方面，两顿饭都没怎么吃饱，不知为何不太想吃，但是也没有太饿。
+文章终究没有变得很长，很多很多的故事，还没发生，以后再讲。
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- 轻灵的脚步
+我踏着
+化作一阵风
+来到你门前
+你早已等着
+喊我进去休息
+我诧异于你的先知先觉
+却没有看到
+来时路上
+一棵棵树正笑得咯咯响</description></item><item><title>为自己的生活微笑（一）</title><link>https://blog.formalscience.com/2015/05/15/%E4%B8%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%94%9F%E6%B4%BB%E5%BE%AE%E7%AC%91%E4%B8%80/</link><pubDate>Fri, 15 May 2015 01:02:46 +0000</pubDate><guid>https://blog.formalscience.com/2015/05/15/%E4%B8%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%94%9F%E6%B4%BB%E5%BE%AE%E7%AC%91%E4%B8%80/</guid><description>
+在看门罗（Alice Munro）的亲爱的生活（Dear Life: Stories）。春夏之交，心浮气躁。
+ ​2010 年的一段时间，喜欢抄诗。日记里摘抄的第一首就是歌德的 Wenn ich dich lieb habe, was geht&amp;rsquo;s dich an （我爱你，与你无关）。这首诗是我进大学的时，看到远方高中同学 QQ 状态才知道的，于是记了下来，还在流行晨读的西花园里读过几次。
+“我爱你，与你无关 即使是夜晚无尽的思念 也只属于我自己 不会带到天明 也许它只能存在于黑暗
+我爱你，与你无关 就算我此刻站在你的身边 依然背着我的双眼 不想让你看见 就让它只隐藏在风后面
+&amp;hellip;&amp;hellip;”
+整首诗在当时的我解读出来，很是合心境。曾经一度陷入自己幻想出的忧愁之中，并以此为动力写出了很多字。现在回想起来，还挺有趣的。
+“爱情果真是一件奇妙的东西，在它周围的事物都会被它沾染。我不知道是怎样的一种魔力让人们不顾一切去付出行动，我也不知道我会不会被击中，至少我心已为所动。有时会有一种莫名其妙的感觉，觉得生活中少了什么。少年的心果真是那样的。（评：怎样的，怎样的，说清楚啊！）自认为自己对此很能抵抗，可毕竟是男生呵。（评：我就呵呵了）” —— 2008.5.7 风雨
+过了几天，就是地震了。
+大家在学校草坪上扎帐篷，整个城的通信瘫痪了一下午。可以打电话后，给家里报了平安，问了离震中比较近的同学的情况。是夜我第一次玩了真心话大冒险，还做了很多其他的游戏，完全没有为任何人悲痛的感情产生，地震于我是很遥远的事情。当晚班里同学都睡在活动中心前面，我抢了我好兄弟的被子（打滚卷走了），他去网吧打了一夜游戏，而每每他向我吐槽这件事情，我却不会有半点记忆。
+直到几天后，我才写了一篇日记记录自己的感情。现在已经不能判断当时的情感具体怎样，不过从文字看来并不伤感，而是不断提醒自己生活中各种杂念欲望是多么可笑。自然有它的规律。
+光阴依旧在大地上移动自己的身形，带来了雷雨，也最终带来了我最爱的夏季。
+对了，在夏季到来之前还写了一首打油诗赠予在酥暖风中荡漾的同学：
+风乍起，雨纷纷，樱花初含羞示春。 杨柳絮，漫天撒，飘荡凌乱芳草家。 少年郎，思谁人，辗转难眠佳人影。 欲问之，靥如霞，遮遮掩掩不肯答！
+又到了一个穿短袖短裤的季节，我可开心了。只是因为到了夏天就心情这么嗨，这也是生活对我的一种优待吧。 这个瓜娃。
+ </description></item><item><title>2015-05-09 后河拉练</title><link>https://blog.formalscience.com/2015/05/09/2015-05-09_%E5%90%8E%E6%B2%B3%E6%8B%89%E7%BB%83/</link><pubDate>Sat, 09 May 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/05/09/2015-05-09_%E5%90%8E%E6%B2%B3%E6%8B%89%E7%BB%83/</guid><description>个人总结
+这次拉练挺开心的，也许是因为太久没有见过如此舒展的山水花草了。
+下车后雨还在下，有些冷，开始行进后就满头汗了，不要停。
+刚买了相机，快到集训了，可以多拍拍大家。欢笑也好，疲惫也好，都不会阻拦时间的脚步，现代的科技让我们可以用影像来抵抗这泛黄的流年。选相机用了几天，终究没有随着各种主流的评论指引（这些观点都是很客观的），而是买了一个宾得的单反。一路上看到许多只在图册上看过的植物，由于光线太暗，设备不精，技术太差（主要），并没有拍出很好看的照片，以后还是要多练习。
+由于找 HPP 借了一个包，就不用背自己的大包或者书包了。走得并不快，一路大家欢声笑语，顺利走了一天。认识了几个老乡，其中还有一个活泼可爱的小学弟～
+回来后，吃饭过程很是平和，我并没有特别调戏几个谈论星座的女生，因为她们实在太不专业了。吃完后做了一个“断指”游戏+真心话大冒险的游戏。仅个人观点，虽然大家比较没节操，但是有些问题在游戏中还是不适合问的。
+整理照片花了好长时间。
+摄影总结
+分别在东门口，S2 线清华园站，小火车上，山中拍了照片，已经上传到协会 360 云盘。
+这次拍照片时记录了 GPS 航迹，回校后对照片添加上了 geo-tag ，感觉也许会有用。合成了一个 可用 Google Earth 浏览的 kmz 文件，也在活动照片目录里面，标记了走岔路的的一个地点。
+标记位置信息的方法： 1. 先用手机软件实时记录位置，我用的是 GeotagPhotos Pro 。
+将照片导入 Lightroom，在地图选项页进行相关操作。还有其他软件也可以搞定，但是感觉对于一般同学来说不太简便。 下载 Lightroom 插件 “Geoencoding Support”，导出 kmz 格式的文件。
+用 Google Earth 打开生成的文件。 个人照片，问谁最爱玩手机？
+  应梦寺  垭口 2  谜底就在谜面上
+  延庆火车站
+ 最爱这种恣意生长的状态</description></item><item><title>沉入水底</title><link>https://blog.formalscience.com/2014/10/22/%E6%B2%89%E5%85%A5%E6%B0%B4%E5%BA%95/</link><pubDate>Wed, 22 Oct 2014 11:25:15 +0000</pubDate><guid>https://blog.formalscience.com/2014/10/22/%E6%B2%89%E5%85%A5%E6%B0%B4%E5%BA%95/</guid><description>昨天下午（2014-10-21）训练的时候和 Jialian 探讨跳水时沉入跳水池的感受，都觉得头顶一片蔚蓝浮向水面就像电影中少女在海里采珍珠一样，当然我们没有摄像机下那种澄澈、灵动的感觉，可能会有一些狼狈吧。
+暑假没有回家，一直在跟马协夜间跑，后来不知怎么就报了北京马拉松。训练的话从 5km 到 10km 到 15km 到 20km，都逐渐跑了下来。跳水课上，于芬老师反复说要我们学会控制恐惧。跳过 10 米台后，回到更低的地方改变的不是技巧而是心态，我知道了跳下去并没有什么问题，甚至也没有什么痛苦。
+本来还应该有 30km 和 35km 的拉练的，没有进行。而我对 20km 之后的事情是不知道的，别人跟我讲的“撞墙”之类的理论也没有体验过。因此在爬 24km 前的那个桥的时候，体会到了崩的感觉。不过当时的心态是：这就是“撞墙”么？有种 “Got it！”的欢畅感。
+后面就是探索感受自己身体状态的过程了，难过是不可避免的，我也并未被周围的加油声鼓动起来。到了 32.5km 饮料站的地方碰到了蔡雄哥，想要跟上他的步伐，但是双腿很有节奏地抽起来，于是放弃。到了 34km 拐弯的地方碰到了 HYJ，也没有跟上。这就是我在出发前的合影后见到的唯二的两个熟人了。一个人也并不孤独。
+奥体公园的起伏路是很难跑，最后还是抬不起脚步走了一段路。终点前也没有冲刺。之后的放松踩腿，放松跑，到今天差不多恢复了。
+路还要一直走下去。
+  </description></item><item><title>上半年的出行</title><link>https://blog.formalscience.com/2014/07/02/%E4%B8%8A%E5%8D%8A%E5%B9%B4%E7%9A%84%E5%87%BA%E8%A1%8C/</link><pubDate>Wed, 02 Jul 2014 12:38:27 +0000</pubDate><guid>https://blog.formalscience.com/2014/07/02/%E4%B8%8A%E5%8D%8A%E5%B9%B4%E7%9A%84%E5%87%BA%E8%A1%8C/</guid><description>转眼之间，一年已经过去了一半。上半年除了开题水过之外，学术上没有什么进展。户外活动倒是参加了一些，不过还是囿于实验室周日下午的组会，颇多机会都错过了。 3月16日，香山健行赛。马协组织的活动，多威赞助，免费得了一件T恤，虽然感觉再也不会穿了，有点丑。认识了好多有趣的朋友，跑步上山果然欢乐，中间走了一会儿，大部分时间都是在跑的，反正也是没有名次了。 4月5日，大觉寺-阳台山-凤凰岭拉练，胡传鹏带队，我临时当了路线。还有一支队伍是从金山寺出发了，结果在到达阳台山前的公路时，发现他们在前面，于是喊住他们，一起分组冲顶。后面主要就一起走了，路线里增加了妙峰山，再次返回阳台山，去往凤凰岭时，发现时间不够了，于是就从聂各庄方向下撤了。这次路线，当得不好，主要是路线不熟。 4月30日~5月2日 太白山穿越。五一的太白穿越是蓄谋已久了，在之前的系列日志也说得很详细了，这次也算是体验了一小下高反吧。 5月10日，登山队和科考队拉练，作为辅助人员参与，并助攻西瓜一个。第一次去海坨，虽然由于重新选择进山口耽误了时间，导致没有时间冲顶大海陀，但一路风光仍然迷人。我拍了好多照片，山峦间的雾气，大片的草甸，山上晚开的花朵，以及可爱的队友们。 5月30日~31日，阳台山腐败野营。作为山野的传统项目，能够参加感觉很开心，开心地在营地吃火锅，做游戏被罚，深夜里各自总结自己的山野生活（长达4个多小时）。 第二天由于老板机智地把组会提前一天，所以就和几个同学下撤了。 6月28日，凤凰岭-阳台山-大觉寺拉练。这个在另一篇日志里讲了。核心就是速度快+买水。 上半年锻炼比较多（山野日常训练+爬山+健身房+马协夜间跑），春节吃喝带来的影响基本被消除，此外在力量增加的情况下，轻了有 5kg 吧，还要继续保持。争取下半年能够再轻 5kg，回到高中的水平。 下半年计划有北京马拉松，主要就是靠这个暑假训练了，争取能够报上名+过体检+完赛， 总之要努力。我的师弟都去暑期实践了，师兄马上也去了，为了排遣寂寞，周末就多出去逛逛好了，爬爬山，骑骑车。假如能够有暑假的话，争取骑个小长途或者爬个远点的山。</description></item><item><title>夏日的风光也如此明媚（凤凰岭-大觉寺拉练）</title><link>https://blog.formalscience.com/2014/06/30/%E5%A4%8F%E6%97%A5%E7%9A%84%E9%A3%8E%E5%85%89%E4%B9%9F%E5%A6%82%E6%AD%A4%E6%98%8E%E5%AA%9A%E5%87%A4%E5%87%B0%E5%B2%AD-%E5%A4%A7%E8%A7%89%E5%AF%BA%E6%8B%89%E7%BB%83/</link><pubDate>Mon, 30 Jun 2014 11:19:49 +0000</pubDate><guid>https://blog.formalscience.com/2014/06/30/%E5%A4%8F%E6%97%A5%E7%9A%84%E9%A3%8E%E5%85%89%E4%B9%9F%E5%A6%82%E6%AD%A4%E6%98%8E%E5%AA%9A%E5%87%A4%E5%87%B0%E5%B2%AD-%E5%A4%A7%E8%A7%89%E5%AF%BA%E6%8B%89%E7%BB%83/</guid><description>上次出去是山野腐败野营了，吃火锅、无节操游戏中枪三次、全队总结，都是难以忘记的回忆。自己的回忆，别人的回忆，都是那么真切动人，充满温情、希冀、力量、欢乐，当然也有迷茫、犹豫、退缩。很感谢大家，在日常训练之中，在穿行在山川之时，在餐桌上风卷残云的片刻，一起经历着这种辛苦、简单、无节操的快乐。
+如今，科考队和登山队都在路上了，看到大家在朋友圈里不断发布行进情况，一定要顺利啊。
+28 号也是登山队出发的日子了，由于这次拉练路线中包括阳台山，那么在这座山上拍照也算是一种祝福吧。
+拉练是 小伟 组织的，算是我在马协参加的第一个训练活动。一路上轻装前进，速度快了很多，加上田闯大哥在后面一个劲儿催，马不停蹄啊。上山不早，下山不晚。看到了好多没见过的花朵，很是开心。各种可爱、呆萌的小朋友，特别欢乐。
+回来后，飞鸿大哥请我们吃了饭，喝了啤酒，非常感谢。然后一行人回到了学校。
+  夏天终于如期而至，张开了它热情洋溢的臂膀。今年春天的主题是 ：“2014 我在春天有个约会”，那么夏日主题定为：“2014 夏季的风光也如此明媚”。
+  </description></item><item><title>剧本错乱的太白山之旅 - 不是后记的后记</title><link>https://blog.formalscience.com/2014/06/05/%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%85_-_%E4%B8%8D%E6%98%AF%E5%90%8E%E8%AE%B0%E7%9A%84%E5%90%8E%E8%AE%B0/</link><pubDate>Thu, 05 Jun 2014 15:29:06 +0000</pubDate><guid>https://blog.formalscience.com/2014/06/05/%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%85_-_%E4%B8%8D%E6%98%AF%E5%90%8E%E8%AE%B0%E7%9A%84%E5%90%8E%E8%AE%B0/</guid><description>这一篇一定要写，但不知道如何写。
+去太白山是和仔春节时候的约定，然而由于四月发生的一些事情，我的心里对这次出行又有了其他的想法。
+莫名生出的期望 在心中暗暗成长 这么下去 我可会疯狂？
+临到快出发的时候，28 号的时候，老板请大家吃饭，而我却由于一些事情，心中完全没有什么心情。喝了酒，发了一些消息，收到一些消息。
+破灭的幻想 新生的希望 一个似乎不可阻拦地远去 一个仿佛在触手可及的地方
+总之，带着对穿越的期待、自己心中的纠结与欣喜，乘上了西行的火车。
+在山上的三天里，差不多有一般时间是想入非非的。沉重的心情真的会拖慢人的脚步，有时候都没有啥力气迈动步子，只好慢慢向山上挪。
+第二天爬到下午的时候，身体的疲惫导致思维清空了许多，并没有那么混乱了。到了傍晚的时候，疲于奔命，更是一心想着向上爬了。
+第三天，壮阔的景色让自己的心情也豁然开朗了一些，觉得很多事情都想明白了，自己内心也没有那么纠结了。那时萌生了一个想法，自己的这次出行或许可以叫做“决意之旅”。
+期间有个小插曲，第一天接近傍晚的时候，上升途中，我看到路旁坡上有一棵很漂亮的花，很想拍一下，可是我的手机要走近才能拍。这样做可能会拖慢队伍的行进，于是就放弃了。向前走了没有一百米，就到了可以扎营的点，我有点想回去拍一下。但是扎完帐篷后，天瞬间就黑了下来。我想第二天去拍吧。是夜，大风狂起。第二天我兴冲冲跑下去的时候，花已经只有一个花瓣了。当时心里难过极了，可也许这就是人生吧，有些事情错过了就是错过了，可能不能挽回了。后来这样的花，真的没有再见到。
+我并不想编制一些道理来自我安慰，可是为了这件事确实难过了好半天。
+回到西安的下午和小斐聊天，听他乱然。晚上和小肥准夫妇吃饭，好开心啊。晚上又到西一和雪碧聊了会儿天，然后去他宿舍睡了觉。前几天，协会训练看了纪录片，讲到登山有种快乐是回到人间的快乐，能够重新认识到自己拥有的幸福，我躺在西八床上的时候就切实感受到了这种幸福。
+和好友的聊天中切实体会到了时间带给我们的改变，我们都变成了更好的人。
+第四天，在学校里度过，把交大校园里的花花草草拍了一个遍，有时可以让自己不要这么做，可是竟然也变成了下意识的一种习惯。下午和好友吃了饭，除了我和仔剩下的四对，有两对出去玩了，没有出现。大家都成长了好多，然而又仿佛在昨日一样亲密无间。
+在火车站的时候，伟刚来了电话，他们刚赶到学校，只能下次再见了。
+一夜硬座，登山鞋，难受，到了北京。
+然后迎接我的就是下午的组会。
+没有什么可以阻挡，我对自由的向往。
+这一两个月，自己心境发生了蛮大变化的，不想称之为成长，叫转变可能更为合适。《全职猎人》新出的动画里，蚂蚁们各种心灵的变化，我想于我来说，这种描述也很妥当。
+我之前建了一个植物的相册，叫《2014我想在春天有次约会》，满满骚动的气息。现在已然日日融在暖风之中了，北京也经历了温度骤升的几天。当然自带火防+10的我，不怕这个。
+远处的风 慢些吹吧 紧跟你的脚步 我不是追风少年啊
+可爱的人 不要离去 想绕到前面 看清你的脸啊
+我怕自己在这盛夏的光中迷失方向。
+ </description></item><item><title>剧本错乱的太白山之旅（4）</title><link>https://blog.formalscience.com/2014/06/05/%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%854/</link><pubDate>Thu, 05 Jun 2014 13:51:46 +0000</pubDate><guid>https://blog.formalscience.com/2014/06/05/%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%854/</guid><description>重新听了一下自己那天晚上的录音，是自己发抖的声音，以及救援人员对我们讲的各种故事。各种被教育，对安全又有了新的理解。
+我们到了文公庙之后，就找到有烧火炉子的房间进去烤火，全程我身体不住发抖，里面的抓绒全湿了，外面的冲锋衣也全湿了，说话自然都是颤音。去吃了不是那么贵的泡面之后，我又用汤泡了饼吃，很开心，很开心。
+然后，仔和老板说了，我们去板房打地铺，虽然不用去挤那个大床了，但是我的睡袋温标不够，睡地铺估计也是挺冷的。
+我们把睡袋铺开之后，我发现自己里面的抓绒衣还是都是水汪汪的，用冲锋衣垫在头下当枕头。睡之前，黑给我和仔拍了一张照片。
+前半夜都在用自己的体温去烘干抓绒衣，中间可能睡着了，后半夜就不断被冻醒。
+终于到了早上，大家都陆续起来了，但是好多都躲在屋子里不出去。外面的太阳也比较惨淡。
+装好包后，我吃了一根士力架，喝了热豆奶，坐在床边聊天。当黑说他身体不舒服，可能不能继续向上爬之后，我和仔商量了一下，决定下撤。另外的原因就是山上积雪太深。
+下撤的话，就轻松了，也可以在屋子里多休息一下。我就多上山上爬了一下。虽然仍然望不到大爷海所在的山峰，但是看到的风景也很迷人。显示海拔3500+，这也算是我的人生新高度了。
+过了一会儿，我回去后，我们就出发下山了。下山的路很好走，一路上拍拍照片好不惬意。中途唱了一首会歌。
+（下面的两个字可以点击）白鸽
+到了小文公庙后，我们合了一张影。
+ 然后就是各种走，各种走，最后到了一个岔路口，我说自己想上天圆地方上去看看，他俩在下面等，结果我下来后，他们决定从天圆地方翻过去走，于是我又背着包翻上去。
+后面坐了缆车下山，时间好长啊。下山后，我们被迫补票（其实可以向别人要张票然后就能混到车票的）坐了超长时间的旅游车下到车站。到了太白山候车室后，买了票，休息了一下，就回西安了。旅行最终还是有终点的。
+至于，山上的风景的话，当天的天气实在不是很好，选几张自己喜欢的吧。虽然时间还太早，山上没有什么绿色，但有种苍茫辽阔的感觉。
+补一张回程大巴上的麦田吧，估计大片麦田出现的时候我睡过去了。
+  </description></item><item><title>剧本错乱的太白山之旅（3）</title><link>https://blog.formalscience.com/2014/05/27/%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%853/</link><pubDate>Tue, 27 May 2014 17:04:52 +0000</pubDate><guid>https://blog.formalscience.com/2014/05/27/%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%853/</guid><description>其实，拖了这么久，好多事情都记不清了。
+第二天，我们从骆驼树出发，此时海拔是2000m。然后拍了一会儿，到了大殿，爬升了近300m，此时海拔2271m。看到了红桦树保护区，不得不说，红桦树真是超级漂亮，我还在地上捡了红色的树皮回来，嘿嘿。
+然后继续爬，这路真是漫长啊，山中也开始起了雾气，不晓得走到什么时候才到下一个地点，斗母宫。看到路标，大约是五里。我们在一个平台上视野很好的地方很二逼地吹了哨子，还录了视频。
+太白山上吹哨子 密码： abcd
+结果走了两步就到了斗母宫，海拔 2815m，继续二逼视频。
+斗母宫 密码： abcd
+后来，又是一阵狂爬，山上雾气也越来越重了，又是五里山路。走着走着感觉天空飘起了雨滴，我不断跟仔说，就是雾气太大了，不是雨水，我还是太天真了啊。
+跋涉到平安寺后，海拔到了 2828m，时间也到了中午十二点，在那里休息午饭。周围覆着雪的植物。
+平安寺 密码：abcd
+ 吃完饭，后面上来一个大叔和一个大哥（他们简直就是我们的领路人）。我们于是几乎和他们同时出发，奔向明星寺。刚走出几步，天开始飘雪，于是整个节奏由春游直接变成了风雪太白山。
+期间，接山泉水喝了几次，包括黄色的山泉水（就是你想的那种颜色），喝得还很开心。
+期间逗比视频一段
+我的金箍棒断了啊 密码：abcd
+下午两点半左右到了明星寺，此时海拔反正还在2800m左右。
+然后出发，期间各种苦逼不说，五上五下不说，总之在海拔2800附近不知走了多少里路。五上五下真的很痛苦，各种嗖嗖下降的海拔，就是我们心中的血在滴，而且下降很陡峭，上升也很陡峭。
+下午四点半到达了放羊寺，终于海拔在3000m了。此时是下午四点半，大哥说两个小时左右就能够到文公庙了。
+路上还是有不少漂亮花朵的。
+ 然后下个目标就是文公庙了，要穿过“石海”。这真是石海啊！好多石头，前面带路的大哥很快就没影了，因为没有岔路需要指导我们了。
+石海掠影 密码：abcd
+不晓得穿过了多少石头的海洋，每次都以为已经过了这段地形，结果它又在我们眼前出现。当然我一路不忘拍照片。
+最后，其实我心中闪现过念头，要不就在这里扎营得了，因为我们都不知道还要多久才能到达目的地，只能根据自己的海拔和与文公庙的直线距离进行判断，一步一步走下去，真的有点绝望。
+我冲在最前面，因为我感觉一定要有人在前面带来一些希望。自己的头每走一步都膨胀一下，很疼，而且喝到嘴里的水都是冰渣了，自己走路也不是很稳了，天上飘过的云雾都是黑色的。感觉自己就是魔戒远征队好么，正在向摩多进军。
+最后真是连续的、陡峭的、令人发抖绝望的上坡之后，山脊上出现了一个蓝衣小哥的影子，我赶忙向他招呼，得知还有不到五分钟的路途，就到文公庙补给站了，感觉欣喜之情难以言表了。谢过之后，我们赶快奔了上去，这海拔500m距离，整整走了2个多小时，上上下下不计其数。
+终于看到了文公庙的铁皮屋子，我的心反而有些平静了，没有那么激动了。此时时间 17:20，海拔3480m。
+回首望着来时的方向，突然心中好多感慨，但是都被自己发抖的身体憋了回去。
+ 山风实在太大，建的挡风的石墙。
+是夜发生的事情，都足够再写一篇日志了。
+  </description></item><item><title>剧本错乱的太白山之旅（2）</title><link>https://blog.formalscience.com/2014/05/15/%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%852/</link><pubDate>Thu, 15 May 2014 01:12:01 +0000</pubDate><guid>https://blog.formalscience.com/2014/05/15/%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%852/</guid><description>这个是整体的路线，我们的计划是从蒿坪进，汤峪出，这样方便坐车，配合我短暂的假期，使得我能赶上周日的组会。
+正式出发了，此时 GPS 位置：34-5-19.9 N 107-42-19.9 E 海拔1163，时间是 2014-04-30 15:31。
+首先来段，蒿坪古道的介绍吧，其实爬之前真该好好参悟下这段文字的。
+蒿坪古道风景区主要分为黑虎观景区（岩洞沟探险区）、点兵场景区和大殿景区三部分，共有景点80多处。蒿坪古道是登太白山历史最悠久、庙宇古迹分布最多的线路，是太白山“低山五里一庙，高山二十里一庙”的宗教文化景观发源地。 核心是，到了二十里一庙的时候，走得还真是有点小忧伤。不过那是第二天的事情了，一开始的行走是在春游的心情中展开的。我来之前做过一些预习，知道太白山内植物种类很多，因此也抱着多看看的心态来的。
+刚开始上山很高兴了，都是很缓的山间小路，清澈的溪水，葱绿的各类植物，山间花朵的清香，祥和的气氛四处蔓延。在第一个分叉路口，我们来了一张合影，此时三人精神抖擞。
+然后就是爬啊爬啊，一路上到处照相。我看到那些美丽而陌生的各类植物真是满心欢喜，脚步也变得迟缓了起来，各种咔嚓咔嚓。
+走着走着发现山上竟然还有人家，还有一只可爱的小狗。
+在山野也算以全天行军的方式爬了几次山了，和往常感受一样，就是累啦，不过有这种心理预期就没有问题了。之前看到微信上一个学弟的签名：
+赛道上用跑的，生活上用走的。 确实爬山、跑步、骑行这些运动无不只要坚持就能前进。
+另外一个感悟就是作为押后确实会越来越慢，虽然我们只有三个人，但是仍然很明显。黑在后面，黑慢；仔在后面，仔慢；我在后面，我慢。即使这样，走在最前面的人也不能放慢脚步，他要观察路线，要控制行进休息时间。三个人轮换队中的位置，也轻松了一些。
+下午五点达到了中山寺，五点二十到达了下白云寺，六点二十到达上白云寺。这些寺庙都是一些土坯房子，比较破旧。其中中山寺旁边还有一个老居士，他听不清别人说话，我们只能比划着交流了水源位置。
+接下来就是争取在太阳下山前感到宿营地点，我们的目标是大殿。西北地区天黑得晚，因此可以多赶会儿路，但是到了七点半左右的时候，天虽然还是很亮，但是太阳已经到了山尖了，此时我们赶到了骆驼树，没有到大殿。但是这里很适合扎营，因此大家决定就是这里了。
+当我们刚放下东西，天瞬间就黑下去了，如果我们当时决定继续走的话，就是夜路行军了。
+后来就是三个人支帐篷，生火取暖，烧水，聊天，很是欢乐。天空中的繁星好璀璨。
+睡帐篷的感觉就是风好大，后半夜脚很冷，其中一部分原因是睡袋温标不满足要求。不过第一夜还是过去了。好吧这句话总么有种 Fate Stay Night 的感觉，其实我中间醒了好几次，风吹来吹去，我总感觉是有野兽抓我们的帐篷，2333333.
+最后附上第一天拍摄的植物拼图。</description></item><item><title>剧本错乱的太白山之旅（1）</title><link>https://blog.formalscience.com/2014/05/06/%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%851/</link><pubDate>Tue, 06 May 2014 16:43:23 +0000</pubDate><guid>https://blog.formalscience.com/2014/05/06/%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%851/</guid><description>春节的时候和仔说了想去太白穿越的想法，于是就说五一去吧。协会五一组织了库布齐沙漠的穿越，其实我挺想去的，平时由于实验室的原因没法参加协会的野营活动，很想和大家一起出去一下，掉掉自己不多的节操。不过仔已经在西安开始筹备了，我还是回西安好了，顺便看看老同学，毕竟有些同学毕业出国啥的，以后见面不容易了。
+和协会同学一起去了西站，他们取票各种慌乱，差点误车，不过我进站后发现他们那个去包头的车晚点了，还给hcp发了短信询问，不过他没有回复。我的车是 Z19，不得不说软卧就是爽，各种姿势看了一会儿 iPad，然后和对面的年轻妈妈聊聊天，很快到了睡觉的时间。一觉醒来，天就亮了，这种舒适的感觉是我之前坐火车未曾感受过的。对了我还发了一条朋友圈，说“第一次做软卧，怎么装出经常坐的样子”，遭到一众基友吐槽。
+从火车站（我还是好喜欢西安火车站的样子，而不是它的拥挤）出来直奔（其实没有直奔，607到沙坡村转了45）曲江校区，到了仔那里取了他买好的东西，然后坐25到了武警医院，走过学校南门一条街，发现没怎么变样。到了学校南门和仔的师弟黑汇合后，坐252到了客运站，奔向眉县。一路上麦浪涌动，绿色在阳光下也那么耀眼，关中真不愧是风调雨顺之地。还有一排排的开着粉红色花的国槐，以及茫茫多的猕猴桃果园。
+车到了眉县之后，先吃了个饭，吃的杨凌蘸水面，两个人吃了20，总共八根面，还是超级实惠的，而且很好吃。
+客运站各种票好便宜啊。
+去了营头镇，包了一个出租去蒿坪。司机师傅要40，真是太实在了。其实我们还是犹豫了一下的，旁边一个大爷说不多，我们就没还价。事实证明，师傅真的没有坑我们，那个路长的。我们半路还问是不是快到了，师傅说要是现在就到了，不就是坑你们了么，现在才开了20的，配合上宝鸡口音，让人感觉特别踏实。于是最终我们站在了保护站的门口，由于不是旺季，无人看管，我们就能够不用买门票啦。
+ 进入大门，我们的穿越之旅就要开始了。这时我们的心情是多么欢快！</description></item><item><title>谁也不要鄙视谁</title><link>https://blog.formalscience.com/2014/04/09/%E8%B0%81%E4%B9%9F%E4%B8%8D%E8%A6%81%E9%84%99%E8%A7%86%E8%B0%81/</link><pubDate>Wed, 09 Apr 2014 00:11:33 +0000</pubDate><guid>https://blog.formalscience.com/2014/04/09/%E8%B0%81%E4%B9%9F%E4%B8%8D%E8%A6%81%E9%84%99%E8%A7%86%E8%B0%81/</guid><description>前几天周围很多同学转发各种状态表达对上街游行抵制 PX 项目的茂名人的鄙视。我觉得有几个问题都要想一下：
+当地民众有没有权力决定 PX 项目是否能够在本地建设。如果他们本来就没有这个权力的话，恐怕抗议也是没用的。如果他们有这样的权力，其他地方的民众有没有替他们做决定的权力，仅仅是因为这些决定有利于自己。
+是否有对当地民众的补偿方案，在这个争论过程中，始终没有见到政府宣传这方面的内容。如果当地民众没有因为这件事情获得直接利益的话，就算别人说以后可以增加就业机会、带动当地经济发展，都很难抵消当地人的恐慌吧。
+就算项目理论上对环境的危害很小，在中国真的能够监管严格？国内这种企业是受政府监管的，而谁能监管政府呢，人民么？ 一个我个人不喜欢的言论：
+“不能因为想保护自己居住地点青山绿水，而阻碍了中国经济的发展，这是一种自私。” 这句话听上去第一感觉就是戾气十足。如果当地民众都不能决定自己的家乡变成什么样子的话，那谁来决定。PX 是低毒的，对于我来说很容易就接受了，低毒就低毒。可是对于当地的民众谁能担当起这样科普的责任呢？修改 PX 词条，加上政府宣传，我想一定程度上能够起到这样的作用吧。
+我感觉人是很难理解他人的感受的，特别是我们这些一直在学校的人，估计很难理解到当地人民面对这样一个项目时的情感变化。所以妄加指责我觉得是一种不公正的举动。
+另外学校还是有些大水课的，也挡不住同学们选课刷学分绩的热情积极。是否修一些更有难度的课对自己提升更大，将来能够更好地为国家服务呢？是否少打两局炉石、两把 LOL，少刷一会儿 B 站、趣图，少看两集电视剧将来就更有可能成为国家栋梁呢？
+每个人都有自己的选择，很多时候都难以评判是对是错。
+己所欲之，也不要强施于人。</description></item><item><title>完美主义倾向</title><link>https://blog.formalscience.com/2013/11/25/%E5%AE%8C%E7%BE%8E%E4%B8%BB%E4%B9%89%E5%80%BE%E5%90%91/</link><pubDate>Mon, 25 Nov 2013 04:39:41 +0000</pubDate><guid>https://blog.formalscience.com/2013/11/25/%E5%AE%8C%E7%BE%8E%E4%B8%BB%E4%B9%89%E5%80%BE%E5%90%91/</guid><description>我不是处女座。
+我以前喜欢剖析自己心理，总是试图找出自己各种情感的源起，然后争取用理智压制住诸如愤怒、悔恨等情感。有一种情感我一直总是克服不了，就是看到比自己年轻的人，总觉得自己要是年轻几岁该有多好。经过N年的思考之后，我曾经得出一个结论：由于我本质上很喜欢各种例如新长出的植物、纯洁美丽的风景等事物，会对充满活力、朝气蓬勃的学弟学妹们产生喜爱之情。这个理由也支撑了我一段时间，但随着一年一年过去，越来越不好使了。
+今天终于又想了一个理由，完美主义倾向。写程序的时候，经常对着一个变量名字改来改去，总是不满意。或许对于自己的人生我也是抱有同样的想法。虽然我总是持有一个信念：如果回到当初，我还是会做一样的选择，当时的自己一定也是经过深思熟虑或者在命运的洪流之中不得不那样做的吧，但是却总是存有一丝幻想：可能能够做的更好一点吧。但是呢，人生是不能重构（refactor）的，只能吸取之前的经验，争取在后面的过程中能够持续改进，无论如何码还是要码的，至于变量的名字或许一觉醒来就不记得了。
+还有一点需要记住：没有银弹。
+我是双鱼座。这种依靠宇宙的偶然决定人的性格、运势，并且能够不断增加新的应用领域（application domain）的理论其实我还是很喜欢的。</description></item><item><title>如此愤怒，如此矛盾</title><link>https://blog.formalscience.com/2013/09/10/%E5%A6%82%E6%AD%A4%E6%84%A4%E6%80%92%E5%A6%82%E6%AD%A4%E7%9F%9B%E7%9B%BE/</link><pubDate>Tue, 10 Sep 2013 03:48:47 +0000</pubDate><guid>https://blog.formalscience.com/2013/09/10/%E5%A6%82%E6%AD%A4%E6%84%A4%E6%80%92%E5%A6%82%E6%AD%A4%E7%9F%9B%E7%9B%BE/</guid><description>BMY上每年此刻的考研占座年经帖又出现了。
+看到里面的各种回复直接引起我戾气值暴表。
+一些人无视规矩，大打考研党悲情牌：
+应该理解一下 考研的人那么辛苦 平时学习到大教室学也行啊 理解一下行不 大三大二小朋友在宿舍学就行了 互相体谅一下，等你们考研的时候就知道了 （这个不由得让我想起了“多年的媳妇熬成婆”。） 还是要理解一下。毕竟考研还是人生重大事件。不是为了考研的自习，可以自己想想办法，去其他教室，或者留在寝室。控制住不上网就好了 （你当年控制住了？） 考研的显然更重要 （这个理直气壮些。） 每一届都有考研的时候，希望多一些理解。考研需要的是长时间的空位，其他年级的找临时空位不就好了，有必要这么咋呼吗 然后图书馆又要清书了。 这场学弟抱怨，学长花腔的戏还会上演很多年吧。里面的一个回复倒是也比较中肯
+“年年都在喊，年年都发生
+可能今天还在义正言辞，明天就加入了占座不来党”
+我个人非常讨厌占座这种行为。我大一、大二、大三在钱学森图书馆上自习，很少受到这方面的困扰，我会站在一边等到图书馆规定的超时时间，把书挪开，坐上去。让我困扰的是周围同学对于占座行为的态度，就如我一直困扰于他们对于作弊的态度。其实我也困扰于我对他们态度产生的愤怒。
+我安慰自己（为了平复心情），这个也是交大的设施、制度、管理、教育各方面都太多令人诟病之处。然而这个本质还是价值观和信仰的问题吧，有些事情你知道可以去做，有些事情不能做。
+有时候我想，这个世界太复杂，各种事情存在都是可能的。脱离具体的环境，很难决定一件事情的对错，就像作弊和占座，就像《赛德克-巴莱》那些走向彩虹桥的人，就像《光逝》（Dying of the Light）里那“铁与血，银与玉”的契约。
+每个人的经历千差万别，人与人之间相互理解的程度又极为有限。正因如此，知音才会那么难得。
+小学的时候，我曾经告发全班同学在学校门口的早餐摊上抄作业，然后成为全班公敌。但即便如此，那些同学里还是有很多成了我的好朋友。我已经不会做这样的事情了，不是因为可能带来的后果，而是这世上有太多的无奈。我也不曾后悔，如果回到从前，那个小男孩还会做出同样的决定。
+另外，今天还看了一篇讲 伊斯兰教 势力渗透的文章，内容比较极端，但是也反映了一部分现实。信仰，真是很难以改变的东西啊。虽然我们很多国人经常会嗟叹自己没有信仰，我看还是有的。信仰不一定是神、主义。信仰就是你相信这个世界赖以运转的那些基础，信仰就是你相信为真的那些东西，那些支持你每日生活、做出决定的那些准则。就像有些人认为活着就行，有些人宁死不屈，有些人相信爱情的纯洁，有些人认为爱情不过是场游戏。
+这些年因我的心理不成熟，伤害了几个人。成长，会改变你对事物的态度和处理方式。我不想改变的事自己的初衷。每当自己迷茫的时候，就会告诫自己：惟愿不失本心。
+然而我啊，还是希望能够生活在一个纯粹的世界里，蓝天白云，鸟语花香。
+  </description></item><item><title>为什么用Clojure，以及一点感悟</title><link>https://blog.formalscience.com/2013/09/02/%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8clojure%E4%BB%A5%E5%8F%8A%E4%B8%80%E7%82%B9%E6%84%9F%E6%82%9F/</link><pubDate>Mon, 02 Sep 2013 12:12:39 +0000</pubDate><guid>https://blog.formalscience.com/2013/09/02/%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8clojure%E4%BB%A5%E5%8F%8A%E4%B8%80%E7%82%B9%E6%84%9F%E6%82%9F/</guid><description>1.Java互操作Clojure和Java互操作还是比较简单的，网上有很多案例。
+首先讲下Java中调用Clojure。
+一种方式是用过clojure.lang中的一些方法引入一个命名空间中的函数和变量，然后使用，这种方法就要注意ClassPath和ClassLoader的问题，这在Eclipse的RCP开发中还是比较烦的。另外要注意如果有Clojure源码文件被编译成Class文件了，调用这些文件的Clojure.jar和编译出这些文件的Clojure.jar版本一定要一致。
+另外一种方式就是使用 “:aot :all“ 命令把所有Clojure源码编译成JVM的Class文件，然后调用genclass方法产生的类和函数。这个可以比较方便地把接口暴露出来。这篇文章针对genclass的各种用法讲得很好。
+在Clojure中调用Java就很简单了，随便一搜就是一大堆，官方文档也有很多例子。
+2.编程模式Clojure本身就是JVM上的一个Lisp方言，所以编程模式主要就是函数式。当然我对函数式这个术语理解也不是很透彻，目前理解的函数式语言的特点就是：函数是第一公民、尽量保持无状态操作、有利于并行化操作、具有较强的作为meta language的能力（可以用来构建DSL）。这个可以看一下SCIP（计算机程序的构造和解释）这本书。
+3.初衷我本来想用Scala的好嘛！其实，当时主要想做BIP（这个还是高端大气上档次的）这个形式化语言的一个解释器，然后依靠那个不靠谱的方案和一个还不存在的同步形式化语言解释器进行对接，构建一个仿真环境。
+其实同为JVM上寄生的函数式语言，明显Scala做这个工作更有优势一点：基于OCaml（这个的前身ML我之前用过）、有方便的类型模式匹配机制（这个机制在写解释器时应该比较有用）。Clojure我也调研过，但是当时是没有这个想法用它的。但是呢，但是呢，亚马逊给我推送了一封邮件，里面就有《Clojure编程》这本书，然后我还顺着广告点过去买了。于是在我刚开始做这个工作的时候，Clojure就被选中了。
+都是缘分啊！
+4.困难
+困难一部分来自对Clojure一些库不了解，对一些常见的实现习惯不了解，后来实践中逐渐搜索学习，也就掌握了。
+另外一些来自于和实验室主项目集成的时候，Eclipse RCP项目的ClassLoader比较诡异，我之前也没怎么了解过，碰到了各种”ClassNotFound“的错误，后来经过查找还是解决了。这个是我的一个Evernote笔记。
+5.编辑环境的的配置和各种尝试
+我先后试过Emacs和Intellij IDEA。
+Emacs我还是很喜欢的，特别是里面的ParEdit插件，用来进行Lisp中大量的括号相关的操作简直无敌了，就是要先学习一下快捷键，效率会提升很多。但是有一个缺点（我能说Emacs的缺点么？），配置起来麻烦。虽然各种插件我都装上了，用起来也不错，但是过程中遇到的各种陷阱还是很多的，网上的教程也不总是和预想中的一样有效。我还是一直坚持使用Emacs的。后来实验室的另一个工作要在Windows上进行，在Windows下我一直无法用Emacs启动Clojure的REPL，因此转向了神器——Intellij IDEA。
+神器只要下个LaClojure的插件和Leiningen插件就好了。各种只能提示啦，测试啦都可以很方便使用，我还把keymap改成了Emacs式的，算是一个念想。不过神器下面没有ParEdit插件，没法那么方便地处理括号，有些不开心。
+6.总结
+在学校的一个优势呢，就是可以尝试新的东西（虽然想让我赶快完成项目的老板不这样想）。以前我也学习Lisp，ML等函数式语言，但是一直没有实际动手做个东西。这次虽然使用Clojure做这个解释器有些冲动的成分在里面，整体而言还是很满意的。最后解释器效率可能有些问题（我写的程序有问题，和语言无关），但是程序工作起来还比较正确（至少那些单元测试都还能通过），修改起来也比较容易（还需要一些重构）。我对于Java和Clojure的了解也都稍微深刻了那么一点（是在命名空间这方面）。
+下次要不要试试其他的语言呢？
+7.项目
+主要是做了一个BIP的解释器，还没有做完，只是完成了核心的语义解释的一部分。前段的语法解析器没有做，不过这个有现成的。
+8.经验
+实践出真知！
+这首歌我最近一直在单曲循环。
+ </description></item><item><title>建模语言</title><link>https://blog.formalscience.com/2013/05/28/%E5%BB%BA%E6%A8%A1%E8%AF%AD%E8%A8%80/</link><pubDate>Tue, 28 May 2013 16:40:19 +0000</pubDate><guid>https://blog.formalscience.com/2013/05/28/%E5%BB%BA%E6%A8%A1%E8%AF%AD%E8%A8%80/</guid><description>今天晚上和师兄师弟们一起吃饭。去食堂的路上，一直到食堂为止都特别伤心。自己研究生生活都已经过了快两年，对自己的研究方向依然不能向别人解释清楚。特迷茫，特无助。下面是我的一些理解，不是很全面（不是我全部所想的，未必全部是对的）。
+1.何谓建模？
+建模就是对一个表示的抽象表示，使得抽象过的表示在一定假设下可以回答原始表示能够回答的问题。例如：
+把程序抽象成一个流程图，这个流程图可以回答给定输入产生什么输出的问题； 把程序抽象成一个函数依赖图，可以回答关于函数之间调用关系的问题； 把一个地表的自由落体抽象成成真空中的自由落体，（忽略掉空气阻力和允许一定误差情况下）回答自由落体从指定高度到达地面的时间问题 2.建模语言 语言是一种表现形式，就如眼神一样，直达人的灵魂深处。好吧，我文（che）艺（dan）了。写程序需要（编程）语言，刻画物理现象需要（数学）语言，把听到的曲调记录下来也需要（乐谱使用的）语言。建立这些事物的抽象表示（建模过程）也需要一种语言，称为建模语言，例如：UML、Petri Net、自动机（Automata）、正则表达式、上下文无关文法等。
+3.建模语言分类
+正如编程语言、数学语言有能力强弱、是否易用、山头派系之分，建模语言也是如此。这里主要针对程序建模语言进行说明。
+图灵机是一种基础的建模语言，有许多建模语言都用图灵机作为基础来解释自身语义，或者来比较自己的能力。有一些语言表达能力等价于图灵机，有一些语言表达能力则非常有限。能力强弱并不对应语言的好坏。
+其中一些语言的等价性可以用来出一些题目，例如把一个正则表达式转化为一个DFA（确定有限自动机）。
+这些语言又可以按照是否有形式化的表示分为：形式化语言（Formal Languages）和非形式化语言（Informal Languages）。形式化语言的形式化表示一般使用数学中的集合和映射表示；非形式化语言一般都会有对应的非形式化的执行语义（即用自然语言说明语言中各种操作的含义，例如普通的C语言）。
+按照使用范围会有针对嵌入式系统的建模语言（VHDL）、针对需求的建模语言（UML）、针对算法的建模语言（程序流程图）等等。
+还有其他按照各种方法的各种分类，例如同步建模语言、异步建模语言、全局异步局部同步建模语言。我知道的并不全面，每次和大牛交流都感觉到自己的无知。
+4.建模语言领域研究什么
+如何在增加语言表达能力和易用性同时不影响语言其他方面的性质（语法的简洁性等）。例如图灵机中是没有整形变量的表示的，我们能看到的只有0/1的纸带。因此汇编、C等加入了各种数据结构，但是其需要解释的语义就更复杂了。相比之下Lisp的语法语义就比较简洁。
+如何针对特定领域对语言进行封装优化。近些年比较火热的领域特定语言（DSL）目的就是如此。
+如何能够支持模型的性质检测。可以参考模型检测领域（Model Checking）的相关知识。
+如何能够用建模的模型生成一些代码，即用建模语言作为一种编程语言。这样要求建模语言要有和生成代码使用语言的比较优势（较少的代码量、简洁清晰的语义、更简单的并行并发描述等）。这种使用方式有一个相关概念：模型驱动的开发。
+下面的 #5 内容会和 #4 没有那么正交，请海涵。
+5.建模语言领域能够贡献的工作
+写一种全新的建模语言。嗯，这个一般都是持续N（&amp;gt;10）年的工作。
+在一种建模语言基础上添加/封装一些操作符，从而对一些被建模对象的行为提供直接支持（例如支持建模buffered signal transmission）。DSL。
+把两种建模语言整合起来。比较难，需要用更低级的语言解释两者语义，以及其他一大堆问题需要处理。
+对指定的建模语言生成另一种语言的代码。例如：C to Verilog，Esterel to C等。
+给建模语言建立的模型写simulator，即解释建模语言的执行语义。
+给建模语言写图形化的编辑器，例如Visual Studio中的GUI绘制工具。
+等等一系列，一系列。
+6.我在做啥
+最近在做对增加了时间表示的BIP模型和增加了时间表示的Esterel模型二者混合模型的执行语义解释。现在正处于用Clojure写没有时间表示的BIP模型执行语义解释的地步。
+最近在做把BIP模型生成的代码转化成C语言代码，然后在ARM板卡上执行的流程探索。这条路已经基本走通，我能说今天中午什么事都没有做，然后之前bug的程序就能够在ARM板卡上运行了么。这真是上天不负有（gou）心（shi）人（yun）啊。
+  </description></item><item><title>唯愿不失本心</title><link>https://blog.formalscience.com/2013/04/12/%E5%94%AF%E6%84%BF%E4%B8%8D%E5%A4%B1%E6%9C%AC%E5%BF%83/</link><pubDate>Fri, 12 Apr 2013 12:39:59 +0000</pubDate><guid>https://blog.formalscience.com/2013/04/12/%E5%94%AF%E6%84%BF%E4%B8%8D%E5%A4%B1%E6%9C%AC%E5%BF%83/</guid><description>1.还要向前行
+读博士已经快两年了。两年里学术方面开心的时候不多，成就也不多。每次去见朋友的时候总是暗示自己：不要总是跟他们抱怨自己的不顺。到头来还是忍不住。自己是一个比较容易过于悲观和过于乐观的人，虽然最近心智成长了许多。现在总觉得看不到希望，很多时候都想退出了，去公司工作也还行，比天天在这里郁闷强。还有一个原因是自己确实不努力，科研不顺利有时候就会放纵自己，让自己在游戏（适度游戏还是好的，不要太过就行）中消沉，感觉就像借酒消愁，醒时愁更忧。正确的方式还是要把自己想要做的事情抓紧时间来做，比如这学期报名的托福以及开始写论文。争取在自己做的一切事情（无论喜欢还是不喜欢）中寻求到收获。
+2.魔本由心生
+最近在上跳水课，第一次上三米台的时候特别怂，不敢向下跳。老师告诉我们：面对危险的时候，如果它是未知的，那么恐惧时很自然的；如果危险已知并且可控，那么恐惧就是由于内心不坚定产生的了。第二次，我上五米台也较为从容跳下来了。自己的胆怯犹豫不是那么容易克服的，不过这种和自己心灵的抗争也是一种成长。
+3.乱花渐欲迷人眼
+室友在微软实习，工资也多，还能做文章，我很是羡慕；很多同学都发了文章；。宽慰自己，每个人都有自己的生活，每个人都行走在自己的轨迹上，却总是意难平。
+4.愿不失本心
+总是存在Frost诗中那条未选择的路。我对那些类如“既然选择了，便只顾风雨兼程”的励志句子不是很认同。有时选择确实是错误的，难道还要违背自己的意愿继续前行么？还是只是背负上了世俗的压力，不能转身离开？我不想留下一生叹息——“算了！”这样的生活还是不好的。我自己经常很懦弱，不敢跟随自己的想法，总是害怕别人带来的伤害（虽然我的口头语之一是：反正不会死人！）以及给别人带来伤害（这对我自己也是一种伤害）。但我也不曾放弃自己。唯愿小小绿苗能够快些长成参天大树，能够屹立在风雨之中。
+—— 张华枫</description></item><item><title>读《民国那些人: 鲁迅同时代人》</title><link>https://blog.formalscience.com/2013/04/04/%E8%AF%BB%E6%B0%91%E5%9B%BD%E9%82%A3%E4%BA%9B%E4%BA%BA-%E9%B2%81%E8%BF%85%E5%90%8C%E6%97%B6%E4%BB%A3%E4%BA%BA/</link><pubDate>Thu, 04 Apr 2013 08:43:52 +0000</pubDate><guid>https://blog.formalscience.com/2013/04/04/%E8%AF%BB%E6%B0%91%E5%9B%BD%E9%82%A3%E4%BA%9B%E4%BA%BA-%E9%B2%81%E8%BF%85%E5%90%8C%E6%97%B6%E4%BB%A3%E4%BA%BA/</guid><description>鲁迅的母亲鲁瑞真是一位令人敬佩的女性和母亲 鲁迅和他原配朱安是旧时代的牺牲品 鲁迅和朱自清是同乡，远房亲戚 鲁迅和他弟关系闹僵就是因为他弟媳乱花钱（哥俩一个月600大洋都不够花），还各种编造谣言 陈独秀放在宋朝那就是名士风范 [caption id=&amp;quot;&amp;quot; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;720&amp;rdquo;]陈独秀在杭州《咏鹤》[/caption]
+[caption id=&amp;quot;&amp;quot; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;720&amp;rdquo;]陈独秀在杭州 《灵隐寺前》[/caption] 6. 杂文在当时的作用就是天涯上互相攻击的帖子，看鲁迅、胡适、李大钊、陈独秀、徐志摩各种互相攻击各种re就感觉很喜感 7. 徐志摩是真小资 8. 鲁和许那是真爱情，许很伟大 9. 郁达夫是真性情，真懒散</description></item><item><title>Archlinux Install Notes</title><link>https://blog.formalscience.com/2013/03/27/2013-03-27_archlinux_install_notes/</link><pubDate>Wed, 27 Mar 2013 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2013/03/27/2013-03-27_archlinux_install_notes/</guid><description>分区格式化 cfdisk mkfs.ext /dev/sda* mkswap /dev/sdaX swapon /dev/sdaX
+挂载当前分区 检查当前磁盘的标识符和布局 lsblk /dev/sda mount /dev/sda1 /mnt mkdir /mnt/home 如果是home独立分区 mount /dev/sda2 /mnt/home
+编辑 /etc/pacman.d/mirrorlist 更新 pacman -Syy
+使用pacstrap脚本安装基本系统
+pacstrap /mnt base base-devel 如果 pacman 报告安装时遇到错误的签名(error: failed to commit transaction (invalid or corrupted package))，请运行如下命令：
+pacman-key &amp;ndash;init &amp;amp;&amp;amp; pacman-key &amp;ndash;populate archlinux base 来自 [core] 软件源的最小基本系统。 base-devel 来自 [core] 的附加工具例如make和 automake。大部分新手都应该安装它，后续扩展系统会用到它，安装AUR中软件包时，base-devel也是必须的
+生成 fstab
+用下面命令生成 fstab。如果想使用 UUIDs，使用 -U 选项；如果想使用标签，用 -L 选项，完成后最好检查一下生成的/etc/fstab。 Note: 后面如果出现问题，请不要再次运行genfstab，如果需要，手动编辑/etc/fstab。
+genfstab -U -p /mnt | sed &amp;rsquo;s/rw,relatime,data=ordered/defaults,relatime/&amp;rsquo; &amp;gt;&amp;gt; /mnt/etc/fstab nano /mnt/etc/fstab Chroot 到新系统</description></item><item><title>我果然还是喜欢写日记胜于写博客</title><link>https://blog.formalscience.com/2013/02/01/%E6%88%91%E6%9E%9C%E7%84%B6%E8%BF%98%E6%98%AF%E5%96%9C%E6%AC%A2%E5%86%99%E6%97%A5%E8%AE%B0%E8%83%9C%E4%BA%8E%E5%86%99%E5%8D%9A%E5%AE%A2/</link><pubDate>Fri, 01 Feb 2013 10:20:44 +0000</pubDate><guid>https://blog.formalscience.com/2013/02/01/%E6%88%91%E6%9E%9C%E7%84%B6%E8%BF%98%E6%98%AF%E5%96%9C%E6%AC%A2%E5%86%99%E6%97%A5%E8%AE%B0%E8%83%9C%E4%BA%8E%E5%86%99%E5%8D%9A%E5%AE%A2/</guid><description>这是自恋的表现么？
+现在每天都在有道笔记里写写日记和自己的些许想法，对博客没有什么太大的兴趣了。于是乎，感觉自己还不够专一啊。</description></item><item><title>Python使用smtplib发送邮件</title><link>https://blog.formalscience.com/2012/11/13/python%E4%BD%BF%E7%94%A8smtplib%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/</link><pubDate>Tue, 13 Nov 2012 10:50:48 +0000</pubDate><guid>https://blog.formalscience.com/2012/11/13/python%E4%BD%BF%E7%94%A8smtplib%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/</guid><description>from smtplib import SMTP
+#这些库是邮件格式使用的 from email.mime.text import MIMEText from email.mime.image import MIMEImage from email.mime.multipart import MIMEMultipart
+smtp = SMTP()
+smtp.connect(&amp;lsquo;smtp.163.com&amp;rsquo;)
+#这句话是必不可少的 smtp.helo()
+#选择认证方式 smtp.esmtp_features[&amp;lsquo;auth&amp;rsquo;] = &amp;lsquo;LOGIN&amp;rsquo; smtp.login(&amp;rsquo;####@163.com&amp;rsquo;, &amp;lsquo;password&amp;rsquo;)
+message = MIMEMultipart() message.attach(MIMEText(&amp;lsquo;content&amp;rsquo;)) message[&amp;ldquo;Subject&amp;rdquo;] = &amp;lsquo;subject&amp;rsquo;
+smtp.sendmail(&amp;rsquo;####@163.com&amp;rsquo;, [&amp;lsquo;mail_to@163.com&amp;rsquo;], message.as_string())
+差不多邮件这样就可以发送出去了</description></item><item><title>基于OpenShift搭建MediaWiki</title><link>https://blog.formalscience.com/2012/11/12/%E5%9F%BA%E4%BA%8Eopenshift%E6%90%AD%E5%BB%BAmediawiki/</link><pubDate>Mon, 12 Nov 2012 15:45:19 +0000</pubDate><guid>https://blog.formalscience.com/2012/11/12/%E5%9F%BA%E4%BA%8Eopenshift%E6%90%AD%E5%BB%BAmediawiki/</guid><description>1.按照OpenShift建立用用的过程新建一个PHP 5.3应用，可以通过网页方式创建（推荐）；本地完成一些初始化工作（参考官方教程）
+2.按照应用页面给出的git地址，把代码库clone到本地，然后把MediaWiki代码push到Master库中。（git使用方法）
+3.在应用页面点击那个“Add a Cartridge”，然后加上一个MySql数据库（应该是这样，我在命令行中添加的）和一个phpMyAdmin；把获得的数据库root用户名和密码记下来； 但是如何重新访问这些Cartridge，我还不知道啊，也许从命令行可以过去。
+4.进入phpMyAdmin进行管理，左上方有MediaWiki连接数据库要使用的数据库地址（这个地方寻找地址卡了好久，直到安装了phpMyAdmin才得到的sql连接地址，应该还有其他方法的）
+5.进入应用URL进行MediaWiki的初始化工作，剩下的就很简单了</description></item><item><title>2012-10-26</title><link>https://blog.formalscience.com/2012/10/26/2012-10-26_%E5%AE%87%E5%AE%99%E5%B0%8F%E7%99%BE%E7%A7%91/</link><pubDate>Fri, 26 Oct 2012 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2012/10/26/2012-10-26_%E5%AE%87%E5%AE%99%E5%B0%8F%E7%99%BE%E7%A7%91/</guid><description>小宇宙百科12302 1)黄莺莺于今年6月22日推出了第51张专辑《摇篮曲》，是她继1998年《为爱疯狂》后，暌违14年的新作品，也是告别歌坛之作。当今年轻人也许不知道这位老牌天后的传奇。上世纪八十年代是华语流行音乐的一个黄金年代，五十年代出生、七十年代出道、八十年代成名的一代歌手中，注定留下了三位天后的名字：黄莺莺，蔡琴，邓丽君。黄莺莺1951年8月29日出生于台湾宜兰礁溪，因孕育在莺歌，故取名“莺莺”。早年艺名为黄露仪，于1974年推出第一张唱片《云河》，踏足乐坛以来，黄莺莺共发行了50张个人专辑，包括中文、英文与粤语专辑。黄莺莺的唱片发行至台湾、香港、新加坡、马来西亚、文莱等等亚洲各地区，近年来专辑更发行至中国及欧洲、美加一带。她的歌曲大多深情款款，是台湾歌坛中少数中英文歌曲皆有佳绩的歌手之一，对很多经典英文曲目的诠释不仅保留了原作的情趣，更平添一份中国风的典雅与细腻。推荐专辑《红伶心事》《摇篮曲》，推荐曲目《哭砂》《葬心》《All I ask of you》。蔡琴1957年12月22日出生，上世纪70年代以民歌歌手身份开始涉足歌坛，随后出版了第一张唱片《出塞曲》，30年间发行唱片近50余张，获奖无数，被誉为“华人乐坛的芭芭拉·史翠珊”。蔡琴的歌声低回委婉，丰满克制，却如陈酒一样，越久远越香醇。多首曲目被惠威收做测试hifi器材曲目，如测试中频密度的《张三的歌》，测试乐器定位的《渡口》。推荐专辑《民歌蔡琴》《鲍比达&amp;amp;蔡琴 -遇见》，推荐曲目《被遗忘的时光》《你的眼神》《恰似你的温柔》。邓丽君1953年1月29日出生， 1967年9月在台湾出道，1974年3月在日本出道，是20世纪后半叶最负盛名的华语和日语女歌手。生前发表国语、粤语、闽南语、英语、日语、印尼语歌曲3000多首，被称作“永远的邓丽君”，赢得了“有中国人的地方，就有邓丽君的歌声”的美誉。邓丽君的声音甜美圆润，温婉动人，这样完美的音色演绎出无数传唱至今的情歌。推荐曲目《小城故事》《在水一方》《但愿人长久》。从歌曲的传唱长度、广度和被hifi(高仿真音质)界接受的程度，这三位风华绝代的红伶，虽然歌曲主题无非是情爱离愁，却传唱大江南北；现今黄莺莺正式退出歌坛，邓丽君早已与世长辞，只剩蔡琴还在各地偶尔举行演唱会。面对选秀节目层出不穷，噱头闹剧惨不忍睹的当今华语乐坛，不禁令人怀念那个余音绕梁的黄金年代。AD/编·我心深处的交响乐</description></item><item><title>我的MSTC生涯-此生若只如初见</title><link>https://blog.formalscience.com/2012/08/23/%E6%88%91%E7%9A%84mstc%E7%94%9F%E6%B6%AF-%E6%AD%A4%E7%94%9F%E8%8B%A5%E5%8F%AA%E5%A6%82%E5%88%9D%E8%A7%81/</link><pubDate>Thu, 23 Aug 2012 14:58:23 +0000</pubDate><guid>https://blog.formalscience.com/2012/08/23/%E6%88%91%E7%9A%84mstc%E7%94%9F%E6%B6%AF-%E6%AD%A4%E7%94%9F%E8%8B%A5%E5%8F%AA%E5%A6%82%E5%88%9D%E8%A7%81/</guid><description>五年前的时候，还是懵懂少年。
+军训结束后，就是各个社团招新的时候，我记得当时我报了IBM技术俱乐部，电视台，还有MSTC。
+MSTC的招新最先举行（面试短信通知），面试那天晚上下着雨。从文治经过南门到俱乐部，听着雨滴打在伞上沙沙的声音，我的心也是很忐忑。提前15分钟到达，我不知道怎么就进去面试了，是吴书会学姐面试的我。我申请上写的是会C++，其实只会一点基本的概念。具体学姐问了什么技术问题，我就记不得了；只记得她问我是不是大一的，现在回想起来当时好青葱啊。在大家开始面之前我就出来了。后来怎么得到通知说录取也只是模糊的记忆了。不过录取之后，我就没有去ISTC和电视台面试了。
+第一年，我也贴过海报，布置会场，搞各种事情，还参加了俱乐部的招新活动。这一年里印象深刻的就是徐瑾姐姐（副部长哦）了，还有IB、昭（要是这个字写错了。。。）哥、斐爷等人。
+第二年，俱乐部搞技术组，我就加入了一个，好像就遇到了大卉（组长）、嘉霖、彪哥等人。每次开组会都很欢乐，俱乐部屋子里发现一大袋花生我会乱说么。虽然最后我们搞的那个东西没弄出来，不过还是很开心的一年。
+后来我就很少出现了，除了俱乐部周年庆的时候，里面的人就逐渐陌生了。徐瑾姐姐离开了。
+后来徐瑾姐姐又回来了，不过那时我也大四了，去北京做毕设去了。
+后来就是永远离开了。
+我这四年是酱油的四年，不过我跟其他人说起自己的俱乐部都是很自豪的。作为我唯一加入过的一个社团，对于少年的我来说，俱乐部的活动极大开阔了我的眼界，对于大叔的我来说，那些人那些事都是不可磨灭的美好回忆。</description></item><item><title>Spin工具的Eclipse集成</title><link>https://blog.formalscience.com/2012/08/19/spin%E5%B7%A5%E5%85%B7%E7%9A%84eclipse%E9%9B%86%E6%88%90/</link><pubDate>Sun, 19 Aug 2012 02:40:45 +0000</pubDate><guid>https://blog.formalscience.com/2012/08/19/spin%E5%B7%A5%E5%85%B7%E7%9A%84eclipse%E9%9B%86%E6%88%90/</guid><description>Spin是Promela建模语言的解释器和验证工具。它本身有一个图形化的工具iSpin，不过这个图形化实在有些简陋。下面介绍一个Eclipse的插件，这样我们可以使用Eclipse的编辑环境来使用Spin。
+首先，在Eclipse的install new software中添加 http://matrix.uni-mb.si/fileadmin/datoteke/znanost/orodja/ep4s/update-site/ 把Group items by category选项去掉，否则看不到可安装的插件；安装此插件。
+然后，在菜单栏中选择Spin项，进入Spin Configuration，
+Spin工具可以从其官网下载。
+C Complier里的gcc可以用cygwin安装，记得选择直接的版本，不要选择gcc.exe，否则可能出现不能验证通过的错误。
+基本上这样就算安装完成了，如果你有什么问题，可以给我留言。</description></item><item><title>如果我换一个地方生活</title><link>https://blog.formalscience.com/2012/08/15/%E5%A6%82%E6%9E%9C%E6%88%91%E6%8D%A2%E4%B8%80%E4%B8%AA%E5%9C%B0%E6%96%B9%E7%94%9F%E6%B4%BB/</link><pubDate>Wed, 15 Aug 2012 13:20:19 +0000</pubDate><guid>https://blog.formalscience.com/2012/08/15/%E5%A6%82%E6%9E%9C%E6%88%91%E6%8D%A2%E4%B8%80%E4%B8%AA%E5%9C%B0%E6%96%B9%E7%94%9F%E6%B4%BB/</guid><description>比如换一个地方读博士，从这里退学的话，比如去美帝。
+ 应该西海岸一个阳光充沛的地方，因为我是如此喜爱阳光，能够感受它的温暖；没事可以散散步，钓钓鱼；或许生活没有如此轻松，但是一想到新的地方，我就很兴奋，或许是太好奇了吧。
+ 想想这些在现在这个地方有什么做不到的呢？一周只有一天可以自由活动，应该没有其他实验室特意选在周末下午开组会吧；每天还打卡，真是比一些IT公司还不如。北京的阳光在雨后还是很好的，但是却不能心情轻松地沐浴其中。
+ 我在恐惧什么，难道换一种生活不可以么？如果我要去公司的话，以我现在的能力有地方要么？归根结底还是自己太弱了。可是自己真很弱么？我觉得也不是的。自己学习能力还是不错的，
+使用建模语言可以自己发现很多构造方法， 略懂一些函数式语言，其他语言学习能力也不错， 对高性能、大数据处理、数据挖掘、机器学习也还都有一些了解。 或许是因为对公司不了解，所以才不能有一个良好的判断吧。
+ 还是要勇敢走出第一步才行啊！总是憧憬美好的生活只会使自己迷失在自己编织出的网里，无法自拔。</description></item><item><title>给我时间来写诗</title><link>https://blog.formalscience.com/2012/08/15/%E7%BB%99%E6%88%91%E6%97%B6%E9%97%B4%E6%9D%A5%E5%86%99%E8%AF%97/</link><pubDate>Wed, 15 Aug 2012 12:45:28 +0000</pubDate><guid>https://blog.formalscience.com/2012/08/15/%E7%BB%99%E6%88%91%E6%97%B6%E9%97%B4%E6%9D%A5%E5%86%99%E8%AF%97/</guid><description> 我已经迷失了许久，或许仍旧找不到出口。 &amp;mdash;&amp;mdash;张华枫
+去年来清华保研面试，最后一天得知被录取了，我把自己被卖了，当时是这样的感觉。现在看来，差不多也是这个样子一言成谶。然而，我想不明白，是自己不努力所以才心生怨念，还是实验室本身坑爹。最关键的是生活中很少有能让我没头脑开心的事情了（从我去看《冰河世纪 四》全程无笑点触发来看），是成长的代价么，还是我越来越麻木了。每天在实验室感受到的就是一种肃杀的气氛，是空调开得太大么。你化作夏日醉人的晚风吧 现在已到秋日 感受不到你的呼吸你化作秋日起舞的落叶吧 现在已到冬日 枝头上只剩下霜雪的寒意你还是不要化成冬日的什么了 你的笑容太美丽 这个季节会太温暖 失去存在的意义为什么我没有在春日里遇见你？</description></item><item><title>最近看的书</title><link>https://blog.formalscience.com/2012/07/10/%E6%9C%80%E8%BF%91%E7%9C%8B%E7%9A%84%E4%B9%A6/</link><pubDate>Tue, 10 Jul 2012 09:55:29 +0000</pubDate><guid>https://blog.formalscience.com/2012/07/10/%E6%9C%80%E8%BF%91%E7%9C%8B%E7%9A%84%E4%B9%A6/</guid><description>这本书感觉相当好啊。</description></item><item><title>Authorization:Basic后面的credentials内容</title><link>https://blog.formalscience.com/2012/07/03/authorization-basic%E5%90%8E%E9%9D%A2%E7%9A%84credentials%E5%86%85%E5%AE%B9/</link><pubDate>Tue, 03 Jul 2012 02:23:52 +0000</pubDate><guid>https://blog.formalscience.com/2012/07/03/authorization-basic%E5%90%8E%E9%9D%A2%E7%9A%84credentials%E5%86%85%E5%AE%B9/</guid><description>username+”:”+password的简单base64转换</description></item><item><title>如何增加人人网的访问量</title><link>https://blog.formalscience.com/2012/06/28/%E5%A6%82%E4%BD%95%E5%A2%9E%E5%8A%A0%E4%BA%BA%E4%BA%BA%E7%BD%91%E7%9A%84%E8%AE%BF%E9%97%AE%E9%87%8F/</link><pubDate>Thu, 28 Jun 2012 03:32:39 +0000</pubDate><guid>https://blog.formalscience.com/2012/06/28/%E5%A6%82%E4%BD%95%E5%A2%9E%E5%8A%A0%E4%BA%BA%E4%BA%BA%E7%BD%91%E7%9A%84%E8%AE%BF%E9%97%AE%E9%87%8F/</guid><description>主要是利用人们的好奇心吸引回访。
+用爬虫去爬去一定数量的好友列表，获得一定数量的id文件。 用自己的帐号认证，然后从id文件中取得一个id，然后访问他的页面。 当访问的页面到达一定规模的时候，在这么多人里肯定有些人很好奇想要看看你是谁，然后就点回你的页面。 访问量和好友申请就飕飕涨了。</description></item><item><title>Eclipse导入Github库</title><link>https://blog.formalscience.com/2012/06/17/eclipse%E5%AF%BC%E5%85%A5github%E5%BA%93/</link><pubDate>Sun, 17 Jun 2012 13:42:47 +0000</pubDate><guid>https://blog.formalscience.com/2012/06/17/eclipse%E5%AF%BC%E5%85%A5github%E5%BA%93/</guid><description>导入要点
+使用HTTPS的方式会容易一些，SSH的方式会有一些认证问题（这个极有可能是伪命题，因为第2条的原因） 先通过命令行把库拖下来，最好不要放在eclipse的workplace中 然后新建一个项目，在Team|Share|&amp;hellip;|Git一路选下去就好 （这个日志需要重新更改）</description></item><item><title>如何给WordPress博客换一个Favicon图标</title><link>https://blog.formalscience.com/2012/06/03/%E5%A6%82%E4%BD%95%E7%BB%99wordpress%E5%8D%9A%E5%AE%A2%E6%8D%A2%E4%B8%80%E4%B8%AAfavicon%E5%9B%BE%E6%A0%87/</link><pubDate>Sun, 03 Jun 2012 16:56:18 +0000</pubDate><guid>https://blog.formalscience.com/2012/06/03/%E5%A6%82%E4%BD%95%E7%BB%99wordpress%E5%8D%9A%E5%AE%A2%E6%8D%A2%E4%B8%80%E4%B8%AAfavicon%E5%9B%BE%E6%A0%87/</guid><description>整个过程大约分为以下几步
+制作favicon.ico
+在网站http://www.favicon.cc/里上传一张图片，通过点击“Import Image” 然后就可以根据各种选项对图片进行调整 最后通过点击“Download Favicon”进行下载 注：如果你有天赋可以自己设计图标，那么在那个编辑器里创作也是可以的 上传到博客目录，比如我上传到mydomain/blog目录下了，链接为http://www.formalscience.com/blog/favicon.ico
+修改对应主题内的header.php，在&amp;lt;head&amp;gt;和&amp;lt;/head&amp;gt;之间添加如下代码：
+&amp;amp;lt;LINK rel=icon type=image/x-icon href=&amp;quot;http://yourdomain/favicon.ico&amp;quot;&amp;amp;gt;
+&amp;amp;lt;LINK rel=&amp;quot;shortcut icon&amp;quot; type=image/x-icon href=&amp;quot;yourdomain/favicon.ico&amp;quot;&amp;amp;gt;
+对于我的博客来说就是
+&amp;amp;lt;LINK rel=icon type=image/x-icon href=&amp;quot;http://www.formalscience.com/blog/favicon.ico&amp;quot;&amp;amp;gt;
+&amp;amp;lt;LINK rel=&amp;quot;shortcut icon&amp;quot; type=image/x-icon href=&amp;quot;http://www.formalscience.com/blog/favicon.ico&amp;quot;&amp;amp;gt;
+完成以上步骤后清空下浏览器缓存就可以看到效果了。
+参考链接：
+给WP地址栏添加一个Favicon图标
+WordPress 博客添加个性标志favicon.ico</description></item><item><title>Hello world!</title><link>https://blog.formalscience.com/2012/04/20/hello_world/</link><pubDate>Fri, 20 Apr 2012 18:56:18 +0000</pubDate><guid>https://blog.formalscience.com/2012/04/20/hello_world/</guid><description>很多事情都是从Hello，world开始的。这是WP博客默认的一篇文章，在此保留。
+ 我第一次知道编程是怎么回事已经是高中了。舍友小戴在搞信息学竞赛，当时的我觉得编程是一件很神秘的事情。</description></item><item><title>2012-04-05 初试妙峰山</title><link>https://blog.formalscience.com/2012/04/05/2012-04-05_%E5%88%9D%E8%AF%95%E5%A6%99%E5%B3%B0%E5%B1%B1/</link><pubDate>Thu, 05 Apr 2012 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2012/04/05/2012-04-05_%E5%88%9D%E8%AF%95%E5%A6%99%E5%B3%B0%E5%B1%B1/</guid><description>今天突然想起去我的蚂蜂窝去看看，当初自己是用人人网关联的，把唯一的一篇游记复制过来吧。
+本来想去妙峰山，路线图是这个
+这样我的出发点就不对了，于是我果断没按照地图走，从东门出发了，准备向从北大南面绕过去。 成功绕过去之后，我在密密麻麻的立交下面迷失了。恰好看到两个人要上香山，于是我尾随在他们后面去香山了。没想到他们半路一拐，钻到一家肯德基店去了。于是我果断重新计算路线，自己奔香山去了。 一路上各种车，我在其中穿梭。 到香山了，这时路线是这样的，共计14.5KM，
+但是，我不知道香山哪里可以骑车，悲剧了。得了，去妙峰山好了，于是我又计算出去妙峰山的路线，46KM。
+正是这条路线让我路上被恶狗狂追，穿越拥挤的集市。。。 然后我果断走错路线了，走成了这样。。。
+在妙峰山镇绕了一个圈啊。不过路上有个地方风景很好。
+还有30KM，好吧我走的那条路线不止30KM。
+到达山脚下后，果然和论坛里看到的一样。
+然后就开始我的爬山之行。。。 这段中不断有山上骑下来的人喊加油，可是他们嗖的一下就下去了，我向乌龟一样用往上挪，这段过程中，我的意志经历了各种纠结，脑子里的N个小人吵个不停。然后我在这个地方下去了，爬了13KM吧。
+然后下山的时候我也向往上爬的人挥手，但总是觉得哪里不对的样子。。。下山后（下山的过程果然刺激），从后面拍摄
+然后我在一个大叔的带领下（手机没电了，没有GPS），走了这样的路线回学校，60.4KM。
+总结：总计差不多有快130KM了吧。还是要研究好路线的，期间我各种爽过的下坡，发现都爽错了，还要挪回去。 不知道明天和妹子联谊还有精神没有，好好睡觉。</description></item><item><title/><link>https://blog.formalscience.com/drafts/2018-05_transfer_learning/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/drafts/2018-05_transfer_learning/</guid><description>Behavioral Cloning Run simulator Collect Data 自己构建的模型，算不出来，内存不够 从 keras 提供的 applications 中拿到 InceptionV3，分别导入模型和 weights （命令行无法从 github 直接把模型下载，因此分别导入）。 使用自己的数据，总是偏向一边，然后跑着出了轨道。
+在前面加入 Lambda 层正则处理，以及使用了 Crop 裁剪掉无用的信息，效果依旧有限。
+pip install flask-socketio==1.0b1
+InceptionV3
+0 Input
+278 activation_85 279 mixed9 280 conv2d_90 281 batch_normalization_90 282 activation_90 283 conv2d_87 284 conv2d_91 285 batch_normalization_87 286 batch_normalization_91 287 activation_87 288 activation_91 289 conv2d_88 290 conv2d_89 291 conv2d_92 292 conv2d_93 293 average_pooling2d_9 294 conv2d_86 295 batch_normalization_88 296 batch_normalization_89 297 batch_normalization_92 298 batch_normalization_93 299 conv2d_94 300 batch_normalization_86 301 activation_88 302 activation_89 303 activation_92 304 activation_93 305 batch_normalization_94 306 activation_86 307 mixed9_1 308 concatenate_2 309 activation_94 310 mixed10</description></item><item><title>信仰</title><link>https://blog.formalscience.com/drafts/belief/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/drafts/belief/</guid><description/></item><item><title>善变</title><link>https://blog.formalscience.com/drafts/%E5%96%84%E5%8F%98/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/drafts/%E5%96%84%E5%8F%98/</guid><description>麻烦人与被麻烦
+饮料
+室友
+鲁迅 不幸的一代
+好不容易来地球走一遭</description></item><item><title>神经漫游者 光逝</title><link>https://blog.formalscience.com/drafts/%E7%A5%9E%E7%BB%8F%E6%BC%AB%E6%B8%B8%E8%80%85-%E5%85%89%E9%80%9D/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/drafts/%E7%A5%9E%E7%BB%8F%E6%BC%AB%E6%B8%B8%E8%80%85-%E5%85%89%E9%80%9D/</guid><description/></item><item><title>红蜻蜓</title><link>https://blog.formalscience.com/drafts/childhood/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/drafts/childhood/</guid><description/></item></channel></rss>
