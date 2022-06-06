@@ -1,4 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 不是追风少年</title><link>https://blog.formalscience.com/posts/</link><description>Recent content in Posts on 不是追风少年</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 24 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.formalscience.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>无题</title><link>https://blog.formalscience.com/2022/05/24/2022-05-24_untitled/</link><pubDate>Tue, 24 May 2022 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2022/05/24/2022-05-24_untitled/</guid><description>喜欢一人
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 不是追风少年</title><link>https://blog.formalscience.com/posts/</link><description>Recent content in Posts on 不是追风少年</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 06 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.formalscience.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>分母</title><link>https://blog.formalscience.com/2022/06/06/2022-06-06_price_of_love/</link><pubDate>Mon, 06 Jun 2022 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2022/06/06/2022-06-06_price_of_love/</guid><description>爱一个人 没有性价比
+爱是无价
+性很常见
+来来往往中
+他成了分子
+你成了分母
+希望散布在爱情之上 $👀/❤️$
+唉，无穷∞的寂寞</description></item><item><title>无题</title><link>https://blog.formalscience.com/2022/05/24/2022-05-24_untitled/</link><pubDate>Tue, 24 May 2022 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2022/05/24/2022-05-24_untitled/</guid><description>喜欢一人
 伸出灵魂触及
 枝蔓缠绕
 断开时刻
@@ -20,7 +27,12 @@ Oxford Mayday 有自己特殊的活动，在 Magdalen 学院塔楼上有唱诗�
 http://www.thaiembassy.com/thailand/visa-on-arrival.php
 《申请表》(Application forVisa on Arrival)、1张白/蓝底4*6cm照片、15天内往返机票、有效期超过6个月的护照。(注：表格可下载并事先用英文填好;在泰如无联系人，可填写拟住酒店地址、电话)。 签证申请费每人1000铢。现场拍照另交费。申请落地签时，需备1万铢、每个家庭2万铢或等值外币以证明旅游期间有经济能力。泰移民官将抽查。 落地签需要的条件 持有泰国政府批准国家的护照者。 护照必须是真实的，不低于 30 天有效期。 泰国旅游的期限不超过 15 天。 有到达泰国时，不超过 15 天的回程机票。 报实际和能查询的泰国地址。 非佛历 2522 年的入境黑名单者 签证费仅收泰铢（现金）/不可退款 入境时个人必须随身携有外币不低于 10,000 泰铢， 家庭不低于 20,000 泰铢 参考：https://ask.qyer.com/question/788823.html
 另外，2019/01/14 到 2020/04/30 落地签时免费的。
-签证有效期 落地签有效期15天(包括入境当天)，如为以旅游为目的则不可延期。离境时签证过期需向移民局缴纳罚款，1天500铢，最高不超2万铢。</description></item><item><title>Go to Rust （一）</title><link>https://blog.formalscience.com/2018/12/26/2018-12-26-go-to-rust/</link><pubDate>Wed, 26 Dec 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/12/26/2018-12-26-go-to-rust/</guid><description>这几天看了 Rust 文档，把一些概念整理一下。
+签证有效期 落地签有效期15天(包括入境当天)，如为以旅游为目的则不可延期。离境时签证过期需向移民局缴纳罚款，1天500铢，最高不超2万铢。
+电子落地签证/E-Visa on Arrival(E-VOA) 根据实际经验，落地泰国后如果走普通落地签的通道，队伍比较长，特别是航班密集落地的时候。 还有一种可以在网上预先申请的电子落地签，较为方便。
+优点：
+仅需要护照信息 不需要提供实体照片 费用：普通落地签费用 + 提供服务的公司的服务费用
+参考：
+不排队，1分钟快速入境！泰国电子落地签证（EVOA）申请攻略 不要办e-visa落地签，没有任何意义- 泰国- 论坛- 穷游网 有两家公司可以提供这项服务：</description></item><item><title>Go to Rust （一）</title><link>https://blog.formalscience.com/2018/12/26/2018-12-26-go-to-rust/</link><pubDate>Wed, 26 Dec 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/12/26/2018-12-26-go-to-rust/</guid><description>这几天看了 Rust 文档，把一些概念整理一下。
 通过 cargo 新建一个项目，然后去管理其生命流程，这种现代做法很方便。 对于 statement 和 expression 的使用方式和 scheme 有些类似，可以返回最后一个 expression 的值。 可能返回错误的地方使用 Result 类型，很类似 Haskell 的处理流程。 模式匹配的方式很像 Ocaml 。 ownership 机制很新颖，限制能够带来巨大的力量。让我想到了《全职猎人》中对某项能力增加限制条件可以增加这个能力的威力的设定。 Option 类型就是 Haskell 的 Maybe 。 generics 的设计不知道有没有参考 C++ 的 template 概念。 目前只看到文档的第 11 章，Rust 语言的很多概念都能够在其他语言找到对应，只有 ownership 机制是我第一次见到，觉得新颖有趣。</description></item><item><title>pip 离线安装包</title><link>https://blog.formalscience.com/2018/12/13/2018-12-13-pip-install-package-offline/</link><pubDate>Thu, 13 Dec 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/12/13/2018-12-13-pip-install-package-offline/</guid><description>1. 使用场景 在没有网络的设备上使用 pip 安装包。下面以 sklearn 包为例展示如何在没有网络的环境下安装包。
 2. 下载包到本地缓存 首先进入一个目录，在这个例子里是 /Users/bef0rewind/Downloads/pip-tmp 目录。
 pip download sklearn 我这里下载到了一个缓存目录 /Users/bef0rewind/Downloads/pip-tmp，随便选一个就好。pip download 只会下载对应的包，不会进行安装。
@@ -58,7 +70,8 @@ A type may have a method set associated with it. The method set of an interface 
 2. Go 语言中的异常处理机制 Go 语言中使用的是 defer/panic/recover 机制来处理异常。Go 语言官方博客的《Defer, Panic, and Recover》讲述了这个机制的具体应用方式。
 还有一些其他教程对这个机制的使用方法、适用场景进行了进一步阐述：
 The Right Places To Call The recover Function：https://go101.org/article/panic-and-recover-more.html ，几种使用 recover 恢复 Go 语言中 panic 的适用场景 7.异常处理：https://www.kancloud.cn/liupengjie/go/578555 ，看云发布的 Go 语言教程中涉及到异常处理的章节，里面涉及到很多使用示例细节 如果搜索 “golang 异常处理”，类似的教程有很多。里面的核心思想大体就是：用 defer + recover 处理一个 panic，defer 结构要在 panic 触发之前被定义而且 recover 要直接在在 defer 结构定义的函数中被调用（而不是被直接调用或者在函数内部的其他函数中被调用）。
-3. defer 语法糖的部分原理 在讲述 defer 机制的文章中，都会提到一个函数中多个 defer 结构执行的顺序和定义顺序是相反的，即后定义的 defer 结构总是先被执行。为什么会出现这样的情况？例如下面的代码：</description></item><item><title>Useful Commands</title><link>https://blog.formalscience.com/2018/07/22/2018-07-22_commands/</link><pubDate>Sun, 22 Jul 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/07/22/2018-07-22_commands/</guid><description>Convert images to a video ffmpeg -r 30 -start_number 3455 -i _IMG%d.jpg -s 960X600 -pix_fmt yuv420p 30fps-960.mov -r 30: 30 frames per second -s 960X600: resolution -pix_fmt yuv420p: for OsX youtube-dl video and extract audio file youtube-dl --proxy socks5://127.0.0.1:1080 -x --audio-format mp3 youtube-url
+3. defer 语法糖的部分原理 在讲述 defer 机制的文章中，都会提到一个函数中多个 defer 结构执行的顺序和定义顺序是相反的，即后定义的 defer 结构总是先被执行。为什么会出现这样的情况？例如下面的代码：
+func g(n int) { println(n) } func h(str string) { println(str) } func f() { defer g(0) defer h(&amp;#34;h&amp;#34;) } 调用 f 输出为：</description></item><item><title>Useful Commands</title><link>https://blog.formalscience.com/2018/07/22/2018-07-22_commands/</link><pubDate>Sun, 22 Jul 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/07/22/2018-07-22_commands/</guid><description>Convert images to a video ffmpeg -r 30 -start_number 3455 -i _IMG%d.jpg -s 960X600 -pix_fmt yuv420p 30fps-960.mov -r 30: 30 frames per second -s 960X600: resolution -pix_fmt yuv420p: for OsX youtube-dl video and extract audio file youtube-dl --proxy socks5://127.0.0.1:1080 -x --audio-format mp3 youtube-url
 virtualenvwrapper WORKON_HOME: which directory your environments are created in /usr/local/bin/virtualenvwrapper.sh: default location for its configuration file mkvirtualenv test --python=python3: make a virtual environment &amp;rsquo;test&amp;rsquo; with python3 rmvirtualenv test: remove a virtual environment &amp;rsquo;test' workon test3 or lsvirtualenv -b test3: activate a virtual environment &amp;rsquo;test' deactivate: exit current environment more details: search engine how to avoid globa packages how to copy an environment node &amp;amp;&amp;amp; npm npm complains: Error: Cannot find module 'process-nextick-args'</description></item><item><title>电池人生</title><link>https://blog.formalscience.com/2018/07/06/2018-07-06-battery-life/</link><pubDate>Fri, 06 Jul 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/07/06/2018-07-06-battery-life/</guid><description>电池，一般狭义上的定义是将本身储存的化学能转成电能的装置，广义的定义为将预先储存起的能量转化为可供外用电能的装置。因此，像太阳能电池只有转化而无储存功能的装置不算是电池。其他名称有电瓶、电芯，而中文池及瓶也有储存作用之意。
 《维基百科》
 5 月份上海校友会来杭州参观，我带队去云栖景区玩，后来大家一起去了阿里西溪园区。园区很漂亮，中间有一块地被高墙围起，据说马云在那里开董事会。后面有个讨论环节，那时我已经昏昏欲睡了，只记得那个阿里 P11 说今后公司要拓展的方向是娱乐和健康。
@@ -94,7 +107,9 @@ Day 1 第二天按时起床，旁边小店吃了早饭，准备出发。 说到�
 接近傍晚，天空的颜色变得多彩，而眼前原野的景色淡下去了。
 剩下的就是赶路了，还要走一段公路到机械林场。虽然路上的景色也很美，但是看不到，只能通过黑黢黢的树影摇曳想象了。路上发生了一起意外，美女 GY 摔车了。 简单处理了一下，也只能继续骑车。到了机械林场后买了创可贴和碘酒暂时顶一下。
 晚上十点多大家吃了羊腿饭，景区物价高，不过仍不及五道口。住宿的话，还停暖和的，三个大男生挤一挤了，另外的妹子们怎么睡都随意了，虽然大家都是在一间屋子里吧。
-Day 2 第二天早上在店家吃了早餐，馒头、稀饭、饼、鸡蛋、炒小菜，典型的住店组合套餐（甚至在西藏也是这种组合……）。 出去后，开始下小雪，然后是小雨。大家都披上了雨衣。不过这注定是狼狈的、凄惨的、励志的一天 …… 我不说别人了，就说我自己吧。首先我的鞋子是登山鞋，防水的那种，可以避免水从外面进来，也可以防止水从里面出去。于是我就相当于穿着一个便携泡脚盆在骑车。 总之就是一种说不清道不明的酸楚与傻乐呵在心中交织。</description></item><item><title>理解 C++ Traits</title><link>https://blog.formalscience.com/2018/05/12/2018-05-12_%E7%90%86%E8%A7%A3_c-_traits/</link><pubDate>Sat, 12 May 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/05/12/2018-05-12_%E7%90%86%E8%A7%A3_c-_traits/</guid><description>C++ 是我学习的第一种编程语言，当时是 2007 年。现在 C++ 标准委员会已经在讨论 2020 年要发布的特性了，我连 2011 年发布的 Traits 都还不知道是啥。今天下定决心了解总结一下。
+Day 2 第二天早上在店家吃了早餐，馒头、稀饭、饼、鸡蛋、炒小菜，典型的住店组合套餐（甚至在西藏也是这种组合……）。 出去后，开始下小雪，然后是小雨。大家都披上了雨衣。不过这注定是狼狈的、凄惨的、励志的一天 …… 我不说别人了，就说我自己吧。首先我的鞋子是登山鞋，防水的那种，可以避免水从外面进来，也可以防止水从里面出去。于是我就相当于穿着一个便携泡脚盆在骑车。 总之就是一种说不清道不明的酸楚与傻乐呵在心中交织。
+最大的收获是，雨中的山林颜色更加润了。眼前的雨虽然冷，但是远处的雾气很没啊，我们是不畏风雨的骑车人。
+遇到一个便利店，大家进去买了各种包裹隔离物品（塑料袋），试图把自己的脚和腿保护起来。 中午在一个小饭馆吃了面，面对有点凶狠的狗去上了厕所。 吃完饭接着骑车，然后大家的车纷纷爆了胎，前面爆完后面爆胎。 忘记提的一点是，我带的补胎片失效了。 而备胎也用光了，于是各种打气筒接力打气艰难前行。 直到政委看到了一个给汽车补胎的地方，我们借用先进装备磨胎，强力胶水补胎，颇有种鸟枪换炮的感觉。</description></item><item><title>理解 C++ Traits</title><link>https://blog.formalscience.com/2018/05/12/2018-05-12_%E7%90%86%E8%A7%A3_c-_traits/</link><pubDate>Sat, 12 May 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/05/12/2018-05-12_%E7%90%86%E8%A7%A3_c-_traits/</guid><description>C++ 是我学习的第一种编程语言，当时是 2007 年。现在 C++ 标准委员会已经在讨论 2020 年要发布的特性了，我连 2011 年发布的 Traits 都还不知道是啥。今天下定决心了解总结一下。
 C++ 之父 Bjarne Stroustrup 说：
 Think of a trait as a small object whose main purpose is to carry information used by another object or algorithm to determine “policy” or “implementation details”.
 嗯，这段描述也比较抽象。我的理解是，trait 把不同类型的特定信息进行打包，用在算法或者其他对象中。这样算法或者其他对象的设计可以做到更加通用，通过 trait 打包的信息进行策略选择或者实现细节。
@@ -115,15 +130,15 @@ func Read(fd int, p []byte) (n int, err error) func Write(fd int, p []byte) (n i
 func Syscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno) func Syscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno) func RawSyscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno) func RawSyscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno) RawSyscall 和 RawSyscall6 是对操作系统 Syscall 的直接调用；Syscall 和 Syscall6 会在调用操作系统 Syscall 前调用 runtime·entersyscall ，在操作系统 Syscall 返回后调用 runtime·exitsyscall 。</description></item><item><title>Golang 中学到的新东西</title><link>https://blog.formalscience.com/2018/01/14/2018-01-14_golang-%E4%B8%AD%E5%AD%A6%E5%88%B0%E7%9A%84%E6%96%B0%E4%B8%9C%E8%A5%BF/</link><pubDate>Sun, 14 Jan 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/01/14/2018-01-14_golang-%E4%B8%AD%E5%AD%A6%E5%88%B0%E7%9A%84%E6%96%B0%E4%B8%9C%E8%A5%BF/</guid><description>数据类型 string 类型 string 类型使用 2 个 word（64 bit 系统为 8 byte * 2）表示：一个 word 是指针，指向字符串存储区域；一个 word 表示长度数据。
 slice $\leftrightarrow$ unsafe.Pointer s := make([]byte, 200) ptr := unsafe.Pointer(&amp;amp;s[0]) var ptr unsafe.Pointer s := ((*[1&amp;lt;&amp;lt;10]byte)(ptr))[:200] or
 var ptr unsafe.Pointer var s1 = struct { addr uintptr len int cap int }{ptr, length, length} s := *(*[]byte)(unsafe.Pointer(&amp;amp;s1)) or
-var o []byte sliceHeader := (*reflect.SliceHeader)((unsafe.Pointer(&amp;amp;o))) sliceHeader.Cap = length sliceHeader.Len = length sliceHeader.</description></item><item><title>使用 Nvidia 显卡加速机器学习算法的一些资料</title><link>https://blog.formalscience.com/2018/01/13/2018-01-13_%E4%BD%BF%E7%94%A8-nvidia-%E6%98%BE%E5%8D%A1%E5%8A%A0%E9%80%9F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E7%9A%84%E4%B8%80%E4%BA%9B%E8%B5%84%E6%96%99/</link><pubDate>Sat, 13 Jan 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/01/13/2018-01-13_%E4%BD%BF%E7%94%A8-nvidia-%E6%98%BE%E5%8D%A1%E5%8A%A0%E9%80%9F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E7%9A%84%E4%B8%80%E4%BA%9B%E8%B5%84%E6%96%99/</guid><description>Nnidia 显卡可以用来加速机器学习算法（特别是深度学习），但安装驱动过程中总会碰到这样或者那样的问题。 一个难点是安装库的时候没有下载链接，比如 Nvidia 的 Cuda/cuDNN 主页经常会出现这样的提示：
+var o []byte sliceHeader := (*reflect.SliceHeader)((unsafe.Pointer(&amp;amp;o))) sliceHeader.Cap = length sliceHeader.Len = length sliceHeader.Data = uintptr(ptr) map 实现 整个页面的内容对我来说都是新的：https://tiancaiamao.</description></item><item><title>使用 Nvidia 显卡加速机器学习算法的一些资料</title><link>https://blog.formalscience.com/2018/01/13/2018-01-13_%E4%BD%BF%E7%94%A8-nvidia-%E6%98%BE%E5%8D%A1%E5%8A%A0%E9%80%9F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E7%9A%84%E4%B8%80%E4%BA%9B%E8%B5%84%E6%96%99/</link><pubDate>Sat, 13 Jan 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/01/13/2018-01-13_%E4%BD%BF%E7%94%A8-nvidia-%E6%98%BE%E5%8D%A1%E5%8A%A0%E9%80%9F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E7%9A%84%E4%B8%80%E4%BA%9B%E8%B5%84%E6%96%99/</guid><description>Nnidia 显卡可以用来加速机器学习算法（特别是深度学习），但安装驱动过程中总会碰到这样或者那样的问题。 一个难点是安装库的时候没有下载链接，比如 Nvidia 的 Cuda/cuDNN 主页经常会出现这样的提示：
 NVIDIA Developer Site is under going maintenance. The site will be back by shortly. We apologize for any inconvenience. 虽然不能按照官方路径进行下载，但经过搜索总能找到一些入口。下面是我收集的一些链接：
-cuDNN 下载页面：https://developer.nvidia.com/rdp/cudnn-download 这个页面需要注册 Nvidia 开发者账号并登录，当前包含从 cuDNN v5.1 到 cuDNN 7.0.5 的版本 CUDA 下载页面：https://developer.nvidia.com/cuda-toolkit-archive 这个页面需要注册 Nvidia 开发者账号并登录，当前包含从 CUDA Toolkit 1.0 到 CUDA Toolkit 9.0 的版本，最新的 CUDA Toolkit 9.1 的链接仍然指向正在维护的提示页面 Ubuntu 16.04 CUDA Toolkit 9.1 下载链接：http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_9.1.85-1_amd64.deb 此外可以在这个页面找到其他 Linux 发行版的安装包：http://developer.download.nvidia.com/compute/cuda/repos/ Windows 10 版本的 CUDA Toolkit 9.</description></item><item><title>一些有趣的项目 Protocol Labs</title><link>https://blog.formalscience.com/2018/01/12/2018-01-12_%E4%B8%80%E4%BA%9B%E6%9C%89%E8%B6%A3%E7%9A%84%E9%A1%B9%E7%9B%AE_protocol_labs/</link><pubDate>Fri, 12 Jan 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/01/12/2018-01-12_%E4%B8%80%E4%BA%9B%E6%9C%89%E8%B6%A3%E7%9A%84%E9%A1%B9%E7%9B%AE_protocol_labs/</guid><description>最初在 3Blue1Brown 发布的一个介绍区块链原理的视频中看到了这个组织的连接。发现比较有意思，给大家分享一下~
+cuDNN 下载页面：https://developer.nvidia.com/rdp/cudnn-download 这个页面需要注册 Nvidia 开发者账号并登录，当前包含从 cuDNN v5.1 到 cuDNN 7.0.5 的版本 CUDA 下载页面：https://developer.nvidia.com/cuda-toolkit-archive 这个页面需要注册 Nvidia 开发者账号并登录，当前包含从 CUDA Toolkit 1.0 到 CUDA Toolkit 9.0 的版本，最新的 CUDA Toolkit 9.1 的链接仍然指向正在维护的提示页面 Ubuntu 16.04 CUDA Toolkit 9.1 下载链接：http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_9.1.85-1_amd64.deb 此外可以在这个页面找到其他 Linux 发行版的安装包：http://developer.download.nvidia.com/compute/cuda/repos/ Windows 10 版本的 CUDA Toolkit 9.1 我成功下载过一次，但是和当前的 TensorFlow 1.</description></item><item><title>一些有趣的项目 Protocol Labs</title><link>https://blog.formalscience.com/2018/01/12/2018-01-12_%E4%B8%80%E4%BA%9B%E6%9C%89%E8%B6%A3%E7%9A%84%E9%A1%B9%E7%9B%AE_protocol_labs/</link><pubDate>Fri, 12 Jan 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/01/12/2018-01-12_%E4%B8%80%E4%BA%9B%E6%9C%89%E8%B6%A3%E7%9A%84%E9%A1%B9%E7%9B%AE_protocol_labs/</guid><description>最初在 3Blue1Brown 发布的一个介绍区块链原理的视频中看到了这个组织的连接。发现比较有意思，给大家分享一下~
 项目的使命：
 We believe the internet has become humanity&amp;rsquo;s most important technology. We build protocols, systems, and tools to improve how it works. Today, we are focused on how we store, locate, and move information.
 我们相信互联网已成为人类最重要的技术。我们构建提升互联网工作能力的协议、系统和工具。当前我们集中在如何存储、定位和移动信息的工作上。
 这段文字翻译得有点机器翻译风格。
 项目地址：https://protocol.ai/projects/ ，目前上面有 5 个项目：
-Filecoin 加密货币，Miners 通过向网络提供存储空间来获取 Filecoin ，使用者通过消耗 Filecoin 来在去中心化的网络中存储加密后的文件。 IPFS (InterPlanetary File System) 一种新型协议，用来使网络去中心化。IPFS 通过内容寻址和数字签名来创建完全去中心化和分布式的应用。IPFS 使得网络更快、更安全以及更加开放。 这是一段 YouTube 上的介绍视频：https://www.youtube.com/watch?v=8CMxDNuuAiQ ，介绍了 IPFS 的一些基本使用方法。根据我的理解，这是通过 content-address（immutable hash） 访问的分布式加密文件系统，可以通过命令行、网页界面等多种方式进行访问，有点类似 Samba，不过是分布式的。Siraj Raval 制作的一个视频：https://www.</description></item><item><title>Bar</title><link>https://blog.formalscience.com/2017/11/11/2017-11-11-bar/</link><pubDate>Sat, 11 Nov 2017 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2017/11/11/2017-11-11-bar/</guid><description>import &amp;#34;blog.formalscience.com/nothing&amp;#34; func main() { nothing.bar() } I dreamed about death this morning.
+Filecoin 加密货币，Miners 通过向网络提供存储空间来获取 Filecoin ，使用者通过消耗 Filecoin 来在去中心化的网络中存储加密后的文件。 IPFS (InterPlanetary File System) 一种新型协议，用来使网络去中心化。IPFS 通过内容寻址和数字签名来创建完全去中心化和分布式的应用。IPFS 使得网络更快、更安全以及更加开放。 这是一段 YouTube 上的介绍视频：https://www.youtube.com/watch?v=8CMxDNuuAiQ ，介绍了 IPFS 的一些基本使用方法。根据我的理解，这是通过 content-address（immutable hash） 访问的分布式加密文件系统，可以通过命令行、网页界面等多种方式进行访问，有点类似 Samba，不过是分布式的。Siraj Raval 制作的一个视频：https://www.youtube.com/watch?v=BA2rHlbB5i0 ，也对 IPFS 进行了介绍，主要对 Why 的部分进行阐述。 带宽，多个客户端对中心节点访问 延迟 弹性 Resiliency，中心节点失效（网络断开或者数据删除）后无法进行数据访问 中心化 Centralization，主流网站掌控所有数据，用户无从得知数据的使用方式，此外会受到政府或者其他势力的干扰。 使用的技术：Chord、DHT、bit swap(bittorrent mechanism)、MerkleDAG Libp2p 一个模块化的网络栈，把一系列传输协议和 peer-to-peer 协议整合在一起，方便开发者构建大型、健壮的 p2p 网络 IPLD 去中心化网络（content-addressable web）的数据模型，它通过加密哈希值的方式连接了所有数据，使得数据的遍历和彼此链接更加容易。网站的示意图中连接了 bitcoin、以太坊、IPFS、Git Repo 等。 Multiformats 这个项目是面向未来验证系统（future-proof systems）的协议集合， 自描述的格式可以让你的系统可以互操作和具有可升级性。</description></item><item><title>Bar</title><link>https://blog.formalscience.com/2017/11/11/2017-11-11-bar/</link><pubDate>Sat, 11 Nov 2017 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2017/11/11/2017-11-11-bar/</guid><description>import &amp;#34;blog.formalscience.com/nothing&amp;#34; func main() { nothing.bar() } I dreamed about death this morning.
 I dreamed about false dreams this morning.
 I woke up tired.
 I made some coffee with milk or without milk.
@@ -150,17 +165,23 @@ I wrote this blog.</description></item><item><title>我一生的故事</title><l
 我如果在书中，会是一个什么角色呢？我会有什么样的行为？作为一个希望与外星智慧生命接触的人，如果真有外星飞船降临，我得不到与它们见面的机会，毕竟我不是有特殊技能的人士。除非我是男主角，那外星生命可能出于某种目的同我接触。
 有一点特别感动，父母会走到生命的尽头，孩子也会。我想到自己未来的孩子，我与你的故事，我会成为一个怎样的父亲，也许很久之前我就知道了呀。
 一些相关的科幻小说
-《与拉玛相会／Rendezvous with Rama》 阿瑟·克拉克／Arthur C.</description></item><item><title>Ingress_Passcode_自动提交</title><link>https://blog.formalscience.com/2017/01/18/2017-01-18_ingress-passcode-%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4/</link><pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2017/01/18/2017-01-18_ingress-passcode-%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4/</guid><description>什么是 Passcode？ 根据 Ingress 中文游戏指南 的讲解，Passcode 是 Ingress 提供的一种奖励。
+《与拉玛相会／Rendezvous with Rama》 阿瑟·克拉克／Arthur C. Clarke
+一艘外星飞船从地球附近飞过，人类登陆上去后除了发现了高级自动机器人外，对于是否有智慧生命控制飞船以及其目的仍旧一无所知。最后随着飞船离地球远去，留给人类的只是一个谜。人是多么渴望自己有邻居，然而这个邻居确毫无回应地走了。
+《海伯利安／Hyperion》丹·西蒙斯／Dan Simmons
+这是一个背景宏大的故事，我们未来是否能够与人类的创造物（AI）和平共处？爆发战争的话，双方都要穿越时空传送回战力进行决斗。如果有更高级的生命，人类被其接纳的条件是什么？需要超越肉体形态，或者和 AI 进行合体产生新的生命吗？是否要保持人类的纯粹，还是对自身进行改造，适应地球之外的环境，在未来更广阔的世界中进化？
+《永恒的终结／The End of Eternity》艾萨克·阿西莫夫 ／Isaac Asimov</description></item><item><title>Ingress_Passcode_自动提交</title><link>https://blog.formalscience.com/2017/01/18/2017-01-18_ingress-passcode-%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4/</link><pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2017/01/18/2017-01-18_ingress-passcode-%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4/</guid><description>什么是 Passcode？ 根据 Ingress 中文游戏指南 的讲解，Passcode 是 Ingress 提供的一种奖励。
 使用 Investigation Board 来了解 Ingress 的最新剧情并寻求对 Niantic Project, NIA, XM, Shapers 以及各阵营不同问题的答案。 可以使用隐藏在这些报告之中的 Passcode 来兑换道具（Resonator，XMP 等），XM 或者 AP。
 另外，一些官方活动会向到场者赠送包含 Passcode 的卡片，特定的官方周边也会赠送此类卡片。卡片上的 Passcode 一般能够兑换活动徽章。
 注：在很多社交网站上可以找到有效的 Passcode
 在 iOS 平台的 Ingress 客户端上 Passcode 兑换功能不可用，因此只能使用 Intel Map 来兑换。
 在 Intel Map 上兑换 在右上方点击 Passcode 输入你的 passcode，然后点击 SUBMIT 兑换 自动化 Intel Map 兑换过程 可以通过浏览器的调试页面，自动将搜寻到的 passcode 提交，进行物品兑换。
-表单提交 document.</description></item><item><title>如何构建一个 Java Agent</title><link>https://blog.formalscience.com/2017/01/16/2017-01-16_%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA_java_agent/</link><pubDate>Mon, 16 Jan 2017 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2017/01/16/2017-01-16_%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA_java_agent/</guid><description>First. Implement a static premain (as an analogy to main) method, like this:
+表单提交 document.getElementById(&amp;#34;redeem_reward_form&amp;#34;).submit(); 不能正确提交表单失败的原因是这个表单的 input 元素名称就是 submit，需要重命名。
+var field = document.</description></item><item><title>如何构建一个 Java Agent</title><link>https://blog.formalscience.com/2017/01/16/2017-01-16_%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA_java_agent/</link><pubDate>Mon, 16 Jan 2017 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2017/01/16/2017-01-16_%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA_java_agent/</guid><description>First. Implement a static premain (as an analogy to main) method, like this:
 import java.lang.instrument.Instrumentation; class Example { public static void premain(String args, Instrumentation inst) { ... } } Second. Create a manifest file (say, manifest.txt) marking this class for pre-main execution. Its contents are:
 Premain-Class: Example
 Third. Compile the class and package this class into a JAR archive:
-javac Example.java jar cmf manifest.txt yourAwesomeAgent.jar *.class</description></item><item><title>相思 - 头被按入水里</title><link>https://blog.formalscience.com/2017/01/10/2017-01-10_%E7%9B%B8%E6%80%9D_-_%E5%A4%B4%E8%A2%AB%E6%8C%89%E5%85%A5%E6%B0%B4%E9%87%8C/</link><pubDate>Tue, 10 Jan 2017 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2017/01/10/2017-01-10_%E7%9B%B8%E6%80%9D_-_%E5%A4%B4%E8%A2%AB%E6%8C%89%E5%85%A5%E6%B0%B4%E9%87%8C/</guid><description>佛教公案：“师父将弟子头按入水中良久，泛沫渐少；师父将弟子拽起，复其元气，曰：汝求真谛如空气时，便知何为真谛矣。”
+javac Example.java jar cmf manifest.txt yourAwesomeAgent.jar *.class
+Fourth. Execute your JVM whith -javaagent parameter, like this:</description></item><item><title>相思 - 头被按入水里</title><link>https://blog.formalscience.com/2017/01/10/2017-01-10_%E7%9B%B8%E6%80%9D_-_%E5%A4%B4%E8%A2%AB%E6%8C%89%E5%85%A5%E6%B0%B4%E9%87%8C/</link><pubDate>Tue, 10 Jan 2017 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2017/01/10/2017-01-10_%E7%9B%B8%E6%80%9D_-_%E5%A4%B4%E8%A2%AB%E6%8C%89%E5%85%A5%E6%B0%B4%E9%87%8C/</guid><description>佛教公案：“师父将弟子头按入水中良久，泛沫渐少；师父将弟子拽起，复其元气，曰：汝求真谛如空气时，便知何为真谛矣。”
 不见对方，就像我的头被按入水里一样滋味；我快要溺死了，呼吸不济了，经过这种窒息，我才重新认识我要寻求的“真谛”并练就了爱情中必不可缺的执着。
 《恋人絮语·相思》
 ​ 相思是纯粹的痛苦，一个人在一个人不在，对方并不知晓留下人的感受，守望之人陷入煎熬不能自已。
@@ -230,24 +251,20 @@ dir = &amp;quot;/home/user-name/Downloads/auto_check/work/2015final/ref/tests/wo
 本文的 GitHub 地址： https://github.com/ronhuafeng/HandleLLVMPassBasic ，有這篇文章和一些粗糙的源代碼。
 網絡上已經有一下教程了，我也參考了這些教程。
 使用 clang 加載 LLVM 的 Pass LLVM - Run Own Pass automatically with clang stack overflow 上的回答，試圖使用 clang 加載 LLVM 的 Pass。 Polly 库加載 LLVM Pass 的方法也是一个解决思路，我參考了這裏面的很多：Load Polly into clang and automatically run it at -O3 具体的加載過程參考了 Adrian Sampson 博客 Run an LLVM Pass Automatically with Clang 中提到的操作。 工作流程 準備工作 將系統中自帶的 llvm 和 clang 都卸載掉，保證 llvm 和 clang 版本的一致性（非常重要），即保證使用的 clang 和 編譯出的 Pass 的動態鏈接庫文件 .</description></item><item><title>2015-12-31 山野冬季野营（灵山）</title><link>https://blog.formalscience.com/2015/12/31/2015-12-31_%E5%B1%B1%E9%87%8E%E5%86%AC%E5%AD%A3%E9%87%8E%E8%90%A5%E7%81%B5%E5%B1%B1/</link><pubDate>Thu, 31 Dec 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/12/31/2015-12-31_%E5%B1%B1%E9%87%8E%E5%86%AC%E5%AD%A3%E9%87%8E%E8%90%A5%E7%81%B5%E5%B1%B1/</guid><description>动机 参加了冬季集训，临近结束得知今年协会冬季野营目的地是灵山，时间是元旦假期。作为由于时间原因（实验室周日组会，雷打不动）从未参加过正式野营的人，我就报名了。另外灵山我也没去过，可以去拍拍照片。不过由于冬季野营不让带单反，我只好携带 LX5 了，轻一点也好，能够挂在脖子上。
-路线 这次路线是从柏峪村进入，下马威出。具体路线图：
-职务分配 这次我报了 押后。一路上大部分时间都在押我的好基友 zc，也没啥特别的感觉。好处是可以拍一些照片，不用担心卡住后面的队员。对于这个职务我还是比较喜欢，因为有种保护别人的感觉。后来发现走在队伍最后的确很适合拍摄全队照片。
-体力分配 作为押后，要跟在最后一名队员后面，虽然速度不快，但是感觉也没那么轻松的。之前当路线的时候虽然要比别人走得快，但是反而很欢脱。可能是有心态的问题，不过整体而言还是很平和的，因为知道这样的行进强度自己还是没问题的。 雪地走得很有趣，硬雪壳穿着冰爪走得咔咔的，粉雪则不断向下滑需要用大冰镐或者登山杖撑着，湿的雪会沾到鞋子上就不好玩了，鞋子会湿。下坡如果是石头面就能踩着石头一层层下，如果是草甸就踩着草根下，如果是烂泥地或者粉土冰混合地形，就会滑，有人会摔跤。灵山还有其特殊之处，就是路上好多马粪，导致烂泥的成分比较复杂。
-心态 这次的队员大部分走得快，我上坡的时候觉得自己速度慢，后来发现也不是，而是有状态好坏之分，由于一个决定性的事件，第三天状态就特别好（自我感觉）。以后还是要调整好心态。淡定淡定～
-技术训练 技术训练是沿路绳行军和滑坠制动，我对于上升转横切和横切转下降的操作都比较熟悉，还指导了别人。对于上升前的各项准备步骤，则是向 zc 和 sz 学了很多。滑坠制动，山上雪坡角度并不大，我强行滑下，制动，摆拍。
-野营的学习 虽然之前协会腐败野营我还是名义上的帐篷长，但并没有学到如何当一名帐篷长。这次正式野营中，帐篷长 sz 把各项工作都安排得很好，大家配合很紧密，对于各种注意事项也和大家一一讲解。以后自己成为正式野营帐篷长得时候也要做到才好。
+路线 这次路线是从柏峪村进入，下马威出。具体路线图： 职务分配 这次我报了 押后。一路上大部分时间都在押我的好基友 zc，也没啥特别的感觉。好处是可以拍一些照片，不用担心卡住后面的队员。对于这个职务我还是比较喜欢，因为有种保护别人的感觉。后来发现走在队伍最后的确很适合拍摄全队照片。 体力分配 作为押后，要跟在最后一名队员后面，虽然速度不快，但是感觉也没那么轻松的。之前当路线的时候虽然要比别人走得快，但是反而很欢脱。可能是有心态的问题，不过整体而言还是很平和的，因为知道这样的行进强度自己还是没问题的。 雪地走得很有趣，硬雪壳穿着冰爪走得咔咔的，粉雪则不断向下滑需要用大冰镐或者登山杖撑着，湿的雪会沾到鞋子上就不好玩了，鞋子会湿。下坡如果是石头面就能踩着石头一层层下，如果是草甸就踩着草根下，如果是烂泥地或者粉土冰混合地形，就会滑，有人会摔跤。灵山还有其特殊之处，就是路上好多马粪，导致烂泥的成分比较复杂。
+心态 这次的队员大部分走得快，我上坡的时候觉得自己速度慢，后来发现也不是，而是有状态好坏之分，由于一个决定性的事件，第三天状态就特别好（自我感觉）。以后还是要调整好心态。淡定淡定～ 技术训练 技术训练是沿路绳行军和滑坠制动，我对于上升转横切和横切转下降的操作都比较熟悉，还指导了别人。对于上升前的各项准备步骤，则是向 zc 和 sz 学了很多。滑坠制动，山上雪坡角度并不大，我强行滑下，制动，摆拍。 野营的学习 虽然之前协会腐败野营我还是名义上的帐篷长，但并没有学到如何当一名帐篷长。这次正式野营中，帐篷长 sz 把各项工作都安排得很好，大家配合很紧密，对于各种注意事项也和大家一一讲解。以后自己成为正式野营帐篷长得时候也要做到才好。
 不足 主要是押后工作做得不是很好，第三天冲顶东灵山得时候，sqq 脚底有伤，走得慢，我只是一旁鼓励，没有给她分包。
 趣事 星空很漂亮，可是第一天扎营后很快就到了熄灯时间，没时间拍。第二天晚上感觉星星没那么亮了，可能是旁边有个工地上大灯照射的原因。早上出发很早，看着头顶的北斗七星，特别平和。* 随着行走，看着天空由黑蓝变成灰蓝再到间杂着鱼肚白和黑红的过度，然后就迎来了日出。作为连清华园也不怎么出的我来说，只在东操拍过一次日出延时摄影，其他时间都没欣赏过。不过这次我第二天凌晨行军时还是不是看看东方的天空的，直到走到缆车上站的时候，太阳开始出来，大家拍照。效果肯定比不上专业的摄影者，不过这样的景色只有自己亲眼看过才算数。不得不说山里能看到的星星真是多真是亮啊！日出也是更纯净多彩！ 山的景色到没有特别感受，拍了一些照片回来合成了全景。 不经意一瞥，发现了蓝色天空和北京的雾霾之间有条明显的界限，心疼日常生活在雾霾中的人（包括我）。 - 不时看到鹰在头顶飞，很漂亮的身姿。 第二天扎营的时候我找到一个特别避风的地方放大，而且还有 3G 信号，简直是天王坑。在这之后感觉一身轻松，后一天状态极好。 尾声 总之也回来了，冬训的餐也聚了。而我在餐后骑车回来的路上和 zc 比赛抬自行车前轮和后轮，再次把手腕挫伤，也是逗逼了。现在写这篇总结也是属于身残志坚的行为了。
 满意的照片</description></item><item><title>2015-12-19 第一次滑雪</title><link>https://blog.formalscience.com/2015/12/19/2015-12-19_%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%BB%91%E9%9B%AA/</link><pubDate>Sat, 19 Dec 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/12/19/2015-12-19_%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%BB%91%E9%9B%AA/</guid><description>在知乎上看到一个问题，说人年龄大了就会感觉时间啊过得飞快。高票答案分析，这种感觉大体原理就是存在一个度量指标：当前的一年／你的人生已经度过的时间，这个值是越来越低的。当然怎样阐释这种感觉因人而异，我还是想在回望时候记得点什么的，于是写写自己的第一次系列以后看看也是挺好的。
 滑雪很早就想去了，之前也看到同学分享的活动照片啥的，想去，但是没去。以后要注意，这种拖拖拖的态度会在各种角落蔓延，让生活没那么嗨。不过这次去滑雪是提前把实验室的啥基金申请书、年度报告之类的东西刷完才安心去的，想到滑雪回来后在人人上看到的一条新鲜事：
- 这个同学是周五何添楼爆照事故中去世的博士后的人人状态。自己没个周末的心态差不多也是类似的，不过我比较懒，没有要死要活地工作。事故当天表妹打了一个电话过来，问我事故的事情，看看她哥是不是受到了惊吓。周五一天都在写本子，还没什么感觉，现在感觉有些沉重。要把时间花在什么事情上？有时候以为自己清楚了，过后又会犹豫。
+这个同学是周五何添楼爆照事故中去世的博士后的人人状态。自己没个周末的心态差不多也是类似的，不过我比较懒，没有要死要活地工作。事故当天表妹打了一个电话过来，问我事故的事情，看看她哥是不是受到了惊吓。周五一天都在写本子，还没什么感觉，现在感觉有些沉重。要把时间花在什么事情上？有时候以为自己清楚了，过后又会犹豫。
 这次滑雪是沾了山野协会的光，雪协副会长也在山野，于是我们可以免费入会参加滑雪活动。到了雪场，兰姐教我们基本技能。我对自己的灵活敏捷指数认识很清楚，这种平衡类的我应该要多练一些才能掌握，后来练习动作的时候果然如此。上午两个多小时，下午两个多小时，中午吃了一个小包装的面包，味道还不错。上午的教学内容是装备知识、基本姿势动作、正确摔倒姿势、犁式滑雪、刹车、转弯，当然还有其他的进阶动作，我错过了，这些就够我练习一天了。下午动作讲解结束后，我还是没太掌握要领，一度不敢在坡度大的雪道上滑，怕撞到别人（其实也就是个初级道吧）。在下面缓坡墨迹了一会儿，还是做魔毯上去了，后来发现自己能够找到点自如刹车感觉后胆子就大了，也开始练习转向了。不过我的雪板可能确实有点大，总感觉速度太快，特别是和别人动作类似的情形下，还存在很大可能性是动作不到位。
 摔是摔了的，包括零速度卡摔、速度太快脚撇太开导致失去平衡前滚翻、转向后无法再次回转又没及时刹车只能主动摔。当然还出现过有人站在雪道中间，我绕不过去，只能摔倒避免碰撞的。不过还算皮糙肉厚，没啥事儿。
 回来和去时路上都在听歌睡觉吧，很快就到了。今天雾霾，不好，都红色警报了。
 特别特别感谢兰姐，让我在第一次滑雪就接触了正确的姿势动作理念，避免练偏。
-  上面这张照片正中间的就是兰姐啦，正红色的冲锋衣，雪盔外面的毛线套是她自己织的哦。
+上面这张照片正中间的就是兰姐啦，正红色的冲锋衣，雪盔外面的毛线套是她自己织的哦。
 另外，也没啥精彩照片了，我也算在专注练习吧，不过也可能是身为小弱鸟没心情。
-  2015-12-19</description></item><item><title>偷偷</title><link>https://blog.formalscience.com/2015/12/18/2015-12-18_%E5%81%B7%E5%81%B7/</link><pubDate>Fri, 18 Dec 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/12/18/2015-12-18_%E5%81%B7%E5%81%B7/</guid><description>风在潜行去通知欢乐的消息
+2015-12-19</description></item><item><title>偷偷</title><link>https://blog.formalscience.com/2015/12/18/2015-12-18_%E5%81%B7%E5%81%B7/</link><pubDate>Fri, 18 Dec 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/12/18/2015-12-18_%E5%81%B7%E5%81%B7/</guid><description>风在潜行去通知欢乐的消息
 树呀花呀
 都在咯咯笑
 2015-06-13</description></item><item><title>过去与未来</title><link>https://blog.formalscience.com/2015/12/18/2015-12-18_%E8%BF%87%E5%8E%BB%E4%B8%8E%E6%9C%AA%E6%9D%A5/</link><pubDate>Fri, 18 Dec 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/12/18/2015-12-18_%E8%BF%87%E5%8E%BB%E4%B8%8E%E6%9C%AA%E6%9D%A5/</guid><description>不知道自己对于未来是什么样的感觉，悲观还是乐观还是无所谓。自己喜欢看的描述未来的电影中无论是机械朋克的末日世界还是科技高度发达的现代化社会，还是人类已经虚拟化的假设，当然还有星际航行和外星文明，都让我内心觉得很愉悦。或许某天地球真的像《银河系漫游指南》中描述的一样，被一炮轰了呢。意义这个词让人平生烦恼，不过一想到自己也不过是一架基因复制机器，也就释然了呢。要超出这种桎梏，恐怕只有永生，无论是肉体永生还是人格虚拟化，甚至与周围的宇宙融合，恐怕就像佛教中每个部分都置换过的战鼓，还能否称为人类。
@@ -270,7 +287,7 @@ dir = &amp;quot;/home/user-name/Downloads/auto_check/work/2015final/ref/tests/wo
 想了一下，自己以前包括现在仅仅是不喜欢实验室不自由的氛围（尤其是周日下午开组会），并非不喜欢自己做的东西。前面几年接触了很多建模语言，有严格形式化语义的以及那些只有解释语义的，觉得很有趣。虽然说实验室不自由，可是节奏并不快，自己平日时间还比较充足（也许是我本人确实没有一心学术或者半心也难算得上），能够看看自己喜欢的各种信技术，跟着山野训练和去山里游荡，跟着小伙伴去健身房玩（腹肌等着我），看自己喜欢的书，写写这种胡乱的感想。
 前段时间在日记中提到自己突然有了面向未来的勇气，那种站在船头面对惊涛骇浪不动于色的坚定。（从未坐过船，我就是这么能想象。）而最近做事却依然拖沓，不过能够开始有计划地写自己以前想写的项目了。我自己看得比较轻松，人生要七八十年呢（响应国家推延退休年龄），多花些时间做自己喜欢的事情也是不错的。当然了我觉得自己选择的未来的路并不容易，且不论周围人的声音，人自己脑子里就有好多小人嚷嚷着要认怂是吧。不过只有接受自己软弱的一面才能更好地做出决策，在自己精神和身体痛苦的时候更要照顾自己的感受。
 另外就是每次看到大牛的时候，就会反思一下自己是否不够努力。我觉得这是人对 *我是谁 *这个终极问题的一种自然反应，通过他人的形象来对自身进行确认的一种信号反馈。如果认同这种心理机制，就能更好地按照自己的节奏来前进了，毕竟一个稳定的内心对外界这种频发（毕竟猛人到处是）冲击响应不能太大。
-写东西的时候总是假象有个读者，其实也不过是我脑子中的一部分神经回路的幻想，想想也是好玩。</description></item><item><title>时光如歌，你我来和</title><link>https://blog.formalscience.com/2015/12/17/2015-12-17_%E6%97%B6%E5%85%89%E5%A6%82%E6%AD%8C%E4%BD%A0%E6%88%91%E6%9D%A5%E5%92%8C/</link><pubDate>Thu, 17 Dec 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/12/17/2015-12-17_%E6%97%B6%E5%85%89%E5%A6%82%E6%AD%8C%E4%BD%A0%E6%88%91%E6%9D%A5%E5%92%8C/</guid><description>顾城写到，“一个彻底诚实的人是从不面对选择的，那条路永远会清楚无二地呈现在你面前，这和你憧憬无关，就像你是一颗苹果树，你憧憬橘子，但是你还是诚实地结出苹果一样。”  人是怎样走到一起的呢？世间会有一些机缘巧合，让彼此相遇。就像我不是甲醛助教的话，估计加入协会要晚很多。然而就像爱情一样，一瞬的四目相对，电光火石四射。加入的理由并不是山，我的动力一开始就很单纯，就是觉得和这样的一群人在一起一定会很开心，只是后来才渐渐发现了山野之间的快乐。有时我总是反思自己做事情没有什么目的性，也不追求什么回报结果。不过现在看来，由着自己的内心的偏好去选择，也许是最具有目的性的行为。  由于实验室的原因，只去过一次腐败野营。每次听到大家野营回来讲那些好玩的故事，总是很羡慕，也想自己参与其中。拉练倒是参加了一些，在路上总是拍好多植物的照片，回来发一发。拉练过程中认识了好多人，有很多人只参加过一次活动就不再来了，有些还有联系，有些就没有联系了。去翻那时的拉练合照，虽然也就是一两年，还是能够感觉出一些人确实年轻过呀。  最近版上一大堆毕业纪念册涌现。分别就是令人伤感的事情，很多时候就是很难再见面了。还好现在交通发达了，山山水水并不能成为阻隔。之前雪山报告会，zhengnan 远程接入，我想到的就是“海上生明月，天涯共此时”，虽然并不在一个时区，高原上的月亮尚未升起。（不过我仔细想了一下，可能说的也不对，毕竟很多时候月亮一出现，就悬在半空了。）然而，我们都踏着自由的脚步向前行，即使远离，连接不断。  我一直很喜欢听许巍的歌，前天去海坨归来路上科考队还讨论今年选什么队歌来着，提到了之前用过的《礼物》。有时我想，重新历经这段时光，我还是会选择这样的生活。我也希望自己，能够成为别人生命中的礼物。 http://newsmth.net/nForum/#!article/BraveHeart/1667489171
+写东西的时候总是假象有个读者，其实也不过是我脑子中的一部分神经回路的幻想，想想也是好玩。</description></item><item><title>时光如歌，你我来和</title><link>https://blog.formalscience.com/2015/12/17/2015-12-17_%E6%97%B6%E5%85%89%E5%A6%82%E6%AD%8C%E4%BD%A0%E6%88%91%E6%9D%A5%E5%92%8C/</link><pubDate>Thu, 17 Dec 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/12/17/2015-12-17_%E6%97%B6%E5%85%89%E5%A6%82%E6%AD%8C%E4%BD%A0%E6%88%91%E6%9D%A5%E5%92%8C/</guid><description>顾城写到，“一个彻底诚实的人是从不面对选择的，那条路永远会清楚无二地呈现在你面前，这和你憧憬无关，就像你是一颗苹果树，你憧憬橘子，但是你还是诚实地结出苹果一样。” 人是怎样走到一起的呢？世间会有一些机缘巧合，让彼此相遇。就像我不是甲醛助教的话，估计加入协会要晚很多。然而就像爱情一样，一瞬的四目相对，电光火石四射。加入的理由并不是山，我的动力一开始就很单纯，就是觉得和这样的一群人在一起一定会很开心，只是后来才渐渐发现了山野之间的快乐。有时我总是反思自己做事情没有什么目的性，也不追求什么回报结果。不过现在看来，由着自己的内心的偏好去选择，也许是最具有目的性的行为。 由于实验室的原因，只去过一次腐败野营。每次听到大家野营回来讲那些好玩的故事，总是很羡慕，也想自己参与其中。拉练倒是参加了一些，在路上总是拍好多植物的照片，回来发一发。拉练过程中认识了好多人，有很多人只参加过一次活动就不再来了，有些还有联系，有些就没有联系了。去翻那时的拉练合照，虽然也就是一两年，还是能够感觉出一些人确实年轻过呀。 最近版上一大堆毕业纪念册涌现。分别就是令人伤感的事情，很多时候就是很难再见面了。还好现在交通发达了，山山水水并不能成为阻隔。之前雪山报告会，zhengnan 远程接入，我想到的就是“海上生明月，天涯共此时”，虽然并不在一个时区，高原上的月亮尚未升起。（不过我仔细想了一下，可能说的也不对，毕竟很多时候月亮一出现，就悬在半空了。）然而，我们都踏着自由的脚步向前行，即使远离，连接不断。 我一直很喜欢听许巍的歌，前天去海坨归来路上科考队还讨论今年选什么队歌来着，提到了之前用过的《礼物》。有时我想，重新历经这段时光，我还是会选择这样的生活。我也希望自己，能够成为别人生命中的礼物。 http://newsmth.net/nForum/#!article/BraveHeart/1667489171
 2015－06－14</description></item><item><title>游云</title><link>https://blog.formalscience.com/2015/12/17/2015-12-17_%E6%B8%B8%E4%BA%91/</link><pubDate>Thu, 17 Dec 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/12/17/2015-12-17_%E6%B8%B8%E4%BA%91/</guid><description>湛蓝的天空 游过一朵朵云相互追逐
 拖着影子
 忽暗 忽明 沉寂的思绪
@@ -290,21 +307,22 @@ dir = &amp;quot;/home/user-name/Downloads/auto_check/work/2015final/ref/tests/wo
 首先说明没有起作用的教程：
 Windows 10 Pro + Ubuntu 14.04.3 LTS 雙系統安裝 中提到最后在 Windows 的命令行中使用如下命令 bcdedit /set {bootmgr} path \EFI\ubuntu\grubx64.efi 并没有生效 百度贴吧一个教程 - T440s 预装win8.1 GPT+EFI ubuntu 双系统 图文过程 中提到使用 Ubuntu 的引导文件 “grubx64.efi” 替换 “EFI/Boot” 里面的 “bootx64.efi”，没有效果，可能是 “LenovoBT.efi” 没有走前文提到的处理流程。 有效的教程 Windows 8 removes Grub as default boot manager：</description></item><item><title>2015-11-28 户外技能大赛个人感想</title><link>https://blog.formalscience.com/2015/11/28/2015-11-28_%E6%88%B7%E5%A4%96%E6%8A%80%E8%83%BD%E5%A4%A7%E8%B5%9B%E4%B8%AA%E4%BA%BA%E6%84%9F%E6%83%B3/</link><pubDate>Sat, 28 Nov 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/11/28/2015-11-28_%E6%88%B7%E5%A4%96%E6%8A%80%E8%83%BD%E5%A4%A7%E8%B5%9B%E4%B8%AA%E4%BA%BA%E6%84%9F%E6%83%B3/</guid><description>参加户外技能大赛也有偶然的成份在其中，毕竟我本来是摄影辅助，后来由于好友赵超约我去参加拿奖品，于是我就无声无息报了名，同时还拉上了另一好友的女朋友，小丫头宋梦迪。然后大雪如期而至，赛事推延。待到比赛之前，我们队伍的发起者觉得太冷于是退出了比赛，替换队员是王阳阳。王大爷，也算一员悍将，至少比退出的人跑得快，虽然同样是攀岩队现役，不能参与攀岩单项。
 不过比赛之日，赵超竟然出现了，他竟然是摄影辅助，不得不说生命真是一种循环。 比赛前是填写队名环节，由于之前听说有队伍叫 老妖怪 队，于是我们定了 捉妖师 作为队名。后来现场 老妖怪 队临时改名叫 有妖 队，以及再次被 小坏 更名为 有妖气 队。不过仍然逃不出我们的手掌心，哪里有妖气，哪里就有 捉妖师 队。对了，现场还有大叔带来了小萝莉一枚，很是可爱。
-  比赛第一项：定向越野。我深知这个项目的核心要义就是要跑得快，跟上前面的队伍；如果你是第一支队伍的话，基本就无缘这个项目的冠军了。所以我们从第三个点开始就紧随其后，从此就再没分开。定向越野找点的过程比较顺利，只有在综合体育馆处有个点在二层平台上，耗费了一点时间。其后就是工作五十年标语前的女神像是最后一个标志点，顺利被拍照（因为手机没电了）后紧随 有妖气队到达终点，顺利夺冠。看看我们的照片吧：
-  比赛第二项：答题环节。果然有直觉的小丫头能够找到所有不确定的题目的正确答案，然而我没有听她的，于是错了两个。果然要学习一下队史呀。
-  比赛第三项：有备而来，哦不，岩壁芭蕾。我是带了攀岩鞋而来的，主要是竞争对手太强。有妖气队三名选手都和攀岩队有千丝万缕的关系，有现役队员，有前任队员，有曾经队员的女友。当然我们队也是有千丝万缕的关系，就不说了。我和小丫头参加比赛，小丫头爬第一段，我爬第二段。由于有妖气队的廖凌云选手在第二段两次从岩壁脱落，而我靠着大力出奇迹的攀爬方式一气呵成，最后险胜，😄。看不那么英俊的姿势：
-  比赛第四项：野营技能。搭帐篷，我其实没有太多野营经验，不过搭帐篷的方式还是牢记在心的。不过在烧水环节我们经历了换炉头，换气罐后还是成为了最后一个 烧开水的组。最后还把内外帐收容顺序弄反了。结果是第三名。
+比赛第一项：定向越野。我深知这个项目的核心要义就是要跑得快，跟上前面的队伍；如果你是第一支队伍的话，基本就无缘这个项目的冠军了。所以我们从第三个点开始就紧随其后，从此就再没分开。定向越野找点的过程比较顺利，只有在综合体育馆处有个点在二层平台上，耗费了一点时间。其后就是工作五十年标语前的女神像是最后一个标志点，顺利被拍照（因为手机没电了）后紧随 有妖气队到达终点，顺利夺冠。看看我们的照片吧：
+比赛第二项：答题环节。果然有直觉的小丫头能够找到所有不确定的题目的正确答案，然而我没有听她的，于是错了两个。果然要学习一下队史呀。
+比赛第三项：有备而来，哦不，岩壁芭蕾。我是带了攀岩鞋而来的，主要是竞争对手太强。有妖气队三名选手都和攀岩队有千丝万缕的关系，有现役队员，有前任队员，有曾经队员的女友。当然我们队也是有千丝万缕的关系，就不说了。我和小丫头参加比赛，小丫头爬第一段，我爬第二段。由于有妖气队的廖凌云选手在第二段两次从岩壁脱落，而我靠着大力出奇迹的攀爬方式一气呵成，最后险胜，😄。看不那么英俊的姿势：
+比赛第四项：野营技能。搭帐篷，我其实没有太多野营经验，不过搭帐篷的方式还是牢记在心的。不过在烧水环节我们经历了换炉头，换气罐后还是成为了最后一个 烧开水的组。最后还把内外帐收容顺序弄反了。结果是第三名。
 颁奖环节，我们是综合第二，因为野营占的比重比较大。不过能拿两个单项奖也很开心啦。其实这次技能大赛因为下雪推延了一周，其实来参加比赛的人并不多，工作人员很多。不过大家一起完成了这个活动很开心啦。我的奖品是雪镜，很满足。每个人还领到了严冬冬翻译的一本书《黄金罗盘》，由于我已经有黄色封面的了，于是就选了白色封面的。
-  就这样结束吧，其实还有些话想说。记得第一次参加户外技能大赛的时候，我、沈治以及来自台湾的交换生肖紫柔在攀岩环节折腾了半天始终不能完成路线。这次就感觉进步多了。
+就这样结束吧，其实还有些话想说。记得第一次参加户外技能大赛的时候，我、沈治以及来自台湾的交换生肖紫柔在攀岩环节折腾了半天始终不能完成路线。这次就感觉进步多了。
 两年前的我和某现任部长的果珍黑马队：
-  时间就是这么一点点过去，我也在两年间感觉到心态不断变化。这是真正的结束了，然而生活还是要继续。</description></item><item><title>那些关于函数式编程和函数式编程语言的神话（译）</title><link>https://blog.formalscience.com/2015/10/22/2015-10-22_%E9%82%A3%E4%BA%9B%E5%85%B3%E4%BA%8E%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E5%92%8C%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E7%9A%84%E7%A5%9E%E8%AF%9D%E8%AF%91/</link><pubDate>Thu, 22 Oct 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/10/22/2015-10-22_%E9%82%A3%E4%BA%9B%E5%85%B3%E4%BA%8E%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E5%92%8C%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E7%9A%84%E7%A5%9E%E8%AF%9D%E8%AF%91/</guid><description>这是翻译自 Quora 一个问题“What are some myths about functional programming and functional programming languages?” 的一个高票答案，我也不记得当初决定翻译它时的心情，不过历经多次组会，最终完工了。
+时间就是这么一点点过去，我也在两年间感觉到心态不断变化。这是真正的结束了，然而生活还是要继续。</description></item><item><title>那些关于函数式编程和函数式编程语言的神话（译）</title><link>https://blog.formalscience.com/2015/10/22/2015-10-22_%E9%82%A3%E4%BA%9B%E5%85%B3%E4%BA%8E%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E5%92%8C%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E7%9A%84%E7%A5%9E%E8%AF%9D%E8%AF%91/</link><pubDate>Thu, 22 Oct 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/10/22/2015-10-22_%E9%82%A3%E4%BA%9B%E5%85%B3%E4%BA%8E%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E5%92%8C%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E7%9A%84%E7%A5%9E%E8%AF%9D%E8%AF%91/</guid><description>这是翻译自 Quora 一个问题 “What are some myths about functional programming and functional programming languages?” 的一个高票答案，我也不记得当初决定翻译它时的心情，不过历经多次组会，最终完工了。
 下面是我能想到的，更具体的一些细节会在后面给出：
 “函数式编程”是定义明确的概念 函数式编程仅仅是命令式编程的特殊形式 函数式编程本来就很难 函数式编程本来就是复杂的 函数式编程不宜编写图形用户界面 Haskell 仅仅是函数式的 你需要大量的数学知识来进行函数式编程 函数式程序员必须非常聪明而且擅长计算机科学 “函数式编程” 是一个（明确的）概念 它不是。它是计算机科学中定义最糟糕的术语之一 —— 甚至不如“面向对象”，但比“声明式编程”好一点点。弄清楚一种语言是否是“函数式的”是一个人类学（anthropology）上的练习而非计算机科学。
 没有任何一种“函数式编程”的技术定义不会引发众人抱怨。有些定义过于宽泛 —— 如果你想要的是 lambda 表达式，那么一切从 C ++ 到 Java 到 Python 的语言突然都变得“函数式”了，只有 C 和汇编不是！如果你要一个数学上的定义，那么只有 Coq、Agda 和它们的朋友们是函数式的，因为就算是 Haskell 都允许部分函数和非终止性。还有异常。哦，上帝，异常！
 就我个人来讲，称每一种带有“脉冲”的语言（即任何具有 lambda 表达式的语言，lambda 的符号为 λ，像一个脉冲）为“函数式的”并没什么用。当我说“函数式的”，我通常是指像 Haskell 或至少是 ML 的语言，而不是像 Java、Python、 JavaScript，或者甚至是 Common Lisp 的语言。Scheme 和 Clojure 有点是函数式的，但我不会对它们谈论过多，即便我的确有大量关于前者（Scheme）的经验。
 好吧，实话说，我的意思只是“Haskell”，除非我明确提出不是。是啊，这是为了你们的语言学上的定义。（脑补出这个翻译）如果你花更少的时间用命令式语言和更多的时间阅读我的思维，你就会明白3。
 当然，有些人倾向于给“函数式编程”一个更杂糅的定义！
-函数式编程仅仅是少了某些东西的命令式编程 这也许是最有害的神话，因为它广泛流传，特别具有误导性，通常未被明确说出。人们随意假设进行函数式编程就像一个穿着紧身衣的“正常”编程。并不是！一点也不。相反，函数式编程为编程提供了一个新的基础。你使用不同的方式表达事情。通常是全然不同的。事实上，大多数时间，在你使用命令式方法完成的事情和使用函数式方法完成的事情之间，不存在一个一一映射。</description></item><item><title>2015-09-12 醒狮杯</title><link>https://blog.formalscience.com/2015/09/12/2015-09-12_%E9%86%92%E7%8B%AE%E6%9D%AF/</link><pubDate>Sat, 12 Sep 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/09/12/2015-09-12_%E9%86%92%E7%8B%AE%E6%9D%AF/</guid><description>去年就参加了在卢沟桥举行的 醒狮杯 越野跑比赛，感觉还不错，认识了一群小伙伴，看了卢沟桥的狮子，还免费得了一件 T 恤衫，于是今年又报名了。 早上在东北门集合，然后出发去卢沟桥。到了后，领计时芯片，排队进宛平城，晒太阳，看表演，看放飞鸽子。
+函数式编程仅仅是少了某些东西的命令式编程 这也许是最有害的神话，因为它广泛流传，特别具有误导性，通常未被明确说出。人们随意假设进行函数式编程就像一个穿着紧身衣的“正常”编程。并不是！一点也不。相反，函数式编程为编程提供了一个新的基础。你使用不同的方式表达事情。通常是全然不同的。事实上，大多数时间，在你使用命令式方法完成的事情和使用函数式方法完成的事情之间，不存在一个一一映射。
+在 Haskell 上这点最明显，因为它是唯一把函数式特性放在第一位的语言 。这实际上让 Haskell 比混合语言明显更有表达能力 —— 从确定性的并行到重写规则（即矢量融合）到 软件事务性内存（STM，Software Transactional Memory）到惰性（计算）到它大量的库，这一切都是因为 Haskell 的函数式核心才成为可能。同时，这也使得 Haskell 与其他语言如此不同。这是一种完全不同的思考方式，一个新的基础 —— 不是同样香肠的不同型号，就如许多其他的语言一样（还有 BMWs5）。</description></item><item><title>2015-09-12 醒狮杯</title><link>https://blog.formalscience.com/2015/09/12/2015-09-12_%E9%86%92%E7%8B%AE%E6%9D%AF/</link><pubDate>Sat, 12 Sep 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/09/12/2015-09-12_%E9%86%92%E7%8B%AE%E6%9D%AF/</guid><description>去年就参加了在卢沟桥举行的 醒狮杯 越野跑比赛，感觉还不错，认识了一群小伙伴，看了卢沟桥的狮子，还免费得了一件 T 恤衫，于是今年又报名了。 早上在东北门集合，然后出发去卢沟桥。到了后，领计时芯片，排队进宛平城，晒太阳，看表演，看放飞鸽子。
 期间唯一有趣的事情就是看到一只偷懒的鸽子，被放出来后没有跟随鸽群，而是之间停在旁边楼上歇着了。
 跑步嘛，有大神，有重在参与的小菜。配速 5:26 跑了 5 千米，基本预示着我北马的颓势。前面跑得比较稳健（慢），最后一圈冲了一下（其实那时候大神们都跑完了）。
 跑完后，喝水、放松、聊天、颁奖。这次男团和女团都是第一，虽然女团一开始由于成绩记录错误没有名次。回来的车上大家都觉得分数可能有问题（男团八十个人得了 2 万多分，之前老师说第一名 300 分，这样人均都快300 分了）。不过，我想应该是今年有 500 人参赛，分数上限调整了（500？），大家平均得分应该是比平均分多一些，但是人多就是有力量，谁让咱是体校呢。
@@ -341,8 +359,7 @@ Windows 10 Pro + Ubuntu 14.04.3 LTS 雙系統安裝 中提到最后在 Windows �
 这两本书里都有爱情故事，我觉得都很美好。阿西莫夫的《永恒的终结》中男女主人公沿着时空之井回到 20 世纪的美国，然后将时空之井摧毁。作为未来的人这样做也是挺重大的决定，不过能够长厢厮守也是很好的。卡拉克的《遥远地球之歌》就好玩一点。摘其中一段吧： &amp;ldquo;外间有传闻说，库玛尔和萨拉萨星上的所有女孩，外加半数男孩都上过床，这无疑是严重的夸大，但也并非无稽之谈。&amp;rdquo;
 另外书中对于宗教也有有趣的讨论。这一点我也比较认同书中的观点，宗教的影响很难完全消除，不同的时代会有不同的宗教理论，与时俱进。
 前两天好朋友说看了《模仿游戏》，这部电影之前我也在北邮人上下载看了。影评我就不做了，豆瓣还有各大购票软件下面都有很多。摘一个猫眼电影资料里对图灵的评论吧：
-克拉克从英国搬到斯里兰卡的一个原因也是如此吧，从此之后再也没有离开。有记者问他的性取向时，他的那句 &amp;ldquo;No, merely mildly cheerful.&amp;rdquo; 也是很幽默啊，直接变成了一个梗。他的好朋友阿西莫夫则直接说：啊，他就是啊，他很真诚的，别人问他他就说。不懂的可以看下图。
-文章总是离题千万里，最后强行也点不上题了。这样也好，不是所有的出发都能到达，不忘初心，方做好梦。</description></item><item><title>2015-06-13 腐败野营总结 黑夜里当高歌</title><link>https://blog.formalscience.com/2015/06/13/2015-06-13_%E8%85%90%E8%B4%A5%E9%87%8E%E8%90%A5%E6%80%BB%E7%BB%93_%E9%BB%91%E5%A4%9C%E9%87%8C%E5%BD%93%E9%AB%98%E6%AD%8C/</link><pubDate>Sat, 13 Jun 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/06/13/2015-06-13_%E8%85%90%E8%B4%A5%E9%87%8E%E8%90%A5%E6%80%BB%E7%BB%93_%E9%BB%91%E5%A4%9C%E9%87%8C%E5%BD%93%E9%AB%98%E6%AD%8C/</guid><description>今天回来不知为何特别累，在组会上睡着了四五次。开完后补了一个小时觉，也没完全缓过来。
+克拉克从英国搬到斯里兰卡的一个原因也是如此吧，从此之后再也没有离开。有记者问他的性取向时，他的那句 &amp;ldquo;No, merely mildly cheerful.&amp;rdquo; 也是很幽默啊，直接变成了一个梗。他的好朋友阿西莫夫则直接说：啊，他就是啊，他很真诚的，别人问他他就说。不懂的可以看下图。 文章总是离题千万里，最后强行也点不上题了。这样也好，不是所有的出发都能到达，不忘初心，方做好梦。</description></item><item><title>2015-06-13 腐败野营总结 黑夜里当高歌</title><link>https://blog.formalscience.com/2015/06/13/2015-06-13_%E8%85%90%E8%B4%A5%E9%87%8E%E8%90%A5%E6%80%BB%E7%BB%93_%E9%BB%91%E5%A4%9C%E9%87%8C%E5%BD%93%E9%AB%98%E6%AD%8C/</link><pubDate>Sat, 13 Jun 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/06/13/2015-06-13_%E8%85%90%E8%B4%A5%E9%87%8E%E8%90%A5%E6%80%BB%E7%BB%93_%E9%BB%91%E5%A4%9C%E9%87%8C%E5%BD%93%E9%AB%98%E6%AD%8C/</guid><description>今天回来不知为何特别累，在组会上睡着了四五次。开完后补了一个小时觉，也没完全缓过来。
 和自己喜欢的人，做自己喜欢的事，何时何地都会令我开心。
 文章会很长么？也许吧，渐渐我们都有了自己的故事可以讲。
 感情建设环节比较温和，作为去年感建的最大输家，我表示今年完全没有感觉。
@@ -350,7 +367,7 @@ Windows 10 Pro + Ubuntu 14.04.3 LTS 雙系統安裝 中提到最后在 Windows �
 睡帐篷今年很满意，里面有睡袋可以盖，也不像去年被搞到别人帐篷还被嫌弃。这次睡得很踏实，也很开心。
 吃饭方面，两顿饭都没怎么吃饱，不知为何不太想吃，但是也没有太饿。
 文章终究没有变得很长，很多很多的故事，还没发生，以后再讲。
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- 轻灵的脚步
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- 轻灵的脚步
 我踏着
 化作一阵风
 来到你门前
@@ -359,9 +376,8 @@ Windows 10 Pro + Ubuntu 14.04.3 LTS 雙系統安裝 中提到最后在 Windows �
 我诧异于你的先知先觉
 却没有看到
 来时路上
-一棵棵树正笑得咯咯响</description></item><item><title>为自己的生活微笑（一）</title><link>https://blog.formalscience.com/2015/05/15/2015-05-15_%E4%B8%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%94%9F%E6%B4%BB%E5%BE%AE%E7%AC%91%E4%B8%80/</link><pubDate>Fri, 15 May 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/05/15/2015-05-15_%E4%B8%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%94%9F%E6%B4%BB%E5%BE%AE%E7%AC%91%E4%B8%80/</guid><description>
-在看门罗（Alice Munro）的亲爱的生活（Dear Life: Stories）。春夏之交，心浮气躁。
- ​2010 年的一段时间，喜欢抄诗。日记里摘抄的第一首就是歌德的 Wenn ich dich lieb habe, was geht&amp;rsquo;s dich an （我爱你，与你无关）。这首诗是我进大学的时，看到远方高中同学 QQ 状态才知道的，于是记了下来，还在流行晨读的西花园里读过几次。
+一棵棵树正笑得咯咯响</description></item><item><title>为自己的生活微笑（一）</title><link>https://blog.formalscience.com/2015/05/15/2015-05-15_%E4%B8%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%94%9F%E6%B4%BB%E5%BE%AE%E7%AC%91%E4%B8%80/</link><pubDate>Fri, 15 May 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/05/15/2015-05-15_%E4%B8%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%94%9F%E6%B4%BB%E5%BE%AE%E7%AC%91%E4%B8%80/</guid><description>在看门罗（Alice Munro）的亲爱的生活（Dear Life: Stories）。春夏之交，心浮气躁。
+​2010 年的一段时间，喜欢抄诗。日记里摘抄的第一首就是歌德的 Wenn ich dich lieb habe, was geht&amp;rsquo;s dich an （我爱你，与你无关）。这首诗是我进大学的时，看到远方高中同学 QQ 状态才知道的，于是记了下来，还在流行晨读的西花园里读过几次。
 “我爱你，与你无关 即使是夜晚无尽的思念 也只属于我自己 不会带到天明 也许它只能存在于黑暗
 我爱你，与你无关 就算我此刻站在你的身边 依然背着我的双眼 不想让你看见 就让它只隐藏在风后面
 &amp;hellip;&amp;hellip;”
@@ -373,8 +389,7 @@ Windows 10 Pro + Ubuntu 14.04.3 LTS 雙系統安裝 中提到最后在 Windows �
 光阴依旧在大地上移动自己的身形，带来了雷雨，也最终带来了我最爱的夏季。
 对了，在夏季到来之前还写了一首打油诗赠予在酥暖风中荡漾的同学：
 风乍起，雨纷纷，樱花初含羞示春。 杨柳絮，漫天撒，飘荡凌乱芳草家。 少年郎，思谁人，辗转难眠佳人影。 欲问之，靥如霞，遮遮掩掩不肯答！
-又到了一个穿短袖短裤的季节，我可开心了。只是因为到了夏天就心情这么嗨，这也是生活对我的一种优待吧。 这个瓜娃。
- </description></item><item><title>2015-05-09 后河拉练</title><link>https://blog.formalscience.com/2015/05/09/2015-05-09_%E5%90%8E%E6%B2%B3%E6%8B%89%E7%BB%83/</link><pubDate>Sat, 09 May 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/05/09/2015-05-09_%E5%90%8E%E6%B2%B3%E6%8B%89%E7%BB%83/</guid><description>个人总结
+又到了一个穿短袖短裤的季节，我可开心了。只是因为到了夏天就心情这么嗨，这也是生活对我的一种优待吧。 这个瓜娃。</description></item><item><title>2015-05-09 后河拉练</title><link>https://blog.formalscience.com/2015/05/09/2015-05-09_%E5%90%8E%E6%B2%B3%E6%8B%89%E7%BB%83/</link><pubDate>Sat, 09 May 2015 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2015/05/09/2015-05-09_%E5%90%8E%E6%B2%B3%E6%8B%89%E7%BB%83/</guid><description>个人总结
 这次拉练挺开心的，也许是因为太久没有见过如此舒展的山水花草了。
 下车后雨还在下，有些冷，开始行进后就满头汗了，不要停。
 刚买了相机，快到集训了，可以多拍拍大家。欢笑也好，疲惫也好，都不会阻拦时间的脚步，现代的科技让我们可以用影像来抵抗这泛黄的流年。选相机用了几天，终究没有随着各种主流的评论指引（这些观点都是很客观的），而是买了一个宾得的单反。一路上看到许多只在图册上看过的植物，由于光线太暗，设备不精，技术太差（主要），并没有拍出很好看的照片，以后还是要多练习。
@@ -385,23 +400,23 @@ Windows 10 Pro + Ubuntu 14.04.3 LTS 雙系統安裝 中提到最后在 Windows �
 分别在东门口，S2 线清华园站，小火车上，山中拍了照片，已经上传到协会 360 云盘。
 这次拍照片时记录了 GPS 航迹，回校后对照片添加上了 geo-tag ，感觉也许会有用。合成了一个 可用 Google Earth 浏览的 kmz 文件，也在活动照片目录里面，标记了走岔路的的一个地点。
 标记位置信息的方法： 1. 先用手机软件实时记录位置，我用的是 GeotagPhotos Pro 。
-将照片导入 Lightroom，在地图选项页进行相关操作。还有其他软件也可以搞定，但是感觉对于一般同学来说不太简便。 下载 Lightroom 插件 “Geoencoding Support”，导出 kmz 格式的文件。
+将照片导入 Lightroom，在地图选项页进行相关操作。还有其他软件也可以搞定，但是感觉对于一般同学来说不太简便。
+下载 Lightroom 插件 “Geoencoding Support”，导出 kmz 格式的文件。
 用 Google Earth 打开生成的文件。 个人照片，问谁最爱玩手机？
-  应梦寺  垭口 2  谜底就在谜面上
-  延庆火车站
- 最爱这种恣意生长的状态</description></item><item><title>沉入水底</title><link>https://blog.formalscience.com/2014/10/22/2014-10-22_%E6%B2%89%E5%85%A5%E6%B0%B4%E5%BA%95/</link><pubDate>Wed, 22 Oct 2014 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2014/10/22/2014-10-22_%E6%B2%89%E5%85%A5%E6%B0%B4%E5%BA%95/</guid><description>昨天下午（2014-10-21）训练的时候和 Jialian 探讨跳水时沉入跳水池的感受，都觉得头顶一片蔚蓝浮向水面就像电影中少女在海里采珍珠一样，当然我们没有摄像机下那种澄澈、灵动的感觉，可能会有一些狼狈吧。
+应梦寺 垭口 2 谜底就在谜面上
+延庆火车站
+最爱这种恣意生长的状态</description></item><item><title>沉入水底</title><link>https://blog.formalscience.com/2014/10/22/2014-10-22_%E6%B2%89%E5%85%A5%E6%B0%B4%E5%BA%95/</link><pubDate>Wed, 22 Oct 2014 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2014/10/22/2014-10-22_%E6%B2%89%E5%85%A5%E6%B0%B4%E5%BA%95/</guid><description>昨天下午（2014-10-21）训练的时候和 Jialian 探讨跳水时沉入跳水池的感受，都觉得头顶一片蔚蓝浮向水面就像电影中少女在海里采珍珠一样，当然我们没有摄像机下那种澄澈、灵动的感觉，可能会有一些狼狈吧。
 暑假没有回家，一直在跟马协夜间跑，后来不知怎么就报了北京马拉松。训练的话从 5km 到 10km 到 15km 到 20km，都逐渐跑了下来。跳水课上，于芬老师反复说要我们学会控制恐惧。跳过 10 米台后，回到更低的地方改变的不是技巧而是心态，我知道了跳下去并没有什么问题，甚至也没有什么痛苦。
 本来还应该有 30km 和 35km 的拉练的，没有进行。而我对 20km 之后的事情是不知道的，别人跟我讲的“撞墙”之类的理论也没有体验过。因此在爬 24km 前的那个桥的时候，体会到了崩的感觉。不过当时的心态是：这就是“撞墙”么？有种 “Got it！”的欢畅感。
 后面就是探索感受自己身体状态的过程了，难过是不可避免的，我也并未被周围的加油声鼓动起来。到了 32.5km 饮料站的地方碰到了蔡雄哥，想要跟上他的步伐，但是双腿很有节奏地抽起来，于是放弃。到了 34km 拐弯的地方碰到了 HYJ，也没有跟上。这就是我在出发前的合影后见到的唯二的两个熟人了。一个人也并不孤独。
 奥体公园的起伏路是很难跑，最后还是抬不起脚步走了一段路。终点前也没有冲刺。之后的放松踩腿，放松跑，到今天差不多恢复了。
-路还要一直走下去。
-  </description></item><item><title>上半年的出行</title><link>https://blog.formalscience.com/2014/07/02/2014-07-02_%E4%B8%8A%E5%8D%8A%E5%B9%B4%E7%9A%84%E5%87%BA%E8%A1%8C/</link><pubDate>Wed, 02 Jul 2014 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2014/07/02/2014-07-02_%E4%B8%8A%E5%8D%8A%E5%B9%B4%E7%9A%84%E5%87%BA%E8%A1%8C/</guid><description>转眼之间，一年已经过去了一半。上半年除了开题水过之外，学术上没有什么进展。户外活动倒是参加了一些，不过还是囿于实验室周日下午的组会，颇多机会都错过了。 3月16日，香山健行赛。马协组织的活动，多威赞助，免费得了一件T恤，虽然感觉再也不会穿了，有点丑。认识了好多有趣的朋友，跑步上山果然欢乐，中间走了一会儿，大部分时间都是在跑的，反正也是没有名次了。 4月5日，大觉寺-阳台山-凤凰岭拉练，胡传鹏带队，我临时当了路线。还有一支队伍是从金山寺出发了，结果在到达阳台山前的公路时，发现他们在前面，于是喊住他们，一起分组冲顶。后面主要就一起走了，路线里增加了妙峰山，再次返回阳台山，去往凤凰岭时，发现时间不够了，于是就从聂各庄方向下撤了。这次路线，当得不好，主要是路线不熟。 4月30日~5月2日 太白山穿越。五一的太白穿越是蓄谋已久了，在之前的系列日志也说得很详细了，这次也算是体验了一小下高反吧。 5月10日，登山队和科考队拉练，作为辅助人员参与，并助攻西瓜一个。第一次去海坨，虽然由于重新选择进山口耽误了时间，导致没有时间冲顶大海陀，但一路风光仍然迷人。我拍了好多照片，山峦间的雾气，大片的草甸，山上晚开的花朵，以及可爱的队友们。 5月30日~31日，阳台山腐败野营。作为山野的传统项目，能够参加感觉很开心，开心地在营地吃火锅，做游戏被罚，深夜里各自总结自己的山野生活（长达4个多小时）。 第二天由于老板机智地把组会提前一天，所以就和几个同学下撤了。 6月28日，凤凰岭-阳台山-大觉寺拉练。这个在另一篇日志里讲了。核心就是速度快+买水。 上半年锻炼比较多（山野日常训练+爬山+健身房+马协夜间跑），春节吃喝带来的影响基本被消除，此外在力量增加的情况下，轻了有 5kg 吧，还要继续保持。争取下半年能够再轻 5kg，回到高中的水平。 下半年计划有北京马拉松，主要就是靠这个暑假训练了，争取能够报上名+过体检+完赛， 总之要努力。我的师弟都去暑期实践了，师兄马上也去了，为了排遣寂寞，周末就多出去逛逛好了，爬爬山，骑骑车。假如能够有暑假的话，争取骑个小长途或者爬个远点的山。</description></item><item><title>夏日的风光也如此明媚（凤凰岭-大觉寺拉练）</title><link>https://blog.formalscience.com/2014/06/30/2014-06-30_%E5%A4%8F%E6%97%A5%E7%9A%84%E9%A3%8E%E5%85%89%E4%B9%9F%E5%A6%82%E6%AD%A4%E6%98%8E%E5%AA%9A%E5%87%A4%E5%87%B0%E5%B2%AD-%E5%A4%A7%E8%A7%89%E5%AF%BA%E6%8B%89%E7%BB%83/</link><pubDate>Mon, 30 Jun 2014 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2014/06/30/2014-06-30_%E5%A4%8F%E6%97%A5%E7%9A%84%E9%A3%8E%E5%85%89%E4%B9%9F%E5%A6%82%E6%AD%A4%E6%98%8E%E5%AA%9A%E5%87%A4%E5%87%B0%E5%B2%AD-%E5%A4%A7%E8%A7%89%E5%AF%BA%E6%8B%89%E7%BB%83/</guid><description>上次出去是山野腐败野营了，吃火锅、无节操游戏中枪三次、全队总结，都是难以忘记的回忆。自己的回忆，别人的回忆，都是那么真切动人，充满温情、希冀、力量、欢乐，当然也有迷茫、犹豫、退缩。很感谢大家，在日常训练之中，在穿行在山川之时，在餐桌上风卷残云的片刻，一起经历着这种辛苦、简单、无节操的快乐。
+路还要一直走下去。</description></item><item><title>上半年的出行</title><link>https://blog.formalscience.com/2014/07/02/2014-07-02_%E4%B8%8A%E5%8D%8A%E5%B9%B4%E7%9A%84%E5%87%BA%E8%A1%8C/</link><pubDate>Wed, 02 Jul 2014 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2014/07/02/2014-07-02_%E4%B8%8A%E5%8D%8A%E5%B9%B4%E7%9A%84%E5%87%BA%E8%A1%8C/</guid><description>转眼之间，一年已经过去了一半。上半年除了开题水过之外，学术上没有什么进展。户外活动倒是参加了一些，不过还是囿于实验室周日下午的组会，颇多机会都错过了。
+3月16日，香山健行赛。马协组织的活动，多威赞助，免费得了一件T恤，虽然感觉再也不会穿了，有点丑。认识了好多有趣的朋友，跑步上山果然欢乐，中间走了一会儿，大部分时间都是在跑的，反正也是没有名次了。 4月5日，大觉寺-阳台山-凤凰岭拉练，胡传鹏带队，我临时当了路线。还有一支队伍是从金山寺出发了，结果在到达阳台山前的公路时，发现他们在前面，于是喊住他们，一起分组冲顶。后面主要就一起走了，路线里增加了妙峰山，再次返回阳台山，去往凤凰岭时，发现时间不够了，于是就从聂各庄方向下撤了。这次路线，当得不好，主要是路线不熟。 4月30日~5月2日 太白山穿越。五一的太白穿越是蓄谋已久了，在之前的系列日志也说得很详细了，这次也算是体验了一小下高反吧。 5月10日，登山队和科考队拉练，作为辅助人员参与，并助攻西瓜一个。第一次去海坨，虽然由于重新选择进山口耽误了时间，导致没有时间冲顶大海陀，但一路风光仍然迷人。我拍了好多照片，山峦间的雾气，大片的草甸，山上晚开的花朵，以及可爱的队友们。 5月30日~31日，阳台山腐败野营。作为山野的传统项目，能够参加感觉很开心，开心地在营地吃火锅，做游戏被罚，深夜里各自总结自己的山野生活（长达4个多小时）。 第二天由于老板机智地把组会提前一天，所以就和几个同学下撤了。 6月28日，凤凰岭-阳台山-大觉寺拉练。这个在另一篇日志里讲了。核心就是速度快+买水。 上半年锻炼比较多（山野日常训练+爬山+健身房+马协夜间跑），春节吃喝带来的影响基本被消除，此外在力量增加的情况下，轻了有 5kg 吧，还要继续保持。争取下半年能够再轻 5kg，回到高中的水平。 下半年计划有北京马拉松，主要就是靠这个暑假训练了，争取能够报上名+过体检+完赛， 总之要努力。我的师弟都去暑期实践了，师兄马上也去了，为了排遣寂寞，周末就多出去逛逛好了，爬爬山，骑骑车。假如能够有暑假的话，争取骑个小长途或者爬个远点的山。</description></item><item><title>夏日的风光也如此明媚（凤凰岭-大觉寺拉练）</title><link>https://blog.formalscience.com/2014/06/30/2014-06-30_%E5%A4%8F%E6%97%A5%E7%9A%84%E9%A3%8E%E5%85%89%E4%B9%9F%E5%A6%82%E6%AD%A4%E6%98%8E%E5%AA%9A%E5%87%A4%E5%87%B0%E5%B2%AD-%E5%A4%A7%E8%A7%89%E5%AF%BA%E6%8B%89%E7%BB%83/</link><pubDate>Mon, 30 Jun 2014 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2014/06/30/2014-06-30_%E5%A4%8F%E6%97%A5%E7%9A%84%E9%A3%8E%E5%85%89%E4%B9%9F%E5%A6%82%E6%AD%A4%E6%98%8E%E5%AA%9A%E5%87%A4%E5%87%B0%E5%B2%AD-%E5%A4%A7%E8%A7%89%E5%AF%BA%E6%8B%89%E7%BB%83/</guid><description>上次出去是山野腐败野营了，吃火锅、无节操游戏中枪三次、全队总结，都是难以忘记的回忆。自己的回忆，别人的回忆，都是那么真切动人，充满温情、希冀、力量、欢乐，当然也有迷茫、犹豫、退缩。很感谢大家，在日常训练之中，在穿行在山川之时，在餐桌上风卷残云的片刻，一起经历着这种辛苦、简单、无节操的快乐。
 如今，科考队和登山队都在路上了，看到大家在朋友圈里不断发布行进情况，一定要顺利啊。
 28 号也是登山队出发的日子了，由于这次拉练路线中包括阳台山，那么在这座山上拍照也算是一种祝福吧。
 拉练是 小伟 组织的，算是我在马协参加的第一个训练活动。一路上轻装前进，速度快了很多，加上田闯大哥在后面一个劲儿催，马不停蹄啊。上山不早，下山不晚。看到了好多没见过的花朵，很是开心。各种可爱、呆萌的小朋友，特别欢乐。
 回来后，飞鸿大哥请我们吃了饭，喝了啤酒，非常感谢。然后一行人回到了学校。
-  夏天终于如期而至，张开了它热情洋溢的臂膀。今年春天的主题是 ：“2014 我在春天有个约会”，那么夏日主题定为：“2014 夏季的风光也如此明媚”。
-  </description></item><item><title>剧本错乱的太白山之旅 - 不是后记的后记</title><link>https://blog.formalscience.com/2014/06/05/2014-06-05_%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%85_-_%E4%B8%8D%E6%98%AF%E5%90%8E%E8%AE%B0%E7%9A%84%E5%90%8E%E8%AE%B0/</link><pubDate>Thu, 05 Jun 2014 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2014/06/05/2014-06-05_%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%85_-_%E4%B8%8D%E6%98%AF%E5%90%8E%E8%AE%B0%E7%9A%84%E5%90%8E%E8%AE%B0/</guid><description>这一篇一定要写，但不知道如何写。
+夏天终于如期而至，张开了它热情洋溢的臂膀。今年春天的主题是 ：“2014 我在春天有个约会”，那么夏日主题定为：“2014 夏季的风光也如此明媚”。</description></item><item><title>剧本错乱的太白山之旅 - 不是后记的后记</title><link>https://blog.formalscience.com/2014/06/05/2014-06-05_%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%85_-_%E4%B8%8D%E6%98%AF%E5%90%8E%E8%AE%B0%E7%9A%84%E5%90%8E%E8%AE%B0/</link><pubDate>Thu, 05 Jun 2014 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2014/06/05/2014-06-05_%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%85_-_%E4%B8%8D%E6%98%AF%E5%90%8E%E8%AE%B0%E7%9A%84%E5%90%8E%E8%AE%B0/</guid><description>这一篇一定要写，但不知道如何写。
 去太白山是和仔春节时候的约定，然而由于四月发生的一些事情，我的心里对这次出行又有了其他的想法。
 莫名生出的期望 在心中暗暗成长 这么下去 我可会疯狂？
 临到快出发的时候，28 号的时候，老板请大家吃饭，而我却由于一些事情，心中完全没有什么心情。喝了酒，发了一些消息，收到一些消息。
@@ -423,8 +438,7 @@ Windows 10 Pro + Ubuntu 14.04.3 LTS 雙系統安裝 中提到最后在 Windows �
 我之前建了一个植物的相册，叫《2014我想在春天有次约会》，满满骚动的气息。现在已然日日融在暖风之中了，北京也经历了温度骤升的几天。当然自带火防+10的我，不怕这个。
 远处的风 慢些吹吧 紧跟你的脚步 我不是追风少年啊
 可爱的人 不要离去 想绕到前面 看清你的脸啊
-我怕自己在这盛夏的光中迷失方向。
- </description></item><item><title>剧本错乱的太白山之旅（4）</title><link>https://blog.formalscience.com/2014/06/05/2014-06-05_%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%854/</link><pubDate>Thu, 05 Jun 2014 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2014/06/05/2014-06-05_%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%854/</guid><description>重新听了一下自己那天晚上的录音，是自己发抖的声音，以及救援人员对我们讲的各种故事。各种被教育，对安全又有了新的理解。
+我怕自己在这盛夏的光中迷失方向。</description></item><item><title>剧本错乱的太白山之旅（4）</title><link>https://blog.formalscience.com/2014/06/05/2014-06-05_%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%854/</link><pubDate>Thu, 05 Jun 2014 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2014/06/05/2014-06-05_%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%854/</guid><description>重新听了一下自己那天晚上的录音，是自己发抖的声音，以及救援人员对我们讲的各种故事。各种被教育，对安全又有了新的理解。
 我们到了文公庙之后，就找到有烧火炉子的房间进去烤火，全程我身体不住发抖，里面的抓绒全湿了，外面的冲锋衣也全湿了，说话自然都是颤音。去吃了不是那么贵的泡面之后，我又用汤泡了饼吃，很开心，很开心。
 然后，仔和老板说了，我们去板房打地铺，虽然不用去挤那个大床了，但是我的睡袋温标不够，睡地铺估计也是挺冷的。
 我们把睡袋铺开之后，我发现自己里面的抓绒衣还是都是水汪汪的，用冲锋衣垫在头下当枕头。睡之前，黑给我和仔拍了一张照片。
@@ -433,13 +447,13 @@ Windows 10 Pro + Ubuntu 14.04.3 LTS 雙系統安裝 中提到最后在 Windows �
 装好包后，我吃了一根士力架，喝了热豆奶，坐在床边聊天。当黑说他身体不舒服，可能不能继续向上爬之后，我和仔商量了一下，决定下撤。另外的原因就是山上积雪太深。
 下撤的话，就轻松了，也可以在屋子里多休息一下。我就多上山上爬了一下。虽然仍然望不到大爷海所在的山峰，但是看到的风景也很迷人。显示海拔3500+，这也算是我的人生新高度了。
 过了一会儿，我回去后，我们就出发下山了。下山的路很好走，一路上拍拍照片好不惬意。中途唱了一首会歌。
-（下面的两个字可以点击）白鸽
+（下面的两个字可以点击）
+白鸽
 到了小文公庙后，我们合了一张影。
- 然后就是各种走，各种走，最后到了一个岔路口，我说自己想上天圆地方上去看看，他俩在下面等，结果我下来后，他们决定从天圆地方翻过去走，于是我又背着包翻上去。
+然后就是各种走，各种走，最后到了一个岔路口，我说自己想上天圆地方上去看看，他俩在下面等，结果我下来后，他们决定从天圆地方翻过去走，于是我又背着包翻上去。
 后面坐了缆车下山，时间好长啊。下山后，我们被迫补票（其实可以向别人要张票然后就能混到车票的）坐了超长时间的旅游车下到车站。到了太白山候车室后，买了票，休息了一下，就回西安了。旅行最终还是有终点的。
 至于，山上的风景的话，当天的天气实在不是很好，选几张自己喜欢的吧。虽然时间还太早，山上没有什么绿色，但有种苍茫辽阔的感觉。
-补一张回程大巴上的麦田吧，估计大片麦田出现的时候我睡过去了。
-  </description></item><item><title>剧本错乱的太白山之旅（3）</title><link>https://blog.formalscience.com/2014/05/27/2014-05-27_%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%853/</link><pubDate>Tue, 27 May 2014 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2014/05/27/2014-05-27_%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%853/</guid><description>其实，拖了这么久，好多事情都记不清了。
+补一张回程大巴上的麦田吧，估计大片麦田出现的时候我睡过去了。</description></item><item><title>剧本错乱的太白山之旅（3）</title><link>https://blog.formalscience.com/2014/05/27/2014-05-27_%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%853/</link><pubDate>Tue, 27 May 2014 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2014/05/27/2014-05-27_%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%853/</guid><description>其实，拖了这么久，好多事情都记不清了。
 第二天，我们从骆驼树出发，此时海拔是2000m。然后拍了一会儿，到了大殿，爬升了近300m，此时海拔2271m。看到了红桦树保护区，不得不说，红桦树真是超级漂亮，我还在地上捡了红色的树皮回来，嘿嘿。
 然后继续爬，这路真是漫长啊，山中也开始起了雾气，不晓得走到什么时候才到下一个地点，斗母宫。看到路标，大约是五里。我们在一个平台上视野很好的地方很二逼地吹了哨子，还录了视频。
 太白山上吹哨子 密码： abcd
@@ -448,7 +462,7 @@ Windows 10 Pro + Ubuntu 14.04.3 LTS 雙系統安裝 中提到最后在 Windows �
 后来，又是一阵狂爬，山上雾气也越来越重了，又是五里山路。走着走着感觉天空飘起了雨滴，我不断跟仔说，就是雾气太大了，不是雨水，我还是太天真了啊。
 跋涉到平安寺后，海拔到了 2828m，时间也到了中午十二点，在那里休息午饭。周围覆着雪的植物。
 平安寺 密码：abcd
- 吃完饭，后面上来一个大叔和一个大哥（他们简直就是我们的领路人）。我们于是几乎和他们同时出发，奔向明星寺。刚走出几步，天开始飘雪，于是整个节奏由春游直接变成了风雪太白山。
+吃完饭，后面上来一个大叔和一个大哥（他们简直就是我们的领路人）。我们于是几乎和他们同时出发，奔向明星寺。刚走出几步，天开始飘雪，于是整个节奏由春游直接变成了风雪太白山。
 期间，接山泉水喝了几次，包括黄色的山泉水（就是你想的那种颜色），喝得还很开心。
 期间逗比视频一段
 我的金箍棒断了啊 密码：abcd
@@ -456,7 +470,7 @@ Windows 10 Pro + Ubuntu 14.04.3 LTS 雙系統安裝 中提到最后在 Windows �
 然后出发，期间各种苦逼不说，五上五下不说，总之在海拔2800附近不知走了多少里路。五上五下真的很痛苦，各种嗖嗖下降的海拔，就是我们心中的血在滴，而且下降很陡峭，上升也很陡峭。
 下午四点半到达了放羊寺，终于海拔在3000m了。此时是下午四点半，大哥说两个小时左右就能够到文公庙了。
 路上还是有不少漂亮花朵的。
- 然后下个目标就是文公庙了，要穿过“石海”。这真是石海啊！好多石头，前面带路的大哥很快就没影了，因为没有岔路需要指导我们了。
+然后下个目标就是文公庙了，要穿过“石海”。这真是石海啊！好多石头，前面带路的大哥很快就没影了，因为没有岔路需要指导我们了。
 石海掠影 密码：abcd
 不晓得穿过了多少石头的海洋，每次都以为已经过了这段地形，结果它又在我们眼前出现。当然我一路不忘拍照片。
 最后，其实我心中闪现过念头，要不就在这里扎营得了，因为我们都不知道还要多久才能到达目的地，只能根据自己的海拔和与文公庙的直线距离进行判断，一步一步走下去，真的有点绝望。
@@ -464,13 +478,13 @@ Windows 10 Pro + Ubuntu 14.04.3 LTS 雙系統安裝 中提到最后在 Windows �
 最后真是连续的、陡峭的、令人发抖绝望的上坡之后，山脊上出现了一个蓝衣小哥的影子，我赶忙向他招呼，得知还有不到五分钟的路途，就到文公庙补给站了，感觉欣喜之情难以言表了。谢过之后，我们赶快奔了上去，这海拔500m距离，整整走了2个多小时，上上下下不计其数。
 终于看到了文公庙的铁皮屋子，我的心反而有些平静了，没有那么激动了。此时时间 17:20，海拔3480m。
 回首望着来时的方向，突然心中好多感慨，但是都被自己发抖的身体憋了回去。
- 山风实在太大，建的挡风的石墙。
-是夜发生的事情，都足够再写一篇日志了。
-  </description></item><item><title>剧本错乱的太白山之旅（2）</title><link>https://blog.formalscience.com/2014/05/15/2014-05-15_%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%852/</link><pubDate>Thu, 15 May 2014 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2014/05/15/2014-05-15_%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%852/</guid><description>这个是整体的路线，我们的计划是从蒿坪进，汤峪出，这样方便坐车，配合我短暂的假期，使得我能赶上周日的组会。
+山风实在太大，建的挡风的石墙。
+是夜发生的事情，都足够再写一篇日志了。</description></item><item><title>剧本错乱的太白山之旅（2）</title><link>https://blog.formalscience.com/2014/05/15/2014-05-15_%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%852/</link><pubDate>Thu, 15 May 2014 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2014/05/15/2014-05-15_%E5%89%A7%E6%9C%AC%E9%94%99%E4%B9%B1%E7%9A%84%E5%A4%AA%E7%99%BD%E5%B1%B1%E4%B9%8B%E6%97%852/</guid><description>这个是整体的路线，我们的计划是从蒿坪进，汤峪出，这样方便坐车，配合我短暂的假期，使得我能赶上周日的组会。
 正式出发了，此时 GPS 位置：34-5-19.9 N 107-42-19.9 E 海拔1163，时间是 2014-04-30 15:31。
 首先来段，蒿坪古道的介绍吧，其实爬之前真该好好参悟下这段文字的。
 蒿坪古道风景区主要分为黑虎观景区（岩洞沟探险区）、点兵场景区和大殿景区三部分，共有景点80多处。蒿坪古道是登太白山历史最悠久、庙宇古迹分布最多的线路，是太白山“低山五里一庙，高山二十里一庙”的宗教文化景观发源地。 核心是，到了二十里一庙的时候，走得还真是有点小忧伤。不过那是第二天的事情了，一开始的行走是在春游的心情中展开的。我来之前做过一些预习，知道太白山内植物种类很多，因此也抱着多看看的心态来的。
-刚开始上山很高兴了，都是很缓的山间小路，清澈的溪水，葱绿的各类植物，山间花朵的清香，祥和的气氛四处蔓延。在第一个分叉路口，我们来了一张合影，此时三人精神抖擞。
+刚开始上山很高兴了，都是很缓的山间小路，清澈的溪水，葱绿的各类植物，山间花朵的清香，祥和的气氛四处蔓延。
+在第一个分叉路口，我们来了一张合影，此时三人精神抖擞。
 然后就是爬啊爬啊，一路上到处照相。我看到那些美丽而陌生的各类植物真是满心欢喜，脚步也变得迟缓了起来，各种咔嚓咔嚓。
 走着走着发现山上竟然还有人家，还有一只可爱的小狗。
 在山野也算以全天行军的方式爬了几次山了，和往常感受一样，就是累啦，不过有这种心理预期就没有问题了。之前看到微信上一个学弟的签名：
@@ -487,7 +501,7 @@ Windows 10 Pro + Ubuntu 14.04.3 LTS 雙系統安裝 中提到最后在 Windows �
 车到了眉县之后，先吃了个饭，吃的杨凌蘸水面，两个人吃了20，总共八根面，还是超级实惠的，而且很好吃。
 客运站各种票好便宜啊。
 去了营头镇，包了一个出租去蒿坪。司机师傅要40，真是太实在了。其实我们还是犹豫了一下的，旁边一个大爷说不多，我们就没还价。事实证明，师傅真的没有坑我们，那个路长的。我们半路还问是不是快到了，师傅说要是现在就到了，不就是坑你们了么，现在才开了20的，配合上宝鸡口音，让人感觉特别踏实。于是最终我们站在了保护站的门口，由于不是旺季，无人看管，我们就能够不用买门票啦。
- 进入大门，我们的穿越之旅就要开始了。这时我们的心情是多么欢快！</description></item><item><title>谁也不要鄙视谁</title><link>https://blog.formalscience.com/2014/04/09/2014-04-09_%E8%B0%81%E4%B9%9F%E4%B8%8D%E8%A6%81%E9%84%99%E8%A7%86%E8%B0%81/</link><pubDate>Wed, 09 Apr 2014 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2014/04/09/2014-04-09_%E8%B0%81%E4%B9%9F%E4%B8%8D%E8%A6%81%E9%84%99%E8%A7%86%E8%B0%81/</guid><description>前几天周围很多同学转发各种状态表达对上街游行抵制 PX 项目的茂名人的鄙视。我觉得有几个问题都要想一下：
+进入大门，我们的穿越之旅就要开始了。这时我们的心情是多么欢快！</description></item><item><title>谁也不要鄙视谁</title><link>https://blog.formalscience.com/2014/04/09/2014-04-09_%E8%B0%81%E4%B9%9F%E4%B8%8D%E8%A6%81%E9%84%99%E8%A7%86%E8%B0%81/</link><pubDate>Wed, 09 Apr 2014 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2014/04/09/2014-04-09_%E8%B0%81%E4%B9%9F%E4%B8%8D%E8%A6%81%E9%84%99%E8%A7%86%E8%B0%81/</guid><description>前几天周围很多同学转发各种状态表达对上街游行抵制 PX 项目的茂名人的鄙视。我觉得有几个问题都要想一下：
 当地民众有没有权力决定 PX 项目是否能够在本地建设。如果他们本来就没有这个权力的话，恐怕抗议也是没用的。如果他们有这样的权力，其他地方的民众有没有替他们做决定的权力，仅仅是因为这些决定有利于自己。
 是否有对当地民众的补偿方案，在这个争论过程中，始终没有见到政府宣传这方面的内容。如果当地民众没有因为这件事情获得直接利益的话，就算别人说以后可以增加就业机会、带动当地经济发展，都很难抵消当地人的恐慌吧。
 就算项目理论上对环境的危害很小，在中国真的能够监管严格？国内这种企业是受政府监管的，而谁能监管政府呢，人民么？ 一个我个人不喜欢的言论：
@@ -512,14 +526,16 @@ Windows 10 Pro + Ubuntu 14.04.3 LTS 雙系統安裝 中提到最后在 Windows �
 小学的时候，我曾经告发全班同学在学校门口的早餐摊上抄作业，然后成为全班公敌。但即便如此，那些同学里还是有很多成了我的好朋友。我已经不会做这样的事情了，不是因为可能带来的后果，而是这世上有太多的无奈。我也不曾后悔，如果回到从前，那个小男孩还会做出同样的决定。
 另外，今天还看了一篇讲 伊斯兰教 势力渗透的文章，内容比较极端，但是也反映了一部分现实。信仰，真是很难以改变的东西啊。虽然我们很多国人经常会嗟叹自己没有信仰，我看还是有的。信仰不一定是神、主义。信仰就是你相信这个世界赖以运转的那些基础，信仰就是你相信为真的那些东西，那些支持你每日生活、做出决定的那些准则。就像有些人认为活着就行，有些人宁死不屈，有些人相信爱情的纯洁，有些人认为爱情不过是场游戏。
 这些年因我的心理不成熟，伤害了几个人。成长，会改变你对事物的态度和处理方式。我不想改变的事自己的初衷。每当自己迷茫的时候，就会告诫自己：惟愿不失本心。
-然而我啊，还是希望能够生活在一个纯粹的世界里，蓝天白云，鸟语花香。
-  </description></item><item><title>为什么用Clojure，以及一点感悟</title><link>https://blog.formalscience.com/2013/09/02/2013-09-02_%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8clojure%E4%BB%A5%E5%8F%8A%E4%B8%80%E7%82%B9%E6%84%9F%E6%82%9F/</link><pubDate>Mon, 02 Sep 2013 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2013/09/02/2013-09-02_%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8clojure%E4%BB%A5%E5%8F%8A%E4%B8%80%E7%82%B9%E6%84%9F%E6%82%9F/</guid><description>1.Java互操作Clojure和Java互操作还是比较简单的，网上有很多案例。
+然而我啊，还是希望能够生活在一个纯粹的世界里，蓝天白云，鸟语花香。</description></item><item><title>为什么用Clojure，以及一点感悟</title><link>https://blog.formalscience.com/2013/09/02/2013-09-02_%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8clojure%E4%BB%A5%E5%8F%8A%E4%B8%80%E7%82%B9%E6%84%9F%E6%82%9F/</link><pubDate>Mon, 02 Sep 2013 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2013/09/02/2013-09-02_%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8clojure%E4%BB%A5%E5%8F%8A%E4%B8%80%E7%82%B9%E6%84%9F%E6%82%9F/</guid><description>1.Java互操作
+Clojure和Java互操作还是比较简单的，网上有很多案例。
 首先讲下Java中调用Clojure。
 一种方式是用过clojure.lang中的一些方法引入一个命名空间中的函数和变量，然后使用，这种方法就要注意ClassPath和ClassLoader的问题，这在Eclipse的RCP开发中还是比较烦的。另外要注意如果有Clojure源码文件被编译成Class文件了，调用这些文件的Clojure.jar和编译出这些文件的Clojure.jar版本一定要一致。
 另外一种方式就是使用 “:aot :all“ 命令把所有Clojure源码编译成JVM的Class文件，然后调用genclass方法产生的类和函数。这个可以比较方便地把接口暴露出来。这篇文章针对genclass的各种用法讲得很好。
 在Clojure中调用Java就很简单了，随便一搜就是一大堆，官方文档也有很多例子。
-2.编程模式Clojure本身就是JVM上的一个Lisp方言，所以编程模式主要就是函数式。当然我对函数式这个术语理解也不是很透彻，目前理解的函数式语言的特点就是：函数是第一公民、尽量保持无状态操作、有利于并行化操作、具有较强的作为meta language的能力（可以用来构建DSL）。这个可以看一下SCIP（计算机程序的构造和解释）这本书。
-3.初衷我本来想用Scala的好嘛！其实，当时主要想做BIP（这个还是高端大气上档次的）这个形式化语言的一个解释器，然后依靠那个不靠谱的方案和一个还不存在的同步形式化语言解释器进行对接，构建一个仿真环境。
+2.编程模式
+Clojure本身就是JVM上的一个Lisp方言，所以编程模式主要就是函数式。当然我对函数式这个术语理解也不是很透彻，目前理解的函数式语言的特点就是：函数是第一公民、尽量保持无状态操作、有利于并行化操作、具有较强的作为meta language的能力（可以用来构建DSL）。这个可以看一下SCIP（计算机程序的构造和解释）这本书。
+3.初衷
+我本来想用Scala的好嘛！其实，当时主要想做BIP（这个还是高端大气上档次的）这个形式化语言的一个解释器，然后依靠那个不靠谱的方案和一个还不存在的同步形式化语言解释器进行对接，构建一个仿真环境。
 其实同为JVM上寄生的函数式语言，明显Scala做这个工作更有优势一点：基于OCaml（这个的前身ML我之前用过）、有方便的类型模式匹配机制（这个机制在写解释器时应该比较有用）。Clojure我也调研过，但是当时是没有这个想法用它的。但是呢，但是呢，亚马逊给我推送了一封邮件，里面就有《Clojure编程》这本书，然后我还顺着广告点过去买了。于是在我刚开始做这个工作的时候，Clojure就被选中了。
 都是缘分啊！
 4.困难
@@ -536,8 +552,7 @@ Emacs我还是很喜欢的，特别是里面的ParEdit插件，用来进行Lisp�
 主要是做了一个BIP的解释器，还没有做完，只是完成了核心的语义解释的一部分。前段的语法解析器没有做，不过这个有现成的。
 8.经验
 实践出真知！
-这首歌我最近一直在单曲循环。
- </description></item><item><title>建模语言</title><link>https://blog.formalscience.com/2013/05/28/2013-05-28_%E5%BB%BA%E6%A8%A1%E8%AF%AD%E8%A8%80/</link><pubDate>Tue, 28 May 2013 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2013/05/28/2013-05-28_%E5%BB%BA%E6%A8%A1%E8%AF%AD%E8%A8%80/</guid><description>今天晚上和师兄师弟们一起吃饭。去食堂的路上，一直到食堂为止都特别伤心。自己研究生生活都已经过了快两年，对自己的研究方向依然不能向别人解释清楚。特迷茫，特无助。下面是我的一些理解，不是很全面（不是我全部所想的，未必全部是对的）。
+这首歌我最近一直在单曲循环。</description></item><item><title>建模语言</title><link>https://blog.formalscience.com/2013/05/28/2013-05-28_%E5%BB%BA%E6%A8%A1%E8%AF%AD%E8%A8%80/</link><pubDate>Tue, 28 May 2013 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2013/05/28/2013-05-28_%E5%BB%BA%E6%A8%A1%E8%AF%AD%E8%A8%80/</guid><description>今天晚上和师兄师弟们一起吃饭。去食堂的路上，一直到食堂为止都特别伤心。自己研究生生活都已经过了快两年，对自己的研究方向依然不能向别人解释清楚。特迷茫，特无助。下面是我的一些理解，不是很全面（不是我全部所想的，未必全部是对的）。
 1.何谓建模？
 建模就是对一个表示的抽象表示，使得抽象过的表示在一定假设下可以回答原始表示能够回答的问题。例如：
 把程序抽象成一个流程图，这个流程图可以回答给定输入产生什么输出的问题； 把程序抽象成一个函数依赖图，可以回答关于函数之间调用关系的问题； 把一个地表的自由落体抽象成成真空中的自由落体，（忽略掉空气阻力和允许一定误差情况下）回答自由落体从指定高度到达地面的时间问题 2.建模语言 语言是一种表现形式，就如眼神一样，直达人的灵魂深处。好吧，我文（che）艺（dan）了。写程序需要（编程）语言，刻画物理现象需要（数学）语言，把听到的曲调记录下来也需要（乐谱使用的）语言。建立这些事物的抽象表示（建模过程）也需要一种语言，称为建模语言，例如：UML、Petri Net、自动机（Automata）、正则表达式、上下文无关文法等。
@@ -564,8 +579,7 @@ Emacs我还是很喜欢的，特别是里面的ParEdit插件，用来进行Lisp�
 等等一系列，一系列。
 6.我在做啥
 最近在做对增加了时间表示的BIP模型和增加了时间表示的Esterel模型二者混合模型的执行语义解释。现在正处于用Clojure写没有时间表示的BIP模型执行语义解释的地步。
-最近在做把BIP模型生成的代码转化成C语言代码，然后在ARM板卡上执行的流程探索。这条路已经基本走通，我能说今天中午什么事都没有做，然后之前bug的程序就能够在ARM板卡上运行了么。这真是上天不负有（gou）心（shi）人（yun）啊。
-  </description></item><item><title>唯愿不失本心</title><link>https://blog.formalscience.com/2013/04/12/2013-04-12_%E5%94%AF%E6%84%BF%E4%B8%8D%E5%A4%B1%E6%9C%AC%E5%BF%83/</link><pubDate>Fri, 12 Apr 2013 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2013/04/12/2013-04-12_%E5%94%AF%E6%84%BF%E4%B8%8D%E5%A4%B1%E6%9C%AC%E5%BF%83/</guid><description>1.还要向前行
+最近在做把BIP模型生成的代码转化成C语言代码，然后在ARM板卡上执行的流程探索。这条路已经基本走通，我能说今天中午什么事都没有做，然后之前bug的程序就能够在ARM板卡上运行了么。这真是上天不负有（gou）心（shi）人（yun）啊。</description></item><item><title>唯愿不失本心</title><link>https://blog.formalscience.com/2013/04/12/2013-04-12_%E5%94%AF%E6%84%BF%E4%B8%8D%E5%A4%B1%E6%9C%AC%E5%BF%83/</link><pubDate>Fri, 12 Apr 2013 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2013/04/12/2013-04-12_%E5%94%AF%E6%84%BF%E4%B8%8D%E5%A4%B1%E6%9C%AC%E5%BF%83/</guid><description>1.还要向前行
 读博士已经快两年了。两年里学术方面开心的时候不多，成就也不多。每次去见朋友的时候总是暗示自己：不要总是跟他们抱怨自己的不顺。到头来还是忍不住。自己是一个比较容易过于悲观和过于乐观的人，虽然最近心智成长了许多。现在总觉得看不到希望，很多时候都想退出了，去公司工作也还行，比天天在这里郁闷强。还有一个原因是自己确实不努力，科研不顺利有时候就会放纵自己，让自己在游戏（适度游戏还是好的，不要太过就行）中消沉，感觉就像借酒消愁，醒时愁更忧。正确的方式还是要把自己想要做的事情抓紧时间来做，比如这学期报名的托福以及开始写论文。争取在自己做的一切事情（无论喜欢还是不喜欢）中寻求到收获。
 2.魔本由心生
 最近在上跳水课，第一次上三米台的时候特别怂，不敢向下跳。老师告诉我们：面对危险的时候，如果它是未知的，那么恐惧时很自然的；如果危险已知并且可控，那么恐惧就是由于内心不坚定产生的了。第二次，我上五米台也较为从容跳下来了。自己的胆怯犹豫不是那么容易克服的，不过这种和自己心灵的抗争也是一种成长。
@@ -573,8 +587,8 @@ Emacs我还是很喜欢的，特别是里面的ParEdit插件，用来进行Lisp�
 室友在微软实习，工资也多，还能做文章，我很是羡慕；很多同学都发了文章；。宽慰自己，每个人都有自己的生活，每个人都行走在自己的轨迹上，却总是意难平。
 4.愿不失本心
 总是存在Frost诗中那条未选择的路。我对那些类如“既然选择了，便只顾风雨兼程”的励志句子不是很认同。有时选择确实是错误的，难道还要违背自己的意愿继续前行么？还是只是背负上了世俗的压力，不能转身离开？我不想留下一生叹息——“算了！”这样的生活还是不好的。我自己经常很懦弱，不敢跟随自己的想法，总是害怕别人带来的伤害（虽然我的口头语之一是：反正不会死人！）以及给别人带来伤害（这对我自己也是一种伤害）。但我也不曾放弃自己。唯愿小小绿苗能够快些长成参天大树，能够屹立在风雨之中。
-—— 张华枫</description></item><item><title>读《民国那些人: 鲁迅同时代人》</title><link>https://blog.formalscience.com/2013/04/04/2013-04-04_%E8%AF%BB%E6%B0%91%E5%9B%BD%E9%82%A3%E4%BA%9B%E4%BA%BA-%E9%B2%81%E8%BF%85%E5%90%8C%E6%97%B6%E4%BB%A3%E4%BA%BA/</link><pubDate>Thu, 04 Apr 2013 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2013/04/04/2013-04-04_%E8%AF%BB%E6%B0%91%E5%9B%BD%E9%82%A3%E4%BA%9B%E4%BA%BA-%E9%B2%81%E8%BF%85%E5%90%8C%E6%97%B6%E4%BB%A3%E4%BA%BA/</guid><description>鲁迅的母亲鲁瑞真是一位令人敬佩的女性和母亲 鲁迅和他原配朱安是旧时代的牺牲品 鲁迅和朱自清是同乡，远房亲戚 鲁迅和他弟关系闹僵就是因为他弟媳乱花钱（哥俩一个月600大洋都不够花），还各种编造谣言 陈独秀放在宋朝那就是名士风范 [caption id=&amp;quot;&amp;quot; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;720&amp;rdquo;]陈独秀在杭州《咏鹤》[/caption]
-[caption id=&amp;quot;&amp;quot; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;720&amp;rdquo;]陈独秀在杭州 《灵隐寺前》[/caption] 6. 杂文在当时的作用就是天涯上互相攻击的帖子，看鲁迅、胡适、李大钊、陈独秀、徐志摩各种互相攻击各种re就感觉很喜感 7. 徐志摩是真小资 8. 鲁和许那是真爱情，许很伟大 9. 郁达夫是真性情，真懒散</description></item><item><title>Archlinux Install Notes</title><link>https://blog.formalscience.com/2013/03/27/2013-03-27_archlinux_install_notes/</link><pubDate>Wed, 27 Mar 2013 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2013/03/27/2013-03-27_archlinux_install_notes/</guid><description>分区格式化 cfdisk mkfs.ext /dev/sda* mkswap /dev/sdaX swapon /dev/sdaX
+—— 张华枫</description></item><item><title>读《民国那些人: 鲁迅同时代人》</title><link>https://blog.formalscience.com/2013/04/04/2013-04-04_%E8%AF%BB%E6%B0%91%E5%9B%BD%E9%82%A3%E4%BA%9B%E4%BA%BA-%E9%B2%81%E8%BF%85%E5%90%8C%E6%97%B6%E4%BB%A3%E4%BA%BA/</link><pubDate>Thu, 04 Apr 2013 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2013/04/04/2013-04-04_%E8%AF%BB%E6%B0%91%E5%9B%BD%E9%82%A3%E4%BA%9B%E4%BA%BA-%E9%B2%81%E8%BF%85%E5%90%8C%E6%97%B6%E4%BB%A3%E4%BA%BA/</guid><description>鲁迅的母亲鲁瑞真是一位令人敬佩的女性和母亲 鲁迅和他原配朱安是旧时代的牺牲品 鲁迅和朱自清是同乡，远房亲戚 鲁迅和他弟关系闹僵就是因为他弟媳乱花钱（哥俩一个月600大洋都不够花），还各种编造谣言 陈独秀放在宋朝那就是名士风范 [caption id=&amp;quot;&amp;quot; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;720&amp;rdquo;] 陈独秀在杭州《咏鹤》[/caption]
+[caption id=&amp;quot;&amp;quot; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;720&amp;rdquo;] 陈独秀在杭州 《灵隐寺前》[/caption] 6. 杂文在当时的作用就是天涯上互相攻击的帖子，看鲁迅、胡适、李大钊、陈独秀、徐志摩各种互相攻击各种re就感觉很喜感 7. 徐志摩是真小资 8. 鲁和许那是真爱情，许很伟大 9. 郁达夫是真性情，真懒散</description></item><item><title>Archlinux Install Notes</title><link>https://blog.formalscience.com/2013/03/27/2013-03-27_archlinux_install_notes/</link><pubDate>Wed, 27 Mar 2013 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2013/03/27/2013-03-27_archlinux_install_notes/</guid><description>分区格式化 cfdisk mkfs.ext /dev/sda* mkswap /dev/sdaX swapon /dev/sdaX
 挂载当前分区 检查当前磁盘的标识符和布局 lsblk /dev/sda mount /dev/sda1 /mnt mkdir /mnt/home 如果是home独立分区 mount /dev/sda2 /mnt/home
 编辑 /etc/pacman.d/mirrorlist 更新 pacman -Syy
 使用pacstrap脚本安装基本系统
@@ -609,12 +623,17 @@ MSTC的招新最先举行（面试短信通知），面试那天晚上下着雨�
 Spin工具可以从其官网下载。
 C Complier里的gcc可以用cygwin安装，记得选择直接的版本，不要选择gcc.exe，否则可能出现不能验证通过的错误。
 基本上这样就算安装完成了，如果你有什么问题，可以给我留言。</description></item><item><title>如果我换一个地方生活</title><link>https://blog.formalscience.com/2012/08/15/2012-08-15_%E5%A6%82%E6%9E%9C%E6%88%91%E6%8D%A2%E4%B8%80%E4%B8%AA%E5%9C%B0%E6%96%B9%E7%94%9F%E6%B4%BB/</link><pubDate>Wed, 15 Aug 2012 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2012/08/15/2012-08-15_%E5%A6%82%E6%9E%9C%E6%88%91%E6%8D%A2%E4%B8%80%E4%B8%AA%E5%9C%B0%E6%96%B9%E7%94%9F%E6%B4%BB/</guid><description>比如换一个地方读博士，从这里退学的话，比如去美帝。
- 应该西海岸一个阳光充沛的地方，因为我是如此喜爱阳光，能够感受它的温暖；没事可以散散步，钓钓鱼；或许生活没有如此轻松，但是一想到新的地方，我就很兴奋，或许是太好奇了吧。
- 想想这些在现在这个地方有什么做不到的呢？一周只有一天可以自由活动，应该没有其他实验室特意选在周末下午开组会吧；每天还打卡，真是比一些IT公司还不如。北京的阳光在雨后还是很好的，但是却不能心情轻松地沐浴其中。
- 我在恐惧什么，难道换一种生活不可以么？如果我要去公司的话，以我现在的能力有地方要么？归根结底还是自己太弱了。可是自己真很弱么？我觉得也不是的。自己学习能力还是不错的，
+应该西海岸一个阳光充沛的地方，因为我是如此喜爱阳光，能够感受它的温暖；没事可以散散步，钓钓鱼；或许生活没有如此轻松，但是一想到新的地方，我就很兴奋，或许是太好奇了吧。
+想想这些在现在这个地方有什么做不到的呢？一周只有一天可以自由活动，应该没有其他实验室特意选在周末下午开组会吧；每天还打卡，真是比一些IT公司还不如。北京的阳光在雨后还是很好的，但是却不能心情轻松地沐浴其中。
+我在恐惧什么，难道换一种生活不可以么？如果我要去公司的话，以我现在的能力有地方要么？归根结底还是自己太弱了。可是自己真很弱么？我觉得也不是的。自己学习能力还是不错的，
 使用建模语言可以自己发现很多构造方法， 略懂一些函数式语言，其他语言学习能力也不错， 对高性能、大数据处理、数据挖掘、机器学习也还都有一些了解。 或许是因为对公司不了解，所以才不能有一个良好的判断吧。
- 还是要勇敢走出第一步才行啊！总是憧憬美好的生活只会使自己迷失在自己编织出的网里，无法自拔。</description></item><item><title>给我时间来写诗</title><link>https://blog.formalscience.com/2012/08/15/2012-08-15_%E7%BB%99%E6%88%91%E6%97%B6%E9%97%B4%E6%9D%A5%E5%86%99%E8%AF%97/</link><pubDate>Wed, 15 Aug 2012 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2012/08/15/2012-08-15_%E7%BB%99%E6%88%91%E6%97%B6%E9%97%B4%E6%9D%A5%E5%86%99%E8%AF%97/</guid><description> 我已经迷失了许久，或许仍旧找不到出口。 &amp;mdash;&amp;mdash;张华枫
-去年来清华保研面试，最后一天得知被录取了，我把自己被卖了，当时是这样的感觉。现在看来，差不多也是这个样子一言成谶。然而，我想不明白，是自己不努力所以才心生怨念，还是实验室本身坑爹。最关键的是生活中很少有能让我没头脑开心的事情了（从我去看《冰河世纪 四》全程无笑点触发来看），是成长的代价么，还是我越来越麻木了。每天在实验室感受到的就是一种肃杀的气氛，是空调开得太大么。你化作夏日醉人的晚风吧 现在已到秋日 感受不到你的呼吸你化作秋日起舞的落叶吧 现在已到冬日 枝头上只剩下霜雪的寒意你还是不要化成冬日的什么了 你的笑容太美丽 这个季节会太温暖 失去存在的意义为什么我没有在春日里遇见你？</description></item><item><title>最近看的书</title><link>https://blog.formalscience.com/2012/07/10/2012-07-10_%E6%9C%80%E8%BF%91%E7%9C%8B%E7%9A%84%E4%B9%A6/</link><pubDate>Tue, 10 Jul 2012 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2012/07/10/2012-07-10_%E6%9C%80%E8%BF%91%E7%9C%8B%E7%9A%84%E4%B9%A6/</guid><description>这本书感觉相当好啊。</description></item><item><title>如何增加人人网的访问量</title><link>https://blog.formalscience.com/2012/06/28/2012-06-28_%E5%A6%82%E4%BD%95%E5%A2%9E%E5%8A%A0%E4%BA%BA%E4%BA%BA%E7%BD%91%E7%9A%84%E8%AE%BF%E9%97%AE%E9%87%8F/</link><pubDate>Thu, 28 Jun 2012 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2012/06/28/2012-06-28_%E5%A6%82%E4%BD%95%E5%A2%9E%E5%8A%A0%E4%BA%BA%E4%BA%BA%E7%BD%91%E7%9A%84%E8%AE%BF%E9%97%AE%E9%87%8F/</guid><description>主要是利用人们的好奇心吸引回访。
+还是要勇敢走出第一步才行啊！总是憧憬美好的生活只会使自己迷失在自己编织出的网里，无法自拔。</description></item><item><title>给我时间来写诗</title><link>https://blog.formalscience.com/2012/08/15/2012-08-15_%E7%BB%99%E6%88%91%E6%97%B6%E9%97%B4%E6%9D%A5%E5%86%99%E8%AF%97/</link><pubDate>Wed, 15 Aug 2012 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2012/08/15/2012-08-15_%E7%BB%99%E6%88%91%E6%97%B6%E9%97%B4%E6%9D%A5%E5%86%99%E8%AF%97/</guid><description>我已经迷失了许久，或许仍旧找不到出口。 &amp;mdash;&amp;mdash;张华枫
+去年来清华保研面试，最后一天得知被录取了，我把自己被卖了，当时是这样的感觉。现在看来，差不多也是这个样子一言成谶。然而，我想不明白，是自己不努力所以才心生怨念，还是实验室本身坑爹。
+最关键的是生活中很少有能让我没头脑开心的事情了（从我去看《冰河世纪 四》全程无笑点触发来看），是成长的代价么，还是我越来越麻木了。每天在实验室感受到的就是一种肃杀的气氛，是空调开得太大么。
+你化作夏日醉人的晚风吧 现在已到秋日 感受不到你的呼吸
+你化作秋日起舞的落叶吧 现在已到冬日 枝头上只剩下霜雪的寒意
+你还是不要化成冬日的什么了 你的笑容太美丽 这个季节会太温暖 失去存在的意义
+为什么我没有在春日里遇见你？</description></item><item><title>最近看的书</title><link>https://blog.formalscience.com/2012/07/10/2012-07-10_%E6%9C%80%E8%BF%91%E7%9C%8B%E7%9A%84%E4%B9%A6/</link><pubDate>Tue, 10 Jul 2012 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2012/07/10/2012-07-10_%E6%9C%80%E8%BF%91%E7%9C%8B%E7%9A%84%E4%B9%A6/</guid><description>这本书感觉相当好啊。</description></item><item><title>如何增加人人网的访问量</title><link>https://blog.formalscience.com/2012/06/28/2012-06-28_%E5%A6%82%E4%BD%95%E5%A2%9E%E5%8A%A0%E4%BA%BA%E4%BA%BA%E7%BD%91%E7%9A%84%E8%AE%BF%E9%97%AE%E9%87%8F/</link><pubDate>Thu, 28 Jun 2012 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2012/06/28/2012-06-28_%E5%A6%82%E4%BD%95%E5%A2%9E%E5%8A%A0%E4%BA%BA%E4%BA%BA%E7%BD%91%E7%9A%84%E8%AE%BF%E9%97%AE%E9%87%8F/</guid><description>主要是利用人们的好奇心吸引回访。
 用爬虫去爬去一定数量的好友列表，获得一定数量的id文件。 用自己的帐号认证，然后从id文件中取得一个id，然后访问他的页面。 当访问的页面到达一定规模的时候，在这么多人里肯定有些人很好奇想要看看你是谁，然后就点回你的页面。 访问量和好友申请就飕飕涨了。</description></item><item><title>Eclipse导入Github库</title><link>https://blog.formalscience.com/2012/06/17/2012-06-17_eclipse%E5%AF%BC%E5%85%A5github%E5%BA%93/</link><pubDate>Sun, 17 Jun 2012 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2012/06/17/2012-06-17_eclipse%E5%AF%BC%E5%85%A5github%E5%BA%93/</guid><description>导入要点
 使用HTTPS的方式会容易一些，SSH的方式会有一些认证问题（这个极有可能是伪命题，因为第2条的原因） 先通过命令行把库拖下来，最好不要放在eclipse的workplace中 然后新建一个项目，在Team|Share|&amp;hellip;|Git一路选下去就好 （这个日志需要重新更改）</description></item><item><title>如何给WordPress博客换一个Favicon图标</title><link>https://blog.formalscience.com/2012/06/03/2012-06-03_%E5%A6%82%E4%BD%95%E7%BB%99wordpress%E5%8D%9A%E5%AE%A2%E6%8D%A2%E4%B8%80%E4%B8%AAfavicon%E5%9B%BE%E6%A0%87/</link><pubDate>Sun, 03 Jun 2012 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2012/06/03/2012-06-03_%E5%A6%82%E4%BD%95%E7%BB%99wordpress%E5%8D%9A%E5%AE%A2%E6%8D%A2%E4%B8%80%E4%B8%AAfavicon%E5%9B%BE%E6%A0%87/</guid><description>整个过程大约分为以下几步
 制作favicon.ico
@@ -629,7 +648,7 @@ C Complier里的gcc可以用cygwin安装，记得选择直接的版本，不要�
 参考链接：
 给WP地址栏添加一个Favicon图标
 WordPress 博客添加个性标志favicon.ico</description></item><item><title>Hello world!</title><link>https://blog.formalscience.com/2012/04/20/2012-04-20_hello_world/</link><pubDate>Fri, 20 Apr 2012 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2012/04/20/2012-04-20_hello_world/</guid><description>很多事情都是从Hello，world开始的。这是WP博客默认的一篇文章，在此保留。
- 我第一次知道编程是怎么回事已经是高中了。舍友小戴在搞信息学竞赛，当时的我觉得编程是一件很神秘的事情。</description></item><item><title>2012-04-05 初试妙峰山</title><link>https://blog.formalscience.com/2012/04/05/2012-04-05_%E5%88%9D%E8%AF%95%E5%A6%99%E5%B3%B0%E5%B1%B1/</link><pubDate>Thu, 05 Apr 2012 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2012/04/05/2012-04-05_%E5%88%9D%E8%AF%95%E5%A6%99%E5%B3%B0%E5%B1%B1/</guid><description>今天突然想起去我的蚂蜂窝去看看，当初自己是用人人网关联的，把唯一的一篇游记复制过来吧。
+我第一次知道编程是怎么回事已经是高中了。舍友小戴在搞信息学竞赛，当时的我觉得编程是一件很神秘的事情。</description></item><item><title>2012-04-05 初试妙峰山</title><link>https://blog.formalscience.com/2012/04/05/2012-04-05_%E5%88%9D%E8%AF%95%E5%A6%99%E5%B3%B0%E5%B1%B1/</link><pubDate>Thu, 05 Apr 2012 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2012/04/05/2012-04-05_%E5%88%9D%E8%AF%95%E5%A6%99%E5%B3%B0%E5%B1%B1/</guid><description>今天突然想起去我的蚂蜂窝去看看，当初自己是用人人网关联的，把唯一的一篇游记复制过来吧。
 本来想去妙峰山，路线图是这个
 这样我的出发点就不对了，于是我果断没按照地图走，从东门出发了，准备向从北大南面绕过去。 成功绕过去之后，我在密密麻麻的立交下面迷失了。恰好看到两个人要上香山，于是我尾随在他们后面去香山了。没想到他们半路一拐，钻到一家肯德基店去了。于是我果断重新计算路线，自己奔香山去了。 一路上各种车，我在其中穿梭。 到香山了，这时路线是这样的，共计14.5KM，
 但是，我不知道香山哪里可以骑车，悲剧了。得了，去妙峰山好了，于是我又计算出去妙峰山的路线，46KM。
