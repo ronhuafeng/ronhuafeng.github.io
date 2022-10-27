@@ -185,4 +185,4 @@ main.(*ComputeNode).Result(...)
 	/Users/bef0rewind/Projects/net example/src/receiver_type/main/injection.go:13
 main.main()
 	/Users/bef0rewind/Projects/net example/src/receiver_type/main/injection.go:32 +0x47
-</code></pre><h2 id=6-内部机制>6. 内部机制</h2><p>内部机制有一些细节。大体就是一个接口 <code>i</code> 包含两部分内容（指针），一个是接口代表的方法的集合，一个实现这个接口的具体对象；而一个对象 <code>obj</code>，它包含了自己的内存中的值，也能通过其类型获取到 <code>obj</code> 实现的方法集合。</p><p>将这两个概念记住，在实现一些模式的时候就会少很多心智负担。</p><h2 id=7-总结>7. 总结</h2><p>Go 语言的这套基于 “duck typing” 的机制好不好，争论有很多。不过我一向对这些争论没有特别的倾向，至少理解其机制之后按照其设计思路来用还可以正常使用，而且里面没有复杂的概念和例外情形。</p><p>也许我的理解有偏差，但现在还没有发现什么矛盾的地方。</p></div><div class=post-footer></div></article></main></body></html>
+</code></pre><h2 id=6-内部机制>6. 内部机制</h2><p>内部机制有一些细节。大体就是一个接口 <code>i</code> 包含两部分内容（指针），一个是接口代表的方法的集合，一个实现这个接口的具体对象；而一个对象 <code>obj</code>，它包含了自己的内存中的值，也能通过其类型获取到 <code>obj</code> 实现的方法集合。</p><p>将这两个概念记住，在实现一些模式的时候就会少很多心智负担。</p><h2 id=7-总结>7. 总结</h2><p>Go 语言的这套基于 “duck typing” 的机制好不好，争论有很多。不过我一向对这些争论没有特别的倾向，至少理解其机制之后按照其设计思路来用还可以正常使用，而且里面没有复杂的概念和例外情形。</p><p>也许我的理解有偏差，但现在还没有发现什么矛盾的地方。</p></div></article></main></body></html>

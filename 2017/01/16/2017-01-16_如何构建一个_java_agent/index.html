@@ -23,4 +23,4 @@ Fourth. Execute your JVM whith -javaagent parameter, like this:"><meta property=
 </span></span><span style=display:flex><span>    <span style=color:#f92672>}</span>
 </span></span><span style=display:flex><span><span style=color:#f92672>}</span>
 </span></span></code></pre></div><p>Second. Create a manifest file (say, manifest.txt) marking this class for pre-main execution. Its contents are:</p><p><code>Premain-Class: Example</code></p><p>Third. Compile the class and package this class into a JAR archive:</p><p><code>javac Example.java</code>
-<code>jar cmf manifest.txt yourAwesomeAgent.jar *.class</code></p><p>Fourth. Execute your JVM whith -javaagent parameter, like this:</p><p><code>java -javaagent:yourAwesomeAgent.jar -jar yourApp.jar</code></p></div><div class=post-footer></div></article></main></body></html>
+<code>jar cmf manifest.txt yourAwesomeAgent.jar *.class</code></p><p>Fourth. Execute your JVM whith -javaagent parameter, like this:</p><p><code>java -javaagent:yourAwesomeAgent.jar -jar yourApp.jar</code></p></div></article></main></body></html>

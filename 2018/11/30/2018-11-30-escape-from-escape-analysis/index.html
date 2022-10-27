@@ -108,4 +108,4 @@ Go 中合法的类型转换为：<code>normal pointer</code> ⟷ <code>unsafe.Po
 ./escape.go:24: main &amp;obj does not escape
 (0x10904e0,0xc42003bf70)
 </code></pre><p>可以看到 <code>obj</code> 不再逃逸，主要是 <code>intAddr</code> 中断了逃逸分析算法构建的指针依赖关系（表示为一个有向图）。</p><h2 id=5-一点感想>5. 一点感想</h2><p>我们可以做到不代表一定去做，有风险也不代表禁区，采取什么样的行动是个人权衡后的选择。<br>什么原因导致了人们做了不同的选择，而人们不同的选择又导致了什么结果？<br>多样性是这个世界的现状，黑暗面与光明面同在。
-May the force be with you.</p></div><div class=post-footer></div></article></main></body></html>
+May the force be with you.</p></div></article></main></body></html>

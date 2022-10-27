@@ -29,4 +29,4 @@ smtp.helo()</p><p>#选择认证方式
 smtp.esmtp_features[&lsquo;auth&rsquo;] = &lsquo;LOGIN&rsquo;
 smtp.login(&rsquo;####@163.com&rsquo;, &lsquo;password&rsquo;)</p><p>message = MIMEMultipart()
 message.attach(MIMEText(&lsquo;content&rsquo;))
-message[&ldquo;Subject&rdquo;] = &lsquo;subject&rsquo;</p><p>smtp.sendmail(&rsquo;####@163.com&rsquo;, [&lsquo;mail_to@163.com&rsquo;], message.as_string())</p><p>差不多邮件这样就可以发送出去了</p></div><div class=post-footer></div></article></main></body></html>
+message[&ldquo;Subject&rdquo;] = &lsquo;subject&rsquo;</p><p>smtp.sendmail(&rsquo;####@163.com&rsquo;, [&lsquo;mail_to@163.com&rsquo;], message.as_string())</p><p>差不多邮件这样就可以发送出去了</p></div></article></main></body></html>
