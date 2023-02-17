@@ -5,6 +5,12 @@ func Read(fd int, p []byte) (n int, err error) func Write(fd int, p []byte) (n i
 func Syscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno) func Syscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno) func RawSyscall(trap, a1, a2, a3 uintptr) (r1, r2 uintptr, err Errno) func RawSyscall6(trap, a1, a2, a3, a4, a5, a6 uintptr) (r1, r2 uintptr, err Errno) RawSyscall 和 RawSyscall6 是对操作系统 Syscall 的直接调用；Syscall 和 Syscall6 会在调用操作系统 Syscall 前调用 runtime·entersyscall ，在操作系统 Syscall 返回后调用 runtime·exitsyscall 。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/2018/01/15/2018-01-15_golang-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8-syscall/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2018-01-15T20:59:11+00:00"><meta property="article:modified_time" content="2018-01-15T20:59:11+00:00"></head><body><header class=app-header><a href=https://blog.formalscience.com/><img class=app-header-avatar src=/avatar.jpg alt=bef0rewind></a>
 <span class=app-header-title>不是追风少年</span><nav class=app-header-menu><a class=app-header-menu-item href=/>Home</a>
 -
+<a class=app-header-menu-item href=/posts>Blogs</a>
+-
+<a class=app-header-menu-item href=/douban>豆瓣文章备份</a>
+-
+<a class=app-header-menu-item href=/wechat-blogs>微信公众号</a>
+-
 <a class=app-header-menu-item href=/categories/>Categories</a>
 -
 <a class=app-header-menu-item href=/tags/>Tags</a>
