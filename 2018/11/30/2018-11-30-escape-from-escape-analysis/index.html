@@ -3,12 +3,12 @@
 而静态分析不总是完备的，会有一些本来可以分配在栈上的对象被 Go 的编译器分配在了堆上。 如这篇文章《Golang escape analysis》所描述的一些例子一样，有些对象本来可以避免逃逸（Escape，指的是对象被分配在堆上）。
 对于某些场景，我们确定一个对象肯定可以（也应当）被分配在栈上，但是它却逃逸了。 这样在某些关键路径上的逃逸的对象会造成大量的分配和垃圾回收。
 2. Go 版本 使用的 Go 版本为今晚刚从 master 分支上 pull 下的源码直接构建。
-ThinkPad-X1-Carbon:bin bef0rewind$ ./go version go version devel +42e8b9c3a4 Fri Nov 30 15:17:34 2018 +0000 darwin/amd64 3. 示例 // file: escape.go package main import &#34;fmt&#34; type BigTempObject struct { /// ... field1 int } func causeEscape(i interface{}) { switch i."><meta property="og:title" content="Escape from escape analysis"><meta property="og:description" content="1. 逃逸分析背景 Go 语言采用了并发的（Concurrent）、非移动的（Non-Movable）、非分代的（Non-Generational）、基于三色（Tri-color）标记的垃圾回收（Garbage Collection）算法，只在 特定阶段开启写屏障（write barrier）。 特点是全局停顿时间比较少，在一些场景下是十微秒级别的。
+ThinkPad-X1-Carbon:bin bef0rewind$ ./go version go version devel +42e8b9c3a4 Fri Nov 30 15:17:34 2018 +0000 darwin/amd64 3. 示例 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 // file: escape."><meta property="og:title" content="Escape from escape analysis"><meta property="og:description" content="1. 逃逸分析背景 Go 语言采用了并发的（Concurrent）、非移动的（Non-Movable）、非分代的（Non-Generational）、基于三色（Tri-color）标记的垃圾回收（Garbage Collection）算法，只在 特定阶段开启写屏障（write barrier）。 特点是全局停顿时间比较少，在一些场景下是十微秒级别的。
 垃圾回收算法针对的是堆（heap）中的内存。 为了减少垃圾回收的时间消耗，Go 语言在编译阶段通过静态分析算法对程序的结构进行分析，尽可能讲对象分配在栈上（如果这个对象的生命周期在它定义的函数返回时就结束的话）。 这一算法也利用了 Go 语言在函数传递参数时总是传递参数的值这一个语言特性。
 而静态分析不总是完备的，会有一些本来可以分配在栈上的对象被 Go 的编译器分配在了堆上。 如这篇文章《Golang escape analysis》所描述的一些例子一样，有些对象本来可以避免逃逸（Escape，指的是对象被分配在堆上）。
 对于某些场景，我们确定一个对象肯定可以（也应当）被分配在栈上，但是它却逃逸了。 这样在某些关键路径上的逃逸的对象会造成大量的分配和垃圾回收。
 2. Go 版本 使用的 Go 版本为今晚刚从 master 分支上 pull 下的源码直接构建。
-ThinkPad-X1-Carbon:bin bef0rewind$ ./go version go version devel +42e8b9c3a4 Fri Nov 30 15:17:34 2018 +0000 darwin/amd64 3. 示例 // file: escape.go package main import &#34;fmt&#34; type BigTempObject struct { /// ... field1 int } func causeEscape(i interface{}) { switch i."><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/2018/11/30/2018-11-30-escape-from-escape-analysis/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2018-11-30T00:00:00+00:00"><meta property="article:modified_time" content="2018-11-30T00:00:00+00:00"></head><body><header class=app-header><a href=https://blog.formalscience.com/><img class=app-header-avatar src=/avatar.jpg alt=bef0rewind></a>
+ThinkPad-X1-Carbon:bin bef0rewind$ ./go version go version devel +42e8b9c3a4 Fri Nov 30 15:17:34 2018 +0000 darwin/amd64 3. 示例 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 // file: escape."><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/2018/11/30/2018-11-30-escape-from-escape-analysis/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2018-11-30T00:00:00+00:00"><meta property="article:modified_time" content="2018-11-30T00:00:00+00:00"></head><body><header class=app-header><a href=https://blog.formalscience.com/><img class=app-header-avatar src=/avatar.jpg alt=bef0rewind></a>
 <span class=app-header-title>不是追风少年</span><nav class=app-header-menu><a class=app-header-menu-item href=/>Home</a>
 -
 <a class=app-header-menu-item href=/posts>Blogs</a>
@@ -21,39 +21,64 @@ ThinkPad-X1-Carbon:bin bef0rewind$ ./go version go version devel +42e8b9c3a4 Fri
 -
 <a class=app-header-menu-item href=/tags/>Tags</a>
 -
-<a class=app-header-menu-item href=/about/>About</a></nav><p>当你在追着风，风也在推着你</p><div class=app-header-social><a href=https://github.com/ronhuafeng target=_blank rel="noreferrer noopener me"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github"><title>我的 GitHub</title><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg></a></div></header><main class=app-container><article class=post><header class=post-header><h1 class=post-title>Escape from escape analysis</h1><div class=post-meta><div><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar"><title>calendar</title><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Nov 30, 2018</div><div><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock"><title>clock</title><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>2 min read</div><div><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag"><title>tag</title><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><a class=tag href=https://blog.formalscience.com/tags/golang/>Golang</a></div></div></header><div class=post-content><h2 id=1-逃逸分析背景>1. 逃逸分析背景</h2><p>Go 语言采用了并发的（Concurrent）、非移动的（Non-Movable）、非分代的（Non-Generational）、基于三色（Tri-color）标记的垃圾回收（Garbage Collection）算法，只在 特定阶段开启写屏障（write barrier）。
+<a class=app-header-menu-item href=/about/>About</a></nav><p>当你在追着风，风也在推着你</p><div class=app-header-social><a href=https://github.com/ronhuafeng target=_blank rel="noreferrer noopener me"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github"><title>我的 GitHub</title><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg></a></div></header><main class=app-container><article class=post><header class=post-header><h1 class=post-title>Escape from escape analysis</h1><div class=post-meta><div><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar"><title>calendar</title><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Nov 30, 2018</div><div><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock"><title>clock</title><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>3 min read</div><div><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag"><title>tag</title><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><a class=tag href=https://blog.formalscience.com/tags/golang/>Golang</a></div></div></header><div class=post-content><h2 id=1-逃逸分析背景>1. 逃逸分析背景</h2><p>Go 语言采用了并发的（Concurrent）、非移动的（Non-Movable）、非分代的（Non-Generational）、基于三色（Tri-color）标记的垃圾回收（Garbage Collection）算法，只在 特定阶段开启写屏障（write barrier）。
 特点是全局停顿时间比较少，在一些场景下是十微秒级别的。</p><p>垃圾回收算法针对的是堆（heap）中的内存。
 为了减少垃圾回收的时间消耗，Go 语言在编译阶段通过静态分析算法对程序的结构进行分析，尽可能讲对象分配在栈上（如果这个对象的生命周期在它定义的函数返回时就结束的话）。
 这一算法也利用了 Go 语言在函数传递参数时总是传递参数的值这一个语言特性。</p><p>而静态分析不总是完备的，会有一些本来可以分配在栈上的对象被 Go 的编译器分配在了堆上。
 如这篇文章《<a href=http://www.agardner.me/golang/garbage/collection/gc/escape/analysis/2015/10/18/go-escape-analysis.html>Golang escape analysis</a>》所描述的一些例子一样，有些对象本来可以避免逃逸（Escape，指的是对象被分配在堆上）。</p><p>对于某些场景，我们确定一个对象肯定可以（也应当）被分配在栈上，但是它却逃逸了。
 这样在某些关键路径上的逃逸的对象会造成大量的分配和垃圾回收。</p><h2 id=2-go-版本>2. Go 版本</h2><p>使用的 Go 版本为今晚刚从 master 分支上 pull 下的源码直接构建。</p><pre tabindex=0><code>ThinkPad-X1-Carbon:bin bef0rewind$ ./go version
 go version devel +42e8b9c3a4 Fri Nov 30 15:17:34 2018 +0000 darwin/amd64
-</code></pre><h2 id=3-示例>3. 示例</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// file: escape.go
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>BigTempObject</span> <span style=color:#66d9ef>struct</span> {
-</span></span><span style=display:flex><span>	<span style=color:#75715e>/// ...
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>field1</span> <span style=color:#66d9ef>int</span>
-</span></span><span style=display:flex><span>}
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>causeEscape</span>(<span style=color:#a6e22e>i</span> <span style=color:#66d9ef>interface</span>{}) {
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>switch</span> <span style=color:#a6e22e>i</span>.(<span style=color:#66d9ef>type</span>) {
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>case</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>BigTempObject</span>:
-</span></span><span style=display:flex><span>		println(<span style=color:#a6e22e>i</span>)
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>default</span>:
-</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>i</span>)
-</span></span><span style=display:flex><span>	}
-</span></span><span style=display:flex><span>}
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>obj</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>BigTempObject</span>{}
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>addrObj</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>obj</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>causeEscape</span>(<span style=color:#a6e22e>addrObj</span>)
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><p>使用 <code>go run -gcflags="-m -m" escape.go</code> 可以在运行时输出逃逸分析的结果。</p><pre tabindex=0><code>./escape.go:10: cannot inline causeEscape: unhandled op TYPESW
+</code></pre><h2 id=3-示例>3. 示例</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=c1>// file: escape.go
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kn>package</span> <span class=nx>main</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=s>&#34;fmt&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>type</span> <span class=nx>BigTempObject</span> <span class=kd>struct</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=c1>/// ...
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=nx>field1</span> <span class=kt>int</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>causeEscape</span><span class=p>(</span><span class=nx>i</span> <span class=kd>interface</span><span class=p>{})</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=k>switch</span> <span class=nx>i</span><span class=p>.(</span><span class=kd>type</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=k>case</span> <span class=o>*</span><span class=nx>BigTempObject</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>		<span class=nb>println</span><span class=p>(</span><span class=nx>i</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>default</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>		<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nx>i</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>obj</span> <span class=o>:=</span> <span class=nx>BigTempObject</span><span class=p>{}</span>
+</span></span><span class=line><span class=cl>	<span class=nx>addrObj</span> <span class=o>:=</span> <span class=o>&amp;</span><span class=nx>obj</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=nf>causeEscape</span><span class=p>(</span><span class=nx>addrObj</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>使用 <code>go run -gcflags="-m -m" escape.go</code> 可以在运行时输出逃逸分析的结果。</p><pre tabindex=0><code>./escape.go:10: cannot inline causeEscape: unhandled op TYPESW
 ./escape.go:19: cannot inline main: non-leaf function
 ./escape.go:10: leaking param: i
 ./escape.go:10:         from ... argument (arg to ...) at ./escape.go:15
@@ -74,35 +99,63 @@ Go 语言中对 <code>uintptr</code> 是这样描述的：</p><blockquote><p>uin
 Go 中合法的类型转换为：<code>normal pointer</code> ⟷ <code>unsafe.Pointer</code> ⟷ <code>uintptr</code> 。
 因此我们可以把上面的程序中的 <code>addrObj</code> 转换为 <code>uintptr</code>。
 这样 Go 编译器不再认为 <code>addrObj</code> 同后面函数 <code>causeEscape</code> 使用的参数 <code>i</code> 存在引用关系，从而绕过 Escape Analysis Algorithm 。
-为了防止垃圾回收过程中 <code>obj</code> 被回收，可以使用 <code>obj.field1 = 0</code> 来保持 <code>obj</code> 活跃。</p><p>修改后的代码如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> (
-</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;fmt&#34;</span>
-</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;unsafe&#34;</span>
-</span></span><span style=display:flex><span>)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>BigTempObject</span> <span style=color:#66d9ef>struct</span> {
-</span></span><span style=display:flex><span>	<span style=color:#75715e>/// ...
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>field1</span> <span style=color:#66d9ef>int</span>
-</span></span><span style=display:flex><span>}
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>causeEscape</span>(<span style=color:#a6e22e>i</span> <span style=color:#66d9ef>interface</span>{}) {
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>switch</span> <span style=color:#a6e22e>i</span>.(<span style=color:#66d9ef>type</span>) {
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>case</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>BigTempObject</span>:
-</span></span><span style=display:flex><span>		println(<span style=color:#a6e22e>i</span>)
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>default</span>:
-</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>i</span>)
-</span></span><span style=display:flex><span>	}
-</span></span><span style=display:flex><span>}
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>obj</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>BigTempObject</span>{}
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>addrObj</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>obj</span>
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>intAddr</span> <span style=color:#f92672>:=</span> uintptr(<span style=color:#a6e22e>unsafe</span>.<span style=color:#a6e22e>Pointer</span>(<span style=color:#a6e22e>addrObj</span>))
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>causeEscape</span>((<span style=color:#f92672>*</span><span style=color:#a6e22e>BigTempObject</span>)(<span style=color:#a6e22e>unsafe</span>.<span style=color:#a6e22e>Pointer</span>(<span style=color:#a6e22e>intAddr</span>)))
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>obj</span>.<span style=color:#a6e22e>field1</span> = <span style=color:#ae81ff>0</span>
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><p>使用 <code>go run -gcflags="-m -m" escape.go</code> 运行结果：</p><pre tabindex=0><code>./escape.go:13: cannot inline causeEscape: unhandled op TYPESW
+为了防止垃圾回收过程中 <code>obj</code> 被回收，可以使用 <code>obj.field1 = 0</code> 来保持 <code>obj</code> 活跃。</p><p>修改后的代码如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kn>package</span> <span class=nx>main</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=p>(</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;fmt&#34;</span>
+</span></span><span class=line><span class=cl>	<span class=s>&#34;unsafe&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>type</span> <span class=nx>BigTempObject</span> <span class=kd>struct</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=c1>/// ...
+</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=nx>field1</span> <span class=kt>int</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>causeEscape</span><span class=p>(</span><span class=nx>i</span> <span class=kd>interface</span><span class=p>{})</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=k>switch</span> <span class=nx>i</span><span class=p>.(</span><span class=kd>type</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=k>case</span> <span class=o>*</span><span class=nx>BigTempObject</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>		<span class=nb>println</span><span class=p>(</span><span class=nx>i</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>default</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>		<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nx>i</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>obj</span> <span class=o>:=</span> <span class=nx>BigTempObject</span><span class=p>{}</span>
+</span></span><span class=line><span class=cl>	<span class=nx>addrObj</span> <span class=o>:=</span> <span class=o>&amp;</span><span class=nx>obj</span>
+</span></span><span class=line><span class=cl>	<span class=nx>intAddr</span> <span class=o>:=</span> <span class=nb>uintptr</span><span class=p>(</span><span class=nx>unsafe</span><span class=p>.</span><span class=nf>Pointer</span><span class=p>(</span><span class=nx>addrObj</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>	<span class=nf>causeEscape</span><span class=p>((</span><span class=o>*</span><span class=nx>BigTempObject</span><span class=p>)(</span><span class=nx>unsafe</span><span class=p>.</span><span class=nf>Pointer</span><span class=p>(</span><span class=nx>intAddr</span><span class=p>)))</span>
+</span></span><span class=line><span class=cl>	<span class=nx>obj</span><span class=p>.</span><span class=nx>field1</span> <span class=p>=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>使用 <code>go run -gcflags="-m -m" escape.go</code> 运行结果：</p><pre tabindex=0><code>./escape.go:13: cannot inline causeEscape: unhandled op TYPESW
 ./escape.go:22: cannot inline main: non-leaf function
 ./escape.go:13: leaking param: i
 ./escape.go:13:         from ... argument (arg to ...) at ./escape.go:18

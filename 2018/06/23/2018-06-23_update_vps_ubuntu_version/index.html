@@ -50,15 +50,19 @@ deb http://old-releases.ubuntu.com/ubuntu/ CODENAME-security main restricted uni
 </code></pre><p>In my case, <code>CODENAME</code> should be replaced by <code>zesty</code>.</p><h3 id=2-upgrade>2. Upgrade</h3><p>Try <code>apt-get upgrade</code>, and I got:</p><pre tabindex=0><code>dpkg: dependency problems prevent configuration of ubuntu-standard:
  ubuntu-standard depends on libpam-systemd; however:
   Package libpam-systemd:amd64 is not configured yet.
-</code></pre><p>By some method suggested by stackoverflowers, I finally got over it by these commands:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo dpkg --force-all -P libpam-systemd
-</span></span><span style=display:flex><span>sudo apt-get -f install libpam-systemd
-</span></span></code></pre></div><h3 id=3-dist-upgrade>3. Dist Upgrade</h3><p>These are some normal steps for an upgrade.</p><pre tabindex=0><code>sudo apt-get dist-upgrade
+</code></pre><p>By some method suggested by stackoverflowers, I finally got over it by these commands:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sudo dpkg --force-all -P libpam-systemd
+</span></span><span class=line><span class=cl>sudo apt-get -f install libpam-systemd
+</span></span></code></pre></td></tr></table></div></div><h3 id=3-dist-upgrade>3. Dist Upgrade</h3><p>These are some normal steps for an upgrade.</p><pre tabindex=0><code>sudo apt-get dist-upgrade
 sudo do-release-upgrade
 </code></pre><p>If you&rsquo;re unlucky like me, you will not upgrade to a newer release completely.
 You may see:</p><pre tabindex=0><code>Package grub-efi-amd64 is not configured yet.
-</code></pre><p>According to <a href=https://askubuntu.com/questions/330531/unable-to-fix-broken-package-system>a question</a> asked by someone, you can try this:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo dpkg --force-all -P grub-efi-amd64
-</span></span><span style=display:flex><span>sudo dpkg --force-all -P grub-efi-amd64-signed
-</span></span></code></pre></div><p>Execute <code>sudo apt-get update</code> and <code>sudo apt-get upgrade</code>.</p><h3 id=4-thoughts>4. Thoughts</h3><p>I first upgraded to Ubuntu 17.10 then Ubuntu 18.04.</p><p>To see if I have done the right things, I check the release version by <code>sudo lsb_release -a</code>:</p><pre tabindex=0><code>Distributor ID:    Ubuntu
+</code></pre><p>According to <a href=https://askubuntu.com/questions/330531/unable-to-fix-broken-package-system>a question</a> asked by someone, you can try this:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sudo dpkg --force-all -P grub-efi-amd64
+</span></span><span class=line><span class=cl>sudo dpkg --force-all -P grub-efi-amd64-signed
+</span></span></code></pre></td></tr></table></div></div><p>Execute <code>sudo apt-get update</code> and <code>sudo apt-get upgrade</code>.</p><h3 id=4-thoughts>4. Thoughts</h3><p>I first upgraded to Ubuntu 17.10 then Ubuntu 18.04.</p><p>To see if I have done the right things, I check the release version by <code>sudo lsb_release -a</code>:</p><pre tabindex=0><code>Distributor ID:    Ubuntu
 Description:       Ubuntu 18.04 LTS
 Release:           18.04
 Codename:          bionic
