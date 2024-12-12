@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>面试题 on 不是追风少年</title><link>https://blog.formalscience.com/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/</link><description>Recent content in 面试题 on 不是追风少年</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 17 Jan 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.formalscience.com/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/index.xml" rel="self" type="application/rss+xml"/><item><title>两个玻璃球（网上流传的面试题）</title><link>https://blog.formalscience.com/2018/01/17/2018-01-17_%E4%B8%A4%E4%B8%AA%E7%8E%BB%E7%92%83%E7%90%83%E7%BD%91%E4%B8%8A%E6%B5%81%E4%BC%A0%E7%9A%84%E9%9D%A2%E8%AF%95%E9%A2%98/</link><pubDate>Wed, 17 Jan 2018 00:00:00 +0000</pubDate><guid>https://blog.formalscience.com/2018/01/17/2018-01-17_%E4%B8%A4%E4%B8%AA%E7%8E%BB%E7%92%83%E7%90%83%E7%BD%91%E4%B8%8A%E6%B5%81%E4%BC%A0%E7%9A%84%E9%9D%A2%E8%AF%95%E9%A2%98/</guid><description>据说这是 Google 的一个面试题：
-有一栋 100 层高的大楼，有两个完全相同的玻璃球。假设从某一层开始丢下玻璃球会摔碎，利用手中的两个玻璃球确定是第几层。最少扔几次玻璃球可以确定这个临界楼层（玻璃球在这一层以及更高的楼层扔下会摔碎）？
-就如孔子说过的那句名言 &amp;ldquo;I Never Said All That Shit&amp;rdquo; 一样，这个题目出自哪里我也没有去考证。下面把我的思路整理一下。
-如果只有一个玻璃球，能做的就是从 1 层开始尝试扔下玻璃球，然后尝试 2 层、3 层 ……，直到某一层扔下玻璃球后摔碎。而现在有两个玻璃球，我们可以用一个玻璃球从 1 层、11 层、21 层 …… 扔下去，确定一个较小的破碎范围，然后使用第二个玻璃球确定具体的楼层。
-假如总共 N 层，我们从第 X 层扔下第一个玻璃球，有两种可能性：玻璃球摔碎或者没碎。如果玻璃球摔碎，说明临界楼层在 1~X 中；如果没摔碎，则临界楼层在 X+1~N 中。
-如果临界楼层在 1~N 中是均匀分布的，那么 $N &amp;gt; 2$ 时确定临界楼层需要扔玻璃球的最少次数可以由以下公式表示：
-$$ f(N)= \min_{X \in [1, N]} {1 + f(N-X)\frac{N-X}{N} + g(X)\frac{X}{N}} $$
-$f(N)$ 为使用两个玻璃球确定区间长度为 N 时的临界楼层所用次数，$g(X)$ 为使用一个玻璃球确定区间长度为 N 时的临界楼层所用次数。这个公式的三部分分别对应：
-一次扔玻璃球的尝试 玻璃球未摔碎概率$\times$此时继续尝试需要的次数 $f(N-X)$（两个玻璃球） 玻璃球摔碎概率$\times$此时继续尝试需要的次数 $g(X)$（一个玻璃球）。 显然有 $f(1)=0$，$g(N)=N-1$。可以用动态规划求解 $N=100$ 时需要的最少次数。</description></item></channel></rss>
