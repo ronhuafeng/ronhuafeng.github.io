@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>代码库的文化与智能编程代理的使用范式 - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="智能编程代理不会自动让代码库变好，它会进入、学习并放大既有代码文化；工程师需要管理代码库中哪些模式会成为未来生成的范例。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/2026-06-18_codebase_culture_and_programming_agents/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="theme-color" content="#f26a4f"><meta name="robots" content="index,follow"><meta property="og:title" content="代码库的文化与智能编程代理的使用范式 - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="智能编程代理不会自动让代码库变好，它会进入、学习并放大既有代码文化；工程师需要管理代码库中哪些模式会成为未来生成的范例。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/2026-06-18_codebase_culture_and_programming_agents/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/og-default.svg"><meta property="og:image:type" content="image/svg+xml"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="代码库的文化与智能编程代理的使用范式 - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="智能编程代理不会自动让代码库变好，它会进入、学习并放大既有代码文化；工程师需要管理代码库中哪些模式会成为未来生成的范例。"><meta name="twitter:image" content="https://blog.formalscience.com/og-default.svg"> <meta property="article:published_time" content="2026-06-18T00:00:00.000Z"> <meta property="article:section" content="技术"> <link rel="alternate" hreflang="en" href="https://blog.formalscience.com/posts/2026-06-18_codebase_culture_and_programming_agents_en/"><meta property="article:tag" content="Programming Agents"><meta property="article:tag" content="Software Engineering"><link rel="stylesheet" href="/_astro/BaseLayout.Dhod7naC.css"></head> <body> <a class="skip-link" href="#content">Skip to content</a> <div class="site-shell"> <header class="site-header"> <a class="brand" href="/">Zhang Hua Feng/張華楓&#39;s Notes</a> <nav class="nav-links"> <a href="/">Home</a> <a href="/posts">Posts</a> <a href="/categories">Categories</a> <a href="/tags">Tags</a> <a href="/about">About</a> </nav> </header> <main id="content">   <article class="post-shell"> <div class="post-meta-row"> <p class="meta">June 18, 2026 - 10 min read</p> <span class="language-badge">中文</span> <a class="category-label" href="/categories/%E6%8A%80%E6%9C%AF/"> 技术 </a> </div> <h1 class="post-title">代码库的文化与智能编程代理的使用范式</h1> <p class="meta">智能编程代理不会自动让代码库变好，它会进入、学习并放大既有代码文化；工程师需要管理代码库中哪些模式会成为未来生成的范例。</p> <nav class="translation-links" aria-label="Translations"> <span>Translations</span> <a href="/posts/2026-06-18_codebase_culture_and_programming_agents_en/"> English </a> </nav> <div class="tag-list"> <a class="tag" href="/tags/Programming%20Agents/">Programming Agents</a><a class="tag" href="/tags/Software%20Engineering/">Software Engineering</a> </div> <div class="post-content">  <h2 id="一自动化编程的线性幻觉">一、自动化编程的线性幻觉</h2>
+<p>使用大模型<sup><a href="#user-content-fn-1" id="user-content-fnref-1" data-footnote-ref="" aria-describedby="footnote-label">1</a></sup>进行编程时，一个常见的想象是：人先写出清楚的需求或规约，智能编程代理<sup><a href="#user-content-fn-2" id="user-content-fnref-2" data-footnote-ref="" aria-describedby="footnote-label">2</a></sup>理解之后负责实现，代码由此产生。这个想象看似高效，也很符合我们对自动化的期待。但在真实开发中，事情往往没有这么线性。编程代理并不是在一个抽象、干净、没有历史的空间里写代码。它总是在某种环境中工作：一个已有的代码库、一个技术栈、一套命名习惯、一组测试、一种团队审美，以及许多没有被明说却实际支配开发的规则。</p>
+<h2 id="二代码库不是技术对象而是一种文化">二、代码库不是技术对象，而是一种文化</h2>
+<p>代码库<sup><a href="#user-content-fn-3" id="user-content-fnref-3" data-footnote-ref="" aria-describedby="footnote-label">3</a></sup>不只是技术对象，也是一种文化<sup><a href="#user-content-fn-4" id="user-content-fnref-4" data-footnote-ref="" aria-describedby="footnote-label">4</a></sup>。它有自己的语言、惯例、禁忌、局部智慧和历史债务。一个变量名、一个目录结构、一个错误处理方式、一个测试写法，表面上只是工程选择，实际上都在告诉后来者：在这里，什么样的代码是自然的，什么样的改动是不合群的。人类工程师会受到这种文化影响，智能编程代理也一样。</p>
+<h2 id="三编程代理不是中立的改革者">三、编程代理不是中立的改革者</h2>
+<p>更重要的是，编程代理并不是中立的改革者。它很容易成为代码文化的复制工具。它越理解一个代码库，就越可能忠实地复制这个代码库里的风格、品味、捷径、缺陷和盲点。如果一个代码库结构清晰、边界克制、命名准确、测试可靠，代理往往会延续这种纪律；如果一个代码库充满历史妥协、错误抽象和模糊概念，代理也可能高效地制造更多“看起来属于这里”的坏代码。</p>
+<h2 id="四技术债会变成新的生成模板">四、技术债会变成新的生成模板</h2>
+<p>这说明，代码库的质量不仅影响当前维护成本，也会影响未来代码生成的方向。技术债<sup><a href="#user-content-fn-5" id="user-content-fnref-5" data-footnote-ref="" aria-describedby="footnote-label">5</a></sup>不只是过去留下的问题，它会变成新的生成模板。一个糟糕的模式如果在代码库里出现得足够多，代理很可能把它当成规范继续模仿。相反，代码库里那些少数优秀的设计也极其重要。一个边界清楚的模块、一组写得克制的测试、一个恰当的领域模型<sup><a href="#user-content-fn-6" id="user-content-fnref-6" data-footnote-ref="" aria-describedby="footnote-label">6</a></sup>，既解决了当下问题，也会成为未来代码的范例。好的设计在代理时代不只是局部改进，而是一种生成性基础设施<sup><a href="#user-content-fn-7" id="user-content-fnref-7" data-footnote-ref="" aria-describedby="footnote-label">7</a></sup>。</p>
+<h2 id="五上下文不是越多越好而是需要筛选">五、上下文不是越多越好，而是需要筛选</h2>
+<p>这也改变了我们对“上下文”<sup><a href="#user-content-fn-8" id="user-content-fnref-8" data-footnote-ref="" aria-describedby="footnote-label">8</a></sup>的理解。很多人以为，只要给代理更多上下文，它就会写得更好。但上下文并不天然有益。把整个代码库不加区分地交给代理，等于让它同时学习好设计和坏习惯。真正关键的不是上下文越多越好，而是要区分哪些是值得模仿的范例，哪些只是历史遗留，哪些模式已经过时，哪些地方不应继续扩散。未来的软件工程不只是编写代码，也包括管理哪些代码会成为未来的样本。</p>
+<h2 id="六语言不是透明的">六、语言不是透明的</h2>
+<p>语言本身也不是透明的<sup><a href="#user-content-fn-9" id="user-content-fnref-9" data-footnote-ref="" aria-describedby="footnote-label">9</a></sup>。需求文档或提示词里的“用户”“项目”“会话”“权限”“简单”“优雅”这些词，在不同代码库里可能有完全不同的含义。一个词并不是天然指向某个固定对象，它的意义取决于具体使用场景。编程代理常常不是不理解这些词，而是把它们翻译进了错误的本地语境。于是，一个看似明确的需求，可能会产生一个功能正确但结构错误的实现。</p>
+<h2 id="七规约驱动为什么会失效">七、规约驱动为什么会失效</h2>
+<p>这也是规约驱动<sup><a href="#user-content-fn-10" id="user-content-fnref-10" data-footnote-ref="" aria-describedby="footnote-label">10</a></sup>开发在编程代理中经常失效的原因。规约能描述我们想要什么，却不一定能说明在这个代码库里应该如何实现。它往往约束结果，却无法充分约束文化。一个代理可能完全按照规约完成任务，却复用了错误的旧模式，引入了不该有的抽象，或者把本来应该迁移的历史结构继续强化。规约描述的是理想意图，代码库却是一个有历史、有惯性、有隐性规则的现场。当两者冲突时，代码库的文化常常比规约更有力量。</p>
+<h2 id="八空代码库也不是规约驱动的理想场景">八、空代码库也不是规约驱动的理想场景</h2>
+<p>即使面对一个没有代码的空代码库，规约驱动也未必是好选择。空代码库没有旧代码文化，但不等于没有问题。相反，它的危险在于现实阻力太弱。一份过早写出的规约，可能会把尚未验证的概念迅速实体化。代理可以在短时间内生成完整的目录、模型、接口、测试和抽象，但这些结构可能只是早期语言幻觉的产物。空代码库里，危险不是代理继承错误的过去，而是它太快实现了错误的未来。</p>
+<h2 id="九早期开发更需要发现而不是执行">九、早期开发更需要发现，而不是执行</h2>
+<p>早期开发最需要的往往不是完整实现，而是发现问题的形状。很多产品概念、数据模型和交互边界，只有在做出一个可运行的小东西之后才会暴露真实问题。规约会顺应我们的想象，而原型<sup><a href="#user-content-fn-11" id="user-content-fnref-11" data-footnote-ref="" aria-describedby="footnote-label">11</a></sup>会反驳我们的想象。因此，在空代码库中，更好的方式不是先写一份完整规约再执行，而是先做一个足够小、足够便宜、可以被推翻的纵向切片<sup><a href="#user-content-fn-12" id="user-content-fnref-12" data-footnote-ref="" aria-describedby="footnote-label">12</a></sup>，让实际产物反过来修正规约。</p>
+<h2 id="十人的角色是设计环境">十、人的角色是设计环境</h2>
+<p>从这个角度看，使用编程代理不只是“写提示词”的问题，而是一种方法论变化。我们不应把代理当作简单执行命令的工具，而应把它看作会进入某个代码文化、学习它、复制它、放大它的参与者。人的角色也不只是提出需求，而是设计环境：明确边界，挑选范例，标记遗留区域，设置验证机制，让好的模式更容易被复制，让坏的模式更容易被暴露。</p>
+<h2 id="十一非设计也是一种设计">十一、非设计也是一种设计</h2>
+<p>这也解释了为什么“非设计”<sup><a href="#user-content-fn-13" id="user-content-fnref-13" data-footnote-ref="" aria-describedby="footnote-label">13</a></sup>有时是一种更好的设计方式。使用代理时，人不一定要规定每一行代码，而是要创造条件，让正确的代码更容易出现。先观察，再介入；先理解场域<sup><a href="#user-content-fn-14" id="user-content-fnref-14" data-footnote-ref="" aria-describedby="footnote-label">14</a></sup>，再修改结构；先让代理指出规约中的含糊和错误假设，再让它实现。真正有效的工作流不是从“实现”开始，而是从对代码库文化的进入和辨认开始。</p>
+<h2 id="十二验证机制并非完全中立">十二、验证机制并非完全中立</h2>
+<p>测试、持续集成<sup><a href="#user-content-fn-15" id="user-content-fnref-15" data-footnote-ref="" aria-describedby="footnote-label">15</a></sup>和代码审查也不是完全中立的真理机器。它们体现了团队过去选择测量什么、忽略什么、奖励什么、惩罚什么。这涉及知识生产<sup><a href="#user-content-fn-16" id="user-content-fnref-16" data-footnote-ref="" aria-describedby="footnote-label">16</a></sup>与权力结构<sup><a href="#user-content-fn-17" id="user-content-fnref-17" data-footnote-ref="" aria-describedby="footnote-label">17</a></sup>的问题：什么被认为是“正确”，往往取决于一套制度化的验证机制，而不只是事实本身。通过测试并不等于符合长期架构，也不等于符合好的代码文化。代理很容易优化那些显性的检查，却忽略隐性的工程判断。因此，验证机制必须被重新理解：它不是最后的盖章，而是让现实持续反驳代理输出的一套装置。</p>
+<h2 id="十三重构不等于迁移">十三、重构不等于迁移</h2>
+<p>普通重构<sup><a href="#user-content-fn-18" id="user-content-fnref-18" data-footnote-ref="" aria-describedby="footnote-label">18</a></sup>也需要被重新审视。很多重构只是让旧文化表达得更整洁，却没有改变旧的领域模型、边界和判断标准。这样的代码也许更好看，但仍然带着原来的味道。真正困难的不是在同一文化内部改善表达，而是迁移<sup><a href="#user-content-fn-19" id="user-content-fnref-19" data-footnote-ref="" aria-describedby="footnote-label">19</a></sup>到另一种文化。迁移意味着建立新的概念、新的边界、新的范例和新的验证方式。编程代理可以帮助重构，但如果没有外部目标，它往往会默认现有代码库就是合理的现实。</p>
+<h2 id="十四编程代理会放大既有文化">十四、编程代理会放大既有文化</h2>
+<p>因此，智能编程代理不会自动让代码库变好。它会放大代码库已有的生成倾向。如果代码库有品味，代理会扩展这种品味；如果代码库有债务，代理也会扩展这种债务。关键问题不再只是代理能不能写代码，而是它会从哪里学习什么叫好代码。</p>
+<h2 id="十五未来工程师是代码文化的策展者">十五、未来工程师是代码文化的策展者</h2>
+<p>未来的软件工程师不只是代码的作者，也会成为代码文化的策展者<sup><a href="#user-content-fn-20" id="user-content-fnref-20" data-footnote-ref="" aria-describedby="footnote-label">20</a></sup>。我们维护的不只是功能和文件，也是未来代码将要模仿的样本。代码库不是一台机器，而是一个地方。每一个进入其中的编程代理，都会学习如何在那里生活；而我们真正要负责的是，这个地方究竟教会它什么。</p>
+<hr>
+<h2 id="脚注">脚注</h2>
+<section data-footnotes="" class="footnotes"><h2 class="sr-only" id="footnote-label">Footnotes</h2>
+<ol>
+<li id="user-content-fn-1">
+<p><strong>大模型</strong>：这里主要指大语言模型（large language model），即通过大量文本和代码训练出的生成式模型。它能根据上下文生成语言、代码和推理步骤，但并不等于真正理解整个系统的历史、目标和组织约束。 <a href="#user-content-fnref-1" data-footnote-backref="" aria-label="Back to reference 1" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-2">
+<p><strong>智能编程代理</strong>：指能够读取文件、调用工具、修改代码、运行测试，并围绕编程任务自主推进的人工智能系统。它不同于普通代码补全工具，因为它可以在更长的任务链中规划、执行和修正。 <a href="#user-content-fnref-2" data-footnote-backref="" aria-label="Back to reference 2" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-3">
+<p><strong>代码库</strong>：一个软件项目的整体代码、配置、测试、文档和工程结构。本文强调，代码库不只是文件集合，也包含长期形成的习惯、判断标准和隐性规则。 <a href="#user-content-fnref-3" data-footnote-backref="" aria-label="Back to reference 3" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-4">
+<p><strong>文化</strong>：这里不是指艺术或民族传统，而是指一套被群体反复实践、默认接受并传递给后来者的行为方式和判断标准。放在代码库中，文化体现为命名、架构、测试、审查和维护习惯。 <a href="#user-content-fnref-4" data-footnote-backref="" aria-label="Back to reference 4" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-5">
+<p><strong>技术债</strong>：软件开发中为了短期速度、历史原因或认知限制而留下的结构性问题。它未必马上导致故障，但会增加未来修改、理解和扩展系统的成本。 <a href="#user-content-fnref-5" data-footnote-backref="" aria-label="Back to reference 5" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-6">
+<p><strong>领域模型</strong>：软件中对业务对象、关系和规则的抽象表达。例如“用户”“订单”“权限”“项目”等概念如何被定义、关联和操作，都会影响系统结构。 <a href="#user-content-fnref-6" data-footnote-backref="" aria-label="Back to reference 6" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-7">
+<p><strong>生成性基础设施</strong>：本文中的说法，指那些不仅解决当前问题，还会影响未来代码如何被生成、模仿和扩展的设计。好的模块、测试和命名都会成为后续开发的隐性模板。 <a href="#user-content-fnref-7" data-footnote-backref="" aria-label="Back to reference 7" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-8">
+<p><strong>上下文</strong>：在大模型使用中，指模型当前能看到并用来生成回答的信息，包括提示词、文件、代码片段、错误日志、文档和历史对话。上下文并不等于真实理解，它只是模型生成时可参考的材料。 <a href="#user-content-fnref-8" data-footnote-backref="" aria-label="Back to reference 8" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-9">
+<p><strong>语言不是透明的</strong>：这一观点与现代语言哲学和符号学有关。词语并不是天然、直接地对应现实对象；它们的意义依赖使用场景、社会约定和具体实践。维特根斯坦关于“语言游戏”的思想可作为这一点的代表性参考。 <a href="#user-content-fnref-9" data-footnote-backref="" aria-label="Back to reference 9" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-10">
+<p><strong>规约驱动</strong>：指先写出详细的需求说明、功能规则或技术规格，再让开发过程围绕这些规约展开。它适合边界清楚、验证明确的问题，但在探索性强或语境复杂的问题中容易过早固化假设。 <a href="#user-content-fnref-10" data-footnote-backref="" aria-label="Back to reference 10" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-11">
+<p><strong>原型</strong>：用于快速验证想法的初步实现。它的价值不在于完整或优雅，而在于尽快暴露问题，让团队看到需求、交互和系统结构是否真的成立。 <a href="#user-content-fnref-11" data-footnote-backref="" aria-label="Back to reference 11" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-12">
+<p><strong>纵向切片</strong>：指从用户界面到后端逻辑、数据存储和验证机制都贯通的一小段完整功能。它比单独搭建某一层框架更能暴露真实系统问题。 <a href="#user-content-fnref-12" data-footnote-backref="" aria-label="Back to reference 12" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-13">
+<p><strong>非设计</strong>：不是完全不设计，而是避免过早、过度地把设计者意志强加给系统。它强调观察已有秩序、设置条件、减少不必要干预，让结构从实际使用和反馈中逐渐显现。 <a href="#user-content-fnref-13" data-footnote-backref="" aria-label="Back to reference 13" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-14">
+<p><strong>场域</strong>：社会学概念，可理解为一个由规则、位置、资源和权力关系构成的具体实践空间。放在软件开发中，代码库、团队、工具链和审查制度共同构成了一个工程场域。 <a href="#user-content-fnref-14" data-footnote-backref="" aria-label="Back to reference 14" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-15">
+<p><strong>持续集成</strong>：一种软件工程实践，指频繁把代码合并到主分支，并通过自动化构建、测试和检查来发现问题。它能提高可靠性，但只能验证它被设计来验证的内容。 <a href="#user-content-fnref-15" data-footnote-backref="" aria-label="Back to reference 15" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-16">
+<p><strong>知识生产</strong>：指知识并不是凭空出现的，而是在具体制度、工具、语言、方法和权威结构中被制造、确认和传播。放在软件开发中，“什么算正确代码”也依赖测试、审查、文档和组织规范。 <a href="#user-content-fnref-16" data-footnote-backref="" aria-label="Back to reference 16" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-17">
+<p><strong>权力结构</strong>：这里指一个系统中谁有权定义标准、批准修改、决定风险优先级和解释什么是“好代码”。它不一定表现为强制命令，也可能隐藏在测试、流程、评审习惯和工具规则中。 <a href="#user-content-fnref-17" data-footnote-backref="" aria-label="Back to reference 17" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-18">
+<p><strong>重构</strong>：在不改变外部行为的前提下改善代码内部结构。它通常用于提高可读性、可维护性和扩展性，但不一定会改变系统背后的概念模型和文化惯性。 <a href="#user-content-fnref-18" data-footnote-backref="" aria-label="Back to reference 18" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-19">
+<p><strong>迁移</strong>：本文中指从一种旧的系统结构、概念模型或工程文化转向新的结构和标准。它不只是移动代码或更换框架，而是改变系统如何组织、命名、验证和演化。 <a href="#user-content-fnref-19" data-footnote-backref="" aria-label="Back to reference 19" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-20">
+<p><strong>策展者</strong>：原指负责选择、组织和解释展品的人。本文借用这个词，强调未来工程师需要管理哪些代码、模式和设计会成为代理学习和模仿的范例。 <a href="#user-content-fnref-20" data-footnote-backref="" aria-label="Back to reference 20" class="data-footnote-backref">↩</a></p>
+</li>
+</ol>
+</section>  </div> </article>  </main> <footer class="footer"> <span>Field notes and essays on life, software, and tiny rituals.</span> <span>Copyright 2026 Zhang Hua Feng/張華楓&#39;s Notes</span> </footer> </div> </body></html>
