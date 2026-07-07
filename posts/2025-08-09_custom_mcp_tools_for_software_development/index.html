@@ -1,0 +1,290 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>自定义 MCP 工具加速软件开发 - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="从一次 Cursor Meetup 分享整理而来，讨论如何把团队反复发生的工程动作封装成可控、可复用、适合 AI 调用的 MCP 工具，并以 Excel 文件验证案例说明反馈循环的价值。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/2025-08-09_custom_mcp_tools_for_software_development/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="theme-color" content="#f26a4f"><meta name="robots" content="index,follow"><meta property="og:title" content="自定义 MCP 工具加速软件开发 - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="从一次 Cursor Meetup 分享整理而来，讨论如何把团队反复发生的工程动作封装成可控、可复用、适合 AI 调用的 MCP 工具，并以 Excel 文件验证案例说明反馈循环的价值。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/2025-08-09_custom_mcp_tools_for_software_development/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/posts/2025-08-09-custom-mcp-tools/images/algorithm-optimization-workflow.svg"><meta property="og:image:type" content="image/svg+xml"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="自定义 MCP 工具加速软件开发 - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="从一次 Cursor Meetup 分享整理而来，讨论如何把团队反复发生的工程动作封装成可控、可复用、适合 AI 调用的 MCP 工具，并以 Excel 文件验证案例说明反馈循环的价值。"><meta name="twitter:image" content="https://blog.formalscience.com/posts/2025-08-09-custom-mcp-tools/images/algorithm-optimization-workflow.svg"> <meta property="article:published_time" content="2025-08-09T00:00:00.000Z"> <meta property="article:section" content="技术"> <meta property="article:tag" content="MCP"><meta property="article:tag" content="AI Agents"><meta property="article:tag" content="Developer Tools"><meta property="article:tag" content="Cursor"><meta property="article:tag" content="Software Engineering"><link rel="stylesheet" href="/_astro/BaseLayout.DB3rUK8x.css"></head> <body> <a class="skip-link" href="#content" lang="zh-CN">跳到内容</a> <div class="site-shell"> <header class="site-header"> <a class="brand" href="/">Zhang Hua Feng/張華楓&#39;s Notes</a> <div class="header-actions"> <nav class="nav-links" aria-label="Primary" lang="zh-CN"> <a href="/">首页</a><a href="/posts">文章</a><a href="/categories">分类</a><a href="/tags">标签</a><a href="/about">关于</a> </nav> <nav class="language-switch" aria-label="Language"> <a href="/" aria-current="page"> 中文 </a><a href="/en"> English </a> </nav> </div> </header> <main id="content">   <article class="post-shell"> <div class="post-meta-row"> <p class="meta">August 9, 2025 - 14 min read</p> <span class="language-badge">中文</span> <a class="category-label" href="/categories/%E6%8A%80%E6%9C%AF/"> 技术 </a> </div> <h1 class="post-title">自定义 MCP 工具加速软件开发</h1> <p class="meta">从一次 Cursor Meetup 分享整理而来，讨论如何把团队反复发生的工程动作封装成可控、可复用、适合 AI 调用的 MCP 工具，并以 Excel 文件验证案例说明反馈循环的价值。</p>  <div class="tag-list"> <a class="tag" href="/tags/MCP/">MCP</a><a class="tag" href="/tags/AI%20Agents/">AI Agents</a><a class="tag" href="/tags/Developer%20Tools/">Developer Tools</a><a class="tag" href="/tags/Cursor/">Cursor</a><a class="tag" href="/tags/Software%20Engineering/">Software Engineering</a> </div> <div class="post-content">  <p>AI 编程工具已经不只是补全代码。它们可以读仓库、跑命令、调用外部服务，也可以参与调试、测试、部署和文档整理。问题随之变成：团队里那些反复发生、已经有经验沉淀的工程动作，怎样才能被封装成可控、可复用、适合 AI 调用的工具？</p>
+<p>这篇文章整理自我在 Cursor Meetup 上的一次分享，主题是“自定义 MCP 工具加速软件开发”。文章保留分享中的主要结构和图示，并补充 MCP 工具设计、AI 协作方法，以及 Excel 文件批量验证案例中的实践细节。</p>
+<h2 id="分享信息">分享信息</h2>
+<ul>
+<li>主题：自定义 MCP 工具加速软件开发</li>
+<li>分享人：张华枫</li>
+<li>时间：2025-08-09</li>
+<li>场合：Cursor Meetup</li>
+</ul>
+<h2 id="文章脉络">文章脉络</h2>
+<p>全文分为五个部分：</p>
+<ol>
+<li>MCP 简介和设计理念：了解 MCP 协议的核心价值和选择理由。</li>
+<li>自定义 MCP 工具的设计原则：从业务场景、认知负担和反馈循环出发设计工具。</li>
+<li>MCP 工具开发实践：介绍三个实践中孵化出的工具。</li>
+<li>AI 协作技巧：从项目生成、上下文组织到团队标准化。</li>
+<li>实战案例：构建反馈循环，利用大模型辅助算法优化。</li>
+</ol>
+<h2 id="第一部分mcp-简介和设计理念">第一部分：MCP 简介和设计理念</h2>
+<h3 id="什么是-mcp">什么是 MCP</h3>
+<p>Model Context Protocol，也就是 MCP，是一个用于连接大语言模型与外部工具、数据源的开放标准协议。它要解决的核心问题是：如何让 AI 模型安全、高效、可控地与外部世界交互。</p>
+<p>如果只把大语言模型当作文本生成器，工具协议看起来并不必要。但一旦模型开始读文件、查数据库、调用 API、执行命令、观察网页、操作 IDE，问题就不再只是“让模型生成什么”，而是“怎样让模型以可靠的方式做事”。这时，我们需要的不只是功能入口，还需要边界、权限、上下文、审计和组合能力。</p>
+<h3 id="为什么选择-mcp">为什么选择 MCP</h3>
+<p>选择 MCP，主要有四个原因：</p>
+<ul>
+<li>统一接口：为各类工具和服务提供标准化的接入方式，消除集成复杂性。</li>
+<li>安全可控：建立严格的安全边界，确保 AI 操作在可控范围内进行。</li>
+<li>快速扩展：支持自定义工具的无缝集成，加速应用开发进程。</li>
+<li>智能上下文：优化上下文信息管理，提升 AI 对话的连贯性和准确性。</li>
+</ul>
+<p>这些原因背后的现实动机很直接：开发团队已经拥有大量内部工具、脚本、流程和平台能力，但它们通常散落在命令行、网页后台、CI、数据库、日志系统和文档里。MCP 提供的是一个标准通道，让这些能力可以进入模型上下文，并以稳定的方式被调用。</p>
+<h3 id="现有方案的局限性">现有方案的局限性</h3>
+<p>第三方 MCP 工具很有价值，但在团队内部场景中，经常会遇到几个问题：</p>
+<ul>
+<li>通用性过强：难以适配特定业务场景中的细节需求。</li>
+<li>配置复杂：需要大量调试才能满足真实工作流。</li>
+<li>依赖外部：更新、维护和行为变化不在自己控制范围内。</li>
+</ul>
+<p>传统开发流程也有自己的痛点：</p>
+<ul>
+<li>重复性工作：相似的调试、测试、部署流程需要反复执行。</li>
+<li>上下文切换成本：开发者在 IDE、终端、日志、网页后台、文档和聊天窗口之间频繁切换。</li>
+<li>反馈周期长：从问题发现到修复验证之间有太多手工步骤。</li>
+</ul>
+<p>因此，自定义 MCP 工具不是为了追新，而是为了把团队已经熟悉、已经验证过的工程经验，包装成 AI 可以稳定调用的能力。</p>
+<h2 id="第二部分自定义-mcp-工具的设计理念">第二部分：自定义 MCP 工具的设计理念</h2>
+<h3 id="业务场景导向">业务场景导向</h3>
+<p>自定义 MCP 工具首先要从业务场景出发：</p>
+<ul>
+<li>深度定制：针对特定业务流程优化，而非通用方案。</li>
+<li>流程整合：将多个相关步骤封装为单一工具调用。</li>
+<li>领域专业化：集成业务专家的经验和最佳实践。</li>
+</ul>
+<p>不要一开始就做“万能工具”。万能工具听起来强大，实际往往很难稳定使用。更实际的路径，是找到团队最常见、最耗时、最容易出错的一段流程，把它封装成一个窄而深的工具。</p>
+<h3 id="减少认知负担">减少认知负担</h3>
+<p>第二个原则是减少认知负担：</p>
+<ul>
+<li>智能抽象：隐藏复杂的技术细节，提供简洁的接口。</li>
+<li>上下文保持：工具内部维护状态，避免重复配置。</li>
+<li>错误恢复：内置异常处理和自动重试机制。</li>
+</ul>
+<p>对 AI 工具而言，接口越清晰，模型越不容易误用。对人而言，工具越贴近业务语言，就越容易被团队接受。好的 MCP 工具不应该只是“把命令行包一层 JSON”，而应该把人平时依赖的判断、约束和恢复策略也封装进去。</p>
+<h3 id="反馈驱动改进">反馈驱动改进</h3>
+<p>第三个原则是反馈驱动改进：</p>
+<ul>
+<li>实时监控：集成监控和日志收集。</li>
+<li>性能指标：提供可量化的效果评估。</li>
+<li>持续优化：支持基于使用数据的迭代改进。</li>
+</ul>
+<p>AI 参与开发之后，很多工作流会从“一次性执行”变成“反复尝试、观察、修正”。工具如果只返回成功或失败，就很难支持这种迭代。更有用的工具应该返回结构化状态：当前阶段、失败原因、可重试条件、下一步建议、相关日志入口。</p>
+<h3 id="典型应用场景">典型应用场景</h3>
+<p>下面是三个典型场景。</p>
+<p>开发环境管理工具：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>功能：一键环境准备和验证</span></span>
+<span class="line"><span>输入：项目配置文件</span></span>
+<span class="line"><span>执行：依赖安装 -> 服务启动 -> 健康检查 -> 测试运行</span></span>
+<span class="line"><span>输出：环境状态报告 + 问题修复建议</span></span></code></pre>
+<p>代码质量检查工具：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>功能：全方位代码质量评估</span></span>
+<span class="line"><span>输入：代码仓库路径</span></span>
+<span class="line"><span>执行：静态分析 -> 安全扫描 -> 测试覆盖率 -> 性能基准</span></span>
+<span class="line"><span>输出：质量评分 + 详细改进方案</span></span></code></pre>
+<p>部署流水线工具：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>功能：自动化部署和回滚</span></span>
+<span class="line"><span>输入：部署配置 + 目标环境</span></span>
+<span class="line"><span>执行：构建镜像 -> 部署服务 -> 烟雾测试 -> 流量切换</span></span>
+<span class="line"><span>输出：部署结果 + 监控链接</span></span></code></pre>
+<p>这些工具的共同点是：它们不是孤立命令，而是一段流程。MCP 的价值正是在于把流程变成模型可调用、团队可复用的工具。</p>
+<h2 id="第三部分mcp-工具开发实践">第三部分：MCP 工具开发实践</h2>
+<h3 id="开发实践步骤">开发实践步骤</h3>
+<p>开发自定义 MCP 工具，可以从三个步骤开始：</p>
+<ol>
+<li>识别重复性任务：统计团队在哪些环节花费时间最多，找到自动化的切入点。</li>
+<li>分析现有缺陷：找出当前手动或半自动方案的具体问题，明确优化目标。</li>
+<li>评估自动化价值：计算自动化工具的开发成本与长期节省的时间和精力，确保投入产出比。</li>
+</ol>
+<p>以部署流程为例：</p>
+<ul>
+<li>痛点：每次部署需要 10 多个步骤，容易出错。</li>
+<li>解决：封装为一键部署工具，错误率降低 90%。</li>
+</ul>
+<p>关键不是把所有事都自动化，而是先找到“重复、高频、容易错、反馈慢”的工作。这类工作最适合被 MCP 工具化。</p>
+<h3 id="实践中孵化的-mcp-工具">实践中孵化的 MCP 工具</h3>
+<p>这次分享里提到三个工具：</p>
+<ol>
+<li>Command Line Tools MCP Server</li>
+<li>MCP-SSE-Proxy</li>
+<li>VSCode-Copy-for-LLM</li>
+</ol>
+<h3 id="command-line-tools-mcp-server">Command Line Tools MCP Server</h3>
+<p>Command Line Tools MCP Server 是一个基于 FastMCP 的命令行工具动态封装方案。</p>
+<p>它的核心价值是：通过 JSON 配置文件，将任何命令行工具动态封装为标准 MCP 工具。</p>
+<p>关键特性包括：</p>
+<ul>
+<li>配置驱动：无需修改代码，纯 JSON 定义工具行为。</li>
+<li>多执行模式：支持 oneshot、foreground、background 等多种执行方式。</li>
+<li>进程管理：提供后台进程的监控和管理能力。</li>
+<li>健壮性设计：内置工作目录、环境变量、超时控制。</li>
+</ul>
+<p>这类工具的意义，是把团队已有的脚本和命令行能力，快速变成 AI 可以调用的工具。它不是替代现有脚本，而是给这些脚本加上一层标准化的描述、输入校验、执行控制和结果返回。</p>
+<h4 id="command-line-tools-调试流程">Command Line Tools 调试流程</h4>
+<p><img src="/posts/2025-08-09-custom-mcp-tools/images/ppap-debug-workflow.svg" alt="Debug with Command Line Tools 预期流程"></p>
+<p>这张图表达的是一个调试闭环：从问题输入开始，工具负责执行检查、收集结果、暴露中间状态，AI 根据结果继续定位问题。调试不再是一串临时命令，而是一个可观察、可重复的流程。</p>
+<h4 id="工具选择">工具选择</h4>
+<p><img src="/posts/2025-08-09-custom-mcp-tools/images/debug-tools-01.png" alt="Debug with Command Line Tools 工具选择"></p>
+<h4 id="实际效果1">实际效果（1）</h4>
+<p><img src="/posts/2025-08-09-custom-mcp-tools/images/debug-tools-02.png" alt="Debug with Command Line Tools 实际效果 1"></p>
+<h4 id="实际效果2">实际效果（2）</h4>
+<p><img src="/posts/2025-08-09-custom-mcp-tools/images/debug-tools-03.png" alt="Debug with Command Line Tools 实际效果 2"></p>
+<p>这三张截图展示了工具在真实开发过程中的调用效果。相比抽象描述，“工具选择、工具输出、工具反馈”这些界面细节更能说明 AI 工具如何进入开发流程。</p>
+<h3 id="mcp-sse-proxy">MCP-SSE-Proxy</h3>
+<p>MCP-SSE-Proxy 是一个基于 Next.js 14 的全栈 Web 应用，并结合 Docker 容器化管理。</p>
+<p>它的核心价值是：作为 MCP 协议网关和管理仪表盘，解决不同传输协议之间的通信障碍。</p>
+<p>关键特性包括：</p>
+<ul>
+<li>协议桥接：将 stdio、HTTP、SSE 等协议统一为 SSE 流。</li>
+<li>多服务器聚合：将多个 MCP 服务器工具集成到单一端点。</li>
+<li>可视化管理：提供 Web 界面进行配置、监控和控制。</li>
+<li>工具级权限控制：精细化管理每个工具的访问权限。</li>
+<li>实时日志系统：通过 SSE 提供实时日志监控。</li>
+</ul>
+<p>这类工具解决的是 MCP 工具数量变多之后的管理问题。当团队内部工具越来越多，只靠单个客户端配置会很快失控。网关和仪表盘可以把协议、权限、状态、日志集中起来。</p>
+<h3 id="vscode-copy-for-llm">VSCode-Copy-for-LLM</h3>
+<p>VSCode-Copy-for-LLM 解决的是代码上下文传递问题：怎样把一组文件更清楚、更稳定地交给大语言模型。</p>
+<p>核心功能包括：</p>
+<ul>
+<li>智能忽略：遵守 <code>.gitignore</code> 规则，支持嵌套规则正确解析。</li>
+<li>可定制格式：自定义文件头、分隔符、输出格式。</li>
+<li>大文件处理：文件大小限制、二进制文件自动检测。</li>
+<li>用户体验：进度提示、清晰反馈、批量处理。</li>
+</ul>
+<p>这个工具看似简单，却对应 AI 编程中最常见的问题之一。把一堆文件粗暴贴进聊天窗口，通常会带来噪声、遗漏和格式混乱。更好的做法，是把“选择文件、过滤文件、组织上下文、标注边界”本身工具化。</p>
+<h2 id="第四部分ai-协作中的关键技巧">第四部分：AI 协作中的关键技巧</h2>
+<h3 id="项目生成">项目生成</h3>
+<p>项目生成时，最重要的约束之一是 KISS 原则，也就是 Keep It Simple, Stupid。</p>
+<p>工程系统的设计应保持简洁，不引入非必要的复杂性。</p>
+<p>我在项目生成场景中常用的提示是：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>始终遵循 KISS 原则，优先选择最简单可行的方案。</span></span>
+<span class="line"><span>如果方案复杂度超过 3 层抽象，请重新设计。</span></span></code></pre>
+<p>AI 很容易在没有约束时生成“看起来完整”的复杂系统：过早抽象、过度分层、引入不必要的框架和配置。KISS 原则的作用，是把模型拉回到当前任务真正需要的最小实现。</p>
+<h3 id="上下文窗口优化">上下文窗口优化</h3>
+<p>上下文窗口优化可以从三点入手：</p>
+<ul>
+<li>渐进式重构：将大型变更分解为多个独立步骤。</li>
+<li>关键信息提取：只保留当前任务最相关的上下文。</li>
+<li>长上下文模型利用：对于复杂项目使用 Gemini 2.5 Pro 等模型。</li>
+</ul>
+<p>上下文窗口不是越大越好。真正重要的是上下文的密度和结构。一个高质量的上下文包，应该让模型知道当前目标、相关文件、约束、已有设计、失败历史和验证方式，而不是把整个仓库塞进去。</p>
+<h3 id="质量控制">质量控制</h3>
+<p>质量控制需要多层机制：</p>
+<ol>
+<li>AI 自检：让 AI 审查自己生成的代码。</li>
+<li>自动化测试：每次变更都触发回归测试。</li>
+<li>人工审查：关键逻辑必须人工确认。</li>
+</ol>
+<p>检查清单包括：</p>
+<ul>
+<li>逻辑正确性和边界条件。</li>
+<li>性能和安全性考虑。</li>
+<li>代码风格和规范一致性。</li>
+<li>测试覆盖率和文档完整性。</li>
+</ul>
+<p>AI 生成代码之后，质量控制不应该只依赖“看起来合理”。更可靠的方式，是把检查步骤显式化，让 AI 自检、自动化测试和人工审查形成层次。</p>
+<h3 id="从个人实践到团队标准">从个人实践到团队标准</h3>
+<p>个人实践要在团队里持续产生收益，需要沉淀成共享标准：</p>
+<ol>
+<li>工具库建设：建立团队共享的 MCP 工具集。</li>
+<li>最佳实践沉淀：将成功经验文档化和模板化。</li>
+<li>培训体系建立：帮助团队成员快速上手 AI 协作。</li>
+<li>从工具使用者到工具创造者：主动构建适合业务场景的专用工具。</li>
+<li>知识共享：通过工具封装传递领域专业知识。</li>
+</ol>
+<p>这部分想表达的是：AI 协作不只是个人效率技巧。真正能在团队中持续产生收益的，是把个人实践沉淀成共享工具、共享流程和共享标准。</p>
+<h2 id="第五部分实战案例">第五部分：实战案例</h2>
+<p>这一部分的主题是构建反馈循环，利用大模型辅助算法优化。</p>
+<h3 id="场景背景excel-文件批量验证">场景背景：Excel 文件批量验证</h3>
+<p><img src="/posts/2025-08-09-custom-mcp-tools/images/excel-validation-scenario.svg" alt="Excel 文件批量验证场景"></p>
+<p>场景是 Excel 文件批量验证。任务是：给定一组验证规则，使用一个智能体工作流（agentic workflow）验证每个 Excel 文件是否满足规则，并给出判断依据。</p>
+<p>规则举例：</p>
+<ul>
+<li>标注为“数量”的列不为空。</li>
+<li>表格中“完成”需要打勾。</li>
+</ul>
+<p>这个任务看起来像普通的 Excel 读取和规则判断，但真实文件会让问题复杂很多。我们可以使用正则表达式提取、大模型判断，或者结合多种方法给出最终结论。</p>
+<p>例如：</p>
+<ul>
+<li>正则匹配“完成”，然后在前后匹配勾选符号或类似字符。</li>
+<li>将 Excel 转成文本，加上提示词，让大模型判断。</li>
+</ul>
+<h3 id="excel-文件处理的现实挑战">Excel 文件处理的现实挑战</h3>
+<p><img src="/posts/2025-08-09-custom-mcp-tools/images/excel-real-problems.svg" alt="Excel 文件处理的现实挑战"></p>
+<p>现实问题包括：</p>
+<ul>
+<li>Excel 文件排版不一致，导致定位特定列的算法并不稳定。</li>
+<li>一个工作表（sheet）可能有多个“区域”，也就是一个工作表里实际放了多个表格。</li>
+<li>区域划分可能通过带颜色的合并单元格模拟边界。</li>
+<li>判断一列在哪里结束，需要理解合并单元格、颜色、空行、区域边界等信息。</li>
+</ul>
+<p>因此，这不是一个简单的“读表格，查单元格”问题。算法需要理解 Excel 文件的结构，而这种结构并不总是由标准表格语义表达出来。</p>
+<h3 id="核心思路构建反馈循环">核心思路：构建反馈循环</h3>
+<p><img src="/posts/2025-08-09-custom-mcp-tools/images/algorithm-optimization-workflow.svg" alt="算法优化工作流程图"></p>
+<p>核心思路是构建一个测试驱动的迭代优化流程：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>输入：算法原型 + 验证规则 + 测试文件集 + 预期结果</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>执行检测算法 -> 获得实际输出</span></span>
+<span class="line"><span>对比预期结果 -> 识别差异点</span></span>
+<span class="line"><span>分析失败原因 -> 生成改进建议</span></span>
+<span class="line"><span>更新算法实现 -> 重新测试验证</span></span></code></pre>
+<p>这里大模型不是一次性写完算法，而是参与一个反馈循环。它根据测试结果理解失败原因，再提出改进方案。人类负责提供规则、测试集、预期结果和边界判断。</p>
+<h3 id="llm-驱动的算法优化实施步骤">LLM 驱动的算法优化实施步骤</h3>
+<p><img src="/posts/2025-08-09-custom-mcp-tools/images/implementation-steps.svg" alt="LLM 驱动的算法优化实施步骤"></p>
+<p>具体实施分两步。</p>
+<p>第一步，建立测试基础设施：</p>
+<ul>
+<li>构建包含多种典型场景的 Excel 文件测试集。</li>
+<li>定义每个文件的标准验证结果。</li>
+<li>创建可自动化执行的测试脚本。</li>
+</ul>
+<p>第二步，启动 AI 驱动的优化循环：</p>
+<ul>
+<li>使用 GitHub Copilot 执行 <code>&#x3C;检查算法, 规则描述, 测试文件></code>，获得初始输出。</li>
+<li>根据 <code>&#x3C;算法描述, 预期结果, 实际差异></code> 生成算法改进方案。</li>
+<li>应用改进后的算法重新测试，持续迭代直至达标。</li>
+</ul>
+<p>这个过程的关键，是让 AI 看到“失败在哪里”，而不只是看到“请改好”。没有明确测试反馈，大模型很容易生成看似合理但不可验证的代码。</p>
+<h3 id="优化过程中的关键发现">优化过程中的关键发现</h3>
+<p><img src="/posts/2025-08-09-custom-mcp-tools/images/optimization-findings.svg" alt="优化过程关键发现可视化图"></p>
+<p>遇到的典型陷阱有三类：</p>
+<ul>
+<li>过度拟合：算法根据文件名特征进行判断，缺乏泛化能力。</li>
+<li>关键词堆砌：使用大量硬编码关键词匹配，算法脆弱且不通用。</li>
+<li>忽视边界情况：只针对理想格式优化，忽视现实中的格式变异。</li>
+</ul>
+<p>获得的意外收获也很重要：</p>
+<ul>
+<li>Excel 处理组件库：沉淀出高质量的 Excel 文件处理代码片段。</li>
+<li>结构理解能力：智能提取工作表名称和结构。</li>
+<li>样式解析能力：理解和处理合并单元格、单元格颜色和样式信息。</li>
+<li>领域知识积累：将 Excel 文件处理经验结构化，为后续类似项目提供参考。</li>
+</ul>
+<p>这个案例说明，AI 参与算法优化时，产出不只是最后那段算法代码。更有价值的是调试过程中的中间组件、失败样本、判断规则和领域知识。</p>
+<h3 id="优化后的-excel-处理组件库">优化后的 Excel 处理组件库</h3>
+<p><img src="/posts/2025-08-09-custom-mcp-tools/images/excel-processing-architecture.svg" alt="优化后的 Excel 处理组件库"></p>
+<p>经过多轮迭代之后，系统沉淀出一组可复用的 Excel 处理能力。它们不只服务于当前规则，也可以被后续相似任务复用。</p>
+<p>对这类任务而言，把“文件读取、结构识别、区域划分、规则判断、证据生成”拆成可组合组件，比写一个单体脚本更可靠。</p>
+<h3 id="利用大模型进行算法优化成功的关键因素">利用大模型进行算法优化成功的关键因素</h3>
+<p><img src="/posts/2025-08-09-custom-mcp-tools/images/success-key-factors.svg" alt="利用大模型进行算法优化成功的关键因素"></p>
+<p>成功的关键因素包括：</p>
+<ul>
+<li>领域知识注入：将人类专家对 Excel 文件格式的理解整理成结构化知识，作为上下文提供给 AI，显著提升算法生成质量。</li>
+<li>渐进式优化：从最简单的规则开始，逐步增加复杂性，确保每一步都有稳定基础。</li>
+<li>自动化反馈：建立完整的测试、反馈、优化闭环，让 AI 能够从错误中快速学习和改进。</li>
+</ul>
+<p>参考资料：Google DeepMind《AlphaEvolve: A Gemini-powered coding agent for designing advanced algorithms》。</p>
+<h2 id="总结">总结</h2>
+<p>核心观点可以概括为四点：</p>
+<ul>
+<li>业务导向的定制化工具比通用方案更有效。</li>
+<li>反馈驱动的持续改进是成功的关键。</li>
+<li>人机协作创造出单独无法达到的价值。</li>
+<li>从工具使用者到工具创造者的转变势在必行。</li>
+</ul>
+<p>实践建议是：</p>
+<ul>
+<li>从团队最频繁的重复性任务开始。</li>
+<li>优先解决现有工具的具体痛点。</li>
+<li>建立可量化的效果评估体系。</li>
+<li>将成功经验沉淀为团队标准。</li>
+</ul>
+<p>重点不是“每个团队都要马上写一堆 MCP 工具”。更准确地说，当 AI 已经进入开发流程后，我们需要重新思考工具的形态：工具不只是给人用，也要能被智能体（Agent）安全、稳定、带上下文地调用。</p>  </div> </article>  </main> <footer class="footer" lang="zh-CN"> <span>记录是生活的微小仪式感</span> <span>Copyright 2026 Zhang Hua Feng/張華楓&#39;s Notes</span> </footer> </div> </body></html>
