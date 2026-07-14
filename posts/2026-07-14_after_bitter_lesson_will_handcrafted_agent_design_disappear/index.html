@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Bitter Lesson 之后：Agent 的手工设计会消失吗？ - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="当智能体开始从执行轨迹中学习，意图分类、任务阶段、规划器和状态机可能逐渐被模型吸收，但接口、安全边界、评估与运行环境不会因此消失。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/2026-07-14_after_bitter_lesson_will_handcrafted_agent_design_disappear/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="theme-color" content="#f26a4f"><meta name="robots" content="index,follow"><meta property="og:title" content="Bitter Lesson 之后：Agent 的手工设计会消失吗？ - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="当智能体开始从执行轨迹中学习，意图分类、任务阶段、规划器和状态机可能逐渐被模型吸收，但接口、安全边界、评估与运行环境不会因此消失。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/2026-07-14_after_bitter_lesson_will_handcrafted_agent_design_disappear/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/og-default.svg"><meta property="og:image:type" content="image/svg+xml"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Bitter Lesson 之后：Agent 的手工设计会消失吗？ - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="当智能体开始从执行轨迹中学习，意图分类、任务阶段、规划器和状态机可能逐渐被模型吸收，但接口、安全边界、评估与运行环境不会因此消失。"><meta name="twitter:image" content="https://blog.formalscience.com/og-default.svg"> <meta property="article:published_time" content="2026-07-14T00:00:00.000Z"> <meta property="article:section" content="技术"> <meta property="article:tag" content="AI Agents"><meta property="article:tag" content="The Bitter Lesson"><meta property="article:tag" content="Harness Engineering"><meta property="article:tag" content="Reinforcement Learning"><link rel="stylesheet" href="/_astro/BaseLayout.DB3rUK8x.css"></head> <body> <a class="skip-link" href="#content" lang="zh-CN">跳到内容</a> <div class="site-shell"> <header class="site-header"> <a class="brand" href="/">Zhang Hua Feng/張華楓&#39;s Notes</a> <div class="header-actions"> <nav class="nav-links" aria-label="Primary" lang="zh-CN"> <a href="/">首页</a><a href="/posts">文章</a><a href="/categories">分类</a><a href="/tags">标签</a><a href="/about">关于</a> </nav> <nav class="language-switch" aria-label="Language"> <a href="/" aria-current="page"> 中文 </a><a href="/en"> English </a> </nav> </div> </header> <main id="content">   <article class="post-shell"> <div class="post-meta-row"> <p class="meta">July 14, 2026 - 8 min read</p> <span class="language-badge">中文</span> <a class="category-label" href="/categories/%E6%8A%80%E6%9C%AF/"> 技术 </a> </div> <h1 class="post-title">Bitter Lesson 之后：Agent 的手工设计会消失吗？</h1> <p class="meta">当智能体开始从执行轨迹中学习，意图分类、任务阶段、规划器和状态机可能逐渐被模型吸收，但接口、安全边界、评估与运行环境不会因此消失。</p>  <div class="tag-list"> <a class="tag" href="/tags/AI%20Agents/">AI Agents</a><a class="tag" href="/tags/The%20Bitter%20Lesson/">The Bitter Lesson</a><a class="tag" href="/tags/Harness%20Engineering/">Harness Engineering</a><a class="tag" href="/tags/Reinforcement%20Learning/">Reinforcement Learning</a> </div> <div class="post-content">  <p>如果接受 Rich Sutton 在《The Bitter Lesson》中提出的判断：长期来看，能够利用计算规模的通用方法，往往会压过依赖人工领域知识的方法<sup><a href="#user-content-fn-1" id="user-content-fnref-1" data-footnote-ref="" aria-describedby="footnote-label">1</a></sup>，那么今天为大语言模型智能体设计的意图分类、任务阶段、状态结构、规划器和安全规则，最终会不会都被从执行轨迹中学习出来的策略替代？</p>
+<p>答案很可能是：其中的大部分会被吸收，但不会被完全替代。</p>
+<p>手工设计的智能体模式，长期不会继续充当智能的主体，却会作为训练环境、数据结构、评估标准、安全边界和可观测接口保留下来。这并不违背 Bitter Lesson。真正会退场的，不是设计本身，而是把人的直觉直接写成智能体行为规则的那部分设计。</p>
+<h2 id="从执行轨迹中学习">从执行轨迹中学习</h2>
+<p>这里所说的轨迹学习（trace learning），是指智能体不再主要依靠人工编写的意图分类、状态机和流程规则，而是从大量交互记录中学习行为策略。一条轨迹可能包含用户输入、当前状态、计划、工具调用、工具结果、中间错误、用户修正、最终结果，以及成功、失败或其他反馈信号。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>trajectory = observation + action + tool use + outcome + feedback</span></span></code></pre>
+<p>这些数据可以用于模仿学习、偏好学习、离线强化学习和在线强化学习，也可以帮助模型从失败中学习恢复策略。智能体研究也越来越重视过程本身，而不是只看最终答案。例如，TRACE 尝试评价工具型智能体在效率、幻觉和适应性等方面的完整推理轨迹<sup><a href="#user-content-fn-2" id="user-content-fnref-2" data-footnote-ref="" aria-describedby="footnote-label">2</a></sup>；TRAJECT-Bench 则进一步检查工具选择、参数以及调用依赖和顺序是否正确<sup><a href="#user-content-fn-3" id="user-content-fnref-3" data-footnote-ref="" aria-describedby="footnote-label">3</a></sup>。</p>
+<p>这类评价方式指出了一个简单事实：两个智能体即使给出同样的答案，能力也未必相同。一个可能使用了正确工具，以较低成本完成任务；另一个可能经历了错误调用、无效循环和偶然成功。只有观察轨迹，才能理解结果是怎样产生的，也才能为学习行为策略提供更细的反馈。</p>
+<h2 id="手工模式会被逐渐吸收">手工模式会被逐渐吸收</h2>
+<p>把 Bitter Lesson 放进智能体设计中，结论确实有些“苦”。今天常见的许多模式，包括意图分类、槽位填充、任务阶段、状态机、规划模板、追问规则和工具选择启发式，本质上都是人对“智能体应该如何行动”的手工假设。</p>
+<p>这些设计目前很有用。它们能让系统快速落地，也更容易控制和解释。但如果真实交互轨迹足够多，奖励信号足够稳定，模型和训练计算也继续增长，那么模型很可能逐渐学会这些模式，并形成比人工规则更细致的隐式策略。</p>
+<p>今天的系统可能会规定：当置信度低于某个阈值时，向用户追问。未来的模型则可能从轨迹中学到更具体的判断：这个用户不喜欢频繁被打断；当前动作风险很低，可以先给出草案；缺少的参数能够通过工具补齐；问题表面上是在比较选项，实际已经进入决策阶段。这样的策略很难被一组固定规则完整描述，却可能从大量反馈中逐渐形成。</p>
+<p>因此，如果只看智能行为本身，意图识别、阶段判断、工具选择、参数补全、追问时机、错误恢复和多轮推进策略，都会越来越多地由模型学习，而不是由人逐条编写。</p>
+<h2 id="状态结构会变成系统契约">状态结构会变成系统契约</h2>
+<p>模型未来也许不需要依赖显式状态结构，才能理解用户和任务。例如，今天的系统可能保存这样的任务状态：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "goal"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"..."</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "stage"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"..."</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "constraints"</span><span style="color:#E1E4E8">: {},</span></span>
+<span class="line"><span style="color:#79B8FF">  "pending_questions"</span><span style="color:#E1E4E8">: []</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>随着模型能力增强，这种结构未必仍是必要的认知支架。模型可能在隐空间中形成更丰富的状态表示，不需要先把用户归入某个固定阶段，再决定下一步。</p>
+<p>但外部系统依然需要明确结构。前端要展示任务进度，工具接口要验证参数，日志系统要保留记录，安全模块要检查操作，工程师要调试失败，企业也可能需要审计和合规留痕。状态结构的价值会从“帮助模型思考”转向“让模型的行动能够被其他系统读取、检查和追责”。</p>
+<p>它不会消失，只是从认知结构下沉为接口结构。</p>
+<h2 id="安全边界不是一种行为偏好">安全边界不是一种行为偏好</h2>
+<p>推荐酒店和执行付款，承担的风险完全不同。如果智能体能够发送邮件、删除文件、提交代码、操作账户或控制设备，就不能只相信它已经从轨迹中学会了“通常什么时候应该确认”。</p>
+<p>不可逆操作必须确认，高金额交易必须确认，隐私信息不能擅自外发，越权工具不能调用。这些边界不负责让智能体显得更聪明，而是明确责任由谁承担，以及哪些后果不能只由一个概率模型决定。</p>
+<p>学习策略可以决定怎样更自然地完成任务，却不应独自决定什么绝对不能做。模型越能改变现实世界，系统越需要独立于模型偏好的权限、审批和回滚机制。</p>
+<h2 id="轨迹本身也需要被设计">轨迹本身也需要被设计</h2>
+<p>Bitter Lesson 不是说人的设计毫无价值，而是提醒我们，不要把太多领域知识硬编码进最终的智能行为。轨迹学习要成立，首先要有任务环境、工具、数据、奖励和评估标准，而这些都需要设计。</p>
+<p>什么算成功？什么算危险？工具失败应该怎样归因？哪些错误比其他错误更严重？用户的短期满意是否代表任务真的完成？如果这些问题定义错误，模型只会更有效地从轨迹中学到错误策略。</p>
+<p>真实轨迹也不是天然干净的数据。用户可能表达不清；智能体可能误解需求，但用户没有纠正；工具可能返回错误；任务可能表面成功，却在稍后造成损害。轨迹学习不会消灭设计，只会把一部分设计工作前移到环境、数据和评价函数中。</p>
+<p>这与 <a href="/posts/2026-06-18_harness_engineering_beyond_models/">Harness Engineering：模型之外的工程</a> 的问题是一致的：工程师设计的重点不再只是模型的某一次输出，而是模型依据什么信息行动、可以使用哪些工具、怎样获得反馈，以及失败如何被发现和恢复。</p>
+<h2 id="显式结构仍是现实系统的修补点">显式结构仍是现实系统的修补点</h2>
+<p>智能体通常连接不断变化的接口、企业系统、权限模型和工作流。如果行为完全藏在模型的隐式策略中，外部环境一旦变化，问题就很难定位，也难以及时修复。</p>
+<p>显式的工具结构、状态接口、策略规则和模块边界，能够提供低成本的检查和替换位置。模型可以负责理解复杂语境，系统则保留稳定的连接方式。即使模型最终学会了端到端地产生高质量行动轨迹，工程系统仍需要知道一次行动用了什么权限、改变了什么状态、为什么失败，以及应该从哪里恢复。</p>
+<p>这种结构也与事件驱动的智能体运行时有关。在 <a href="/posts/2026-06-21_from_tool_calls_to_event_driven_agent_runtime/">从工具调用到事件驱动：大语言模型智能体的运行时架构</a> 中，规划器、观察器、执行器和状态事件被拆成不同职责。未来，模型可能吸收其中一部分判断能力，但持续任务、外部事件、权限检查和执行结果仍然需要稳定的运行时承载。</p>
+<h2 id="手工设计不会消失只会下沉">手工设计不会消失，只会下沉</h2>
+<p>智能体设计可能经历四个阶段。</p>
+<p>第一阶段由手工模式主导。系统使用意图分类器、状态机、人工规划器、工具规则和追问规则推进任务。</p>
+<p>第二阶段由模型学习局部模式。模型逐渐负责意图识别、状态更新、工具选择和追问时机，但系统仍保留显式状态和安全规则。</p>
+<p>第三阶段由模型学习端到端的行为策略。模型读取完整上下文和工具环境，直接产生高质量行动轨迹，许多人工规划模板、阶段分类器和意图体系不再重要。</p>
+<p>第四阶段不是所有结构一起消失，而是手工结构下沉到智能体外部：状态结构成为可观测接口，策略规则成为安全边界，评估成为训练目标，轨迹成为学习材料，环境和工具则定义任务能够如何发生。</p>
+<p>变化的不是系统是否需要设计，而是设计位于什么位置。</p>
+<h2 id="任务阶段是工程语言不是最终认知结构">任务阶段是工程语言，不是最终认知结构</h2>
+<p>以“目标发现、探索、比较、决策、执行、反馈”这样的任务推进模型为例，它是一套有用的人类语言。产品和工程团队可以借助它讨论用户处于什么状态，系统缺少什么信息，以及下一步是否应该追问、推荐或执行。</p>
+<p>但这不意味着模型内部最好的表示也一定是 <code>stage = comparison</code>。模型从轨迹中学到的状态可能更细：用户还没有明确决定，但对价格越来越敏感；用户已经倾向于某个选项，只是在寻找一个足以确认的理由；用户表面上询问地点，实际是在排除风险；此时最合适的回应不是增加一张表格，而是给出两句明确判断。</p>
+<p>任务阶段适合作为产品语言、轨迹标注、评估维度、调试线索和安全控制的中间表示，却未必是智能体最终的认知结构。好的工程抽象不必成为永恒真理，才能发挥价值。</p>
+<h2 id="结论">结论</h2>
+<p>按照 Bitter Lesson 指出的方向，今天许多手工设计的智能体模式，最终会被轨迹学习吸收。意图分类、阶段识别、追问策略、工具选择、参数补全、错误恢复和多轮推进，都可能逐渐成为模型学到的能力。</p>
+<p>但显式设计不会随之消失。它会转向更外部的角色：定义任务环境，设计工具接口，收集高质量轨迹，提供可审计状态，建立评估体系，设定安全边界，并约束高风险行为。</p>
+<p>未来可靠的智能体，核心不会是完全手写的意图、状态和规划器，也不会是没有外部结构的端到端黑箱。更可能出现的是一种混合系统：模型通过轨迹学习获得行为能力，系统通过接口、评估和约束保持可控性。</p>
+<p>Bitter Lesson 在智能体时代真正提醒我们的，是不要迷信手工认知结构，而不是误以为学习系统不再需要环境、反馈、边界和责任。最终被替代的不是设计，而是把人的直觉硬编码成智能行为的那部分设计。</p>
+<section data-footnotes="" class="footnotes"><h2 class="sr-only" id="footnote-label">Footnotes</h2>
+<ol>
+<li id="user-content-fn-1">
+<p>Rich Sutton, <a href="https://www.incompleteideas.net/IncIdeas/BitterLesson.html">The Bitter Lesson</a>, 2019。文章回顾了棋类、围棋、语音和视觉等领域，认为长期胜出的通常是能够随计算规模扩展的通用搜索与学习方法。 <a href="#user-content-fnref-1" data-footnote-backref="" aria-label="Back to reference 1" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-2">
+<p>Wonjoong Kim 等，<a href="https://arxiv.org/abs/2510.02837">Beyond the Final Answer: Evaluating the Reasoning Trajectories of Tool-Augmented Agents</a>, 2025。论文提出 TRACE，从效率、幻觉和适应性等维度评价工具增强型智能体的完整推理轨迹。 <a href="#user-content-fnref-2" data-footnote-backref="" aria-label="Back to reference 2" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-3">
+<p>Pengfei He 等，<a href="https://arxiv.org/abs/2510.04550">TRAJECT-Bench: A Trajectory-Aware Benchmark for Evaluating Agentic Tool Use</a>, 2025。该基准除最终正确性外，还评估工具选择、参数正确性以及依赖和调用顺序。 <a href="#user-content-fnref-3" data-footnote-backref="" aria-label="Back to reference 3" class="data-footnote-backref">↩</a></p>
+</li>
+</ol>
+</section>  </div> </article>  </main> <footer class="footer" lang="zh-CN"> <span>记录是生活的微小仪式感</span> <span>Copyright 2026 Zhang Hua Feng/張華楓&#39;s Notes</span> </footer> </div> </body></html>
