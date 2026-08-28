@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>自定义 MCP 工具加速软件开发 - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="从一次 Cursor Meetup 分享整理而来，讨论如何把团队反复发生的工程动作封装成可控、可复用、适合 AI 调用的 MCP 工具，并以 Excel 文件验证案例说明反馈循环的价值。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/2025-08-09_custom_mcp_tools_for_software_development/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="theme-color" content="#f26a4f"><meta name="robots" content="index,follow"><meta property="og:title" content="自定义 MCP 工具加速软件开发 - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="从一次 Cursor Meetup 分享整理而来，讨论如何把团队反复发生的工程动作封装成可控、可复用、适合 AI 调用的 MCP 工具，并以 Excel 文件验证案例说明反馈循环的价值。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/2025-08-09_custom_mcp_tools_for_software_development/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/posts/2025-08-09-custom-mcp-tools/images/algorithm-optimization-workflow.svg"><meta property="og:image:type" content="image/svg+xml"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="自定义 MCP 工具加速软件开发 - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="从一次 Cursor Meetup 分享整理而来，讨论如何把团队反复发生的工程动作封装成可控、可复用、适合 AI 调用的 MCP 工具，并以 Excel 文件验证案例说明反馈循环的价值。"><meta name="twitter:image" content="https://blog.formalscience.com/posts/2025-08-09-custom-mcp-tools/images/algorithm-optimization-workflow.svg"> <meta property="article:published_time" content="2025-08-09T00:00:00.000Z"> <meta property="article:section" content="技术"> <meta property="article:tag" content="MCP"><meta property="article:tag" content="AI Agents"><meta property="article:tag" content="Developer Tools"><meta property="article:tag" content="Cursor"><meta property="article:tag" content="Software Engineering"><link rel="stylesheet" href="/_astro/BaseLayout.DB3rUK8x.css"></head> <body> <a class="skip-link" href="#content" lang="zh-CN">跳到内容</a> <div class="site-shell"> <header class="site-header"> <a class="brand" href="/">Zhang Hua Feng/張華楓&#39;s Notes</a> <div class="header-actions"> <nav class="nav-links" aria-label="Primary" lang="zh-CN"> <a href="/">首页</a><a href="/posts">文章</a><a href="/categories">分类</a><a href="/tags">标签</a><a href="/about">关于</a> </nav> <nav class="language-switch" aria-label="Language"> <a href="/" aria-current="page"> 中文 </a><a href="/en"> English </a> </nav> </div> </header> <main id="content">   <article class="post-shell"> <div class="post-meta-row"> <p class="meta">August 9, 2025 - 14 min read</p> <span class="language-badge">中文</span> <a class="category-label" href="/categories/%E6%8A%80%E6%9C%AF/"> 技术 </a> </div> <h1 class="post-title">自定义 MCP 工具加速软件开发</h1> <p class="meta">从一次 Cursor Meetup 分享整理而来，讨论如何把团队反复发生的工程动作封装成可控、可复用、适合 AI 调用的 MCP 工具，并以 Excel 文件验证案例说明反馈循环的价值。</p>  <div class="tag-list"> <a class="tag" href="/tags/MCP/">MCP</a><a class="tag" href="/tags/AI%20Agents/">AI Agents</a><a class="tag" href="/tags/Developer%20Tools/">Developer Tools</a><a class="tag" href="/tags/Cursor/">Cursor</a><a class="tag" href="/tags/Software%20Engineering/">Software Engineering</a> </div> <div class="post-content">  <p>AI 编程工具已经不只是补全代码。它们可以读仓库、跑命令、调用外部服务，也可以参与调试、测试、部署和文档整理。问题随之变成：团队里那些反复发生、已经有经验沉淀的工程动作，怎样才能被封装成可控、可复用、适合 AI 调用的工具？</p>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>自定义 MCP 工具加速软件开发 - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="从一次 Cursor Meetup 分享整理而来，讨论如何把团队反复发生的工程动作封装成可控、可复用、适合 AI 调用的 MCP 工具，并以 Excel 文件验证案例说明反馈循环的价值。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/2025-08-09_custom_mcp_tools_for_software_development/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="theme-color" content="#f26a4f"><meta name="robots" content="index,follow"><meta property="og:title" content="自定义 MCP 工具加速软件开发 - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="从一次 Cursor Meetup 分享整理而来，讨论如何把团队反复发生的工程动作封装成可控、可复用、适合 AI 调用的 MCP 工具，并以 Excel 文件验证案例说明反馈循环的价值。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/2025-08-09_custom_mcp_tools_for_software_development/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/posts/2025-08-09-custom-mcp-tools/images/algorithm-optimization-workflow.svg"><meta property="og:image:type" content="image/svg+xml"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="自定义 MCP 工具加速软件开发 - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="从一次 Cursor Meetup 分享整理而来，讨论如何把团队反复发生的工程动作封装成可控、可复用、适合 AI 调用的 MCP 工具，并以 Excel 文件验证案例说明反馈循环的价值。"><meta name="twitter:image" content="https://blog.formalscience.com/posts/2025-08-09-custom-mcp-tools/images/algorithm-optimization-workflow.svg"><meta property="article:published_time" content="2025-08-09T00:00:00.000Z"><meta property="article:section" content="技术"><meta property="article:tag" content="MCP"><meta property="article:tag" content="AI Agents"><meta property="article:tag" content="Developer Tools"><meta property="article:tag" content="Cursor"><meta property="article:tag" content="Software Engineering"><link rel="stylesheet" href="/_astro/BaseLayout.BWRtmF1B.css"></head><body><a class="skip-link" href="#content" lang="zh-CN">跳到内容</a><div class="site-shell"><header class="site-header"><a class="brand" href="/">Zhang Hua Feng/張華楓&#39;s Notes</a><div class="header-actions"><nav class="nav-links" aria-label="Primary" lang="zh-CN"><a href="/">首页</a><a href="/posts">文章</a><a href="/categories">分类</a><a href="/tags">标签</a><a href="/about">关于</a></nav><nav class="language-switch" aria-label="Language"><a href="/" aria-current="page">中文</a><a href="/en">English</a></nav></div></header><main id="content"><article class="post-shell"><div class="post-meta-row"><p class="meta">August 9, 2025 - 14 min read</p><span class="language-badge">中文</span><a class="category-label" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></div><h1 class="post-title">自定义 MCP 工具加速软件开发</h1><p class="meta">从一次 Cursor Meetup 分享整理而来，讨论如何把团队反复发生的工程动作封装成可控、可复用、适合 AI 调用的 MCP 工具，并以 Excel 文件验证案例说明反馈循环的价值。</p><div class="tag-list"><a class="tag" href="/tags/MCP/">MCP</a><a class="tag" href="/tags/AI%20Agents/">AI Agents</a><a class="tag" href="/tags/Developer%20Tools/">Developer Tools</a><a class="tag" href="/tags/Cursor/">Cursor</a><a class="tag" href="/tags/Software%20Engineering/">Software Engineering</a></div><div class="post-content"><p>AI 编程工具已经不只是补全代码。它们可以读仓库、跑命令、调用外部服务，也可以参与调试、测试、部署和文档整理。问题随之变成：团队里那些反复发生、已经有经验沉淀的工程动作，怎样才能被封装成可控、可复用、适合 AI 调用的工具？</p>
 <p>这篇文章整理自我在 Cursor Meetup 上的一次分享，主题是“自定义 MCP 工具加速软件开发”。文章保留分享中的主要结构和图示，并补充 MCP 工具设计、AI 协作方法，以及 Excel 文件批量验证案例中的实践细节。</p>
 <h2 id="分享信息">分享信息</h2>
 <ul>
@@ -73,17 +73,17 @@
 <p>开发环境管理工具：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>功能：一键环境准备和验证</span></span>
 <span class="line"><span>输入：项目配置文件</span></span>
-<span class="line"><span>执行：依赖安装 -> 服务启动 -> 健康检查 -> 测试运行</span></span>
+<span class="line"><span>执行：依赖安装 -&gt; 服务启动 -&gt; 健康检查 -&gt; 测试运行</span></span>
 <span class="line"><span>输出：环境状态报告 + 问题修复建议</span></span></code></pre>
 <p>代码质量检查工具：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>功能：全方位代码质量评估</span></span>
 <span class="line"><span>输入：代码仓库路径</span></span>
-<span class="line"><span>执行：静态分析 -> 安全扫描 -> 测试覆盖率 -> 性能基准</span></span>
+<span class="line"><span>执行：静态分析 -&gt; 安全扫描 -&gt; 测试覆盖率 -&gt; 性能基准</span></span>
 <span class="line"><span>输出：质量评分 + 详细改进方案</span></span></code></pre>
 <p>部署流水线工具：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>功能：自动化部署和回滚</span></span>
 <span class="line"><span>输入：部署配置 + 目标环境</span></span>
-<span class="line"><span>执行：构建镜像 -> 部署服务 -> 烟雾测试 -> 流量切换</span></span>
+<span class="line"><span>执行：构建镜像 -&gt; 部署服务 -&gt; 烟雾测试 -&gt; 流量切换</span></span>
 <span class="line"><span>输出：部署结果 + 监控链接</span></span></code></pre>
 <p>这些工具的共同点是：它们不是孤立命令，而是一段流程。MCP 的价值正是在于把流程变成模型可调用、团队可复用的工具。</p>
 <h2 id="第三部分mcp-工具开发实践">第三部分：MCP 工具开发实践</h2>
@@ -222,10 +222,10 @@
 <p>核心思路是构建一个测试驱动的迭代优化流程：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>输入：算法原型 + 验证规则 + 测试文件集 + 预期结果</span></span>
 <span class="line"><span></span></span>
-<span class="line"><span>执行检测算法 -> 获得实际输出</span></span>
-<span class="line"><span>对比预期结果 -> 识别差异点</span></span>
-<span class="line"><span>分析失败原因 -> 生成改进建议</span></span>
-<span class="line"><span>更新算法实现 -> 重新测试验证</span></span></code></pre>
+<span class="line"><span>执行检测算法 -&gt; 获得实际输出</span></span>
+<span class="line"><span>对比预期结果 -&gt; 识别差异点</span></span>
+<span class="line"><span>分析失败原因 -&gt; 生成改进建议</span></span>
+<span class="line"><span>更新算法实现 -&gt; 重新测试验证</span></span></code></pre>
 <p>这里大模型不是一次性写完算法，而是参与一个反馈循环。它根据测试结果理解失败原因，再提出改进方案。人类负责提供规则、测试集、预期结果和边界判断。</p>
 <h3 id="llm-驱动的算法优化实施步骤">LLM 驱动的算法优化实施步骤</h3>
 <p><img src="/posts/2025-08-09-custom-mcp-tools/images/implementation-steps.svg" alt="LLM 驱动的算法优化实施步骤"></p>
@@ -238,8 +238,8 @@
 </ul>
 <p>第二步，启动 AI 驱动的优化循环：</p>
 <ul>
-<li>使用 GitHub Copilot 执行 <code>&#x3C;检查算法, 规则描述, 测试文件></code>，获得初始输出。</li>
-<li>根据 <code>&#x3C;算法描述, 预期结果, 实际差异></code> 生成算法改进方案。</li>
+<li>使用 GitHub Copilot 执行 <code>&lt;检查算法, 规则描述, 测试文件&gt;</code>，获得初始输出。</li>
+<li>根据 <code>&lt;算法描述, 预期结果, 实际差异&gt;</code> 生成算法改进方案。</li>
 <li>应用改进后的算法重新测试，持续迭代直至达标。</li>
 </ul>
 <p>这个过程的关键，是让 AI 看到“失败在哪里”，而不只是看到“请改好”。没有明确测试反馈，大模型很容易生成看似合理但不可验证的代码。</p>
@@ -287,4 +287,5 @@
 <li>建立可量化的效果评估体系。</li>
 <li>将成功经验沉淀为团队标准。</li>
 </ul>
-<p>重点不是“每个团队都要马上写一堆 MCP 工具”。更准确地说，当 AI 已经进入开发流程后，我们需要重新思考工具的形态：工具不只是给人用，也要能被智能体（Agent）安全、稳定、带上下文地调用。</p>  </div> </article>  </main> <footer class="footer" lang="zh-CN"> <span>记录是生活的微小仪式感</span> <span>Copyright 2026 Zhang Hua Feng/張華楓&#39;s Notes</span> </footer> </div> </body></html>
+<p>重点不是“每个团队都要马上写一堆 MCP 工具”。更准确地说，当 AI 已经进入开发流程后，我们需要重新思考工具的形态：工具不只是给人用，也要能被智能体（Agent）安全、稳定、带上下文地调用。</p>
+</div></article></main><footer class="footer" lang="zh-CN"><span>记录是生活的微小仪式感</span><span>Copyright 2026 Zhang Hua Feng/張華楓&#39;s Notes</span></footer></div></body></html>
