@@ -1,0 +1,524 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Model Ergonomics: How Harnesses Shape Agent Capability - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="The same model can behave very differently under a different harness. This article examines model ergonomics: the fit between models, tools, context, feedback, and execution environments, using Grok on the Codex harness to explore the boundary between generalized and specialized harnesses."><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/en/posts/2026-09-01_model_ergonomics_harness_and_model_fit/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="theme-color" content="#f26a4f"><meta name="robots" content="index,follow"><meta property="og:title" content="Model Ergonomics: How Harnesses Shape Agent Capability - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="The same model can behave very differently under a different harness. This article examines model ergonomics: the fit between models, tools, context, feedback, and execution environments, using Grok on the Codex harness to explore the boundary between generalized and specialized harnesses."><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/en/posts/2026-09-01_model_ergonomics_harness_and_model_fit/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/og-default.svg"><meta property="og:image:type" content="image/svg+xml"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Model Ergonomics: How Harnesses Shape Agent Capability - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="The same model can behave very differently under a different harness. This article examines model ergonomics: the fit between models, tools, context, feedback, and execution environments, using Grok on the Codex harness to explore the boundary between generalized and specialized harnesses."><meta name="twitter:image" content="https://blog.formalscience.com/og-default.svg"><meta property="article:published_time" content="2026-09-01T00:00:00.000Z"><meta property="article:section" content="技术"><link rel="alternate" hreflang="zh-CN" href="https://blog.formalscience.com/posts/2026-09-01_model_ergonomics_harness_and_model_fit/"><meta property="article:tag" content="Harness Engineering"><meta property="article:tag" content="AI Agents"><meta property="article:tag" content="Model Ergonomics"><meta property="article:tag" content="Codex"><meta property="article:tag" content="Grok"><link rel="stylesheet" href="/_astro/BaseLayout.BWRtmF1B.css"></head><body><a class="skip-link" href="#content" lang="en">Skip to content</a><div class="site-shell"><header class="site-header"><a class="brand" href="/en">Zhang Hua Feng/張華楓&#39;s Notes</a><div class="header-actions"><nav class="nav-links" aria-label="Primary" lang="en"><a href="/en">Home</a><a href="/en/posts">Posts</a><a href="/en/categories">Categories</a><a href="/en/tags">Tags</a><a href="/en/about">About</a></nav><nav class="language-switch" aria-label="Language"><a href="/">中文</a><a href="/en" aria-current="page">English</a></nav></div></header><main id="content"><article class="post-shell"><div class="post-meta-row"><p class="meta">September 1, 2026 - 19 min read</p><span class="language-badge">English</span><a class="category-label" href="/en/categories/%E6%8A%80%E6%9C%AF/">技术</a></div><h1 class="post-title">Model Ergonomics: How Harnesses Shape Agent Capability</h1><p class="meta">The same model can behave very differently under a different harness. This article examines model ergonomics: the fit between models, tools, context, feedback, and execution environments, using Grok on the Codex harness to explore the boundary between generalized and specialized harnesses.</p><nav class="translation-links" aria-label="Translations"><span>Translations</span><a href="/posts/2026-09-01_model_ergonomics_harness_and_model_fit/">中文</a></nav><div class="tag-list"><a class="tag" href="/en/tags/Harness%20Engineering/">Harness Engineering</a><a class="tag" href="/en/tags/AI%20Agents/">AI Agents</a><a class="tag" href="/en/tags/Model%20Ergonomics/">Model Ergonomics</a><a class="tag" href="/en/tags/Codex/">Codex</a><a class="tag" href="/en/tags/Grok/">Grok</a></div><div class="post-content"><p>When discussing whether a coding agent is strong enough, we usually ask first: what model does it use?</p>
+<p>Which model version is it? What reasoning effort is enabled? How large is the context window? How reliable are its tool calls? These questions matter because the base model defines important boundaries on what the agent can do.</p>
+<p>But when building real agent systems, we quickly encounter a harder phenomenon to explain:</p>
+<p><strong>The same model can behave very differently under a different harness.</strong></p>
+<p>Here, the harness is the system layer between the model and the real execution environment. It determines what context the model can see, which tools it can call, how those tools are presented, how execution results are returned, when context is compressed, how failures are recovered from, and how a task continues from start to finish.</p>
+<p>In an earlier article, <a href="/posts/2026-06-18_harness_engineering_beyond_models/">“Harness Engineering: Engineering Beyond the Model”</a>, I described the harness as the execution structure outside the model: tools, permissions, validation, observation, memory, and feedback jointly determine whether an agent can work reliably. Following that line of thought leads to a more specific question: even if two harnesses provide the same capabilities, do they expose those capabilities in forms that are equally easy for a model to use?</p>
+<p>I use <strong>model ergonomics</strong> to describe this fit.</p>
+<p>This is not yet a rigorously standardized academic term. Existing work more often uses concepts such as Agent-Computer Interface (ACI), agent scaffolding, tool interface, or harness design. But model ergonomics is a useful name for an increasingly important engineering question:</p>
+<blockquote>
+<p>Does a harness expose environmental capabilities in a form that a particular model can understand, reason about, act through, and recover through easily?</p>
+</blockquote>
+<p>This means that an agent’s observed capability cannot be attributed only to the model, or simply to the harness. What matters is the fit between the two.</p>
+<h2 id="a-harness-is-not-merely-a-wrapper-around-the-model">A Harness Is Not Merely a Wrapper Around the Model</h2>
+<p>Early large-language-model applications can easily be understood as a simple pipeline:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>task</span></span>
+<span class="line"><span>  ↓</span></span>
+<span class="line"><span>model</span></span>
+<span class="line"><span>  ↓</span></span>
+<span class="line"><span>answer</span></span></code></pre>
+<p>But the real execution process of an agent system is closer to:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>task</span></span>
+<span class="line"><span>  ↓</span></span>
+<span class="line"><span>harness constructs observation</span></span>
+<span class="line"><span>  ↓</span></span>
+<span class="line"><span>model reasons</span></span>
+<span class="line"><span>  ↓</span></span>
+<span class="line"><span>harness exposes actions</span></span>
+<span class="line"><span>  ↓</span></span>
+<span class="line"><span>model selects action</span></span>
+<span class="line"><span>  ↓</span></span>
+<span class="line"><span>harness executes</span></span>
+<span class="line"><span>  ↓</span></span>
+<span class="line"><span>harness transforms feedback</span></span>
+<span class="line"><span>  ↓</span></span>
+<span class="line"><span>model reasons again</span></span>
+<span class="line"><span>  ↓</span></span>
+<span class="line"><span>...</span></span></code></pre>
+<p>The model does not interact directly with the computer. It interacts with the world constructed for it by the harness.</p>
+<p>When <a href="https://arxiv.org/abs/2405.15793">SWE-agent</a> introduced the Agent-Computer Interface in 2024, it made this point explicit: language-model agents are a new kind of computer user, so the interface designed for them can significantly affect their behavior and performance on software-engineering tasks.<sup><a href="#user-content-fn-1" id="user-content-fnref-1" data-footnote-ref aria-describedby="footnote-label">1</a></sup></p>
+<p>This suggests that observed agent capability is closer to:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Capability = f(Model, Harness, Environment, Budget)</span></span></code></pre>
+<p>rather than:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Capability = f(Model)</span></span></code></pre>
+<p>The <code>Model × Harness</code> interaction term is especially important.</p>
+<p>The 2026 work <a href="https://arxiv.org/abs/2605.27922">Harness-Bench</a> studies this issue more directly. It treats tools, context, state, permissions, constraints, and recovery mechanisms as parts of the harness and compares execution trajectories across model-harness configurations. One important conclusion is that agent capability is better reported at the <strong>model-harness configuration</strong> level than attributed to the base model alone.<sup><a href="#user-content-fn-2" id="user-content-fnref-2" data-footnote-ref aria-describedby="footnote-label">2</a></sup></p>
+<p>So, in an agent setting, “How strong is this model?” is itself an incomplete question.</p>
+<p>A more precise question is:</p>
+<blockquote>
+<p>Under what harness, tool environment, context policy, and execution budget can this model exhibit what level of capability?</p>
+</blockquote>
+<h2 id="model-ergonomics-is-about-more-than-whether-something-is-possible">Model Ergonomics Is About More Than Whether Something Is Possible</h2>
+<p>Model ergonomics can easily be misunderstood as “write some extra prompts for a specific model.”</p>
+<p>Its scope is broader than that.</p>
+<p>The fact that a model can theoretically perform an operation does not mean the current harness gives it the best interface for performing that operation.</p>
+<p>Suppose a model has only one very powerful tool:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>exec_command(command)</span></span></code></pre>
+<p>From a capability perspective, the model can use it to construct almost an entire local toolset for itself. With shell, Python, Perl, awk, or other programs, it can read files, traverse directories, search, batch-process data, modify files, and run tests.</p>
+<p>From the perspective of whether an operation is expressible, a general shell is therefore close to Turing-complete.</p>
+<p>But expressiveness is not the model’s only problem.</p>
+<p>The model must also decide what action to take next, construct the correct parameters, control side effects, understand tool results, and recover after failures. Harness quality therefore also depends on questions such as:</p>
+<ul>
+<li>Can the model easily select the correct action?</li>
+<li>Is the action granularity appropriate?</li>
+<li>Are tool parameters easy to generate reliably?</li>
+<li>Do tool results contain enough information without excessive noise?</li>
+<li>Are errors easy to classify?</li>
+<li>Does the context preserve the state needed for the next step?</li>
+<li>After a mistake, can the model easily return to a productive trajectory?</li>
+</ul>
+<p>Therefore:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>capability completeness ≠ ergonomic fit</span></span></code></pre>
+<p>An interface can have extremely high theoretical expressive power while forcing the model to make too many low-level decisions.</p>
+<p>Another interface can provide many convenient structured tools but expand the action search space because the tools are numerous and semantically overlapping.</p>
+<p>Model ergonomics is about the relationship between these two extremes.</p>
+<h2 id="running-grok-on-codex-what-comes-after-protocol-compatibility">Running Grok on Codex: What Comes After Protocol Compatibility</h2>
+<p>This issue becomes concrete when running Grok on the Codex harness.</p>
+<p>Our goal is not to reimplement a Grok coding agent. It is to preserve as much of Codex’s existing execution system as possible, including Thread and session lifecycles, context and history, sandbox and approval, MCP, Code Mode, Multi-Agent, ToolRouter, and the App Server and UI contract.</p>
+<p>The corresponding architecture principle is:</p>
+<blockquote>
+<p>Stock Codex owns the harness. Provider adaptation owns backend differences.</p>
+</blockquote>
+<p>In the current design, the Grok Provider is mainly responsible for real protocol differences between Codex and the Grok Responses API: request/history projection, the Grok Responses dialect, projecting Codex’s canonical namespaced tools into flat functions that Grok accepts, and restoring returned calls to their canonical Codex tool identity.<sup><a href="#user-content-fn-3" id="user-content-fnref-3" data-footnote-ref aria-describedby="footnote-label">3</a></sup></p>
+<p>These are all forms of <strong>Provider compatibility</strong>.</p>
+<p>They answer this question:</p>
+<blockquote>
+<p>Can the existing Codex harness work correctly through the Grok API?</p>
+</blockquote>
+<p>But once the model starts executing real coding tasks, another class of problem appears.</p>
+<p>For example, when several files must be read at once, we have observed Grok repeatedly generating temporary Python programs through <code>exec_command</code>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">python3</span><span style="color:#9ECBFF"> -</span><span style="color:#F97583"> &lt;&lt;</span><span style="color:#9ECBFF">'PY'</span></span>
+<span class="line"><span style="color:#9ECBFF">from pathlib import Path</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">for path in paths:</span></span>
+<span class="line"><span style="color:#9ECBFF">    print(Path(path).read_text())</span></span>
+<span class="line"><span style="color:#9ECBFF">PY</span></span></code></pre>
+<p>This does not mean Grok cannot use Codex.</p>
+<p>On the contrary, it successfully uses the shell exposed by Codex and can usually complete the task.</p>
+<p>The more interesting question is:</p>
+<blockquote>
+<p>Why does the model repeatedly reconstruct a file-reading abstraction inside the shell?</p>
+</blockquote>
+<p>This is no longer a Provider protocol problem.</p>
+<p>It is a model-ergonomics problem.</p>
+<h2 id="shell-is-a-general-interface-but-not-a-neutral-one">Shell Is a General Interface, but Not a Neutral One</h2>
+<p>In the current Grok-enabled Codex <code>release/rust-v0.151.0</code>, the model catalog for Grok 4.6 configures <code>UnifiedExec</code>, while <code>apply_patch_tool_type</code> is <code>None</code>.<sup><a href="#user-content-fn-4" id="user-content-fnref-4" data-footnote-ref aria-describedby="footnote-label">4</a></sup></p>
+<p>Codex’s tool-planning code registers <code>exec_command</code> and <code>write_stdin</code> for Unified Exec. The stock <code>ApplyPatchHandler</code> enters the tool registry only when <code>model_info.apply_patch_tool_type</code> is present.<sup><a href="#user-content-fn-5" id="user-content-fnref-5" data-footnote-ref aria-describedby="footnote-label">5</a></sup></p>
+<p>So, in this specific configuration, Grok receives a highly expressive shell but does not receive Codex’s native <code>apply_patch</code> tool.</p>
+<p>This fact alone does not prove that the harness design is wrong.</p>
+<p>It certainly does not prove that “giving Grok more file tools will necessarily improve performance.”</p>
+<p>But it exposes an easily missed property of a generalized harness:</p>
+<p><strong>A general interface does not mean an interface without design bias.</strong></p>
+<p>If every model is given the same interface:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>shell(command: string)</span></span></code></pre>
+<p>this can look highly generalized. Any model can use it, and a large set of computer operations can be expressed through it.</p>
+<p>But choosing shell as the universal action representation is itself a strong design decision. It assumes that the model can reliably handle shell syntax, quoting, batching, side effects, stdout, and combinations of tools such as grep, sed, find, and Python.</p>
+<p>For a model that is strong at these operations, this freedom can be highly effective.</p>
+<p>For another model, the same freedom may simply enlarge the action space and add execution ceremony.</p>
+<p>So a generalized harness is not “free of specialization.”</p>
+<p>It often hides specialization inside an abstraction that has been treated as sufficiently universal.</p>
+<h2 id="grokbuild-is-a-design-signal-not-a-conclusion">GrokBuild Is a Design Signal, Not a Conclusion</h2>
+<p>xAI’s open-source <a href="https://github.com/xai-org/grok-build">GrokBuild</a> provides an interesting comparison.</p>
+<p>Its tool runtime contains a group of tools explicitly marked as Codex-specific:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>apply_patch</span></span>
+<span class="line"><span>grep_files</span></span>
+<span class="line"><span>list_dir</span></span>
+<span class="line"><span>read_file</span></span></code></pre>
+<p>The source describes these tools as ports and modifications of Codex implementations.<sup><a href="#user-content-fn-6" id="user-content-fnref-6" data-footnote-ref aria-describedby="footnote-label">6</a></sup></p>
+<p>It is easy to draw a conclusion that is too strong:</p>
+<blockquote>
+<p>GrokBuild has <code>read_file</code>, so Grok must also have <code>read_file</code> when running in Codex.</p>
+</blockquote>
+<p>There is not enough evidence to support that conclusion.</p>
+<p>The GrokBuild design proves only that xAI chose to expose these structured file operations when building its own coding harness for Grok.</p>
+<p>But the comparison is still useful.</p>
+<p>Two harnesses that both aim to let Grok perform software-engineering tasks can choose very different action vocabularies:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Codex                  GrokBuild</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>exec_command           read_file</span></span>
+<span class="line"><span>write_stdin            list_dir</span></span>
+<span class="line"><span>...                    grep_files</span></span>
+<span class="line"><span>                       apply_patch</span></span>
+<span class="line"><span>                       ...</span></span></code></pre>
+<p>If the same model behaves very differently in the two environments, the difference cannot be attributed entirely to model weights.</p>
+<p>More importantly, GrokBuild’s <code>ToolConfig</code> separates canonical tool identity from client-facing presentation. It supports overrides for tool names, parameter names, and descriptions.<sup><a href="#user-content-fn-7" id="user-content-fnref-7" data-footnote-ref aria-describedby="footnote-label">7</a></sup></p>
+<p>This suggests an important architectural direction:</p>
+<blockquote>
+<p>What a tool is and how the model sees that tool do not necessarily need to live in the same layer.</p>
+</blockquote>
+<p>That principle is more valuable than simply copying GrokBuild’s particular tools.</p>
+<h2 id="generalized-and-specialized-harnesses-are-not-a-binary-choice">Generalized and Specialized Harnesses Are Not a Binary Choice</h2>
+<p>Once we accept model ergonomics, it is easy to move to the opposite extreme: if different models prefer different interfaces, maintain a dedicated harness for each model.</p>
+<p>For example:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Model A ToolRouter</span></span>
+<span class="line"><span>Model B ToolRouter</span></span>
+<span class="line"><span>Grok ToolRouter</span></span>
+<span class="line"><span>...</span></span></code></pre>
+<p>In the short term, this can make it easy to improve benchmark scores.</p>
+<p>If a model does not use one tool well, replace it with another. If a context layout performs poorly, add a model-specific branch. If a model often stalls at a particular point, add a dedicated recovery rule.</p>
+<p>If this continues, however, another class of problem appears:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>semantic divergence</span></span>
+<span class="line"><span>test explosion</span></span>
+<span class="line"><span>model-version drift</span></span>
+<span class="line"><span>duplicate runtimes</span></span>
+<span class="line"><span>upgrade difficulty</span></span></code></pre>
+<p>Models themselves continue to change.</p>
+<p>A workaround that is necessary today may become useless after the next model update, or even restrict a newer model’s capabilities.</p>
+<p>So the real question is not:</p>
+<blockquote>
+<p>Generalized harness or specialized harness?</p>
+</blockquote>
+<p>It is:</p>
+<blockquote>
+<p>What should be generalized, and what may be specialized?</p>
+</blockquote>
+<p>I currently prefer to separate the system into three layers.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>┌────────────────────────────────────┐</span></span>
+<span class="line"><span>│ Model Ergonomic Profile            │</span></span>
+<span class="line"><span>│                                    │</span></span>
+<span class="line"><span>│ tool presentation                  │</span></span>
+<span class="line"><span>│ observation granularity            │</span></span>
+<span class="line"><span>│ context policy                     │</span></span>
+<span class="line"><span>│ reasoning defaults                 │</span></span>
+<span class="line"><span>│ guidance / recovery                │</span></span>
+<span class="line"><span>└────────────────┬───────────────────┘</span></span>
+<span class="line"><span>                 │</span></span>
+<span class="line"><span>┌────────────────▼───────────────────┐</span></span>
+<span class="line"><span>│ General Semantic Harness           │</span></span>
+<span class="line"><span>│                                    │</span></span>
+<span class="line"><span>│ canonical tools                    │</span></span>
+<span class="line"><span>│ ToolRouter                         │</span></span>
+<span class="line"><span>│ sandbox / approvals                │</span></span>
+<span class="line"><span>│ history / context                  │</span></span>
+<span class="line"><span>│ multi-agent                        │</span></span>
+<span class="line"><span>│ lifecycle / state                  │</span></span>
+<span class="line"><span>└────────────────┬───────────────────┘</span></span>
+<span class="line"><span>                 │</span></span>
+<span class="line"><span>┌────────────────▼───────────────────┐</span></span>
+<span class="line"><span>│ Provider / Wire Adapter            │</span></span>
+<span class="line"><span>│                                    │</span></span>
+<span class="line"><span>│ auth / endpoint                    │</span></span>
+<span class="line"><span>│ request dialect                    │</span></span>
+<span class="line"><span>│ reasoning projection               │</span></span>
+<span class="line"><span>│ tool wire encoding                 │</span></span>
+<span class="line"><span>│ response normalization             │</span></span>
+<span class="line"><span>└────────────────────────────────────┘</span></span></code></pre>
+<p>Each layer solves a different problem.</p>
+<h2 id="the-semantic-harness-should-remain-general">The Semantic Harness Should Remain General</h2>
+<p>The first layer is the general semantic harness.</p>
+<p>Model-specific implementation should be avoided here as much as possible.</p>
+<p>Operations such as Read File, Apply Patch, Exec, MCP Call, Web Search, and Spawn Agent can all be understood as canonical semantic operations in an agent system.</p>
+<p>Likewise, sandboxing, permissions, history, tool lifecycle, persistence, and cancellation should remain unified.</p>
+<p>The most important requirement at this layer is not that every model sees exactly the same interface. It is that:</p>
+<blockquote>
+<p><strong>Execution authority must remain singular.</strong></p>
+</blockquote>
+<p>If Codex already owns the ToolRegistry, ToolRouter, sandbox, history, and extension runtime, then creating a separate Grok ToolRouter just to support Grok usually means the architecture is beginning to split.</p>
+<p>This is also the boundary maintained by the current <a href="https://github.com/ronhuafeng/mini-proxy-core/blob/main/docs/architecture/codex-third-party-provider-north-star.md">Codex Third-Party Provider North Star</a>: Codex core keeps the canonical concepts, while Provider-specific behavior is projected only at the narrowest backend boundary.<sup><a href="#user-content-fn-8" id="user-content-fnref-8" data-footnote-ref aria-describedby="footnote-label">8</a></sup></p>
+<h2 id="provider-compatibility-should-cover-protocol-differences-only">Provider Compatibility Should Cover Protocol Differences Only</h2>
+<p>The second layer is Provider compatibility.</p>
+<p>This layer can be specialized because different backends do have real protocol differences.</p>
+<p>For Grok, for example, it can handle:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>logical Codex reasoning</span></span>
+<span class="line"><span>        ↓</span></span>
+<span class="line"><span>Grok wire reasoning</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>canonical namespaced tool</span></span>
+<span class="line"><span>        ↓</span></span>
+<span class="line"><span>backend-safe function name</span></span>
+<span class="line"><span>        ↓</span></span>
+<span class="line"><span>reverse projection</span></span>
+<span class="line"><span>        ↓</span></span>
+<span class="line"><span>canonical Codex identity</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>canonical history</span></span>
+<span class="line"><span>        ↓</span></span>
+<span class="line"><span>Grok-compatible request representation</span></span></code></pre>
+<p>This specialization has a clear source: the backend contract is different.</p>
+<p>It answers:</p>
+<blockquote>
+<p>How can unified Codex semantics pass correctly through different Providers?</p>
+</blockquote>
+<p>If a difference cannot be explained by the Provider API, wire protocol, or backend behavior, we should be cautious before deciding that it belongs in the Provider layer.</p>
+<p>For example, even if experiments eventually validate that “Grok prefers <code>read_file</code> to shell,” that is not a protocol fact about the Grok Responses API.</p>
+<p>It belongs to another layer.</p>
+<h2 id="the-model-ergonomic-profile-controls-what-the-model-sees">The Model Ergonomic Profile Controls What the Model Sees</h2>
+<p>The third layer is model ergonomics.</p>
+<p>It addresses this question:</p>
+<blockquote>
+<p>Once the harness can run correctly, how should its capabilities be presented to the current model?</p>
+</blockquote>
+<p>This layer may control things such as:</p>
+<ul>
+<li>Which canonical tools are exposed directly to the model;</li>
+<li>How tool names and descriptions are presented;</li>
+<li>How parameter schemas are organized;</li>
+<li>Action granularity;</li>
+<li>Context compression;</li>
+<li>The level of detail in tool results;</li>
+<li>Reasoning defaults;</li>
+<li>Recovery hints;</li>
+<li>Direct, deferred, or other tool-exposure policies.</li>
+</ul>
+<p>The most important boundary is:</p>
+<blockquote>
+<p><strong>Specialize the interface, not the execution authority.</strong></p>
+</blockquote>
+<p>Suppose future benchmarks show that Grok performs substantially better with <code>read_file</code> than when it must organize file reading through <code>exec_command</code>.</p>
+<p>The correct direction is more likely to be:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>model-facing read_file</span></span>
+<span class="line"><span>        ↓</span></span>
+<span class="line"><span>canonical filesystem operation</span></span>
+<span class="line"><span>        ↓</span></span>
+<span class="line"><span>stock Codex execution environment</span></span></code></pre>
+<p>rather than:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>GrokReadFileRuntime</span></span>
+<span class="line"><span>GrokFileSystem</span></span>
+<span class="line"><span>GrokToolRouter</span></span></code></pre>
+<p>The first changes the model interface.</p>
+<p>The second begins duplicating harness semantics.</p>
+<h2 id="capability-and-ergonomics-are-different-kinds-of-facts">Capability and Ergonomics Are Different Kinds of Facts</h2>
+<p>If model ergonomics is eventually introduced into model profiles, ergonomic preferences must not be confused with capabilities.</p>
+<p>For example:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>supports_image = true</span></span></code></pre>
+<p>describes a capability.</p>
+<p>It answers:</p>
+<blockquote>
+<p>Does this execution path support images?</p>
+</blockquote>
+<p>By contrast:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>prefer_file_tools_over_shell = true</span></span></code></pre>
+<p>if a policy like this exists in the future, would describe an ergonomic preference.</p>
+<p>It answers:</p>
+<blockquote>
+<p>According to the current benchmark evidence, does this interface make it easier for the model to perform reliably?</p>
+</blockquote>
+<p>The stability of these two facts is very different.</p>
+<p>Capabilities usually come from definite facts about an API, a model, or the complete execution path.</p>
+<p>Ergonomic policies are empirical conclusions. They can become invalid when the model version, system prompt, tool implementation, or training method changes.</p>
+<p>Model ergonomics should therefore satisfy several conditions:</p>
+<ul>
+<li>It has benchmark or trajectory evidence;</li>
+<li>It can be replaced independently;</li>
+<li>It can be regression-tested;</li>
+<li>It does not become a durable semantic contract;</li>
+<li>A single observation does not hard-code it into long-lived architecture.</li>
+</ul>
+<p>This is why seeing Grok use Python is not enough reason to add <code>read_file</code>.</p>
+<p>Behavioral anomalies are starting points for investigation.</p>
+<p>They are not design conclusions.</p>
+<h2 id="model-id-may-not-be-the-final-abstraction-either">Model ID May Not Be the Final Abstraction Either</h2>
+<p>Going further, model ergonomics may not ultimately be modeled entirely around model IDs.</p>
+<p>We can of course select different profiles from identifiers such as:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>grok-4.6</span></span>
+<span class="line"><span>model-a</span></span>
+<span class="line"><span>model-b</span></span></code></pre>
+<p>But the more important properties may be the behavioral dimensions behind the model, such as:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>shell fluency</span></span>
+<span class="line"><span>tool-schema adherence</span></span>
+<span class="line"><span>parallel-call reliability</span></span>
+<span class="line"><span>context-noise tolerance</span></span>
+<span class="line"><span>self-recovery strength</span></span>
+<span class="line"><span>action-granularity preference</span></span>
+<span class="line"><span>planning reliability</span></span></code></pre>
+<p>These dimensions are not yet standardized enough to justify turning them into a formal schema today. Doing so would be premature abstraction.</p>
+<p>But they point toward the more important research question.</p>
+<p>What we really want to know is not:</p>
+<blockquote>
+<p>What special code should Grok have?</p>
+</blockquote>
+<p>It is:</p>
+<blockquote>
+<p>Under what interaction regime can Grok complete tasks most reliably?</p>
+</blockquote>
+<p>The same question applies to different models in the same family, different reasoning configurations, and even different versions before and after a model upgrade.</p>
+<p>A shared API does not imply an identical optimum for agent interaction.</p>
+<h2 id="harness-quality-has-at-least-two-dimensions-generality-and-adaptability">Harness Quality Has at Least Two Dimensions: Generality and Adaptability</h2>
+<p>Once we accept this view, “Is this harness good?” also requires a more precise definition.</p>
+<p>The first dimension remains <strong>Generality</strong>:</p>
+<blockquote>
+<p>How many models can connect? How many Providers can run? How many environments can be supported?</p>
+</blockquote>
+<p>This is portability in the traditional sense.</p>
+<p>But there should also be a second dimension: <strong>Adaptability</strong>.</p>
+<p>It asks:</p>
+<blockquote>
+<p>After connecting a new model, how much additional mechanism is required for it to approach its own agent-capability frontier?</p>
+</blockquote>
+<p>This gives us two very different kinds of systems.</p>
+<p>One harness may support one hundred models, but expose every model to the same lowest-common-denominator interface.</p>
+<p>Another may preserve the same semantic kernel while allowing different models to use validated tool presentation, context policies, and recovery policies.</p>
+<p>Counting only “how many models are supported” cannot distinguish the quality of these two harnesses.</p>
+<p>We can even describe the idea with a concept that is not mathematically rigorous but is still useful:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Harness Efficiency(Model)</span></span>
+<span class="line"><span>    =</span></span>
+<span class="line"><span>Observed Agent Capability(Model, Harness)</span></span>
+<span class="line"><span>    /</span></span>
+<span class="line"><span>Potential Agent Capability(Model)</span></span></code></pre>
+<p>The denominator cannot be observed directly, so this is not an engineering metric that can be calculated literally.</p>
+<p>But it expresses an important goal:</p>
+<blockquote>
+<p>A good harness should do more than let a model run. It should reduce the capability lost in the interface and execution loop.</p>
+</blockquote>
+<h2 id="the-benchmark-unit-should-be-model--harness">The Benchmark Unit Should Be Model × Harness</h2>
+<p>This also changes how benchmarks should be designed.</p>
+<p>Suppose we observe:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Model A + Harness X = 70</span></span>
+<span class="line"><span>Model A + Harness Y = 48</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Model B + Harness X = 52</span></span>
+<span class="line"><span>Model B + Harness Y = 69</span></span></code></pre>
+<p>Then “Is Model A or Model B stronger?” is no longer a fully specified question.</p>
+<p>At minimum, it should become:</p>
+<blockquote>
+<p>Under what harness, budget, and environment is which model-harness pairing more effective?</p>
+</blockquote>
+<p>The recent work <a href="https://arxiv.org/abs/2608.26218">Same Model, Different Harness</a> takes a more direct approach: hold the model fixed, change context management and stalled-work handling, and observe changes in coding-agent results. It is still a relatively recent preprint, so its specific findings should not be treated as settled consensus on their own, but the experimental design clearly illustrates how harness effects can be isolated.<sup><a href="#user-content-fn-9" id="user-content-fnref-9" data-footnote-ref aria-describedby="footnote-label">9</a></sup></p>
+<p><a href="https://arxiv.org/abs/2606.09498">Self-Harness</a> approaches the question from another direction: discover model-specific failure patterns through execution traces, propose small harness modifications, and validate them through regression testing.<sup><a href="#user-content-fn-10" id="user-content-fnref-10" data-footnote-ref aria-describedby="footnote-label">10</a></sup></p>
+<p>Together, these works point toward a methodology:</p>
+<blockquote>
+<p>Model ergonomics should be studied through controlled experiments, not decided because “this tool call looks inelegant.”</p>
+</blockquote>
+<h2 id="back-to-grok-how-model-ergonomics-should-be-validated">Back to Grok: How Model Ergonomics Should Be Validated</h2>
+<p>For Grok’s tendency to organize file operations through Python inside Codex, I would therefore not begin with “How do we stop it from writing Python?”</p>
+<p>Python is not a failure.</p>
+<p>We should first define the observations that actually matter, such as:</p>
+<ul>
+<li>Task success;</li>
+<li>Patch correctness;</li>
+<li>Token usage;</li>
+<li>Tool-call count;</li>
+<li>Latency;</li>
+<li>Invalid-action rate;</li>
+<li>Recovery rate;</li>
+<li>Unnecessary shell complexity;</li>
+<li>Approval and sandbox surface.</li>
+</ul>
+<p>Then compare controlled harness configurations, for example:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>A. current Codex tool surface</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>B. current surface</span></span>
+<span class="line"><span>   + improved tool guidance</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>C. current surface</span></span>
+<span class="line"><span>   + stock apply_patch</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>D. current surface</span></span>
+<span class="line"><span>   + read_file</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>E. current surface</span></span>
+<span class="line"><span>   + read_file / list_dir / grep_files</span></span></code></pre>
+<p>If the results are:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>A  61%</span></span>
+<span class="line"><span>B  62%</span></span>
+<span class="line"><span>C  69%</span></span>
+<span class="line"><span>D  69%</span></span>
+<span class="line"><span>E  72%</span></span></code></pre>
+<p>then ergonomic specialization has clear value.</p>
+<p>If the results are only:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>A  61%</span></span>
+<span class="line"><span>E  62%</span></span></code></pre>
+<p>while maintenance cost and the tool surface both grow significantly, then reducing Python invocation from 80% to 10% has little engineering value by itself.</p>
+<p>Prettier tool calls do not necessarily mean a stronger agent.</p>
+<h2 id="why-apply_patch-is-a-better-early-experiment">Why <code>apply_patch</code> Is a Better Early Experiment</h2>
+<p>In the current Grok × Codex implementation, I would investigate <code>apply_patch</code> before immediately adding the full <code>read_file / list_dir / grep_files</code> tool family.</p>
+<p>The first reason is architectural cost.</p>
+<p>Codex already has a stock <code>ApplyPatchHandler</code>; the current Grok catalog simply does not enable the corresponding <code>apply_patch_tool_type</code>.</p>
+<p>So validating whether Grok can correctly use stock <code>apply_patch</code> through the existing reversible tool projection is a narrower experiment than adding an entirely new toolset.</p>
+<p>Second, a structured tool has value beyond model ergonomics: it preserves semantic intent.</p>
+<p>When the model calls:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>apply_patch</span></span></code></pre>
+<p>the harness knows that the model is modifying files.</p>
+<p>When the model modifies files through:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>exec_command("python3 ...")</span></span></code></pre>
+<p>all semantic meaning is hidden inside arbitrary code execution.</p>
+<p>The first form is easier to integrate with sandboxing, approval, tracing, telemetry, replay, and failure classification.</p>
+<p>So the value of a structured tool should not be measured only by whether the model prefers to call it.</p>
+<p>It can also make agent actions more intelligible to the harness as a whole.</p>
+<h2 id="if-file-tools-are-needed-they-still-should-not-duplicate-the-runtime">If File Tools Are Needed, They Still Should Not Duplicate the Runtime</h2>
+<p>Suppose benchmarks eventually show that Grok benefits significantly from <code>read_file</code>, <code>list_dir</code>, or <code>grep_files</code>.</p>
+<p>That still does not mean GrokBuild’s entire tool runtime should be ported into Codex.</p>
+<p>Codex already allows extension tools to enter the same ToolRegistry and ToolRouter.<sup><a href="#user-content-fn-11" id="user-content-fnref-11" data-footnote-ref aria-describedby="footnote-label">11</a></sup></p>
+<p>A more reasonable structure would therefore be:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>model-facing compatibility tool</span></span>
+<span class="line"><span>        ↓</span></span>
+<span class="line"><span>Codex extension adapter</span></span>
+<span class="line"><span>        ↓</span></span>
+<span class="line"><span>stock filesystem / sandbox context</span></span>
+<span class="line"><span>        ↓</span></span>
+<span class="line"><span>stock ToolRouter</span></span></code></pre>
+<p>The model gets an action vocabulary that is easier for it to use, while the system still keeps:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>one history</span></span>
+<span class="line"><span>one router</span></span>
+<span class="line"><span>one sandbox</span></span>
+<span class="line"><span>one execution authority</span></span></code></pre>
+<p>This is the key to making a generalized semantic harness and specialized model ergonomics coexist.</p>
+<h2 id="generalize-semantics-specialize-interaction">Generalize Semantics; Specialize Interaction</h2>
+<p>In the end, I think the most useful boundary between generalized and specialized harnesses can be compressed into one sentence:</p>
+<blockquote>
+<p><strong>Generalize semantics as much as possible; allow measured specialization in ergonomics.</strong></p>
+</blockquote>
+<p>The corresponding system structure is:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Generalized Semantic Harness</span></span>
+<span class="line"><span>        +</span></span>
+<span class="line"><span>Thin Provider Compatibility Layer</span></span>
+<span class="line"><span>        +</span></span>
+<span class="line"><span>Measured Model Ergonomic Profiles</span></span></code></pre>
+<p>The first layer prevents the system from fragmenting as the number of models increases.</p>
+<p>The second handles real protocol differences between backends.</p>
+<p>The third accepts an increasingly visible fact: different models are not identical “API consumers.”</p>
+<p>They can have different tool-selection habits, context tolerance, action granularity, recovery patterns, and execution biases.</p>
+<p>A mature harness should not pretend these differences do not exist.</p>
+<p>But it also should not reimplement an agent runtime for every model because of those differences.</p>
+<p>The difficult part, and the part that most clearly demonstrates the quality of harness engineering, is to preserve unified semantics, safety boundaries, and execution authority while allowing the interface to be adjusted in limited and verifiable ways according to actual model behavior.</p>
+<p>At first, the primary question was:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Can the model run?</span></span></code></pre>
+<p>Then it became:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Can the model use tools?</span></span></code></pre>
+<p>Later:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Can the model finish long-horizon tasks reliably?</span></span></code></pre>
+<p>Model ergonomics moves the question one step further:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Does this harness allow this model</span></span>
+<span class="line"><span>to use its capabilities efficiently and reliably?</span></span></code></pre>
+<p>This may become a fundamental dimension for evaluating agent harnesses.</p>
+<p>The model determines the potential boundary of agent capability. The harness determines how those capabilities are converted into reliable real-world behavior, and how much of them survive that conversion.</p>
+<p>What needs optimization has never been only the model.</p>
+<p>It is the entire model-harness system.</p>
+<section data-footnotes class="footnotes"><h2 class="sr-only" id="footnote-label">Footnotes</h2>
+<ol>
+<li id="user-content-fn-1">
+<p>John Yang et al., <a href="https://arxiv.org/abs/2405.15793">SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering</a>, 2024. <a href="#user-content-fnref-1" data-footnote-backref="" aria-label="Back to reference 1" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-2">
+<p>Yilun Yao et al., <a href="https://arxiv.org/abs/2605.27922">Harness-Bench: Measuring Harness Effects across Models in Realistic Agent Workflows</a>, 2026. <a href="#user-content-fnref-2" data-footnote-backref="" aria-label="Back to reference 2" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-3">
+<p>The Grok × Codex case in this article is based on the <a href="https://github.com/Harness-X-Harness/codex/tree/release/rust-v0.151.0"><code>release/rust-v0.151.0</code> branch of <code>Harness-X-Harness/codex</code></a>. In that implementation, the Grok Provider handles Provider-specific adaptation such as request projection, the Responses dialect, and flat-function projection. <a href="#user-content-fnref-3" data-footnote-backref="" aria-label="Back to reference 3" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-4">
+<p>In <a href="https://github.com/Harness-X-Harness/codex/blob/release/rust-v0.151.0/codex-rs/model-provider/src/grok_catalog.rs"><code>grok_catalog.rs</code></a>, the current Grok 4.6 catalog configures <code>shell_type: UnifiedExec</code>, <code>apply_patch_tool_type: None</code>, and <code>tool_mode: None</code>. <a href="#user-content-fnref-4" data-footnote-backref="" aria-label="Back to reference 4" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-5">
+<p>In <a href="https://github.com/Harness-X-Harness/codex/blob/release/rust-v0.151.0/codex-rs/core/src/tools/spec_plan.rs"><code>spec_plan.rs</code></a>, Unified Exec registers <code>ExecCommandHandler</code> and <code>WriteStdinHandler</code>; <code>ApplyPatchHandler</code> is registered only when <code>model_info.apply_patch_tool_type.is_some()</code>. <a href="#user-content-fnref-5" data-footnote-backref="" aria-label="Back to reference 5" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-6">
+<p>xAI GrokBuild’s <a href="https://github.com/xai-org/grok-build/tree/main/crates/codegen/xai-grok-tools/src/implementations/codex"><code>implementations/codex</code></a> module contains <code>apply_patch</code>, <code>grep_files</code>, <code>list_dir</code>, and <code>read_file</code>. The source describes them as Codex-specific tool implementations ported and modified from Codex. <a href="#user-content-fnref-6" data-footnote-backref="" aria-label="Back to reference 6" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-7">
+<p>GrokBuild’s <a href="https://github.com/xai-org/grok-build/blob/main/crates/codegen/xai-grok-tools/src/registry/types.rs"><code>ToolConfig</code></a> supports <code>name_override</code>, <code>params_name_overrides</code>, and <code>description_override</code>, separating internal tool identity from client-facing presentation. <a href="#user-content-fnref-7" data-footnote-backref="" aria-label="Back to reference 7" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-8">
+<p><a href="https://github.com/ronhuafeng/mini-proxy-core/blob/main/docs/architecture/codex-third-party-provider-north-star.md">Codex Third-Party Provider North Star</a> defines the goal as preserving the stock Codex harness and placing only verified backend API differences at the Provider projection boundary. <a href="#user-content-fnref-8" data-footnote-backref="" aria-label="Back to reference 8" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-9">
+<p>Sydney Lewis, <a href="https://arxiv.org/abs/2608.26218">Same Model, Different Harness: Different Coding-Agent Results</a>, 2026. At the time of writing, this was still a relatively recent preprint, so I cite it mainly for its research question and experimental design rather than treating the results of one paper as a final conclusion. <a href="#user-content-fnref-9" data-footnote-backref="" aria-label="Back to reference 9" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-10">
+<p><a href="https://arxiv.org/abs/2606.09498">Self-Harness: Harnesses That Improve Themselves</a>, 2026. <a href="#user-content-fnref-10" data-footnote-backref="" aria-label="Back to reference 10" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-11">
+<p>The current Codex <code>spec_plan.rs</code> combines core tools, MCP tools, extension tools, and dynamic tools into one <code>ToolRegistry</code>, then constructs a unified <code>ToolRouter</code>. This provides an existing boundary for adding model-facing compatibility tools without duplicating the execution runtime. <a href="#user-content-fnref-11" data-footnote-backref="" aria-label="Back to reference 11" class="data-footnote-backref">↩</a></p>
+</li>
+</ol>
+</section>
+</div></article></main><footer class="footer" lang="en"><span>Keeping notes is a small ritual of everyday life.</span><span>Copyright 2026 Zhang Hua Feng/張華楓&#39;s Notes</span></footer></div></body></html>
