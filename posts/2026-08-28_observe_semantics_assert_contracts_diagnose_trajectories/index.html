@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>让 Gate 看见过程：LLM Agent 开发中的观察、契约与诊断 - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="LLM agent 的开发循环不缺 PASS 或 FAIL，缺的是能指导下一轮修改的过程证据。本文讨论如何在关键 gate 中加入结构化 observation，同时让明确契约继续决定成败。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/2026-08-28_observe_semantics_assert_contracts_diagnose_trajectories/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="theme-color" content="#f26a4f"><meta name="robots" content="index,follow"><meta property="og:title" content="让 Gate 看见过程：LLM Agent 开发中的观察、契约与诊断 - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="LLM agent 的开发循环不缺 PASS 或 FAIL，缺的是能指导下一轮修改的过程证据。本文讨论如何在关键 gate 中加入结构化 observation，同时让明确契约继续决定成败。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/2026-08-28_observe_semantics_assert_contracts_diagnose_trajectories/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/og-default.svg"><meta property="og:image:type" content="image/svg+xml"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="让 Gate 看见过程：LLM Agent 开发中的观察、契约与诊断 - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="LLM agent 的开发循环不缺 PASS 或 FAIL，缺的是能指导下一轮修改的过程证据。本文讨论如何在关键 gate 中加入结构化 observation，同时让明确契约继续决定成败。"><meta name="twitter:image" content="https://blog.formalscience.com/og-default.svg"><meta property="article:published_time" content="2026-08-28T00:00:00.000Z"><meta property="article:section" content="技术"><meta property="article:tag" content="Harness Engineering"><meta property="article:tag" content="AI Agents"><meta property="article:tag" content="Software Testing"><meta property="article:tag" content="Observability"><meta property="article:tag" content="Continuous Integration"><link rel="stylesheet" href="/_astro/BaseLayout.BWRtmF1B.css"></head><body><a class="skip-link" href="#content" lang="zh-CN">跳到内容</a><div class="site-shell"><header class="site-header"><a class="brand" href="/">Zhang Hua Feng/張華楓&#39;s Notes</a><div class="header-actions"><nav class="nav-links" aria-label="Primary" lang="zh-CN"><a href="/">首页</a><a href="/posts">文章</a><a href="/categories">分类</a><a href="/tags">标签</a><a href="/about">关于</a></nav><nav class="language-switch" aria-label="Language"><a href="/" aria-current="page">中文</a><a href="/en">English</a></nav></div></header><main id="content"><article class="post-shell"><div class="post-meta-row"><p class="meta">August 28, 2026 - 12 min read</p><span class="language-badge">中文</span><a class="category-label" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></div><h1 class="post-title">让 Gate 看见过程：LLM Agent 开发中的观察、契约与诊断</h1><p class="meta">LLM agent 的开发循环不缺 PASS 或 FAIL，缺的是能指导下一轮修改的过程证据。本文讨论如何在关键 gate 中加入结构化 observation，同时让明确契约继续决定成败。</p><div class="tag-list"><a class="tag" href="/tags/Harness%20Engineering/">Harness Engineering</a><a class="tag" href="/tags/AI%20Agents/">AI Agents</a><a class="tag" href="/tags/Software%20Testing/">Software Testing</a><a class="tag" href="/tags/Observability/">Observability</a><a class="tag" href="/tags/Continuous%20Integration/">Continuous Integration</a></div><div class="post-content"><p>一次实时验证运行了两分钟，最后只留下一行：<code>timeout</code>。</p>
-<p>这行结果足以让验证门禁（gate）变红，却不足以支持下一轮开发。接手的智能体不知道系统走到了哪里：模型是否选择了工具，工具是否开始执行，外部请求是否返回，结果是否已经保存，还是应用只差最后一个终态事件。它只能重新翻阅日志，然后猜一个修改位置。</p>
-<p>最容易出现的反应，是增加超时时间、补一次重试，或者修改一个看起来最可疑的组件。但这些改动也许与真正的问题无关。更糟的是，它们可能改变原本正确的产品行为，只为了让下一次测试更容易通过。</p>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>让 Gate 看见过程：LLM Agent 开发中的观察、契约与诊断 - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="LLM agent 的开发循环不缺 PASS 或 FAIL，缺的是能指导下一轮修改的过程证据。本文讨论如何在关键验证门禁中记录结构化的过程观察，同时继续依据明确契约判定成败。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/2026-08-28_observe_semantics_assert_contracts_diagnose_trajectories/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="theme-color" content="#f26a4f"><meta name="robots" content="index,follow"><meta property="og:title" content="让 Gate 看见过程：LLM Agent 开发中的观察、契约与诊断 - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="LLM agent 的开发循环不缺 PASS 或 FAIL，缺的是能指导下一轮修改的过程证据。本文讨论如何在关键验证门禁中记录结构化的过程观察，同时继续依据明确契约判定成败。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/2026-08-28_observe_semantics_assert_contracts_diagnose_trajectories/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/og-default.svg"><meta property="og:image:type" content="image/svg+xml"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="让 Gate 看见过程：LLM Agent 开发中的观察、契约与诊断 - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="LLM agent 的开发循环不缺 PASS 或 FAIL，缺的是能指导下一轮修改的过程证据。本文讨论如何在关键验证门禁中记录结构化的过程观察，同时继续依据明确契约判定成败。"><meta name="twitter:image" content="https://blog.formalscience.com/og-default.svg"><meta property="article:published_time" content="2026-08-28T00:00:00.000Z"><meta property="article:section" content="技术"><meta property="article:tag" content="Harness Engineering"><meta property="article:tag" content="AI Agents"><meta property="article:tag" content="Software Testing"><meta property="article:tag" content="Observability"><meta property="article:tag" content="Continuous Integration"><link rel="stylesheet" href="/_astro/BaseLayout.BWRtmF1B.css"></head><body><a class="skip-link" href="#content" lang="zh-CN">跳到内容</a><div class="site-shell"><header class="site-header"><a class="brand" href="/">Zhang Hua Feng/張華楓&#39;s Notes</a><div class="header-actions"><nav class="nav-links" aria-label="Primary" lang="zh-CN"><a href="/">首页</a><a href="/posts">文章</a><a href="/categories">分类</a><a href="/tags">标签</a><a href="/about">关于</a></nav><nav class="language-switch" aria-label="Language"><a href="/" aria-current="page">中文</a><a href="/en">English</a></nav></div></header><main id="content"><article class="post-shell"><div class="post-meta-row"><p class="meta">August 28, 2026 - 12 min read</p><span class="language-badge">中文</span><a class="category-label" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></div><h1 class="post-title">让 Gate 看见过程：LLM Agent 开发中的观察、契约与诊断</h1><p class="meta">LLM agent 的开发循环不缺 PASS 或 FAIL，缺的是能指导下一轮修改的过程证据。本文讨论如何在关键验证门禁中记录结构化的过程观察，同时继续依据明确契约判定成败。</p><div class="tag-list"><a class="tag" href="/tags/Harness%20Engineering/">Harness Engineering</a><a class="tag" href="/tags/AI%20Agents/">AI Agents</a><a class="tag" href="/tags/Software%20Testing/">Software Testing</a><a class="tag" href="/tags/Observability/">Observability</a><a class="tag" href="/tags/Continuous%20Integration/">Continuous Integration</a></div><div class="post-content"><p>一次实时验证运行了两分钟，最后只留下一行：<code>timeout</code>。</p>
+<p>这行结果足以让验证门禁（gate）变红，却不足以支持下一轮开发。接手的智能体不知道系统走到了哪里：模型是否选择了工具，工具是否开始执行，外部请求是否返回，结果是否已经保存，还是应用只差最后一个终态事件。它只能重新翻阅日志，猜测该从哪里修改。</p>
+<p>这时，我们很容易选择增加超时时间、补一次重试，或者修改一个看起来最可疑的组件。但这些改动也许与真正的问题无关。更糟的是，它们可能改变原本正确的产品行为，只为了让下一次测试更容易通过。</p>
 <p>我后来意识到，这道门禁只完成了一半工作。它阻止了未经证明的结果继续发布，却没有为下一轮开发留下足够证据。</p>
 <p>在大语言模型智能体（LLM agent）参与的开发循环中，后一半工作越来越重要。智能体可以快速阅读代码、修改实现和重新运行测试。它下一轮做得好不好，很大程度上取决于上一道门禁除了 <code>PASS</code> 或 <code>FAIL</code>，还说明了什么。</p>
 <p>一个更完整的循环应该是：</p>
@@ -15,8 +15,8 @@
 <p><strong>Observe semantics; assert contracts; diagnose trajectories.</strong></p>
 </blockquote>
 <h2 id="门禁不只是判定器">门禁不只是判定器</h2>
-<p>这套方法不是减少 hard gate。接口不允许出现的内容仍然必须被拒绝，要求完成的生命周期仍然必须到达终态，发布所用的源码、制品和校验和也不能因为系统具有不确定性而放松。</p>
-<p>真正需要避免的是权威来源（authority）混乱。一个成熟的门禁至少要分清三种职责，但它们只是方法论底座，不是完整的实践清单。</p>
+<p>这套方法并不减少必须通过的硬性门禁（hard gate）。接口不允许出现的内容仍然必须拒绝，要求完成的生命周期仍然必须到达终态；对发布源码、制品和校验和的检查，也不能因为系统存在不确定性就放松。</p>
+<p>真正需要理清的是判定依据来自哪里，也就是权威来源（authority）。成熟的门禁至少要区分以下三项职责。它们是这套方法的基础，具体实践还需要进一步检查。</p>
 <table>
 <thead>
 <tr>
@@ -28,8 +28,8 @@
 <tbody>
 <tr>
 <td>契约断言</td>
-<td>拥有该语义的产品、协议、发布或测试契约</td>
-<td>违反时 hard fail</td>
+<td>定义该行为的产品、协议、发布或测试契约</td>
+<td>违反时直接判定失败（hard fail）</td>
 </tr>
 <tr>
 <td>诊断观察</td>
@@ -68,22 +68,22 @@
 <span class="line"><span>release:</span></span>
 <span class="line"><span>only semantic GREEN evidence is authoritative</span></span>
 <span class="line"><span>diagnostic RED evidence is retained but never promoted to release proof</span></span></code></pre>
-<p>这个图也说明了 observation 的位置。它不是较弱的 assertion，也不是越多越好的日志。原始事件需要先去重、关联和解释，才能成为下一轮智能体可以使用的语义阶段。发布系统可以保留 RED 的诊断依据，却只能把 semantic GREEN 当成正式发布证据。</p>
+<p>这张图也说明了过程观察的位置。观察不是要求更低的断言（assertion），也不意味着日志越多越好。原始事件需要先去重、关联和解释，才能说明系统完成了哪些有明确含义的阶段，供智能体在下一轮使用。发布系统可以保留失败（RED）时的诊断依据，但正式发布证据必须来自语义验收通过的结果（semantic GREEN）。</p>
 <h2 id="协作系统需要生命周期而不只是计数">协作系统需要生命周期，而不只是计数</h2>
 <p>设想一个父智能体可以创建子任务。代表性测试要求它创建一个目标子任务，取得结果，然后完成父任务。</p>
 <p>为了让模拟脚本容易编写，测试可能预设一条理想轨迹：创建请求只能出现一次，父任务产生三次模型响应，子任务产生一次响应。真实运行如果出现两个创建请求和第四次父任务响应，门禁就报告数量不符。</p>
-<p>这个结果对下一轮开发的帮助很小。两个创建请求只能证明模型提出了两次请求，不能证明运行时实际创建了两个子任务。第四次响应也可能是重复创建、合法的工具续写，或另一轮模型后续生成。只有继续观察生命周期，才能区分这些情况。</p>
+<p>这个结果对下一轮开发的帮助很小。两个创建请求只能证明模型提出了两次请求，不能证明运行时实际创建了两个子任务。第四次响应可能包含重复创建请求，也可能是合法的工具续写，或模型在后续一轮中的生成结果。只有继续观察生命周期，才能区分这些情况。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>模型请求创建</span></span>
 <span class="line"><span>    &lt; 运行时完成创建调用</span></span>
 <span class="line"><span>    &lt; 子任务获得身份并开始运行</span></span>
 <span class="line"><span>    &lt; 子任务进入终态</span></span>
 <span class="line"><span>    &lt; 父任务取得结果</span></span>
 <span class="line"><span>    &lt; 父任务完成目标</span></span></code></pre>
-<p>越靠后的证据，证明力越强。次数描述频率；身份关联和生命周期建立因果。</p>
+<p>越靠后的证据，证明力越强。次数说明某件事发生了多少次；要判断因果关系，还需要关联任务身份并追踪生命周期。</p>
 <p>因此，协作门禁的硬断言应关注目标子任务是否实际创建、是否完成，以及父任务是否取得结果并完成目标。同时，它可以输出创建请求数、实际子任务数、等待次数、父子任务状态和相对时间。</p>
-<p>这些观察会把下一轮修改导向不同边界。如果模型请求两次，但运行时只创建一个子任务，产品语义可能正确；若要减少成本，应检查提示或模型规划。如果创建请求已经出现，但运行时没有完成创建，应检查工具适配。如果子任务已经完成，父任务却没有继续，应检查等待结果或父任务续写。</p>
-<p>即使本次语义验收为绿色，这些观察也有价值。额外请求和多余续写可以成为下一轮效率优化的依据，只是不能被伪装成当前产品正确性的失败。</p>
-<p>并发顺序也是同一类问题。不同任务的请求可能合法交错。如果系统只保证每个任务内部的顺序，测试就不应要求所有请求按照一个全局脚本到达。门禁可以在内部使用任务身份做关联，对外只报告局部因果关系是否成立。这样，智能体看到的不是“第 4 个请求不符合预期”，而是“两个任务的局部顺序正确，测试匹配器发生重叠”。修复位置自然落在测试，而不是产品调度器。</p>
+<p>根据这些观察，下一轮需要检查的位置也会不同。如果模型请求两次，但运行时只创建一个子任务，产品语义可能正确；若要减少成本，应检查提示或模型规划。如果创建请求已经出现，但运行时没有完成创建，应检查工具适配。如果子任务已经完成，父任务却没有继续，应检查等待结果或父任务续写。</p>
+<p>即使本次语义验收为绿色，这些观察也有价值。额外请求和多余续写可以成为下一轮效率优化的依据，但不应据此判定当前产品行为不正确。</p>
+<p>并发顺序也是同一类问题。不同任务的请求可能合法交错。如果系统只保证每个任务内部的顺序，测试就不应要求所有请求按照一个全局脚本到达。门禁可以在内部使用任务身份做关联，对外只报告局部因果关系是否成立。这样，智能体看到的不是“第 4 个请求不符合预期”，而是“两个任务的局部顺序正确，测试匹配器的匹配规则发生重叠”。修复位置自然落在测试，而不是产品调度器。</p>
 <h2 id="超时应该留下阶段快照">超时应该留下阶段快照</h2>
 <p>再看开头的长耗时操作。一次完整执行可能经过这些阶段：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>模型选择工具</span></span>
@@ -93,8 +93,8 @@
 <span class="line"><span>→ 结果完成处理和保存</span></span>
 <span class="line"><span>→ 模型根据工具结果继续生成</span></span>
 <span class="line"><span>→ 应用发布最终终态</span></span></code></pre>
-<p>外层截止时间只证明要求的结果没有在验证窗口内得到证明。它不能单独证明外部服务卡住，也不能说明工具是否启动。</p>
-<p>截止时间到达时，门禁应停止等待，读取已有状态，并保存一个保密且有界的阶段快照。例如：</p>
+<p>外层截止时间到达，只能说明在这段验证时间内，尚未取得足以证明预期结果的证据。它不能单独证明外部服务卡住，也不能说明工具是否启动。</p>
+<p>截止时间到达时，门禁应停止等待，读取已有状态，并保存一个不泄露敏感信息、且范围和大小受限的阶段快照。例如：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>semantic_acceptance: not_proven</span></span>
 <span class="line"><span>last_proven_stage: operation_completed</span></span>
 <span class="line"><span>next_unproven_stage: post_tool_continuation</span></span>
@@ -102,19 +102,19 @@
 <span class="line"><span>oracle_completeness: sufficient</span></span></code></pre>
 <p>这个结果仍然是红灯。但下一轮智能体已经知道操作本身完成了，应该先检查工具后的模型续写，而不是重写外部客户端。</p>
 <p>相对时间也可以帮助判断：工具请求何时出现，操作何时开始和完成，父任务回复与最终终态是否出现。这些时间默认是诊断数据，不是产品不变量。它们的价值在于显示停滞发生在哪一段。</p>
-<p>这里的命名会直接影响后续判断。无论外层窗口是 120 秒还是 180 秒，它首先是验证器的 timeout observation，是为了限制本次实验。除非拥有该行为的产品契约明确给出服务等级目标（SLA），否则不能把这个数字写成产品必须遵守的响应时间。</p>
+<p>这里的命名会直接影响后续判断。无论外层窗口是 120 秒还是 180 秒，它首先只是验证器记录的一次超时，用来限制本次实验的时长。除非定义该行为的产品契约明确给出服务等级目标（SLA），否则不能把这个数字写成产品必须遵守的响应时间。</p>
 <p>还要为诊断收尾留出时间。<code>if: always()</code> 只有在 runner 能继续执行后续步骤时才有作用；如果 job 自己先被强制终止，证据仍然无法上传。更安全的关系是：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>scenario deadline</span></span>
 <span class="line"><span>+ state snapshot / evidence flush / upload margin</span></span>
 <span class="line"><span>&lt; job timeout</span></span></code></pre>
-<p>同理，验证器可以 hard assert <code>runner_turn_submission_count = 1</code>，因为它自己控制提交次数；一次 Turn 内模型调用多少次后端、产生多少次续写，则属于产品执行轨迹。含义模糊的 <code>operation_count</code> 很容易把两者混为一谈。</p>
+<p>同理，验证器可以把 <code>runner_turn_submission_count = 1</code> 设为硬断言，因为它自己控制提交次数；一次交互回合（Turn）内模型调用多少次后端、产生多少次续写，则属于产品执行轨迹。含义模糊的 <code>operation_count</code> 很容易把两者混为一谈。</p>
 <p>如果门禁只能确认截止时间已经到达，就应诚实输出 <code>oracle_completeness: insufficient</code>。语义验收仍然失败，但现有证据不能支持更具体的根因分类。失败结果与根因结论必须分开。</p>
 <p>这也意味着，诊断能力本身可以成为门禁的硬要求。观察的具体数值通常不决定产品成败，但一道关键门禁在失败后必须留下足以支持下一轮判断的阶段证据。完整诊断不能把红灯变成绿灯；它只阻止团队在证据不足时改错地方。</p>
 <h2 id="实践中需要检查哪些关注点">实践中需要检查哪些关注点</h2>
-<p>不是每个测试都需要阶段观察。编译错误、格式错误和直接的纯函数断言，通常已经能指出修改位置。观察更适合加入跨越多个所有权边界的关键门禁：模型决策、工具调用、并发任务、外部服务、长耗时操作和发布状态变更（mutation）。</p>
+<p>不是每个测试都需要阶段观察。编译错误、格式错误和直接的纯函数断言，通常已经能指出修改位置。过程观察更适合用于涉及多个组件、且职责分属不同部分的关键门禁：模型决策、工具调用、并发任务、外部服务、长耗时操作和发布状态变更（mutation）。</p>
 <p>真正实施时，我会检查下面这些关注点。</p>
-<p>第一，<strong>在代码和证据格式中分开断言与观察。</strong> 最简单的做法，是分别维护 <code>required_assertions</code> 和 <code>diagnostic_observations</code>，或为每个场景编写显式的语义验证函数。前者决定成败；后者只检查类型、边界和保密性。不要让一个字典的精确相等检查同时承担产品契约、运行预算和轨迹计数。</p>
-<p>第二，<strong>确保 RED 也会留下 evidence。</strong> GitHub Actions 最容易出现的反模式是：场景成功后才上传证据，上传步骤没有 <code>if: always()</code>。真正需要诊断的 RED 运行反而没有构建产物（artifact）。更稳妥的顺序是：</p>
+<p>第一，<strong>在代码和证据格式中分开断言与观察。</strong> 最简单的做法，是分别维护 <code>required_assertions</code> 和 <code>diagnostic_observations</code>，或为每个场景编写显式的语义验证函数。前者决定成败；后者只检查类型、边界和保密性。不要只用一次字典精确相等检查，就把产品契约、运行预算和轨迹计数混在一起判定。</p>
+<p>第二，<strong>确保失败运行也会留下证据。</strong> GitHub Actions 最容易出现的反模式是：场景成功后才上传证据，上传步骤没有 <code>if: always()</code>。真正需要诊断的 RED 运行反而没有构建产物（artifact）。更稳妥的顺序是：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>run scenario</span></span>
 <span class="line"><span>      ↓</span></span>
 <span class="line"><span>helper writes diagnostic envelope on GREEN / RED</span></span>
@@ -124,28 +124,28 @@
 <span class="line"><span>explicitly require semantic GREEN</span></span>
 <span class="line"><span>      ↓</span></span>
 <span class="line"><span>all semantic groups GREEN → build authoritative release evidence</span></span></code></pre>
-<p>诊断包（diagnostic envelope）应足够小，只记录场景、语义状态、判定充分性、失败类型、最后阶段和有界观察。同时，它需要用 <code>schema_version</code>、<code>source_revision</code>、<code>validator_revision</code> 和 <code>artifact_digest</code> 绑定被验证对象。否则，下一轮智能体可能用旧验证器产生的 observation 解释新实现。诊断包不是发布证明；只有全部语义断言为 GREEN，聚合器才生成可以进入发布制品的正式 evidence。</p>
-<p>第三，<strong>只拆真正独立的语义组（semantic group）。</strong> 如果供应商投影、默认控制、智能体协作和媒体路径互不依赖，就让它们分别运行，并在最后统一聚合失败集合。在 CI 中，可以只对这些独立组使用 <code>continue-on-error</code>，再用最后一道 required aggregate gate 决定整体成败。最终聚合门禁不仅要检查已经产生的结果，还要确认每个预期组都提交了状态；缺少整个语义组同样应 hard fail，并标为 <code>oracle insufficient</code>。这样，一个组 RED 不会阻止其他组产生观察，缺失结果也不会被误读成没有失败。但不要走向“一项测试一个 job”的矩阵，也不要为了多收集结果而重复运行相同编译或检查。</p>
-<p>第四，<strong>让 timeout 对应阶段，而不是只对应秒数。</strong> 外层 180 秒可以限制实验，却不能自动成为产品 SLA。长耗时请求至少应区分请求已发出、响应头已收到、首字节已收到、正文完成、结果已规范化和制品已保存。只有这些部分阶段观察在异常路径也能保存，下一轮智能体才知道应检查传输、解析还是后续处理。</p>
+<p>诊断包（diagnostic envelope）应足够小，只记录场景、语义状态、判定充分性、失败类型、最后阶段，以及范围和大小受限的观察数据。同时，它需要用 <code>schema_version</code>、<code>source_revision</code>、<code>validator_revision</code> 和 <code>artifact_digest</code> 绑定被验证对象。否则，下一轮智能体可能用旧验证器产生的观察结果解释新实现。诊断包不是发布证明；只有全部语义断言为 GREEN，聚合器才生成可以随发布制品提供的正式证据。</p>
+<p>第三，<strong>只拆真正独立的语义组（semantic group）。</strong> 如果供应商投影、默认控制、智能体协作和媒体路径互不依赖，就让它们分别运行，并在最后统一聚合失败集合。在 CI 中，可以只对这些独立组使用 <code>continue-on-error</code>，再由最后一道必须通过的聚合门禁决定整体成败。最终聚合门禁不仅要检查已经产生的结果，还要确认每个预期组都提交了状态；缺少整个语义组的结果也应直接判定失败，并标为 <code>oracle insufficient</code>。这样，一个组 RED 不会阻止其他组产生观察，缺失结果也不会被误读成没有失败。但不要走向“一项测试一个 job”的矩阵，也不要为了多收集结果而重复运行相同编译或检查。</p>
+<p>第四，<strong>记录超时发生在哪个阶段，而不只记录秒数。</strong> 外层 180 秒可以限制实验，却不能自动成为产品 SLA。长耗时请求至少应区分请求已发出、响应头已收到、首字节已收到、正文完成、结果已规范化和制品已保存。只有在异常发生时也能保存这些阶段的观察结果，下一轮智能体才知道应检查传输、解析还是后续处理。</p>
 <p>第五，<strong>区分验证器控制的计数与产品内部轨迹。</strong> <code>runner_turn_submission_count</code> 可以是硬断言，因为验证器控制它；后端调用次数、轮询次数和模型续写次数通常只是观察。相反，如果调用者明确请求返回 <code>n</code> 个结果，那么结果数量属于 API 语义契约，可以硬断言。关键不在于“计数能不能断言”，而在于谁拥有这个计数的语义。</p>
-<p>第六，<strong>用身份和局部因果代替全局顺序。</strong> 内部标识可以用于去重和关联，但公开 evidence 只保留结构结果。并发场景应验证必要的前置关系，不应把偶然的事件到达顺序冻结成产品契约。</p>
-<p>第七，<strong>把发布证据与 RED 诊断分开。</strong> 发布只能消费 semantic GREEN。RED 的诊断产物应保留，但不能在后续文档中被提升为发布通过的证明。发布动作发生后如果上传中断，可以用 <code>if: always()</code> 执行只读检查，记录标签、发布目标和已有制品；不要自动删除、重试或补传。部分 mutation 需要明确的人类恢复决策。</p>
-<p>第八，<strong>保持观察非干扰且保密。</strong> 验证器不应为了得到完整数据而重试模型操作、重新提交 Turn，或在客户端取消后继续读取（drain）。缺失值应保持 <code>unknown</code>。提示词、回复、参数、凭据、原始流量和内部身份也不应进入公开 evidence。</p>
-<p>最后，先组合已有的工具开始、工具完成、任务终态和状态读取接口，再考虑增加埋点。判断一个 observation 是否值得加入，可以问：它会不会改变下一轮智能体选择的调查边界？如果不会，它通常只是噪声。</p>
-<p>这些规则都在限制实验和判决，而不是缩窄产品能力。可以限制任务范围、外层时间、证据保留和外部副作用；不能因为测试需要确定性，就擅自要求产品只能调用一次工具、只能产生三次响应，或只能使用一个并发任务。</p>
+<p>第六，<strong>用身份和局部因果代替全局顺序。</strong> 内部标识可以用于去重和关联，但公开证据只保留关联结构的检查结果。并发场景应验证必要的前置关系，不应把偶然的事件到达顺序冻结成产品契约。</p>
+<p>第七，<strong>把发布证据与 RED 诊断分开。</strong> 发布只能采用语义验收通过的证据。RED 的诊断产物应保留，但不能在后续文档中被提升为发布通过的证明。发布动作发生后如果上传中断，可以用 <code>if: always()</code> 执行只读检查，记录标签、发布目标和已有制品；不要自动删除、重试或补传。如果状态变更只完成了一部分，需要由人明确决定如何恢复。</p>
+<p>第八，<strong>让观察不干扰执行，并保护敏感信息。</strong> 验证器不应为了得到完整数据而重试模型操作、重新提交交互回合，或在客户端取消后继续读取（drain）。缺失值应保持 <code>unknown</code>。提示词、回复、参数、凭据、原始流量和内部身份也不应进入公开证据。</p>
+<p>最后，先组合已有的工具开始、工具完成、任务终态和状态读取接口，再考虑增加埋点。判断一项观察是否值得加入，可以问：它会不会改变智能体下一轮决定检查的范围？如果不会，它通常只是噪声。</p>
+<p>这些规则约束的是实验如何进行、结果如何判定，不应因此缩小产品能力。可以限制任务范围、外层时间、证据保留和外部副作用；不能因为测试需要确定性，就擅自要求产品只能调用一次工具、只能产生三次响应，或只能使用一个并发任务。</p>
 <h2 id="把方法写进编程智能体-skill">把方法写进编程智能体 Skill</h2>
 <p>如果这套方法只存在于一次代码审查或一个测试文件中，后续智能体很容易重新回到“看到异常计数就修改产品”的旧路径。一个编程智能体技能（coding-agent Skill）可以把它变成可重复的开发习惯。</p>
-<p>这个 Skill 不应定义新的产品契约。它的职责是连接契约、门禁证据和下一轮修改，并把前面的关注点变成一次可重复审计。对每个独立 semantic group，Skill 至少应产出下面这组关系：</p>
+<p>这个 Skill 不应定义新的产品契约。它的职责是连接契约、门禁证据和下一轮修改，并让智能体能够按前面的关注点反复开展审计。对每个独立的语义组，Skill 至少应产出下面这组关系：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>semantic group</span></span>
 <span class="line"><span>→ owning authority</span></span>
 <span class="line"><span>→ hard assertions</span></span>
 <span class="line"><span>→ diagnostic observations</span></span>
 <span class="line"><span>→ RED evidence path</span></span>
 <span class="line"><span>→ next investigation boundary</span></span></code></pre>
-<p>执行时，智能体需要依次确认：assertions 与 observations 是否在实现中分开；RED 时 diagnostic envelope 是否仍会生成和上传；timeout 属于 runner budget 还是产品 SLA；并发关系是否通过身份和生命周期证明；mutation 失败后是否有只读状态快照；最终 release 是否只消费 semantic GREEN。</p>
-<p>Skill 的结果不应只有一份测试结论。它还应形成一个小型证据包：哪些契约已经满足，哪些仍未证明，最后可证阶段是什么，根因分类是否充分，以及下一步应调查哪里。对于 GitHub Actions，它还应检查 diagnostic upload 是否具有 <code>if: always()</code>，以及 aggregate 是否会把 RED diagnostics 错当成正式 evidence。</p>
-<p>这不是让 Skill 代替工程判断。相反，它限制智能体只能在证据支持的最小边界内行动。如果一次超时没有阶段信息，下一步应先补门禁观察，而不是直接修改产品。如果一个 semantic group RED 使其他独立组没有运行，下一步应调整 gate topology，而不是盲目扩大测试矩阵。如果局部因果正确，只有全局顺序不符，下一步应修复测试匹配器。</p>
-<p>在文档组织上，根级智能体指引只需提供触发词和路由。完整方法可以放进 Skill；具体断言仍由产品、协议和验证文档拥有。Skill 连接这些信息，但不成为产品语义的新来源。</p>
+<p>执行时，智能体需要依次确认：实现是否区分断言和观察；失败时是否仍会生成并上传诊断包；超时属于运行器预算还是产品 SLA；并发关系是否通过身份和生命周期证明；状态变更失败后是否有只读状态快照；最终发布是否只采用语义验收通过的证据。</p>
+<p>Skill 的结果不应只有一份测试结论。它还应形成一个小型证据包：哪些契约已经满足，哪些仍未证明，最后可证阶段是什么，根因分类是否充分，以及下一步应调查哪里。对于 GitHub Actions，它还应检查诊断上传步骤是否设置了 <code>if: always()</code>，以及聚合器是否会把失败诊断错当成正式发布证据。</p>
+<p>Skill 在这里的作用，是让智能体把改动限制在证据支持的最小范围内；具体如何修改，仍需要工程判断。如果一次超时没有阶段信息，下一步应先补门禁观察，而不是直接修改产品。如果一个语义组失败后，其他独立组因此未能运行，下一步应调整门禁之间的执行依赖，而不是盲目扩大测试矩阵。如果局部因果正确，只有全局顺序不符，下一步应修复测试匹配器。</p>
+<p>在文档组织上，根级智能体指引只需提供触发词和路由。完整方法可以放进 Skill；具体断言仍以产品、协议和验证文档为依据。Skill 连接这些信息，但不成为产品语义的新来源。</p>
 <h2 id="门禁是开发循环的传感器">门禁是开发循环的传感器</h2>
 <p>在 <a href="/posts/2026-06-18_harness_engineering_beyond_models/">Harness Engineering：模型之外的工程</a> 中，我把 harness 描述为模型行动的外部结构。门禁是这套结构中的判定器，也是传感器。</p>
 <p>判定器只对明确契约做硬判决。传感器记录系统自然运行时的语义阶段、次数、时序和终态。两者共同组成适合 LLM agent 开发循环的反馈接口。</p>
