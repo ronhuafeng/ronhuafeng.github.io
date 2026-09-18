@@ -1,14 +1,15 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Structured LLM Design：按生命周期组织 Agent Runtime - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="从一个“不污染主会话的临时总结”出发，讨论如何按生命周期和所有权重新组织 LLM Agent：Context、Invocation、Task、Process 与 Effect，并由此推导 calling convention、KV cache、structured concurrency 与 CSP-style process/channel。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/2026-09-18_llm_agent_calling_convention/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="theme-color" content="#f26a4f"><meta name="robots" content="index,follow"><meta property="og:title" content="Structured LLM Design：按生命周期组织 Agent Runtime - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="从一个“不污染主会话的临时总结”出发，讨论如何按生命周期和所有权重新组织 LLM Agent：Context、Invocation、Task、Process 与 Effect，并由此推导 calling convention、KV cache、structured concurrency 与 CSP-style process/channel。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/2026-09-18_llm_agent_calling_convention/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/og-default.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Structured LLM Design：按生命周期组织 Agent Runtime - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="从一个“不污染主会话的临时总结”出发，讨论如何按生命周期和所有权重新组织 LLM Agent：Context、Invocation、Task、Process 与 Effect，并由此推导 calling convention、KV cache、structured concurrency 与 CSP-style process/channel。"><meta name="twitter:image" content="https://blog.formalscience.com/og-default.svg"><meta property="article:published_time" content="2026-09-18T00:00:00.000Z"><meta property="article:section" content="技术"><meta property="article:tag" content="AI Agents"><meta property="article:tag" content="Agent Runtime"><meta property="article:tag" content="Structured LLM Design"><meta property="article:tag" content="Calling Convention"><meta property="article:tag" content="Structured Concurrency"><meta property="article:tag" content="CSP"><meta property="article:tag" content="KV Cache"><link rel="stylesheet" href="/_astro/BaseLayout.Cd02r_4h.css"></head><body><a class="skip-link" href="#content" lang="zh-CN">跳到内容</a><div class="site-shell"><header class="site-header"><a class="brand" href="/">Zhang Hua Feng/張華楓&#39;s Notes</a><div class="header-actions"><nav class="nav-links" aria-label="主导航" lang="zh-CN"><a href="/">首页</a><a href="/posts">文章</a><a href="/categories">分类</a><a href="/tags">标签</a><a href="/about">关于</a></nav><nav class="language-switch" aria-label="切换语言"><a href="/posts/2026-09-18_llm_agent_calling_convention/" lang="zh-CN" aria-current="page">中文</a><a href="/en" lang="en">English home</a></nav></div></header><main id="content"><article class="post-shell"><div class="post-meta-row"><p class="meta"><time datetime="2026-09-18T00:00:00.000Z">2026年9月18日</time> · 约 14 分钟</p><span class="language-badge">中文</span><a class="category-label" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></div><h1 class="post-title">Structured LLM Design：按生命周期组织 Agent Runtime</h1><p class="meta">从一个“不污染主会话的临时总结”出发，讨论如何按生命周期和所有权重新组织 LLM Agent：Context、Invocation、Task、Process 与 Effect，并由此推导 calling convention、KV cache、structured concurrency 与 CSP-style process/channel。</p><div class="tag-list"><a class="tag" href="/tags/AI%20Agents/">AI Agents</a><a class="tag" href="/tags/Agent%20Runtime/">Agent Runtime</a><a class="tag" href="/tags/Structured%20LLM%20Design/">Structured LLM Design</a><a class="tag" href="/tags/Calling%20Convention/">Calling Convention</a><a class="tag" href="/tags/Structured%20Concurrency/">Structured Concurrency</a><a class="tag" href="/tags/CSP/">CSP</a><a class="tag" href="/tags/KV%20Cache/">KV Cache</a></div><details class="post-toc"><summary>本文目录</summary><nav aria-label="本文目录"><ol><li><a href="#conversation-不够表达一次临时计算">Conversation 不够表达一次临时计算</a></li><li class="toc-subheading"><a href="#invocation而不是第二种-thread">Invocation，而不是第二种 Thread</a></li><li><a href="#context-不是聊天记录而是执行上下文">Context 不是聊天记录，而是执行上下文</a></li><li class="toc-subheading"><a href="#immutable-prefix-不是目标却是一个很好的副作用">Immutable prefix 不是目标，却是一个很好的副作用</a></li><li><a href="#一个-call-stack-遇到并发就不够了">一个 Call Stack 遇到并发就不够了</a></li><li class="toc-subheading"><a href="#structured-concurrency-解决的不是并行而是-ownership">Structured concurrency 解决的不是“并行”，而是 ownership</a></li><li><a href="#长任务迫使-task-变成-process">长任务迫使 Task 变成 Process</a></li><li class="toc-subheading"><a href="#llm-context-不应该变成-runtime-event-log">LLM context 不应该变成 runtime event log</a></li><li><a href="#最后剩下的问题是-effect">最后剩下的问题是 Effect</a></li><li><a href="#structured-llm-design-最终在结构什么">Structured LLM Design 最终在结构什么</a></li></ol></nav></details><div class="post-content"><p>很多 LLM Agent 都从一个很自然的抽象开始：session 或 thread。</p>
-<p>它保存 message history。用户继续输入，模型继续回答，工具调用和工具结果也继续追加进去。对于短对话，这几乎没有问题。可一旦 Agent 开始运行较长的任务，thread 往往会悄悄承担越来越多的职责：它既是模型上下文，又像执行轨迹；既保存用户真正关心的历史，又混入临时分析；工具日志、后台任务状态、子 Agent 结果，甚至外部系统的变化，也很容易被继续塞进去。</p>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Structured LLM Design：按生命周期组织 Agent Runtime - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="从一个“不污染主会话的临时总结”出发，讨论如何按生命周期和所有权重新组织 LLM Agent：Context、Invocation、Task、Process 与 Effect，并由此推导 calling convention、KV cache、structured concurrency 与 CSP-style communication。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/2026-09-18_llm_agent_calling_convention/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="theme-color" content="#f26a4f"><meta name="robots" content="index,follow"><meta property="og:title" content="Structured LLM Design：按生命周期组织 Agent Runtime - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="从一个“不污染主会话的临时总结”出发，讨论如何按生命周期和所有权重新组织 LLM Agent：Context、Invocation、Task、Process 与 Effect，并由此推导 calling convention、KV cache、structured concurrency 与 CSP-style communication。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/2026-09-18_llm_agent_calling_convention/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/og-default.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Structured LLM Design：按生命周期组织 Agent Runtime - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="从一个“不污染主会话的临时总结”出发，讨论如何按生命周期和所有权重新组织 LLM Agent：Context、Invocation、Task、Process 与 Effect，并由此推导 calling convention、KV cache、structured concurrency 与 CSP-style communication。"><meta name="twitter:image" content="https://blog.formalscience.com/og-default.svg"><meta property="article:published_time" content="2026-09-18T00:00:00.000Z"><meta property="article:section" content="技术"><meta property="article:tag" content="AI Agents"><meta property="article:tag" content="Agent Runtime"><meta property="article:tag" content="Structured LLM Design"><meta property="article:tag" content="Calling Convention"><meta property="article:tag" content="Structured Concurrency"><meta property="article:tag" content="CSP"><meta property="article:tag" content="KV Cache"><link rel="stylesheet" href="/_astro/BaseLayout.Cd02r_4h.css"></head><body><a class="skip-link" href="#content" lang="zh-CN">跳到内容</a><div class="site-shell"><header class="site-header"><a class="brand" href="/">Zhang Hua Feng/張華楓&#39;s Notes</a><div class="header-actions"><nav class="nav-links" aria-label="主导航" lang="zh-CN"><a href="/">首页</a><a href="/posts">文章</a><a href="/categories">分类</a><a href="/tags">标签</a><a href="/about">关于</a></nav><nav class="language-switch" aria-label="切换语言"><a href="/posts/2026-09-18_llm_agent_calling_convention/" lang="zh-CN" aria-current="page">中文</a><a href="/en" lang="en">English home</a></nav></div></header><main id="content"><article class="post-shell"><div class="post-meta-row"><p class="meta"><time datetime="2026-09-18T00:00:00.000Z">2026年9月18日</time> · 约 16 分钟</p><span class="language-badge">中文</span><a class="category-label" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></div><h1 class="post-title">Structured LLM Design：按生命周期组织 Agent Runtime</h1><p class="meta">从一个“不污染主会话的临时总结”出发，讨论如何按生命周期和所有权重新组织 LLM Agent：Context、Invocation、Task、Process 与 Effect，并由此推导 calling convention、KV cache、structured concurrency 与 CSP-style communication。</p><div class="tag-list"><a class="tag" href="/tags/AI%20Agents/">AI Agents</a><a class="tag" href="/tags/Agent%20Runtime/">Agent Runtime</a><a class="tag" href="/tags/Structured%20LLM%20Design/">Structured LLM Design</a><a class="tag" href="/tags/Calling%20Convention/">Calling Convention</a><a class="tag" href="/tags/Structured%20Concurrency/">Structured Concurrency</a><a class="tag" href="/tags/CSP/">CSP</a><a class="tag" href="/tags/KV%20Cache/">KV Cache</a></div><details class="post-toc"><summary>本文目录</summary><nav aria-label="本文目录"><ol><li><a href="#conversation-不够表达一次临时计算">Conversation 不够表达一次临时计算</a></li><li class="toc-subheading"><a href="#invocation而不是第二种-thread">Invocation，而不是第二种 Thread</a></li><li><a href="#context-不是聊天记录而是执行上下文">Context 不是聊天记录，而是执行上下文</a></li><li class="toc-subheading"><a href="#immutable-prefix-不是目标却是一个很好的副作用">Immutable prefix 不是目标，却是一个很好的副作用</a></li><li><a href="#一个-call-stack-遇到并发就不够了">一个 Call Stack 遇到并发就不够了</a></li><li class="toc-subheading"><a href="#structured-concurrency-解决的不是并行而是-ownership">Structured concurrency 解决的不是“并行”，而是 ownership</a></li><li><a href="#当活动可以比-caller-活得更久时需要-process">当活动可以比 caller 活得更久时，需要 Process</a></li><li class="toc-subheading"><a href="#event-和-channel-不是新的生命周期">Event 和 Channel 不是新的生命周期</a></li><li class="toc-subheading"><a href="#llm-context-不应该变成-runtime-event-log">LLM context 不应该变成 runtime event log</a></li><li><a href="#另一个正交问题是-effect">另一个正交问题是 Effect</a></li><li><a href="#structured-llm-design-最终在结构什么">Structured LLM Design 最终在结构什么</a></li></ol></nav></details><div class="post-content"><p>很多 LLM Agent 都从一个很自然的抽象开始：session 或 thread。</p>
+<p>最初，thread 做的事情很简单：保存 message history。用户继续输入，模型继续回答，工具调用和结果也顺着往后追加。短对话里，这几乎没有问题。</p>
+<p>麻烦出现在任务变长以后。Thread 会慢慢承担越来越多的职责：它既保存模型上下文，又像执行轨迹；既保存用户真正关心的历史，也混进临时分析。再往后，工具日志、后台任务状态、子 Agent 结果，甚至外部系统的变化，都很容易被继续塞进同一个地方。</p>
 <p>真正让我开始怀疑这个抽象的，不是什么宏大的架构问题，而是一个很小的需求。</p>
 <p>假设我已经和 Agent 工作了很久，现在只想临时问一句：“把到目前为止发生的事情总结一下。”我需要这个 summary，但不希望“请总结”和 summary 本身永久写回原 session。它们只是一次辅助计算，不应该为了完成这次计算而改变被总结的对象。</p>
 <p>最初我把这个能力叫作 <strong>Stacked Thread</strong>：从当前 thread fork 一个临时 child，在 child 中继续若干 turn，拿到结果以后丢掉 child。这个想法来自函数调用栈。</p>
 <p>继续推下去以后，我发现问题并不只是缺一个 fork helper。更深的问题是：<strong>我们把生命周期完全不同的状态放进了同一个 conversation abstraction。</strong></p>
-<p>这篇文章所说的 <strong>Structured LLM Design</strong>，就是试图重新把这些状态分开。它的核心不是增加更多 Agent 概念，而是一个很普通的软件工程原则：</p>
+<p>这篇文章所说的 <strong>Structured LLM Design</strong>，就是试着把这些状态重新分开。重点不是再发明一套 Agent 名词，而是回到一个很普通的软件工程原则：</p>
 <blockquote>
 <p><strong>不同生命周期、不同所有权、不同可见性的状态，不应该因为都和模型有关，就被塞进同一个 session。</strong></p>
 </blockquote>
-<p>沿着这个原则往下走，会逐渐出现五个不同的对象：<code>Context</code>、<code>Invocation</code>、<code>Task</code>、<code>Process</code> 和 <code>Effect</code>。它们并不是预先设计出来的一套分类，而是前一个模型在具体场景里失效以后，被一步步逼出来的。</p>
+<p>沿着这个原则继续推，会逐渐遇到几个不同维度的问题：<code>Context</code> 处理模型能看到什么；<code>Invocation</code>、<code>Task</code> 和 <code>Process</code> 处理 computation 活多久、由谁拥有；<code>Effect</code> 处理已经越过模型边界、真正改变外部世界的状态。它们会在叙事中依次出现，但并不是同一条类型链。</p>
 <h2 id="conversation-不够表达一次临时计算">Conversation 不够表达一次临时计算</h2>
 <p>先回到 summary。</p>
 <p>设当前 context 是：</p>
@@ -17,8 +18,8 @@
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>[A B C D</span></span>
 <span class="line"><span> User: summarize everything above</span></span>
 <span class="line"><span> Assistant: ...]</span></span></code></pre>
-<p>这当然能工作，但语义有些奇怪：为了得到一个 summary，我永久修改了原来的 conversation。</p>
-<p>普通函数调用通常不是这样。caller 提供参数和环境，callee 在自己的 activation 中产生局部状态，最后返回一个值。caller 可以选择保存这个值，也可以丢掉它；callee 的内部执行过程不会因为运行过一次，就自动成为 caller 的局部状态。</p>
+<p>这当然能工作。奇怪的是，为了得到一个临时 summary，我永久修改了被总结的 conversation。</p>
+<p>普通函数调用通常不会这样处理局部计算。Caller 提供参数和环境，callee 在自己的 activation 中运行，最后返回一个值。Caller 可以保存这个值，也可以丢掉它；callee 中间经历过什么，不会因为这次调用发生过，就自动变成 caller 的局部状态。</p>
 <p>把这条直觉搬到 LLM runtime，更自然的行为是：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Parent context</span></span>
 <span class="line"><span>[A B C D]</span></span>
@@ -32,15 +33,15 @@
 <span class="line"><span></span></span>
 <span class="line"><span>Parent context</span></span>
 <span class="line"><span>[A B C D]</span></span></code></pre>
-<p>这里有几个细节必须说准确。</p>
-<p>child 从 <strong>call time 的 fork point</strong> 继承 parent 当时的历史。从这一点以后双方分叉：child 后续 turn 不会 append 回 parent；parent 之后即使继续收到新 turn，也不会自动进入已经存在的 child。parent 并没有因为 child 存在而被冻结，它只是和 child 各自继续。</p>
+<p>这里的边界需要说清楚。</p>
+<p>Child 继承的是 <strong>call 发生那一刻</strong> 的 parent snapshot。Fork point 之后，两边各自继续：child 的后续 turn 不会自动写回 parent，parent 后来的新 turn 也不会自动进入已经存在的 child。Parent 不需要因为 child 存在而停住。</p>
 <p>这已经不是简单的“复制一份聊天记录”。它更像一次 scoped invocation：从 caller context 建立局部执行环境，运行，返回，然后 unwind。</p>
 <p>于是我开始觉得，LLM runtime 也许需要自己的 <strong>calling convention</strong>。</p>
 <h3 id="invocation而不是第二种-thread">Invocation，而不是第二种 Thread</h3>
 <p>一旦有了这个想法，一个很诱人的 API 是造一个新的 <code>StackedThread</code> 类型，再给它 <code>Send</code>、<code>SendStream</code>、<code>Close</code> 之类的方法。</p>
 <p>我后来认为这正好走反了。</p>
 <p>如果底层系统已经有 thread、fork、turn、interrupt、unsubscribe，那么 Stacked Thread 不应该再成为第二套 thread abstraction。它描述的是一次调用关系，不是新的持久身份。</p>
-<p>普通语言里也不存在一种 <code>StackedFunction</code>。普通 function 进入一次 call，才产生 activation frame。类似地，一个普通 thread/context 进入 scoped fork-and-run，才形成一次 invocation。</p>
+<p>普通编程语言里也没有一种叫 <code>StackedFunction</code> 的新函数类型。Function 只有在发生一次 call 时，才产生 activation frame。类似地，普通 thread/context 只有进入一次 scoped fork-and-run，才形成 invocation。</p>
 <p>更干净的分层应该是：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Protocol mechanisms</span></span>
 <span class="line"><span>  thread/fork</span></span>
@@ -59,20 +60,20 @@
 <span class="line"><span>  verify</span></span>
 <span class="line"><span>  what-if analysis</span></span>
 <span class="line"><span>  speculative exploration</span></span></code></pre>
-<p>协议层保留协议事实，runner/runtime 层组合生命周期，应用层定义用途。这里真正值得抽象的是 <code>Call</code> 的语义，而不是给 <code>Fork</code> 换一个更响亮的名字。</p>
+<p>这三层最好各管各的事：协议层描述 <code>fork</code>、<code>turn/start</code> 这些事实；runner/runtime 负责把它们组合成 <code>Call</code> 这样的生命周期；应用层再决定这次调用是 summary、critique 还是 verification。真正值得稳定下来的，是 <code>Call</code> 的语义，而不是给 <code>Fork</code> 换一个更响亮的名字。</p>
 <p>如果落到一个 SDK，我更希望看到类似：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="go"><code><span class="line"><span style="color:#E1E4E8">result, err </span><span style="color:#F97583">:=</span><span style="color:#E1E4E8"> runner.</span><span style="color:#B392F0">Call</span><span style="color:#E1E4E8">(ctx, </span><span style="color:#B392F0">CallRequest</span><span style="color:#E1E4E8">{</span></span>
 <span class="line"><span style="color:#E1E4E8">    ParentThreadID: parentID,</span></span>
 <span class="line"><span style="color:#E1E4E8">    Turn:           turn,</span></span>
 <span class="line"><span style="color:#E1E4E8">})</span></span></code></pre>
-<p>一个完整的 <code>Call</code> 应该拥有自己的 scope：在 parent 的 snapshot 上创建 ephemeral child，在 effectful turn 真正开始之前保留 admission boundary，执行并收集结果，取消时中断当前 turn，最后清理 child。</p>
+<p>一个完整的 <code>Call</code> 需要自己的 scope。它从 parent snapshot 创建临时 child；在真正开始有副作用的 turn 之前，仍保留一个可以拒绝或取消的 admission boundary；执行完成后收集结果；如果被取消，就中断当前 turn；最后再清理 child。</p>
 <p>而如果只是让一个已有 thread 再运行一轮，那应该是更普通的 <code>Continue</code>。来源于 fork 并不会让一个 thread 永久变成另一种物种。</p>
-<p>到这里，<code>Invocation</code> 出现了：它表示一次有 caller、有局部执行状态、有返回值、有明确结束边界的 scoped computation。</p>
+<p>到这里，<code>Invocation</code> 的含义就比较清楚了：它是一段有 caller、有局部状态、有返回值，而且结束边界明确的 scoped computation。</p>
 <p>但马上又会遇到下一个问题：<strong>Invocation 到底在执行什么？</strong></p>
 <h2 id="context-不是聊天记录而是执行上下文">Context 不是聊天记录，而是执行上下文</h2>
 <p>calling convention 这个类比之所以没有很快崩掉，是因为现代 Agent 的模型输入本来就不像一串普通聊天文本。</p>
 <p>一次调用里可能同时存在 system instruction、developer instruction、user message、assistant message、tool call、tool result、observation，以及各种结构化数据。它们来源不同、类型不同、生命周期也不完全相同，只是最终被组织成一个有顺序的模型可见上下文。</p>
-<p>因此，与其把 message list 只看成 <code>history</code>，我更愿意把它看成一种 <strong>typed sequential execution context</strong>。在一次 invocation 中，它很像 serialized activation record。</p>
+<p>因此，message list 不只是“聊天历史”。更准确地说，它是一段按顺序组织、带有不同来源和类型的执行上下文，也就是一种 <strong>typed sequential execution context</strong>。放在一次 invocation 里看，它很像 serialized activation record。</p>
 <table>
 <thead>
 <tr>
@@ -115,7 +116,7 @@
 </tr>
 </tbody>
 </table>
-<p>这不是说 Transformer 里真的有 CPU 风格的 stack frame。重要的是运行时语义：哪些状态从 caller 继承，哪些只属于本次计算，哪些东西应该返回，哪些东西在 scope 结束后消失。</p>
+<p>这当然不是说 Transformer 里真的藏着 CPU 风格的 stack frame。这个类比只借用运行时语义：什么从 caller 继承，什么只属于本次计算，什么应该返回，什么在 scope 结束后消失。</p>
 <p>一旦这样看，另一个长期被混在一起的边界也会显出来：<strong>model context 和 program memory 不应该被当成同一块内存。</strong></p>
 <p>child invocation 的结果首先应该回到程序：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="go"><code><span class="line"><span style="color:#E1E4E8">r, err </span><span style="color:#F97583">:=</span><span style="color:#B392F0"> Call</span><span style="color:#E1E4E8">(ctx, req)</span></span>
@@ -124,7 +125,7 @@
 <span class="line"><span style="color:#E1E4E8">}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#6A737D">// 程序决定 r 是否、何时、以什么形式进入某个模型上下文。</span></span></code></pre>
-<p>这和“把 child 最后一条 assistant message 自动 append 回 parent”是完全不同的设计。前者让程序拥有结果的解释权和提交权；后者直接把模型输出变成 conversation mutation。</p>
+<p>这和“把 child 最后一条 assistant message 自动 append 回 parent”是两种不同语义。前者先把结果交给程序，由程序决定怎样解释和提交；后者则直接把模型输出变成 conversation mutation。</p>
 <p>这也是我在 <code>llm-go</code> 里那句原则的另一个含义：</p>
 <blockquote>
 <p><strong>Models propose. Programs decide. Effects require authority.</strong></p>
@@ -141,45 +142,46 @@
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>             [A B C D]</span></span>
 <span class="line"><span>              /     \</span></span>
 <span class="line"><span>         [X1 X2]   [Y1 Y2]</span></span></code></pre>
-<p>这恰好也是 prefix cache 或 KV reuse 最容易利用的形态。只要模型、token prefix、运行配置和 serving backend 都支持复用，公共 prefix 就可能共享已经完成的前缀计算，每个 invocation 只需要计算自己的局部 suffix。</p>
+<p>这种形态还有一个工程上的好处：它很适合 prefix cache 或 KV reuse。只要模型、token prefix、运行配置和 serving backend 都满足复用条件，公共 prefix 就有机会共享已经完成的前缀计算，每个 invocation 只计算自己的局部 suffix。</p>
 <p>这里不能过度承诺。一个语义上 immutable 的 prefix，并不意味着某个具体服务端一定保留 KV。上下文压缩、隐藏 prompt 重写、cache eviction、模型变化都可能导致 cache miss。</p>
-<p>真正可靠的说法只是：<strong>Structured LLM Design 不主动破坏 shared prefix，因此允许底层实现利用 prefix/KV reuse，而不需要改变上层语义。</strong></p>
+<p>更准确的说法是：<strong>Structured LLM Design 不主动破坏 shared prefix，因此给底层利用 prefix/KV reuse 留出了空间，但不保证 cache hit。</strong></p>
 <p>这点尤其适合长上下文上的派生计算。一个 100k-token 的稳定 context 可能同时被用于 summary、critique、plan、verification 和 extraction。这些本来就是独立的 sub-computation；如果推理系统能复用公共 prefix，正确的语义边界和高效的计算形态正好指向同一个方向。</p>
 <p>到这里，我们有了 Context 和 Invocation。</p>
-<p>如果系统永远只有一个同步执行链，这已经相当完整。但 Agent 不会这么听话。</p>
+<p>如果系统永远只有一条同步执行链，Context 和 Invocation 已经够用了。问题是，Agent 很快就会遇到并发。</p>
 <h2 id="一个-call-stack-遇到并发就不够了">一个 Call Stack 遇到并发就不够了</h2>
 <p>假设一个 parent invocation 同时启动三个分析：安全性、性能和 API 设计。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>                 Parent</span></span>
 <span class="line"><span>               /   |    \</span></span>
 <span class="line"><span>        Security   Perf   API</span></span></code></pre>
-<p>这时再说“系统只有一个 call stack”就不准确了。完整的 invocation 关系是一棵 tree，而每一个正在运行的 execution strand 都有自己的 active path。</p>
+<p>这时再说“系统只有一个 call stack”就不准确了。所有 invocation 的关系更像一棵 tree；每一条正在执行的分支，只占据其中一条 active path。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Task A: Root → Parent → Security</span></span>
 <span class="line"><span>Task B: Root → Parent → Performance</span></span>
 <span class="line"><span>Task C: Root → Parent → API Review</span></span></code></pre>
 <p>换句话说，<strong>tree 描述所有 frame 的关系，stack 只描述某一个 task 当前活跃的调用链。</strong></p>
-<p>这就是 <code>Task</code> 必须从 Invocation 中单独长出来的地方。</p>
+<p>Invocation 只说明“一次调用怎样开始和结束”，却没有回答一组并发 child 由谁负责。谁等待它们？谁传播取消？一个失败以后，其他 sibling 怎么办？这些问题需要 <code>Task</code> 这一层来表达。</p>
 <h3 id="structured-concurrency-解决的不是并行而是-ownership">Structured concurrency 解决的不是“并行”，而是 ownership</h3>
-<p>同时发三个模型请求并不难。难的是谁拥有这三个 child。</p>
+<p>同时发出三个模型请求并不难。真正麻烦的是谁负责把这三个 child 收回来。</p>
 <p>parent 被取消时 child 是否取消？一个 child 失败是否终止 sibling？谁负责等待全部完成？如果 caller 已经结束，还有没有孤儿任务在继续烧钱、改文件、拿着 credential 活着？</p>
-<p>这些才是 structured concurrency 真正处理的问题。</p>
-<p>一个 scoped task group 至少需要明确几个 invariant：child 从创建时的 parent snapshot 开始；parent scope 结束或取消时，默认向 child 传播；child result 先进入 program memory；failure policy 明确属于 caller，例如 fail-fast、wait-all、best-effort 或 first-success。</p>
+<p>这些才是 structured concurrency 真正要解决的问题。</p>
+<p>一个 scoped task group 至少要把几件事说清楚。Child 从创建时的 parent snapshot 开始；parent scope 结束或取消时，默认把取消向下传播；child result 先回到 program memory。至于 fail-fast、wait-all、best-effort 还是 first-success，则由 caller 明确选择。</p>
 <p>还有一个对 LLM 特别重要的约束：<strong>completion order 不应该自动成为 conversation order。</strong></p>
 <p>否则三个 child 谁先返回，谁就先被 append 回 parent，于是：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>same inputs</span></span>
 <span class="line"><span>+ different scheduling</span></span>
 <span class="line"><span>= different conversation state</span></span></code></pre>
 <p>这等于把网络延迟和调度抖动变成了模型语义。</p>
-<p>更稳妥的方式是让各 child 返回 typed result，再由确定性的 caller logic 选择顺序、做验证、去重或聚合。只有 caller 决定提交的内容，才进入下一次模型 context。</p>
+<p>更稳妥的做法，是让每个 child 先返回 typed result，再由 caller 用确定性的逻辑排序、验证、去重或聚合。只有 caller 明确提交的内容，才进入下一次模型 context。</p>
 <p>这也解释了为什么 Stack 这个比喻仍然成立，但必须被放到更大的结构里：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>persistent context tree</span></span>
 <span class="line"><span>+ one active stack per task</span></span>
 <span class="line"><span>+ structured task scopes</span></span></code></pre>
-<p>到这里，Invocation 被扩展成了 Task。</p>
-<p>然而 structured concurrency 仍然有一个前提：child 的生命周期属于某个 scope。只要出现一个可能运行几十分钟甚至几个小时的 CI，这个前提又开始松动。</p>
-<h2 id="长任务迫使-task-变成-process">长任务迫使 Task 变成 Process</h2>
-<p>CI、部署、训练、远程 build、后台服务都有一个共同点：它们可以独立推进，而且可能比创建它们的 LLM invocation 活得更久。</p>
-<p>如果强行把这类活动当成普通 child task，就会得到一种很别扭的生命周期：一个模型 frame 为了等 CI 结束而挂十几分钟，期间 progress、heartbeat、log chunk 还不断被塞回 conversation。</p>
-<p>这时，<code>Task</code> 已经不够用了。</p>
+<p>所以，Invocation 和 Task 的区别不在“谁更异步”。Invocation 描述一次 scoped computation；Task 处理的是仍然属于同一个 structured scope 的并发工作。</p>
+<p>接下来真正改变归类的是生命周期：如果某个 activity 在创建它的 scope 已经结束以后还能继续存在，它就不再是普通 child task。</p>
+<h2 id="当活动可以比-caller-活得更久时需要-process">当活动可以比 caller 活得更久时，需要 Process</h2>
+<p>CI、部署、训练、远程 build、后台服务都有一个共同点：创建它们的 invocation 结束以后，它们仍然可能继续推进。</p>
+<p>这里的判据不是“运行得够不够久”。<strong>Async 描述执行方式，Process 描述生命周期。Streaming 也是一样。</strong> 一个 activity 是否应该成为 Process，只看一件事：creator scope 结束以后，它是否还可以继续存在。</p>
+<p>如果 creator 已经结束，activity 却还要继续运行，再把它当成普通 child task，ownership 就会悬空。要么 caller 被迫一直挂着，要么系统产生一个没人真正负责的 orphan task。</p>
+<p>这时，<code>Task</code> 就不够用了。</p>
 <p>我更愿意把三种执行形态明确区分开：</p>
 <table>
 <thead>
@@ -202,13 +204,13 @@
 </tr>
 <tr>
 <td>Process</td>
-<td>可独立于创建 frame 存在</td>
-<td>spawn、events、wait/cancel</td>
+<td>可以超出 creator scope</td>
+<td>spawn、supervise、wait/cancel</td>
 </tr>
 </tbody>
 </table>
-<p><code>Process</code> 不再是某个 conversation frame 的局部变量式执行。它属于 runtime，可以在创建它的 invocation 返回以后继续存在。</p>
-<p>这正是 CSP-style process/channel 开始真正有用的地方。</p>
+<p><code>Process</code> 不再只属于某个 conversation frame。它可以在 creator invocation 返回以后继续存在，所以需要由寿命更长的 runtime 或 supervisor 持有。Creator 结束以后如果还要再次找到它，Process 也就需要稳定的 identity 或 handle。</p>
+<p>这正是 CSP-style communication 开始真正有用的地方。</p>
 <p>对于一个长时间运行的 CI，更自然的结构是：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>caller</span></span>
 <span class="line"><span>   │ spawn</span></span>
@@ -220,19 +222,42 @@
 <span class="line"><span>   ├─ Request</span></span>
 <span class="line"><span>   ├─ Failed</span></span>
 <span class="line"><span>   └─ Completed</span></span></code></pre>
-<p>调用者拿到的不是“十分钟后的最终字符串”，而是 process handle 或 capability：</p>
+<p>调用者拿到的不是“十分钟后的最终字符串”，而是一个 process handle：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="go"><code><span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> Process</span><span style="color:#F97583"> interface</span><span style="color:#E1E4E8"> {</span></span>
 <span class="line"><span style="color:#B392F0">    ID</span><span style="color:#E1E4E8">() </span><span style="color:#B392F0">ProcessID</span></span>
 <span class="line"><span style="color:#B392F0">    Events</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">&lt;-chan</span><span style="color:#B392F0"> ProcessEvent</span></span>
 <span class="line"><span style="color:#B392F0">    Wait</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">context</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Context</span><span style="color:#E1E4E8">) (</span><span style="color:#B392F0">ProcessResult</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">error</span><span style="color:#E1E4E8">)</span></span>
 <span class="line"><span style="color:#B392F0">    Cancel</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">context</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Context</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">error</span></span>
 <span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
-<p>CSP 在这里真正提供的启发，不只是“channel 可以异步传消息”，而是另一种状态组织方式：<strong>长生命周期活动通过通信暴露变化，不要求某个模型 frame 持续共享和轮询它的内部可变状态。</strong></p>
+<p>CSP 在这里提供的启发，不只是“channel 可以异步传消息”。更重要的是，独立活动可以通过通信暴露变化，而不需要某个模型 frame 一直挂着、共享并轮询它的内部状态。</p>
+<p>从 ownership 的角度，可以把几层关系写得更直接：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Invocation owns invocation-local state</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Task scope owns scoped Tasks</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Runtime / Supervisor owns Processes</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Authority governs Effects</span></span></code></pre>
+<p>这几层真正区分的是“谁负责收尾”。Invocation 的局部状态随调用结束而 unwind；Task 默认不能无主地逃出 structured scope；Process 一旦独立存在，就需要寿命更长的 owner。Effect 更特殊：即使这些 scope 全部结束，它造成的外部变化也不会自动消失。</p>
 <p>这也让我重新理解以前更偏事件驱动的 Agent 设计。在 <a href="/posts/2026-06-21_who_calls_whom_communication_coroutines_llm_agents/">《谁在调用谁：用通信过程和协程理解大语言模型智能体》</a> 里，我更强调 process、channel 和 coroutine，因为长任务确实很难用同步调用链表达。</p>
-<p>现在看，这两种模型并不冲突。Call 适合短暂而 scoped 的计算；Task 适合 scoped 并发；Process 适合可以独立推进的长活动。CSP 不是对 call stack 的替代，而是在另一种生命周期上补足它。</p>
+<p>现在看，这两种视角并不冲突。Call 处理 scoped computation，Task 处理 scoped concurrency，Process 处理可以超出 creator scope 的活动。CSP 则解释这些活动怎样通过 channel 协作，它不是拿来替代 call stack 的。</p>
+<p>这里还要区分两个同名概念：CSP 里的小写 <code>process</code> 是通信过程；本文的大写 <code>Process</code> 是生命周期对象。一个 activity 可以用 CSP process 的方式运行，却仍然属于某个 Task scope。只有它能够超出 creator scope，才应该被归为这里的 <code>Process</code>。</p>
+<h3 id="event-和-channel-不是新的生命周期">Event 和 Channel 不是新的生命周期</h3>
+<p>这里还要避免把所有有用名词都提升成新的顶层对象。Process 会产生 event，也会通过 channel 通信，但这不意味着 Event、Channel、Observer 也是新的生命周期类型。</p>
+<p>两组概念回答的是不同问题。Invocation、Task 和 Process 主要回答 <strong>lifetime 与 ownership</strong>；Event、Channel 和 Observation 回答 <strong>communication</strong>。它们是两个正交维度：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Lifecycle / ownership</span></span>
+<span class="line"><span>    Invocation</span></span>
+<span class="line"><span>    Task</span></span>
+<span class="line"><span>    Process</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Communication</span></span>
+<span class="line"><span>    Event</span></span>
+<span class="line"><span>    Channel</span></span>
+<span class="line"><span>    Observation</span></span></code></pre>
+<p>Task 可以产生 event，Process 也可以；channel 也能连接不同生命周期的对象。<strong>通信方式不决定生命周期。</strong></p>
 <h3 id="llm-context-不应该变成-runtime-event-log">LLM context 不应该变成 runtime event log</h3>
 <p>Process 模型还带来一个直接的上下文设计结论：后台系统产生的大部分事件，不应该进入 LLM context。</p>
-<p>一个运行二十分钟的 CI 可能每几秒产生日志和心跳。如果每一次 <code>still running</code> 都被写进 conversation，很快会同时得到 context 膨胀、prefix 不稳定和注意力污染。</p>
+<p>一个运行二十分钟的 CI 可能每几秒就产生日志和 heartbeat。如果每一次 <code>still running</code> 都写进 conversation，context 会迅速膨胀，shared prefix 也不断变化，真正重要的信息反而更难被注意到。</p>
 <p>更合理的路径是：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Runtime Event Stream</span></span>
 <span class="line"><span>        │</span></span>
@@ -242,83 +267,60 @@
 <span class="line"><span>        │</span></span>
 <span class="line"><span>        ▼</span></span>
 <span class="line"><span>Next LLM Invocation</span></span></code></pre>
-<p>原始事件可以完整留在 runtime 中，但只有真正影响判断的信息才进入模型。这与 <a href="/posts/2026-06-21_from_tool_calls_to_event_driven_agent_runtime/">《从工具调用到事件驱动：大语言模型智能体的运行时架构》</a> 中 observer/planner 的分工是一致的：observer 消费高频 signal，planner 消费经过筛选的语义变化。</p>
-<p>有了 channel 以后，Go/CSP 风格的 <code>select</code> 也很自然。runtime 可以同时等待 CI 完成、用户追加输入、另一个 child 返回、timeout 或外部状态变化。谁先 ready，就先处理谁；只有事件需要解释、重规划或产生新 action 时，才重新调用模型。</p>
+<p>原始事件可以完整留在 runtime 里，模型只需要看到会影响判断的部分。这正是 <a href="/posts/2026-06-21_from_tool_calls_to_event_driven_agent_runtime/">《从工具调用到事件驱动：大语言模型智能体的运行时架构》</a> 里 observer/planner 的分工：observer 消费高频 signal，planner 消费经过筛选的语义变化。可以把这个边界压缩成一句话：<strong>events wake the runtime; observations wake the model.</strong></p>
+<p>有了 channel，Go/CSP 风格的 <code>select</code> 就很自然。Runtime 可以同时等 CI 完成、用户追加输入、另一个 child 返回、timeout 或外部状态变化。谁先 ready 就先处理谁；只有变化真的需要解释、重规划或产生新 action 时，才重新调用模型。</p>
 <p>这时模型更像被 runtime 按需唤醒的 planner，而不是永远占据主循环顶部的“主程序”。</p>
-<p>到这里，Context、Invocation、Task 和 Process 都有了各自的位置。</p>
-<p>但还有一类状态，始终不肯老实地落进这些 scope。</p>
-<h2 id="最后剩下的问题是-effect">最后剩下的问题是 Effect</h2>
-<p>child invocation 可以是 ephemeral 的，task 可以被取消，process 也可以被终止，但文件系统、数据库、网络请求和外部 SaaS 状态并不会因此自动恢复。</p>
-<p>这是整个 stack 类比最容易让人误解的地方。</p>
-<p>conversation-local state 更像 stack-local state；workspace、数据库和外部系统更像 shared heap 或 external world。函数返回以后 locals 消失，不代表它修改过的全局变量会回滚。Agent 也是一样。</p>
+<p>到这里，Context 以及 Invocation、Task、Process 的边界已经比较清楚了。</p>
+<p>但还有一个与生命周期正交的问题：这些 computation 一旦改变了外部世界，scope 结束以后会发生什么？</p>
+<h2 id="另一个正交问题是-effect">另一个正交问题是 Effect</h2>
+<p>清理 child invocation，不等于它写过的文件会消失；取消 task，也不会自动撤销已经发出的网络请求。Process 被终止以后，外部 SaaS 里的资源同样可能继续存在。</p>
+<p>这正是 stack 类比最容易误导人的地方。Conversation-local state 更像 stack-local state；workspace、数据库和外部系统则更像 shared heap 或 external world。函数返回以后 locals 会消失，但它改过的全局变量不会因此回滚。Agent 也是一样。</p>
 <p>因此：</p>
 <blockquote>
 <p><strong>Frame isolation does not imply effect isolation.</strong></p>
 </blockquote>
-<p>一个临时 child thread 被清理，只说明它的 conversation execution scope 结束了。它在 workspace 中写过的文件、发出的 HTTP request、创建的 cloud resource 可能仍然存在。</p>
+<p>一个临时 child thread 被清理，只说明这段 conversation execution 结束了。它写进 workspace 的文件、发出的 HTTP request、创建的 cloud resource 仍然可能存在。</p>
 <p>这就是为什么 <code>Effect</code> 必须从 Context / Invocation / Task / Process 中单独拿出来。</p>
-<p>如果需要更强的隔离，可以引入 read-only capability、workspace snapshot、sandbox、transaction、external mutation approval 等机制。但它们属于 effect system，不应该因为 invocation 恰好是 ephemeral，就被默认假设成“也会回滚”。</p>
+<p>如果需要更强的隔离，就要另外提供 read-only capability、workspace snapshot、sandbox、transaction 或 external mutation approval。它们属于 effect system。Invocation 是 ephemeral，并不自动意味着 effect 也会回滚。</p>
 <p>这里同样需要 mechanism 和 policy 的分离。runtime 可以提供 interrupt、sandbox、approval callback、transaction boundary；应用决定什么操作允许发生，什么时候需要确认，哪些资源可以访问，什么结果可以提交。</p>
 <p>于是那句原则终于完整落地：</p>
 <blockquote>
 <p><strong>Models propose. Programs decide. Effects require authority.</strong></p>
 </blockquote>
-<p>模型负责提出行动和结果；程序拥有 workflow state 和提交决定；外部世界的变化必须经过明确 authority。</p>
+<p>模型负责提出行动和候选结果；程序掌握 workflow state，并决定什么可以提交；真正改变外部世界的操作，则必须经过明确 authority。</p>
 <h2 id="structured-llm-design-最终在结构什么">Structured LLM Design 最终在结构什么</h2>
-<p>回头看，这条推导链并不是从一开始就有五个漂亮的方框。</p>
-<p>最初只有 Conversation。然后一个“不应该污染原 session 的 summary”说明 Conversation 不够，于是需要 Invocation。</p>
-<p>Invocation 一旦被理解成 activation，就要求我们重新理解 Context：哪些是 inherited prefix，哪些是 invocation-local state，返回值为什么应该先回到 program memory。</p>
-<p>当多个 invocation 同时存在，一个 call stack 不够，于是出现 Task 和 structured concurrency。</p>
-<p>当 activity 可以比 caller 活得更久，Task 的 scope 又不够，于是需要 Process、channel 和 CSP-style communication。</p>
-<p>最后，当我们发现某些状态根本不会随着这些 scope 的结束而消失，就必须把 Effect 单独作为共享外部状态来管理。</p>
-<p>可以把这条演进写成：</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Conversation</span></span>
-<span class="line"><span>    │  无法表达不污染主历史的临时计算</span></span>
-<span class="line"><span>    ▼</span></span>
-<span class="line"><span>Invocation / Call</span></span>
-<span class="line"><span>    │  无法独自表达并发 ownership</span></span>
-<span class="line"><span>    ▼</span></span>
-<span class="line"><span>Task / Structured Concurrency</span></span>
-<span class="line"><span>    │  无法容纳可能超出 caller lifetime 的活动</span></span>
-<span class="line"><span>    ▼</span></span>
-<span class="line"><span>Process / CSP</span></span>
-<span class="line"><span>    │  仍不能解释外部共享状态的权限与回滚</span></span>
-<span class="line"><span>    ▼</span></span>
-<span class="line"><span>Effect Authority</span></span></code></pre>
-<p>而贯穿这些层级的是 Context。</p>
-<p>最终，我会把 Structured LLM Design 描述成下面这组运行时对象：</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Context</span></span>
-<span class="line"><span>  模型可见的持久或派生状态</span></span>
-<span class="line"><span>  倾向 immutable prefix + local suffix</span></span>
+<p>回头看，这套结构不是从几个漂亮方框开始的。每个概念，都是旧抽象解释不了新问题以后才出现。</p>
+<p>最初只有 Conversation。一个“不应该污染原 session 的 summary”说明 Conversation 不够，于是需要 Invocation。把 Invocation 看成 activation 以后，Context 的边界也跟着清楚了：什么从 caller 继承，什么只属于本次调用，返回值为什么应该先回到 program memory。</p>
+<p>多个 invocation 并发以后，一个 call stack 不够，于是需要 Task 和 structured concurrency。Activity 可以比 caller 活得更久以后，Task 的 scope 又不够，于是需要 Process。与此同时，Event、Channel 和 Observation 负责描述这些对象怎样通信。</p>
+<p>Effect 的发现顺序虽然靠后，但它不是 Process 之后的“下一层生命周期”。从第一次 Invocation 开始，只要 computation 能修改文件、数据库或外部服务，Effect 就已经存在。它始终是一条正交的 authority 轴。</p>
+<p>因此，最终模型更适合按几个维度来表达：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Context / visibility</span></span>
+<span class="line"><span>    Context</span></span>
 <span class="line"><span></span></span>
-<span class="line"><span>Invocation</span></span>
-<span class="line"><span>  一次 scoped computation</span></span>
-<span class="line"><span>  call / return / unwind</span></span>
+<span class="line"><span>Lifecycle / ownership</span></span>
+<span class="line"><span>    Invocation</span></span>
+<span class="line"><span>    Task</span></span>
+<span class="line"><span>    Process</span></span>
 <span class="line"><span></span></span>
-<span class="line"><span>Task</span></span>
-<span class="line"><span>  scoped concurrent computation</span></span>
-<span class="line"><span>  structured ownership / join / cancellation</span></span>
+<span class="line"><span>Communication</span></span>
+<span class="line"><span>    Event</span></span>
+<span class="line"><span>    Channel</span></span>
+<span class="line"><span>    Observation</span></span>
 <span class="line"><span></span></span>
-<span class="line"><span>Process</span></span>
-<span class="line"><span>  可以独立推进的长生命周期活动</span></span>
-<span class="line"><span>  spawn / channel / event / wait</span></span>
-<span class="line"><span></span></span>
-<span class="line"><span>Effect</span></span>
-<span class="line"><span>  不随 frame 自动消失的外部状态变化</span></span>
-<span class="line"><span>  explicit authority / policy</span></span></code></pre>
-<p>这个结构里还有一个很有意思的拓扑对应：</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>persistent context tree</span></span>
-<span class="line"><span>        ↕</span></span>
-<span class="line"><span>structured concurrency tree</span></span>
-<span class="line"><span>        ↕</span></span>
-<span class="line"><span>KV prefix tree</span></span></code></pre>
-<p>它们当然不是同一个实现，但都偏好稳定 ancestor、局部 branch 和清楚的 ownership。任意一个正在执行的 task，只是在这棵关系树上的一条 active invocation path，也就是它自己的 call stack。</p>
-<p>从 calling convention 的角度，它还可以被进一步理解成一种 LLM execution ABI：caller 提供稳定 context；call boundary 固定 snapshot；新增输入成为 arguments；callee 在局部 suffix 中执行；结果通过明确 return convention 回到 program memory；scope 结束时 frame unwind；外部 mutation 则走独立的 effect authority。</p>
+<span class="line"><span>Effects / authority</span></span>
+<span class="line"><span>    Effect</span></span>
+<span class="line"><span>    Capability / Approval</span></span>
+<span class="line"><span>    Sandbox / Transaction</span></span></code></pre>
+<p>这里真正稳定的不是一条从 Context 走到 Effect 的继承链，而是几个彼此正交的边界：模型看见什么，computation 活多久、由谁负责，不同活动怎样通信，以及什么操作有权改变外部世界。</p>
+<p>这里还有一个工程上很有意思的结构观察，但需要把话说弱一点。</p>
+<p>在典型的 fork-from-parent workload 中，context branching、structured task ownership 和 KV prefix reuse 往往都受益于同一类形态：稳定的 ancestor，加上局部 branch。它们可能在同一组 fork point 附近对齐，但并不要求彼此同构。</p>
+<p>Task 可以使用并非来自 parent fork 的 context；Process 后续也可以创建新的 Invocation；serving backend 的 KV cache 更可能由 page、hash 或 trie 一类内部结构实现。这里真正有价值的只是：<strong>上层如果保持稳定 prefix 和局部分支，就不会主动妨碍底层复用。</strong> 对某个正在执行的 task 来说，它自己的 call stack 仍然只是 invocation 关系树上的一条 active path。</p>
+<p>从 calling convention 的角度，还可以把这套关系理解成一种 LLM execution ABI。Caller 提供稳定 context，call boundary 固定 snapshot，新增输入作为 arguments，callee 只在自己的 suffix 中运行。结果按明确的 return convention 回到 program memory；scope 结束时 frame unwind；外部 mutation 则走独立的 effect authority。</p>
 <p>底层 provider 不需要统一实现。一个系统可以用 thread fork，另一个可以用 session snapshot、prompt prefix 或 server-side cache。上层真正需要稳定的是语义：</p>
 <blockquote>
 <p><strong>stable context + scoped computation + structured ownership + explicit communication + explicit effects</strong></p>
 </blockquote>
-<p>这也是为什么我现在不再把最终设计叫作 Stacked Thread。Stack 很重要，但它只解释 scoped invocation 的 active path；Structured LLM Design 试图处理的是更大的问题：<strong>如何让 LLM computation 的 context、lifetime、concurrency、communication 和 effects 都有明确结构。</strong></p>
-<p>从这个角度看，session 污染、子 Agent、KV cache、并发 fan-out、后台 CI、事件流和工具权限，并不是一堆偶然碰到一起的问题。它们可能只是同一个 runtime design problem 从不同层面露出的几个截面。</p>
+<p>这也是为什么我不再把最终设计叫作 Stacked Thread。Stack 仍然重要，但它只解释 scoped invocation 当前走到哪一层。Structured LLM Design 想处理的是更大的问题：<strong>怎样让 LLM computation 的 context、lifetime、concurrency、communication 和 effects 都有明确边界。</strong></p>
+<p>这样再回头看，session 污染、子 Agent、KV cache、并发 fan-out、后台 CI、事件流和工具权限，就不再像一堆碰巧遇到的问题。它们更像是同一个 runtime design problem 从不同层面露出的截面。</p>
 <p>而如果这个判断成立，Agent runtime 最值得做的事情，可能不是继续往 session 里塞更多能力，而是开始认真地把它拆开。</p>
 </div></article></main><footer class="footer" lang="zh-CN"><span>记录是生活的微小仪式感</span><span>Copyright 2026 Zhang Hua Feng/張華楓&#39;s Notes</span></footer></div></body></html>

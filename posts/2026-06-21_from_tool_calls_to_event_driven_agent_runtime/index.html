@@ -1,58 +1,74 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>从工具调用到事件驱动：大语言模型智能体的运行时架构 - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="大语言模型智能体不应只被理解为一次次工具调用的串联；当任务变长、环境变复杂，运行时需要通过事件驱动架构管理状态、处理并发，并支持观察和恢复。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/2026-06-21_from_tool_calls_to_event_driven_agent_runtime/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="theme-color" content="#f26a4f"><meta name="robots" content="index,follow"><link rel="alternate" hreflang="zh-CN" href="https://blog.formalscience.com/posts/2026-06-21_from_tool_calls_to_event_driven_agent_runtime/"><link rel="alternate" hreflang="en" href="https://blog.formalscience.com/en/posts/2026-06-21_from_tool_calls_to_event_driven_agent_runtime/"><meta property="og:title" content="从工具调用到事件驱动：大语言模型智能体的运行时架构 - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="大语言模型智能体不应只被理解为一次次工具调用的串联；当任务变长、环境变复杂，运行时需要通过事件驱动架构管理状态、处理并发，并支持观察和恢复。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/2026-06-21_from_tool_calls_to_event_driven_agent_runtime/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/og-default.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="从工具调用到事件驱动：大语言模型智能体的运行时架构 - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="大语言模型智能体不应只被理解为一次次工具调用的串联；当任务变长、环境变复杂，运行时需要通过事件驱动架构管理状态、处理并发，并支持观察和恢复。"><meta name="twitter:image" content="https://blog.formalscience.com/og-default.svg"><meta property="article:published_time" content="2026-06-21T00:00:00.000Z"><meta property="article:section" content="技术"><meta property="article:tag" content="AI Agents"><meta property="article:tag" content="Runtime"><meta property="article:tag" content="Event-Driven Architecture"><link rel="stylesheet" href="/_astro/BaseLayout.Cd02r_4h.css"></head><body><a class="skip-link" href="#content" lang="zh-CN">跳到内容</a><div class="site-shell"><header class="site-header"><a class="brand" href="/">Zhang Hua Feng/張華楓&#39;s Notes</a><div class="header-actions"><nav class="nav-links" aria-label="主导航" lang="zh-CN"><a href="/">首页</a><a href="/posts">文章</a><a href="/categories">分类</a><a href="/tags">标签</a><a href="/about">关于</a></nav><nav class="language-switch" aria-label="切换语言"><a href="/posts/2026-06-21_from_tool_calls_to_event_driven_agent_runtime/" lang="zh-CN" aria-current="page">中文</a><a href="/en/posts/2026-06-21_from_tool_calls_to_event_driven_agent_runtime/" lang="en">English</a></nav></div></header><main id="content"><article class="post-shell"><div class="post-meta-row"><p class="meta"><time datetime="2026-06-21T00:00:00.000Z">2026年6月21日</time> · 约 12 分钟</p><span class="language-badge">中文</span><a class="category-label" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></div><h1 class="post-title">从工具调用到事件驱动：大语言模型智能体的运行时架构</h1><p class="meta">大语言模型智能体的运行时架构 · 1 / 2 · 架构篇</p><p class="meta">大语言模型智能体不应只被理解为一次次工具调用的串联；当任务变长、环境变复杂，运行时需要通过事件驱动架构管理状态、处理并发，并支持观察和恢复。</p><nav class="translation-links" aria-label="其他语言"><span>其他语言</span><a href="/en/posts/2026-06-21_from_tool_calls_to_event_driven_agent_runtime/" lang="en">English</a></nav><div class="tag-list"><a class="tag" href="/tags/AI%20Agents/">AI Agents</a><a class="tag" href="/tags/Runtime/">Runtime</a><a class="tag" href="/tags/Event-Driven%20Architecture/">Event-Driven Architecture</a></div><details class="post-toc"><summary>本文目录</summary><nav aria-label="本文目录"><ol><li><a href="#工具调用不是一次函数返回">工具调用不是一次函数返回</a></li><li><a href="#观察器observer不是缩小版规划器planner">观察器（observer）不是缩小版规划器（planner）</a></li><li><a href="#长任务需要决策节点而不是盲等">长任务需要决策节点，而不是盲等</a></li><li><a href="#持续服务的日志要按用户动作切片">持续服务的日志要按用户动作切片</a></li><li><a href="#回应用户不只是输出文本">回应用户不只是输出文本</a></li><li><a href="#运行时更接近事件驱动的并发系统">运行时更接近事件驱动的并发系统</a></li><li><a href="#统一的运行时结构">统一的运行时结构</a></li><li><a href="#结论">结论</a></li></ol></nav></details><div class="post-content"><p>许多大语言模型智能体的设计，仍然默认这样一个简单流程：模型提出工具调用，工具执行完毕，返回结果，模型再继续推理。这个流程把交互视为一次同步函数调用，输入是参数，输出是文本、图片或某个固定对象。它适合简单查询，却很难描述真实系统中的交互。</p>
-<p>实际使用的工具往往不会一次性返回结果。它可能持续输出日志，逐步生成中间产物，等待外部服务完成，甚至长期运行而没有明确的结束时刻。用户也不是只在开头输入一次需求，而是会不断操作界面、触发服务、改变环境。与此同时，智能体的回应也不只是文字，还可能是语音、自动化任务、定时提醒、外部服务操作，甚至机器人动作。</p>
-<p>因此，智能体运行时（agent runtime）不应被理解为“模型调用工具”的线性链条，而应被理解为一个事件驱动的控制系统。大语言模型在其中不是唯一的主程序，而是负责解释状态、更新判断和选择行动的规划器（planner）。工具、日志、用户行为、定时任务和机器人传感器，都是事件来源。系统真正要解决的问题，不是让模型更频繁地调用工具，而是把这些连续、异步、带噪声的变化组织成可供决策的状态。</p>
-<h2 id="工具调用不是一次函数返回">工具调用不是一次函数返回</h2>
-<p>传统工具调用默认一个固定形式：模型发起请求，工具执行，返回结果，模型继续推理。这种结构的问题在于，它把工具看成一个短时间内就能返回的函数，而许多工具本质上是一个过程。</p>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>从工具调用到事件驱动：大语言模型智能体的运行时架构 - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="大语言模型智能体不应只被理解为一次次工具调用的串联；当任务变长、环境变复杂，运行时需要通过事件驱动架构管理状态、处理并发，并支持观察和恢复。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/2026-06-21_from_tool_calls_to_event_driven_agent_runtime/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="theme-color" content="#f26a4f"><meta name="robots" content="index,follow"><link rel="alternate" hreflang="zh-CN" href="https://blog.formalscience.com/posts/2026-06-21_from_tool_calls_to_event_driven_agent_runtime/"><link rel="alternate" hreflang="en" href="https://blog.formalscience.com/en/posts/2026-06-21_from_tool_calls_to_event_driven_agent_runtime/"><meta property="og:title" content="从工具调用到事件驱动：大语言模型智能体的运行时架构 - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="大语言模型智能体不应只被理解为一次次工具调用的串联；当任务变长、环境变复杂，运行时需要通过事件驱动架构管理状态、处理并发，并支持观察和恢复。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/2026-06-21_from_tool_calls_to_event_driven_agent_runtime/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/og-default.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="从工具调用到事件驱动：大语言模型智能体的运行时架构 - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="大语言模型智能体不应只被理解为一次次工具调用的串联；当任务变长、环境变复杂，运行时需要通过事件驱动架构管理状态、处理并发，并支持观察和恢复。"><meta name="twitter:image" content="https://blog.formalscience.com/og-default.svg"><meta property="article:published_time" content="2026-06-21T00:00:00.000Z"><meta property="article:section" content="技术"><meta property="article:tag" content="AI Agents"><meta property="article:tag" content="Runtime"><meta property="article:tag" content="Event-Driven Architecture"><link rel="stylesheet" href="/_astro/BaseLayout.Cd02r_4h.css"></head><body><a class="skip-link" href="#content" lang="zh-CN">跳到内容</a><div class="site-shell"><header class="site-header"><a class="brand" href="/">Zhang Hua Feng/張華楓&#39;s Notes</a><div class="header-actions"><nav class="nav-links" aria-label="主导航" lang="zh-CN"><a href="/">首页</a><a href="/posts">文章</a><a href="/categories">分类</a><a href="/tags">标签</a><a href="/about">关于</a></nav><nav class="language-switch" aria-label="切换语言"><a href="/posts/2026-06-21_from_tool_calls_to_event_driven_agent_runtime/" lang="zh-CN" aria-current="page">中文</a><a href="/en/posts/2026-06-21_from_tool_calls_to_event_driven_agent_runtime/" lang="en">English</a></nav></div></header><main id="content"><article class="post-shell"><div class="post-meta-row"><p class="meta"><time datetime="2026-06-21T00:00:00.000Z">2026年6月21日</time> · 约 12 分钟</p><span class="language-badge">中文</span><a class="category-label" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></div><h1 class="post-title">从工具调用到事件驱动：大语言模型智能体的运行时架构</h1><p class="meta">大语言模型智能体的运行时架构 · 1 / 2 · 架构篇</p><p class="meta">大语言模型智能体不应只被理解为一次次工具调用的串联；当任务变长、环境变复杂，运行时需要通过事件驱动架构管理状态、处理并发，并支持观察和恢复。</p><nav class="translation-links" aria-label="其他语言"><span>其他语言</span><a href="/en/posts/2026-06-21_from_tool_calls_to_event_driven_agent_runtime/" lang="en">English</a></nav><div class="tag-list"><a class="tag" href="/tags/AI%20Agents/">AI Agents</a><a class="tag" href="/tags/Runtime/">Runtime</a><a class="tag" href="/tags/Event-Driven%20Architecture/">Event-Driven Architecture</a></div><details class="post-toc"><summary>本文目录</summary><nav aria-label="本文目录"><ol><li><a href="#有些工具调用不能只按一次函数返回理解">有些工具调用不能只按一次函数返回理解</a></li><li class="toc-subheading"><a href="#事件唤醒运行时observation-才唤醒模型">事件唤醒运行时，Observation 才唤醒模型</a></li><li><a href="#观察器observer不是缩小版规划器planner">观察器（observer）不是缩小版规划器（planner）</a></li><li><a href="#长任务需要决策节点而不是盲等">长任务需要决策节点，而不是盲等</a></li><li><a href="#持续服务的日志要按用户动作切片">持续服务的日志要按用户动作切片</a></li><li><a href="#回应用户不只是输出文本">回应用户不只是输出文本</a></li><li><a href="#运行时更接近事件驱动的并发系统">运行时更接近事件驱动的并发系统</a></li><li><a href="#统一的运行时结构">统一的运行时结构</a></li><li><a href="#结论">结论</a></li></ol></nav></details><div class="post-content"><p>许多大语言模型智能体的设计，仍然默认这样一个简单流程：模型提出工具调用，工具执行完毕，返回结果，模型再继续推理。这个流程把交互视为一次同步函数调用。对于短暂、边界清楚的任务，它本来就很好用；问题出现在工具和环境开始持续变化以后。</p>
+<p>真实工具的执行过程往往没有这么整齐。有些工具会持续输出日志，有些会逐步生成中间结果，还有些只是启动一个外部任务，然后等它自己推进。用户也可能在任务运行中继续操作界面、修改要求或触发新的服务。与此同时，智能体产生的也不只是文字，它还可能创建任务、调用外部服务，甚至控制设备。</p>
+<p>到了这种场景，“模型调用工具，工具返回结果”就不够描述整个系统了。更合适的视角是事件驱动的运行时：工具、日志、用户操作、定时任务和传感器都可以产生事件；大语言模型只是其中负责解释状态和选择行动的 planner。真正困难的不是让模型多调用几次工具，而是把连续、异步、带噪声的变化整理成可以用来决策的状态。</p>
+<h2 id="有些工具调用不能只按一次函数返回理解">有些工具调用不能只按一次函数返回理解</h2>
+<p>查询、格式转换、一次性计算这类短操作，本来就很适合 call/return。问题出现在执行会持续推进的时候：工具可能长时间运行，不断产生中间状态，或者只是等待另一个系统完成工作。如果接口只暴露“开始”和“最终返回”两个时刻，runtime 就看不到中间发生了什么，也很难在过程里做判断。</p>
 <p>代码执行会持续打印输出。网页自动化会经历加载、等待、失败和重试。模型训练、数据处理、文献总结、服务部署，都可能需要很长时间。机器人执行动作时也不会一次性给出结果，而是在环境中持续变化，并不断产生反馈。</p>
-<p>如果系统仍然让规划器一直等待工具结束，智能体就会失去对过程的控制。它无法及时发现卡死、错误、偏离目标或新的决策机会。相反，如果每出现一行输出就让规划器重新推理，系统又会被噪声拖垮，上下文会被日志占满，计算资源也会被浪费。</p>
-<p>更合理的方式是把工具执行看成一个可观察的任务。任务启动后，会持续产生事件：开始、进度更新、阶段完成、错误、等待、完成、取消。规划器不直接读取所有原始事件，而是通过观察层接收被筛选和压缩后的状态变化。</p>
-<p>这种结构包含三种策略。第一，优先采用事件驱动：当工具产生有意义的新状态时，系统立即感知。第二，对高频输出做节流和压缩：不是每个片段都值得唤醒规划器。第三，保留低频轮询作为兜底：实际系统可能出现回调丢失、日志延迟或连接中断，定时检查可以防止系统失去联系后无人察觉。</p>
-<p>因此，“固定时间观察”和“有更新就响应”可以配合使用：优先响应事件，由观察层过滤信息，再用轮询兜底。</p>
+<p>对于长任务，如果 planner 只能等最终结果，就很难在中途发现卡死、错误、偏离目标或新的决策机会。反过来，如果每出现一行输出都重新调用模型，系统又会被噪声拖住：上下文很快被日志占满，推理资源也浪费在没有决策价值的变化上。</p>
+<p>因此，这类执行更适合被看成一个可观察的活动。活动运行时可以产生开始、进度、阶段完成、错误、等待、完成或取消等事件。Planner 不需要读取全部原始事件，它只接收观察层筛选和压缩后的状态变化。</p>
+<p>实现上可以把三件事配在一起。工具有新状态时，优先通过事件让 runtime 及时感知；高频输出先节流和压缩，不让每个片段都进入高层决策；同时保留低频 reconciliation，周期性检查关键状态，用来发现回调丢失、连接中断、日志延迟或状态漂移。</p>
+<p>所以，事件驱动和轮询并不是非此即彼。Push 负责低延迟地告诉系统“有变化了”；周期性查询更适合确认“系统还活着，而且状态没有悄悄漂掉”。前者追求及时，后者保证 liveness 和 reconciliation。</p>
+<h3 id="事件唤醒运行时observation-才唤醒模型">事件唤醒运行时，Observation 才唤醒模型</h3>
+<p>事件到达，并不意味着应该立即调用大语言模型。底层信号还需要经过几层语义转换：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>raw signal</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>runtime event</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>filter / aggregate / correlate</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>observation</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>does this change a decision?</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>planner invocation</span></span></code></pre>
+<p>例如，一行新的 CI 日志可以先更新 runtime state，却没有必要触发一次完整推理。等几条日志合在一起已经能说明“测试失败”，它们才形成一个值得 planner 处理的 observation。这个边界可以概括为：<strong>events wake the runtime; observations wake the model.</strong></p>
+<p>这个区分还有一个直接后果：runtime 的职责之一，是决定什么时候<strong>不要</strong>调用模型。事件系统负责持续感知，观察层负责把连续变化压缩成有限的语义差异，planner 只在这些差异可能改变目标、策略或下一步行动时介入。</p>
 <h2 id="观察器observer不是缩小版规划器planner">观察器（observer）不是缩小版规划器（planner）</h2>
-<p>在这种架构中，需要引入观察器。观察器可以用规则系统或小模型实现，也可以在复杂场景下使用语言模型，但它不应被设计成一个自由发挥的小型规划器。它的职责应当很窄：判断任务是否仍在运行，是否出现错误，是否达到阶段性节点，是否需要规划器介入，并把连续输出压缩成结构化状态。</p>
-<p>规划器负责目标、策略和重规划。观察器负责感知、监测、告警和摘要。二者的边界越清晰，系统越稳定。</p>
-<p>合格的观察器不应把大量日志原样交给规划器，而应形成类似这样的状态包：当前阶段是什么；自上次上报以来发生了哪些关键变化；有没有异常；是否需要规划器决策；如果需要，候选动作是什么；支持判断的最小必要证据是什么。</p>
+<p>这里需要一个观察层。它可以由规则、小模型，或者在必要时由语言模型实现，但职责应该保持很窄：判断任务是否仍在运行，是否出现错误，是否到达阶段性节点，以及这些变化是否值得交给 planner。它还负责把连续输出压缩成结构化状态。</p>
+<p>两者的边界可以说得很简单：observer 负责说明“发生了什么变化”，planner 负责判断“这个变化意味着什么”。Observer 可以决定是否需要升级，但不应该因为自己也能调用模型，就顺手承担目标解释和自由规划。</p>
+<p>因此，observer 不应把大量日志原样交给 planner。它更适合输出一个小的状态包：当前在哪个阶段，自上次上报后发生了什么关键变化，有没有异常，是否需要决策，以及支撑这些判断的最小证据是什么。</p>
 <p>原始流仍然需要保留，便于审计和回溯。但规划器平时不应直接消费原始流，而应消费结构化状态和语义摘要。只有在需要深入排查时，才回看原始记录。</p>
 <p>这和人的感知系统有相似之处。人在走路或开车时，可以一边思考别的事情，一边依靠视觉和低层反应机制避开障碍。高层认知不需要逐帧处理所有视觉输入，只有重要变化才会进入注意力中心。智能体系统也应如此：低层负责持续感知和快速筛选，高层只处理真正影响目标的变化。</p>
 <p>不过，这个类比只能作为启发，不能替代工程设计。人类低层反应系统有大量长期形成的先验，而智能体系统必须显式规定什么算异常、什么算进展、什么情况需要交给规划器处理。越靠近底层，越应使用清晰规则、状态机、格式校验和阈值判断；越靠近高层，才适合开放式推理。</p>
 <h2 id="长任务需要决策节点而不是盲等">长任务需要决策节点，而不是盲等</h2>
-<p>对于长时间运行的任务，除了等待时长，更关键的是何时需要重新决策。任务运行时的情况大致可以分为四类。</p>
+<p>长任务真正难处理的不是“等多久”，而是“什么时候需要重新决策”。运行中的变化大致可以分成四类。</p>
 <p>第一种是正常推进。任务有输出、有进展，也没有异常。这时规划器不应频繁介入，只需要观察器维护心跳和阶段摘要。</p>
 <p>第二种是局部更新。工具产生了新的日志、中间图像或部分结果，但这些信息不足以改变计划。此时系统只更新任务状态，不进入完整推理。</p>
 <p>第三种是决策点。任务到达了一个分支，例如出现多种结果、需要额外参数、发现新的约束、进入检查点，或者当前证据不足以继续自动推进。此时观察器应把相关上下文压缩后交给规划器，由规划器决定下一步。</p>
 <p>第四种是异常点。任务卡死、超时、反复失败、资源消耗异常、结果明显偏离目标，或者出现安全风险。这时系统需要中断、重试、回滚、切换工具、请求用户确认，或者终止任务。</p>
-<p>管理长任务时，需要从连续的执行过程中识别出少数值得决策的节点。如果不做这种划分，规划器要么盲目等待，要么被低价值信号反复打断。</p>
+<p>因此，管理长任务的关键，是从连续执行里找出少数真正值得决策的节点。没有这层筛选，planner 要么一直盲等，要么被低价值信号反复打断。</p>
 <p>观察频率也不应固定不变。任务刚启动时变化较快，可以观察得更密；进入稳定运行期后，观察频率可以降低；接近超时、出现异常征兆或临近关键节点时，再提高观察频率。这种基于风险和变化率的观察方式，比简单定时轮询更接近真实系统的需求。</p>
 <h2 id="持续服务的日志要按用户动作切片">持续服务的日志要按用户动作切片</h2>
 <p>另一类重要场景是启动一个持续运行的服务。服务不断产生日志，其中一部分对应用户的操作。规划器需要在用户行动后理解相关日志，形成判断，并规划后续动作。</p>
 <p>这里的核心不是“让模型读日志”，而是在用户动作、服务状态、日志片段和后续规划之间建立因果关联。如果缺少关联，规划器会看到很多日志，却无法判断哪些是本次用户操作导致的，哪些只是背景噪声。</p>
-<p>因此，每次用户操作都应先形成一个动作记录。记录应包含动作编号、时间、用户意图、目标服务、预期影响范围，以及可能关联的请求编号、会话编号或跟踪编号。随后，系统围绕这个动作创建一个观察回合。</p>
+<p>因此，每次用户操作最好先留下一个动作记录。它至少要说明用户做了什么、针对哪个服务、预期影响什么，并尽量保留请求编号、会话编号或 trace ID。随后，系统再围绕这个动作建立一个有边界的观察回合。</p>
 <p>观察回合有明确边界。它不是无限期盯住整个日志流，而是在用户动作发生后，截取相关时间窗和相关组件的日志。例如，用户点击“部署”后，系统重点观察部署服务、调度器、依赖拉取、健康检查，而不是读取所有后台心跳。观察回合可以在出现成功或失败信号时结束，也可以在超过等待上限时结束，还可以在连续一段时间没有相关新信息出现后结束。</p>
 <p>这样，持续日志就被切成一个个与用户动作相关的小片段。规划器面对的不再是无边界的日志海洋，而是一个有起点、有证据、有当前状态的局部回合。</p>
-<p>观察器在这里承担四项职责：选择相关日志，判断观察何时结束，压缩证据，决定是否升级给规划器。它输出的不是长篇日志，而是结论：这次用户动作是否生效，当前状态是成功、失败、进行中还是不确定，异常最可能发生在哪个阶段，还缺少什么证据，下一步有哪些可选行动。</p>
-<p>不过，仅凭日志还不能确定实际情况。日志可能不完整，可能延迟，可能顺序错乱，也可能显示成功但用户实际没有看到效果。因此，稳健的系统不应只依赖日志，还应结合指标、状态查询、界面观察、数据库读回或接口返回结果交叉验证。更可靠的链条是：用户动作触发观察回合，系统收集日志和其他证据，形成状态假设，再验证关键假设，最后让规划器规划下一步。</p>
+<p>这里的 observer 主要做四件事：挑出相关日志，判断什么时候结束观察，压缩证据，再决定是否升级给 planner。它输出的不是一大段日志，而是一个有限结论：这次操作是否生效，当前是成功、失败、进行中还是不确定，异常可能在哪个阶段，以及还缺什么证据。</p>
+<p>日志本身也不能被当成事实全集。它可能缺失、延迟、乱序，甚至显示“成功”而实际状态并没有变化。因此，关键判断还需要用指标、状态查询、界面观察、数据库读回或接口结果交叉验证。更可靠的顺序是：先围绕用户动作收集证据，再形成状态判断，验证其中关键部分，最后才让 planner 决定下一步。</p>
 <p>除动作触发的观察外，还需要背景健康监视。有些问题不是某次用户操作直接导致的，而是系统逐渐积累出来的，例如队列堆积、资源耗尽、会话失效、后台任务失败。动作观察器解释“刚刚发生了什么”，背景观察器提示“接下来可能出现什么问题”。两者结合，智能体才不会只对显性操作做反应，而能保持对运行环境的持续理解。</p>
 <h2 id="回应用户不只是输出文本">回应用户不只是输出文本</h2>
 <p>智能体的回应也不能只被理解为“回复一句话”。文本只是行动的一种。系统可能需要向用户解释、播放语音、生成报告、调用外部服务、创建定时任务、下单、控制设备或指挥机器人。</p>
-<p>更统一的设计，是把所有回应建模为行动。行动可以是消息、语音、接口调用、一次性任务、定时任务、持续行为或机器人动作。它们的共同点是：系统根据当前目标和环境状态，选择某种方式改变用户理解、软件状态或物理世界。</p>
+<p>更统一的做法，是把这些输出都看成 action。消息和语音改变用户获得的信息；接口调用和自动化任务改变软件状态；机器人动作则改变物理环境。形式不同，但它们都在根据当前目标对外部世界产生作用。</p>
 <p>信息型回应改变的是用户的理解，例如原始文本、格式化文本、表格、报告、进度说明。语音回应可以看成信息型回应的一种呈现方式：模型决定表达的内容，系统再把它转换成声音。数字操作则会改变外部系统状态，例如发送邮件、修改文档、调用服务、生成资料或执行脚本。物理行为更进一步，会改变现实环境，例如移动机器人、拿取物品、控制设备。</p>
 <p>因此，规划器最好输出一组行动计划，而不只是一段自由文本。一个计划中可以同时包含多种行动：先生成文献总结，再把总结发给用户，同时创建每天晚上的阅读提醒。它们属于同一个目标，却由不同执行器完成。</p>
 <p>这里还必须有权限和风险控制。总结文献通常可以自动执行；创建提醒可能只需简单确认；购物下单、支付、删除数据、控制设备等操作，则应要求明确授权。智能体越能改变世界，越需要清晰的审批策略。否则，系统虽然看似强大，却会变得不可信。</p>
-<p>更稳妥的分工是：规划器决定要做什么，系统策略层决定是否允许执行，执行层负责把行动转化为具体操作，观察层再把执行结果反馈给规划器。</p>
+<p>一个更清楚的分工是：planner 提出要做什么，策略层决定这次是否允许，执行层把 action 落到具体操作，观察层再把结果反馈回来。</p>
 <h2 id="运行时更接近事件驱动的并发系统">运行时更接近事件驱动的并发系统</h2>
-<p>这套运行时从实现上更接近事件驱动的并发系统，而不是一条同步调用链。用户、工具、观察器、调度器和执行器都可以产生事件，也都可以消费事件。大语言模型不是唯一主程序，而是处在上层的规划器：它在关键事件到来时解释状态、调整目标、选择下一步行动。</p>
+<p>从实现上看，这套 runtime 更接近一个事件驱动的并发系统，而不是一条从头走到尾的同步调用链。用户、工具、observer、scheduler 和 executor 都可能产生或消费事件。大语言模型位于较高的决策层，只在关键变化到来时解释状态、调整目标并选择下一步。</p>
 <p>在这里，事件驱动并发系统只是对运行时结构的一种概括。它说明了为什么工具、观察器、调度器和执行器都不应被压进一条同步调用链。至于在这样的系统里，谁发起、谁等待、谁让出控制权，则需要从通信过程和协程的角度进一步展开。</p>
-<p>换句话说，事件驱动运行时回答的是系统应该如何组成；通信过程和协程模型回答的是系统如何运行。前者指明架构应如何调整，后者提供理解执行过程的模型。</p>
+<p>换句话说，事件驱动这一篇主要回答“系统由哪些部分协作”；下一篇关于通信过程和协程，则继续回答“控制权怎样在这些部分之间移动”。</p>
 <h2 id="统一的运行时结构">统一的运行时结构</h2>
-<p>把前面的内容合在一起，可以得到一个较完整的大语言模型智能体运行时。</p>
+<p>把前面的关系放在一起，可以得到一个比较清楚的 runtime 结构。</p>
 <p>底层是环境和工具。它们包括外部服务、日志系统、文档系统、网页、机器人、数据库和各种自动化接口。它们不断产生事件，也接收行动请求。</p>
 <p>中间层是执行器和观察器。执行器负责把行动计划转化为具体操作。观察器负责从日志、工具输出、状态查询和环境反馈中提取有意义的变化。调度器负责一次性或周期性任务。它们共同维持系统的运行状态。</p>
 <p>上层是规划器。它不直接盯住所有原始输出，也不承担低层监控。它接收经过压缩的观察结果，维护对目标和环境的判断，决定下一步行动。它只在目标受到影响、计划出现分支、异常需要处理或信息价值明显升高时介入。</p>
 <p>用户既是输入来源，也是被行动影响的对象。智能体可以向用户解释当前状态，也可以请求确认、报告进度、展示结果、播放语音，或根据授权执行外部操作。用户不是系统之外的旁观者，而是整个交互环境的一部分。</p>
-<p>这种结构可以概括为一个双环系统。内环是快速感知与执行环，负责持续观察、错误检测、任务推进和低风险反应。外环是慢速认知与规划环，负责目标解释、策略调整、复杂判断和高风险决策。内环让系统保持稳定，外环让系统保持方向。</p>
+<p>也可以把它看成两个不同速度的环。内环持续感知、检测错误、推进任务，并处理低风险反应；外环负责目标解释、策略调整、复杂判断和高风险决策。内环维持运行，外环决定方向。</p>
+<p>到这里，本文主要回答两个问题：事件怎样进入 runtime，以及什么变化值得重新调用 planner。它讨论的是 communication 和 wakeup，不负责给活动划分生命周期。短调用、scoped 并发，以及可以独立于 caller 存在的活动，需要用另一组概念区分；这部分我在 <a href="/posts/2026-09-18_llm_agent_calling_convention/">《Structured LLM Design：按生命周期组织 Agent Runtime》</a> 中单独展开。</p>
 <h2 id="结论">结论</h2>
 <p>大语言模型智能体的关键，不只是让模型更会调用工具，而是重新设计工具、观察、行动和规划之间的关系。</p>
-<p>工具不应只是同步函数，而应是可观察的任务。日志不应直接塞进上下文，而应围绕用户动作形成观察回合和证据包。回应不应只被看作文本，而应被统一建模为行动。大语言模型不应承担所有控制权，而应作为规划器，运行在一个由观察器、执行器、调度器和外部环境共同构成的事件系统中。</p>
-<p>这种架构的意义在于，它承认现实交互的连续性和不确定性。智能体面对的不是一个一次输入、一次输出的静态问题，而是一个不断变化的环境。它必须观察、判断、行动，再观察。只有当系统能够把连续事件整理成可供决策的状态信息，把多种输出统一成可控制的行动，大语言模型智能体才真正从聊天程序走向运行时系统。</p>
+<p>短工具调用仍然可以保持普通的 call/return。持续执行的活动则需要被观察和汇总，只在关键状态变化时进入决策系统。日志不应直接塞进上下文，而应围绕用户动作形成观察回合和证据包。回应也不只是一段文本，它还可以是受策略约束的 action。大语言模型不需要承担所有控制权，更适合把精力放在解释 observation 和选择下一步。</p>
+<p>这套架构承认一个简单事实：真实环境会持续变化，信息也不会一次给全。Agent 因此需要不断观察、判断、行动，再继续观察。Runtime 的价值，就是把连续事件整理成有限的状态变化，再把 planner 的决定落成可控制的 action。</p>
 <p>事件驱动运行时回答的是智能体系统应该如何组织。进一步的问题是：在这样的系统里，究竟是谁在调用谁？这个问题需要从通信过程和协程的角度重新理解。</p>
 </div><nav class="series-navigation" aria-label="系列文章"><a href="/posts/2026-06-21_who_calls_whom_communication_coroutines_llm_agents/" rel="next"><span>下一篇</span>谁在调用谁：用通信过程和协程理解大语言模型智能体</a></nav></article></main><footer class="footer" lang="zh-CN"><span>记录是生活的微小仪式感</span><span>Copyright 2026 Zhang Hua Feng/張華楓&#39;s Notes</span></footer></div></body></html>

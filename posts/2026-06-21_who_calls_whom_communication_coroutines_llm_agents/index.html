@@ -1,52 +1,87 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>谁在调用谁：用通信过程和协程理解大语言模型智能体 - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="与其把大语言模型智能体理解为模型调用工具，不如把它看作多个通信过程和协程共同推进的系统；这种视角能更清楚地解释事件来源、控制权转移、暂停与恢复。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/2026-06-21_who_calls_whom_communication_coroutines_llm_agents/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="theme-color" content="#f26a4f"><meta name="robots" content="index,follow"><link rel="alternate" hreflang="zh-CN" href="https://blog.formalscience.com/posts/2026-06-21_who_calls_whom_communication_coroutines_llm_agents/"><link rel="alternate" hreflang="en" href="https://blog.formalscience.com/en/posts/2026-06-21_who_calls_whom_communication_coroutines_llm_agents/"><meta property="og:title" content="谁在调用谁：用通信过程和协程理解大语言模型智能体 - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="与其把大语言模型智能体理解为模型调用工具，不如把它看作多个通信过程和协程共同推进的系统；这种视角能更清楚地解释事件来源、控制权转移、暂停与恢复。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/2026-06-21_who_calls_whom_communication_coroutines_llm_agents/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/og-default.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="谁在调用谁：用通信过程和协程理解大语言模型智能体 - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="与其把大语言模型智能体理解为模型调用工具，不如把它看作多个通信过程和协程共同推进的系统；这种视角能更清楚地解释事件来源、控制权转移、暂停与恢复。"><meta name="twitter:image" content="https://blog.formalscience.com/og-default.svg"><meta property="article:published_time" content="2026-06-21T00:00:00.000Z"><meta property="article:section" content="技术"><meta property="article:tag" content="AI Agents"><meta property="article:tag" content="Coroutines"><meta property="article:tag" content="Communication"><link rel="stylesheet" href="/_astro/BaseLayout.Cd02r_4h.css"></head><body><a class="skip-link" href="#content" lang="zh-CN">跳到内容</a><div class="site-shell"><header class="site-header"><a class="brand" href="/">Zhang Hua Feng/張華楓&#39;s Notes</a><div class="header-actions"><nav class="nav-links" aria-label="主导航" lang="zh-CN"><a href="/">首页</a><a href="/posts">文章</a><a href="/categories">分类</a><a href="/tags">标签</a><a href="/about">关于</a></nav><nav class="language-switch" aria-label="切换语言"><a href="/posts/2026-06-21_who_calls_whom_communication_coroutines_llm_agents/" lang="zh-CN" aria-current="page">中文</a><a href="/en/posts/2026-06-21_who_calls_whom_communication_coroutines_llm_agents/" lang="en">English</a></nav></div></header><main id="content"><article class="post-shell"><div class="post-meta-row"><p class="meta"><time datetime="2026-06-21T00:00:00.000Z">2026年6月21日</time> · 约 10 分钟</p><span class="language-badge">中文</span><a class="category-label" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></div><h1 class="post-title">谁在调用谁：用通信过程和协程理解大语言模型智能体</h1><p class="meta">大语言模型智能体的运行时架构 · 2 / 2 · 控制流篇</p><p class="meta">与其把大语言模型智能体理解为模型调用工具，不如把它看作多个通信过程和协程共同推进的系统；这种视角能更清楚地解释事件来源、控制权转移、暂停与恢复。</p><nav class="translation-links" aria-label="其他语言"><span>其他语言</span><a href="/en/posts/2026-06-21_who_calls_whom_communication_coroutines_llm_agents/" lang="en">English</a></nav><div class="tag-list"><a class="tag" href="/tags/AI%20Agents/">AI Agents</a><a class="tag" href="/tags/Coroutines/">Coroutines</a><a class="tag" href="/tags/Communication/">Communication</a></div><details class="post-toc"><summary>本文目录</summary><nav aria-label="本文目录"><ol><li><a href="#模型是不是主程序">模型是不是主程序</a></li><li><a href="#通信过程视角">通信过程视角</a></li><li><a href="#日志流为什么适合通信模型">日志流为什么适合通信模型</a></li><li><a href="#协程视角下的控制权转移">协程视角下的控制权转移</a></li><li><a href="#没有固定的发起方">没有固定的发起方</a></li><li><a href="#工具调用应变成任务提交">工具调用应变成任务提交</a></li><li><a href="#在状态不完全可见的环境中进行控制">在状态不完全可见的环境中进行控制</a></li><li><a href="#结论">结论</a></li><li><a href="#footnote-label">脚注</a></li></ol></nav></details><div class="post-content"><p>在事件驱动的智能体系统中，我们需要换一种方式理解“谁调用谁”。传统函数调用关心调用者和被调用者，而智能体运行时（agent runtime）更关心事件从哪里产生、由谁消费、控制权何时让出，又在什么条件下恢复。</p>
-<p>许多大语言模型智能体框架，默认采用一种“调用—返回”的思路：用户提出请求，模型生成工具调用，工具执行完毕后返回结果，模型再继续推理。这个模型看起来清晰，也容易实现，但它只适合那些短暂、边界明确、一次性完成的任务。</p>
-<p>当工具长时间运行、日志持续产生、用户中途操作、后台任务自行触发时，这种线性调用模型很快就不够用了。此时，与其追问模型是不是主程序，不如换一个问题：系统里有哪些过程在产生事件，哪些过程在消费事件，哪些状态由谁持有，下一步行动又由谁决定？</p>
-<p>从这个角度看，通信顺序进程（Communicating Sequential Processes，CSP）<sup><a href="#user-content-fn-1" id="user-content-fnref-1" data-footnote-ref aria-describedby="footnote-label">1</a></sup>和协程（coroutine）<sup><a href="#user-content-fn-2" id="user-content-fnref-2" data-footnote-ref aria-describedby="footnote-label">2</a></sup>都能提供更自然的建模方式。前者强调独立过程之间通过通道传递消息，后者强调任务可以暂停、恢复，并把控制权交回运行时（runtime）。二者并不完全相同，但都能帮助我们摆脱同步函数调用的限制。</p>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>谁在调用谁：用通信过程和协程理解大语言模型智能体 - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="与其把大语言模型智能体理解为模型调用工具，不如把它看作多个通信过程和协程共同推进的系统；这种视角能更清楚地解释事件来源、控制权转移、暂停与恢复。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/2026-06-21_who_calls_whom_communication_coroutines_llm_agents/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="theme-color" content="#f26a4f"><meta name="robots" content="index,follow"><link rel="alternate" hreflang="zh-CN" href="https://blog.formalscience.com/posts/2026-06-21_who_calls_whom_communication_coroutines_llm_agents/"><link rel="alternate" hreflang="en" href="https://blog.formalscience.com/en/posts/2026-06-21_who_calls_whom_communication_coroutines_llm_agents/"><meta property="og:title" content="谁在调用谁：用通信过程和协程理解大语言模型智能体 - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="与其把大语言模型智能体理解为模型调用工具，不如把它看作多个通信过程和协程共同推进的系统；这种视角能更清楚地解释事件来源、控制权转移、暂停与恢复。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/2026-06-21_who_calls_whom_communication_coroutines_llm_agents/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/og-default.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="谁在调用谁：用通信过程和协程理解大语言模型智能体 - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="与其把大语言模型智能体理解为模型调用工具，不如把它看作多个通信过程和协程共同推进的系统；这种视角能更清楚地解释事件来源、控制权转移、暂停与恢复。"><meta name="twitter:image" content="https://blog.formalscience.com/og-default.svg"><meta property="article:published_time" content="2026-06-21T00:00:00.000Z"><meta property="article:section" content="技术"><meta property="article:tag" content="AI Agents"><meta property="article:tag" content="Coroutines"><meta property="article:tag" content="Communication"><link rel="stylesheet" href="/_astro/BaseLayout.Cd02r_4h.css"></head><body><a class="skip-link" href="#content" lang="zh-CN">跳到内容</a><div class="site-shell"><header class="site-header"><a class="brand" href="/">Zhang Hua Feng/張華楓&#39;s Notes</a><div class="header-actions"><nav class="nav-links" aria-label="主导航" lang="zh-CN"><a href="/">首页</a><a href="/posts">文章</a><a href="/categories">分类</a><a href="/tags">标签</a><a href="/about">关于</a></nav><nav class="language-switch" aria-label="切换语言"><a href="/posts/2026-06-21_who_calls_whom_communication_coroutines_llm_agents/" lang="zh-CN" aria-current="page">中文</a><a href="/en/posts/2026-06-21_who_calls_whom_communication_coroutines_llm_agents/" lang="en">English</a></nav></div></header><main id="content"><article class="post-shell"><div class="post-meta-row"><p class="meta"><time datetime="2026-06-21T00:00:00.000Z">2026年6月21日</time> · 约 11 分钟</p><span class="language-badge">中文</span><a class="category-label" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></div><h1 class="post-title">谁在调用谁：用通信过程和协程理解大语言模型智能体</h1><p class="meta">大语言模型智能体的运行时架构 · 2 / 2 · 控制流篇</p><p class="meta">与其把大语言模型智能体理解为模型调用工具，不如把它看作多个通信过程和协程共同推进的系统；这种视角能更清楚地解释事件来源、控制权转移、暂停与恢复。</p><nav class="translation-links" aria-label="其他语言"><span>其他语言</span><a href="/en/posts/2026-06-21_who_calls_whom_communication_coroutines_llm_agents/" lang="en">English</a></nav><div class="tag-list"><a class="tag" href="/tags/AI%20Agents/">AI Agents</a><a class="tag" href="/tags/Coroutines/">Coroutines</a><a class="tag" href="/tags/Communication/">Communication</a></div><details class="post-toc"><summary>本文目录</summary><nav aria-label="本文目录"><ol><li><a href="#模型是不是主程序">模型是不是主程序</a></li><li><a href="#通信过程视角">通信过程视角</a></li><li><a href="#日志流为什么适合通信模型">日志流为什么适合通信模型</a></li><li><a href="#从-io-readiness-到语义事件">从 I/O readiness 到语义事件</a></li><li><a href="#协程视角下的控制权转移">协程视角下的控制权转移</a></li><li><a href="#没有固定的发起方">没有固定的发起方</a></li><li><a href="#长时间运行的工具更适合变成任务提交">长时间运行的工具更适合变成任务提交</a></li><li><a href="#在状态不完全可见的环境中进行控制">在状态不完全可见的环境中进行控制</a></li><li><a href="#结论">结论</a></li><li><a href="#footnote-label">脚注</a></li></ol></nav></details><div class="post-content"><p>在事件驱动的智能体系统中，我们需要换一种方式理解“谁调用谁”。传统函数调用关心调用者和被调用者，而智能体运行时（agent runtime）更关心事件从哪里产生、由谁消费、控制权何时让出，又在什么条件下恢复。</p>
+<p>许多大语言模型智能体框架，默认采用一种“调用—返回”的思路：用户提出请求，模型生成工具调用，工具执行完毕后返回结果，模型再继续推理。这个模型清楚，也容易实现。对于短暂、边界明确的一次性任务，它本来就很合适。</p>
+<p>问题出现在控制流不再是一条线的时候。工具可能长时间运行，日志会持续产生，用户会中途操作，后台任务也可能自己触发事件。此时，与其追问“模型是不是主程序”，不如问得更具体：谁在产生事件，谁在消费事件，状态由谁持有，下一步又由谁决定？</p>
+<p>从这个角度看，通信顺序进程（Communicating Sequential Processes，CSP）<sup><a href="#user-content-fn-1" id="user-content-fnref-1" data-footnote-ref aria-describedby="footnote-label">1</a></sup>和协程（coroutine）<sup><a href="#user-content-fn-2" id="user-content-fnref-2" data-footnote-ref aria-describedby="footnote-label">2</a></sup>提供了两种有用的视角。CSP 强调独立过程通过 channel 通信；coroutine 强调一个执行单元可以暂停，把控制权交回 runtime，等条件满足后再继续。它们并不是同一种模型，但都能解释单一 call stack 难以表达的控制流。</p>
 <h2 id="模型是不是主程序">模型是不是主程序</h2>
 <p>在传统程序里，主程序负责控制执行顺序。它调用函数，等待返回值，然后继续下一步。如果把这种理解套到智能体上，就会得到一种直觉：大语言模型是主程序，工具只是被它调用的函数。</p>
-<p>这个直觉只在一部分场景里成立。模型确实会提出工具请求，也会根据工具结果继续规划。但在事件驱动系统中，许多事情并不是由模型主动发起的。用户可以随时输入新指令，工具可以在完成时产生结果事件，观察器（observer）可以在发现异常时唤醒规划器（planner），调度器可以在时间条件满足时触发任务。模型不是唯一的起点，也不应被迫扮演唯一的控制中心。</p>
-<p>因此，模型更适合被理解为规划器，而不是主程序。它负责解释事件对目标的意义，决定是否继续等待、请求用户确认、提交工具任务、调整计划或终止流程。它是事件系统中的一个高层过程，并不位于整套系统唯一的调用栈顶端。</p>
+<p>这个直觉在短调用里没有问题。模型确实会提出工具请求，也会根据结果继续规划。但在事件驱动系统中，很多变化并不是模型主动发起的：用户可以随时补充指令，工具会在完成时产生结果，observer 会报告异常，scheduler 也可能在时间条件满足时触发任务。模型只是事件来源之一，不需要承担整个系统唯一的控制中心。</p>
+<p>因此，在这类系统里，把模型看成 planner 往往更准确。它负责解释变化对目标意味着什么，再决定继续等待、请求确认、启动工具、调整计划还是终止流程。它处在高层决策位置，但并不站在整套系统唯一的调用栈顶端。</p>
 <h2 id="通信过程视角">通信过程视角</h2>
-<p>通信顺序进程的核心不是函数调用，而是独立过程之间的消息通信。每个组件都是一个长期存在的过程，它们不共享同一个调用栈，也不要求一个组件直接等待另一个组件返回。它们通过通道传递事件，并根据收到的事件继续行动。</p>
-<p>如果用这种方式建模一个大语言模型智能体系统，可以把系统拆成几个主要过程：用户界面过程、规划器过程、工具执行过程、外部环境或服务过程、日志观察器过程、调度过程和执行过程。</p>
-<p>大语言模型通常承担规划器的职责，负责解释事件、更新判断并规划下一步。工具执行过程负责运行工具。外部服务过程持续产生状态变化和日志。日志观察器过程负责读取日志，筛选与当前任务相关的信息。调度过程负责定时触发任务。执行过程负责把规划转化成具体操作，例如调用接口、发送消息、启动自动化流程或控制设备。</p>
-<p>这些过程之间通过通道交换事件。用户操作进入用户事件通道，规划器发出的工具请求进入工具请求通道，工具结果进入工具结果通道，服务日志进入日志流通道，观察器的判断进入观察通道，最终行动进入行动通道。</p>
-<p>在这种模型中，一个典型流程不再是“用户调用模型，模型调用工具，工具返回结果”。更准确的描述是：用户界面产生一个操作事件，规划器收到事件后生成工具请求，工具执行过程接收请求并开始工作，工具在执行过程中或完成后发出结果事件，规划器再根据新的事件决定下一步。</p>
-<p>这里没有传统意义上的函数返回。在这一模型中，各组件通过事件通信。工具完成是一种事件，日志更新是一种事件，用户追加输入是一种事件，定时任务触发也是一种事件。规划器不是压在所有组件之上的主函数，而是众多过程中的一个，只是它承担了更高层的解释和规划职责。</p>
-<p>这种建模方式更接近真实的智能体系统。很多工具会运行很久，很多服务会持续输出日志，用户也可能随时发起新的操作，机器人行为更是天然需要持续反馈。这些场景都不适合用单一调用栈来描述，却很适合用多个过程和通道来描述。</p>
+<p>CSP 的重点不在“谁调用谁”，而在独立过程怎样通过消息协作。用这种视角看 Agent runtime 时，可以把需要独立推进的组件建模为 process。它们不共享同一个调用栈，也不要求一个 process 必须卡住等待另一个 process 返回；状态变化通过 channel 传递。</p>
+<p>这里先用小写 <code>process</code> 表示 CSP 意义上的通信过程。它描述的是 control flow 和 communication，不等同于 <a href="/posts/2026-09-18_llm_agent_calling_convention/">《Structured LLM Design》</a> 中按生命周期定义的大写 <code>Process</code>。后者还有一个更严格的条件：它可以超出 creator scope 继续存在。</p>
+<p>例如，可以把用户界面、planner 的控制过程、工具执行器、外部服务、日志 observer 和 scheduler 看成彼此独立推进的过程。界面接收用户操作，工具执行器运行任务，observer 读取并筛选日志，scheduler 处理时间触发；planner 则在需要时调用大语言模型，解释 observation 并决定下一步。</p>
+<p>这些过程通过 channel 交换事件。用户操作、工具请求、工具结果、日志、观察结果和最终 action 都可以有自己的消息路径。关键不在于给每一种消息都造一个新对象，而在于发送方和接收方不必共享同一条调用栈。</p>
+<p>于是，一个典型流程不必再写成“用户调用模型，模型调用工具，工具返回结果”。用户界面先产生操作事件；planner 收到相关 observation 后发出工具请求；工具执行器开始工作，并在过程中或完成时产生新事件；runtime 再决定这些事件是否值得交给 planner。</p>
+<p>在这种长生命周期协作里，不必把所有关系都压成同步的函数返回。短操作仍然可以保持 call/return；持续活动则更适合通过事件通信。工具完成是一种事件，日志更新是一种事件，用户追加输入是一种事件，定时任务触发也是一种事件。规划器不是压在所有组件之上的主函数，而是众多过程中的一个，只是它承担了更高层的解释和规划职责。</p>
+<p>这种模型尤其适合持续运行和多事件源的场景：长工具、服务日志、用户中途输入和机器人反馈都可以独立推进。单一调用栈很难同时表达这些关系，而多个 process 加 channel 会自然得多。</p>
 <h2 id="日志流为什么适合通信模型">日志流为什么适合通信模型</h2>
 <p>日志流尤其能说明这种模型的价值。</p>
 <p>在传统思路里，规划器似乎需要主动调用日志系统，然后等待日志系统返回一段内容。但实际服务并不等模型调用才产生日志。服务在运行时，本来就在持续生成日志。日志观察器应持续读取日志流，并在发现与当前动作相关的内容时，向规划器发送观察事件。</p>
 <p>这样一来，规划器不需要主动盯住日志系统。它只需要等待重要观察结果。日志观察器负责判断哪些日志与当前任务有关，哪些只是背景噪声；哪些只是普通进展，哪些意味着错误、超时或需要重新规划。</p>
-<p>这正是通信模型的优势。每个过程独立运行，处理各自的输入，只有在必要时才把信息发给其他过程。规划器不必读取所有原始信号，也不必频繁轮询每个组件。它只处理对决策有意义的事件。</p>
-<p>在这种结构中，观察器本质上可以看作一个独立过程。它不是规划器的缩小版，而是负责监测、筛选和上报的过程。它持续消费日志流或工具输出，再把压缩后的状态变化发送给规划器。</p>
+<p>通信模型的好处就在这里：各个过程先处理自己的输入，只把有用的状态变化送给其他过程。Planner 不需要盯住所有原始信号，也不需要主动轮询每个组件。</p>
+<p>在这种结构中，observer 也可以单独作为一个过程运行。它不是 planner 的缩小版，而是负责监测、筛选和上报。它持续消费日志流或工具输出，再把压缩后的状态变化发送给 planner。</p>
+<h2 id="从-io-readiness-到语义事件">从 I/O readiness 到语义事件</h2>
+<p>这里很容易把 Agent 的“事件驱动”直接等同于 <code>epoll</code>、<code>kqueue</code> 或 Go runtime 的 netpoller。这个类比有用，但只能用到 I/O readiness 这一层。</p>
+<p>操作系统只回答“这个文件描述符现在能不能读或写”。它不知道读到的字节意味着 CI 已经完成、用户改了约束，还是工具正在请求确认。协议层先把字节解析成消息，runtime 再把消息解释成事件，观察层最后才把必要的事件压缩成有决策意义的 observation。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>epoll / kqueue readiness</span></span>
+<span class="line"><span>          ↓</span></span>
+<span class="line"><span>transport bytes</span></span>
+<span class="line"><span>          ↓</span></span>
+<span class="line"><span>protocol message</span></span>
+<span class="line"><span>          ↓</span></span>
+<span class="line"><span>runtime event</span></span>
+<span class="line"><span>          ↓</span></span>
+<span class="line"><span>semantic observation</span></span></code></pre>
+<p>所以，Go 的 <code>select</code> 很适合作为控制流类比：runtime 可以同时等待多个来源，哪个先 ready 就先处理哪个。但 ready 只表示“有东西到了”，不表示“这件事值得重新调用模型”。后一个判断属于 observation 和 planner policy。</p>
 <h2 id="协程视角下的控制权转移">协程视角下的控制权转移</h2>
 <p>协程提供了另一种实现视角。与 CSP 相比，协程更接近工程中的执行方式：一个任务可以在等待某个结果时暂停，把控制权交还给运行时；等结果到来后，再从暂停处继续执行。</p>
-<p>在协程模型中，规划器可以是一个长期运行的任务。它不断等待下一个事件，收到事件后进行推理，生成行动计划，然后把计划分发给对应执行器。如果它需要等待工具结果，它不会阻塞整个系统，而只是暂停自己。运行时可以继续调度日志观察器、工具执行器、用户界面处理器或调度器。</p>
-<p>工具执行器也可以是一个长期运行的协程。它等待工具请求，收到请求后启动执行，过程中可以不断发出进度事件，完成后发出结果事件。日志观察器则可以持续读取日志流，发现相关内容后发送观察结果。调度器等待时间条件满足，然后发出定时事件。</p>
+<p>如果 runtime 用 coroutine 来组织控制流，可以让负责 planner 的控制协程长期等待事件。收到值得处理的 observation 后，它再调用大语言模型、得到 action，并把 action 分发给对应执行器。等待工具结果时，暂停的是这个控制协程，而不是整个系统；runtime 仍然可以继续调度 observer、工具执行器、界面处理器和 scheduler。</p>
+<p>工具执行器也可以用 coroutine 表达：等待请求，开始执行，过程中发送 progress，结束时发送结果。Observer 持续消费日志流，scheduler 等待时间条件。它们在等待时都可以把控制权交回 runtime。</p>
 <p>从代码写法上看，协程有时像同步流程，因为可以写成“等待某个事件后继续”。但从系统逻辑上看，它仍然是事件驱动的。等待并不意味着整个系统停住，而只是当前协程暂停。其他协程仍然可以继续处理用户输入、工具进度、日志异常或定时触发。</p>
+<p>协程里的暂停与恢复描述的是 runtime 的控制流，不必等同于“把某个正在执行的 LLM frame 挂起十分钟，再从同一个机器栈帧继续”。对于会逃逸当前调用范围的活动，更自然的结构往往是：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Invocation A</span></span>
+<span class="line"><span>    │</span></span>
+<span class="line"><span>    └── start long activity</span></span>
+<span class="line"><span>             │</span></span>
+<span class="line"><span>             └── handle returned</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Invocation A ends</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>activity continues</span></span>
+<span class="line"><span>      │</span></span>
+<span class="line"><span>      └── Completed event</span></span>
+<span class="line"><span>               │</span></span>
+<span class="line"><span>               ▼</span></span>
+<span class="line"><span>            runtime</span></span>
+<span class="line"><span>               │</span></span>
+<span class="line"><span>          new observation</span></span>
+<span class="line"><span>               │</span></span>
+<span class="line"><span>               ▼</span></span>
+<span class="line"><span>          Invocation B</span></span></code></pre>
+<p>这里不是 Invocation A 神秘地复活，而是外部世界发生了新的变化，runtime 因此启动一次新的计算。这种区分对长时间运行的 CI、部署和远程任务尤其重要。</p>
 <h2 id="没有固定的发起方">没有固定的发起方</h2>
 <p>传统结构可以概括为：主程序调用大语言模型，大语言模型调用工具，工具返回，大语言模型继续。这个结构把模型放在中心，也把所有交互压成一条线。</p>
-<p>在事件驱动系统中，发起方会不断变化。用户输入时，用户界面是发起方；工具完成时，工具执行器是发起方；日志异常时，观察器是发起方；定时任务触发时，调度器是发起方；外部服务状态变化时，外部服务本身也是发起方。大语言模型并不总是事件的发起方。</p>
-<p>这种分工让模型能够专注于最有价值的工作：理解多个事件之间的关系及其含义。比如，这个错误是否影响目标，这个用户输入是否改变约束，这个工具结果是否足够进入下一步，这个异常是否需要请求人工确认。它负责判断和规划，无须承担所有事件发起方的角色。</p>
-<p>更合理的结构是：运行时维护一个事件循环，多个过程或协程同时存在。规划器处理高层决策，工具执行器处理外部工具，观察器处理日志和状态变化，调度器处理时间触发，用户界面处理用户输入，执行器处理实际操作。系统真正的中心不是某一次模型调用，而是事件流和状态更新机制。</p>
+<p>在事件驱动系统中，没有固定的唯一发起方。用户输入可以启动一轮处理，工具完成可以产生新事件，observer 可以报告异常，scheduler 可以按时间触发，外部服务也可能自己发生状态变化。大语言模型并不总在事件链的起点。</p>
+<p>这样，模型可以把算力留给真正需要判断的地方：错误是否影响目标，用户输入是否改变约束，工具结果是否足够进入下一步，异常是否需要人工确认。产生和搬运事件，不需要都由模型亲自负责。</p>
+<p>因此，更自然的中心是 runtime 的事件循环和状态更新，而不是某一次模型调用。Planner 处理高层决策，工具执行器处理外部工具，observer 处理日志和状态变化，scheduler 处理时间触发，界面处理用户输入。</p>
 <p>规划器也不需要持续轮询所有信息。它只需要等待几类关键事件：用户事件、观察事件、工具结果事件和调度事件。每当其中一类事件到来，规划器再判断它是否影响当前目标和行动计划。</p>
-<p>这可以类比 Go 语言中的 <code>select</code>：系统同时监听多个通道，哪个通道先出现事件，就处理哪个事件。对智能体运行时来说，这种模式比单线程调用链更自然，因为它天然支持并发、等待、中途取消、错误恢复和流式输出。</p>
-<h2 id="工具调用应变成任务提交">工具调用应变成任务提交</h2>
-<p>如果用通信过程实现智能体运行时，那么大语言模型的工具调用也需要重新理解。它不再是一次函数调用，而是提交一个任务，并等待后续事件返回。</p>
-<p>模型不是说“调用这个工具并立即得到结果”，而是说“启动这个任务”。工具执行器接收任务后，可以返回一个任务编号或任务引用。随后，任务可能持续产生进度、日志、中间结果、错误或完成事件。规划器可以选择继续等待，也可以在中途取消、重试、切换方案，或者根据观察器上报的信息重新规划。</p>
-<p>这样一来，许多原本棘手的问题就有了更直接的处理方式。长时间任务不再需要规划器盲等。流式输出可以作为事件逐步处理。中途取消可以通过取消事件完成。错误恢复可以由观察器识别后触发。多个工具也可以并发执行，而不是挤在一条同步调用链里。</p>
+<p>这仍然可以类比 Go 的 <code>select</code>：系统同时等多个 channel，哪个先有事件就先处理哪个。相比一条单线程调用链，这种写法更容易表达并发、等待、中途取消、错误恢复和流式输出。</p>
+<h2 id="长时间运行的工具更适合变成任务提交">长时间运行的工具更适合变成任务提交</h2>
+<p>短工具调用没有必要放弃 call/return。需要换一种控制流表达的，是那些会持续产生状态，或者需要独立推进的活动。与其让调用者一直停在“等待最终返回值”这一点上，不如先提交活动，再通过后续事件观察它。</p>
+<p>模型此时不是在表达“调用这个工具并立即得到结果”，而更像是在表达“启动这个活动”。工具执行器接收请求后，可以返回一个任务编号或任务引用。随后，任务可能持续产生进度、日志、中间结果、错误或完成事件。规划器可以选择继续等待，也可以在中途取消、重试、切换方案，或者根据观察器上报的信息重新规划。</p>
+<p>这样，原本挤在一个同步调用里的几件事就被拆开了：progress 可以逐步处理，取消可以单独发送，observer 可以在异常时触发恢复，多个工具也可以并发推进。Planner 不必为了等待一个活动而占住整条控制流。</p>
 <p>从控制流角度看，这个变化很关键。工具调用不再让控制权长时间停留在模型与工具的交互中，而是将其交还给运行时。运行时可以继续处理其他事件，也可以在任务完成、失败、超时或被取消时重新唤醒规划器。</p>
 <h2 id="在状态不完全可见的环境中进行控制">在状态不完全可见的环境中进行控制</h2>
-<p>再进一步，可以把整个智能体运行时看成一个在状态不完全可见的环境中持续进行控制的系统。环境并不会把完整状态直接告诉模型。模型只能通过用户输入、工具结果、日志观察、指标变化和传感器反馈来间接理解当前状态。在控制理论和机器人系统中，这类问题常被称为部分可观测环境。</p>
+<p>再往前一步，可以把 Agent runtime 看成一个在不完整信息下持续控制的系统。环境不会把完整状态直接交给模型；模型只能从用户输入、工具结果、日志、指标和传感器反馈里逐步推断。在控制理论和机器人系统中，这类问题通常用“部分可观测”来描述。</p>
 <p>规划器的任务不是简单地把输入变成输出，而是不断接收观察，更新对环境的判断，再选择下一步行动。行动执行后，环境发生变化，又产生新的观察。这个循环不断重复。</p>
 <p>这与机器人系统和自动驾驶系统有相似之处。机器人并不知道世界的完整状态，只能通过传感器和内部状态估计来行动。大语言模型智能体也一样。它面对的是一个不断变化、信息不完整、反馈可能延迟的环境。日志、工具结果和用户动作都只是观察信号，而不是完整真相。</p>
-<p>因此，智能体不是把输入变成输出的函数，而是一个依据不完整反馈持续进行控制的系统。它观察、更新判断、行动，再观察。模型负责规划，但运行时必须可靠地组织事件，才能为规划提供依据。</p>
+<p>因此，当 Agent 持续面对变化中的环境时，“输入进去，输出出来”只能描述单次计算，不能描述整个系统。完整循环是观察、更新判断、行动，再观察。模型负责高层规划，runtime 负责把反馈组织成可靠的事件和 observation。</p>
 <h2 id="结论">结论</h2>
 <p>对于包含大语言模型、工具、日志流、用户行为和自动化动作的智能体系统，用同步调用模型来理解会越来越困难。它把系统压成一条线，却无法自然表达长任务、流式输出、持续日志、并发操作和环境反馈。</p>
-<p>更合适的方式，是把智能体运行时建模为一个由多个过程共同推进的事件系统。用户、工具、观察器、调度器、执行器和规划器都是独立过程，通过通道交换事件。大语言模型是规划器，不是唯一主程序。它接收观察，更新判断，再选择行动。</p>
-<p>从通信顺序进程的角度看，系统由多个独立过程组成，通过通道传递消息。从协程的角度看，系统由多个可暂停、可恢复的任务组成，由事件循环协调执行。两种视角都指向同一个结论：智能体的本质不是一连串函数调用，而是在变化环境中持续观察、判断和行动。</p>
-<p>当工具调用被改造成任务提交，当日志被改造成观察事件，当用户输入、调度触发和外部反馈都被统一纳入事件流，“谁调用谁”就不再是一个固定层级问题。真正重要的是各过程如何传递事件、更新状态、让出控制权，以及如何在适当的时刻恢复执行。</p>
+<p>更合适的方式，是把智能体运行时看成一个由多个独立活动共同推进的事件系统。用户界面、工具执行器、observer、scheduler 和 planner 的控制过程，都可以用 process 或 coroutine 来组织，并通过 channel 交换事件。大语言模型承担规划职责，但不是唯一主程序。</p>
+<p>CSP 强调独立过程怎样通过 channel 通信；coroutine 强调等待时怎样让出控制权，再在事件到来后继续。两种视角关注的侧面不同，但都说明了一件事：当 Agent 需要持续面对变化中的环境时，一串同步函数调用不足以描述完整控制流。</p>
+<p>这里讨论的是 communication 和 control flow，不是生命周期分类。异步、streaming、使用 channel，甚至被建模成 CSP process，都不会自动让一个活动变成大写的 <code>Process</code>。后者只看一个判据：creator scope 结束以后，它是否还能继续存在。这个边界我在 <a href="/posts/2026-09-18_llm_agent_calling_convention/">《Structured LLM Design：按生命周期组织 Agent Runtime》</a> 中进一步展开。</p>
+<p>一旦长工具变成活动提交、日志变成 observation、用户输入和定时触发也进入同一事件流，“谁调用谁”就不再有一个固定答案。更重要的是：事件怎样传递，状态由谁更新，等待时谁让出控制权，以及什么条件会触发下一次执行。</p>
 <section data-footnotes class="footnotes"><h2 class="sr-only" id="footnote-label">Footnotes</h2>
 <ol>
 <li id="user-content-fn-1">
