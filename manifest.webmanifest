@@ -1,0 +1,44 @@
+{
+  "id": "/",
+  "name": "Zhang Hua Feng/張華楓's Notes",
+  "short_name": "華楓 Notes",
+  "description": "一隅之地，存放技术笔记、翻译、诗与生活片段。",
+  "lang": "zh-CN",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fbfaf8",
+  "theme_color": "#fbfaf8",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "中文文章",
+      "short_name": "文章",
+      "url": "/posts/"
+    },
+    {
+      "name": "English posts",
+      "short_name": "Posts",
+      "url": "/en/posts/"
+    }
+  ]
+}
