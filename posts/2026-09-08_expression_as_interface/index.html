@@ -1,22 +1,22 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>当表情成为界面：关于一个情绪生成空间的设想 - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="一个实验性交互网站的设想：让面部表情、身体动作和观看状态成为输入，把人的存在实时转化为影像、三维形态、声音与氛围，并借此讨论机器如何感知、误读和回应人。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/2026-09-08_expression_as_interface/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0f0f10" media="(prefers-color-scheme: dark)"><meta name="robots" content="index,follow"><meta property="og:title" content="当表情成为界面：关于一个情绪生成空间的设想 - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="一个实验性交互网站的设想：让面部表情、身体动作和观看状态成为输入，把人的存在实时转化为影像、三维形态、声音与氛围，并借此讨论机器如何感知、误读和回应人。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/2026-09-08_expression_as_interface/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/og-default.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="当表情成为界面：关于一个情绪生成空间的设想 - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="一个实验性交互网站的设想：让面部表情、身体动作和观看状态成为输入，把人的存在实时转化为影像、三维形态、声音与氛围，并借此讨论机器如何感知、误读和回应人。"><meta name="twitter:image" content="https://blog.formalscience.com/og-default.svg"><meta property="article:published_time" content="2026-09-08T00:00:00.000Z"><meta property="article:section" content="思考"><meta property="article:tag" content="交互设计"><meta property="article:tag" content="生成艺术"><meta property="article:tag" content="情绪计算"><meta property="article:tag" content="人机交互"><link rel="stylesheet" href="/_astro/BaseLayout.VMhBbpMx.css"></head><body><a class="skip-link" href="#content" lang="zh-CN">跳到内容</a><div class="site-shell"><header class="site-header"><a class="brand" href="/"><span lang="en">Zhang Hua Feng/</span><span lang="zh-CN">張華楓</span><span lang="en">'s Notes</span></a><div class="header-actions"><nav class="nav-links" aria-label="主导航" lang="zh-CN"><a href="/">首页</a><a href="/posts" aria-current="page">文章</a><a href="/categories">分类</a><a href="/tags">标签</a><a href="/about">关于</a></nav><nav class="language-switch" aria-label="切换语言"><a href="/posts/2026-09-08_expression_as_interface/" lang="zh-CN" aria-current="page">中文</a><a href="/en" lang="en" title="English home">English</a></nav></div></header><main id="content"><article class="reading-shell"><header class="article-header"><div class="post-meta-row"><p class="meta"><time datetime="2026-09-08T00:00:00.000Z">2026年9月8日</time> · 约 8 分钟</p><a class="category-label" href="/categories/%E6%80%9D%E8%80%83/">思考</a></div><h1 class="article-title">当表情成为界面：关于一个情绪生成空间的设想</h1><p class="article-description">一个实验性交互网站的设想：让面部表情、身体动作和观看状态成为输入，把人的存在实时转化为影像、三维形态、声音与氛围，并借此讨论机器如何感知、误读和回应人。</p><div class="tag-list article-tags"><a class="tag" href="/tags/%E4%BA%A4%E4%BA%92%E8%AE%BE%E8%AE%A1/">交互设计</a><a class="tag" href="/tags/%E7%94%9F%E6%88%90%E8%89%BA%E6%9C%AF/">生成艺术</a><a class="tag" href="/tags/%E6%83%85%E7%BB%AA%E8%AE%A1%E7%AE%97/">情绪计算</a><a class="tag" href="/tags/%E4%BA%BA%E6%9C%BA%E4%BA%A4%E4%BA%92/">人机交互</a></div></header><details class="post-toc"><summary>本文目录</summary><nav aria-label="本文目录"><ol><li><a href="#从操作界面转向感知界面">从“操作界面”转向“感知界面”</a></li><li><a href="#不把情绪当成一个标签">不把情绪当成一个标签</a></li><li><a href="#一个会回应你的空间">一个会回应你的空间</a></li><li><a href="#反馈不一定需要正确">反馈不一定需要“正确”</a></li><li><a href="#被观看与观看">被观看与观看</a></li><li><a href="#情绪作为一种材料">情绪作为一种材料</a></li><li><a href="#技术只是中介">技术只是中介</a></li><li><a href="#从理解人转向回应人">从“理解人”转向“回应人”</a></li><li><a href="#一个不稳定的数字镜子">一个不稳定的数字镜子</a></li><li><a href="#我真正想研究的问题">我真正想研究的问题</a></li></ol></nav></details><div class="post-content"><p>我想做一个几乎不需要点击的网页。</p>
-<p>进入页面以后，用户面对的不是按钮、菜单或输入框，而是一张脸、一个场景，或者某种还没有固定形态的数字生命体。摄像头开始捕捉人的面部表情、身体动作和与屏幕之间的距离。系统根据这些变化，实时调整画面形态、空间、声音和节奏。</p>
-<p>在这个过程中，人并不是通过明确指令来控制系统。人的脸、动作、停顿和观看本身，就是输入。</p>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>当表情成为界面：关于一个情绪生成空间的设想 - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="一个实验性交互网站的设想：让面部表情、身体动作和观看状态成为输入，把人的存在实时转化为影像、三维形态、声音与氛围，并借此讨论机器如何感知、误读和回应人。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/2026-09-08_expression_as_interface/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0f0f10" media="(prefers-color-scheme: dark)"><meta name="robots" content="index,follow"><meta property="og:title" content="当表情成为界面：关于一个情绪生成空间的设想 - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="一个实验性交互网站的设想：让面部表情、身体动作和观看状态成为输入，把人的存在实时转化为影像、三维形态、声音与氛围，并借此讨论机器如何感知、误读和回应人。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/2026-09-08_expression_as_interface/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/og-default.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="当表情成为界面：关于一个情绪生成空间的设想 - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="一个实验性交互网站的设想：让面部表情、身体动作和观看状态成为输入，把人的存在实时转化为影像、三维形态、声音与氛围，并借此讨论机器如何感知、误读和回应人。"><meta name="twitter:image" content="https://blog.formalscience.com/og-default.svg"><meta property="article:published_time" content="2026-09-08T00:00:00.000Z"><meta property="article:section" content="思考"><meta property="article:tag" content="交互设计"><meta property="article:tag" content="生成艺术"><meta property="article:tag" content="情绪计算"><meta property="article:tag" content="人机交互"><link rel="stylesheet" href="/_astro/BaseLayout.VMhBbpMx.css"></head><body><a class="skip-link" href="#content" lang="zh-CN">跳到内容</a><div class="site-shell"><header class="site-header"><a class="brand" href="/"><span lang="en">Zhang Hua Feng/</span><span lang="zh-CN">張華楓</span><span lang="en">'s Notes</span></a><div class="header-actions"><nav class="nav-links" aria-label="主导航" lang="zh-CN"><a href="/">首页</a><a href="/posts" aria-current="page">文章</a><a href="/categories">分类</a><a href="/tags">标签</a><a href="/about">关于</a></nav><nav class="language-switch" aria-label="切换语言"><a href="/posts/2026-09-08_expression_as_interface/" lang="zh-CN" aria-current="page">中文</a><a href="/en" lang="en" title="English home">English</a></nav></div></header><main id="content"><article class="reading-shell"><header class="article-header"><div class="post-meta-row"><p class="meta"><time datetime="2026-09-08T00:00:00.000Z">2026年9月8日</time> · 约 8 分钟</p><a class="category-label" href="/categories/%E6%80%9D%E8%80%83/">思考</a></div><h1 class="article-title">当表情成为界面：关于一个情绪生成空间的设想</h1><p class="article-description">一个实验性交互网站的设想：让面部表情、身体动作和观看状态成为输入，把人的存在实时转化为影像、三维形态、声音与氛围，并借此讨论机器如何感知、误读和回应人。</p><div class="tag-list article-tags"><a class="tag" href="/tags/%E4%BA%A4%E4%BA%92%E8%AE%BE%E8%AE%A1/">交互设计</a><a class="tag" href="/tags/%E7%94%9F%E6%88%90%E8%89%BA%E6%9C%AF/">生成艺术</a><a class="tag" href="/tags/%E6%83%85%E7%BB%AA%E8%AE%A1%E7%AE%97/">情绪计算</a><a class="tag" href="/tags/%E4%BA%BA%E6%9C%BA%E4%BA%A4%E4%BA%92/">人机交互</a></div></header><details class="post-toc"><summary>本文目录</summary><nav aria-label="本文目录"><ol><li><a href="#从操作界面转向感知界面">从“操作界面”转向“感知界面”</a></li><li><a href="#不把情绪当成一个标签">不把情绪当成一个标签</a></li><li><a href="#一个会回应你的空间">一个会回应你的空间</a></li><li><a href="#反馈不一定需要正确">反馈不一定需要“正确”</a></li><li><a href="#被观看与观看">被观看与观看</a></li><li><a href="#情绪作为一种材料">情绪作为一种材料</a></li><li><a href="#技术只是中介">技术只是中介</a></li><li><a href="#从理解人转向回应人">从“理解人”转向“回应人”</a></li><li><a href="#一个不稳定的数字镜子">一个不稳定的数字镜子</a></li><li><a href="#我想研究的问题">我想研究的问题</a></li></ol></nav></details><div class="post-content"><p>我想做一个几乎不需要点击的网页。</p>
+<p>进入页面以后，用户面对的不是按钮、菜单或输入框，而是一张脸、一个场景，或者某种还没有固定形态的数字生命体。摄像头捕捉面部变化、身体动作，以及人与屏幕之间的距离。系统根据这些可见信号，实时调整画面形态、空间、声音和节奏。</p>
+<p>在这个过程中，人并不主要通过明确指令控制系统。脸上的变化、动作、停顿和观看本身，都可以成为输入。</p>
 <p>这个项目由此提出了一个基本问题：如果表情本身可以成为一种界面，那么人与数字系统之间的关系会发生什么变化？</p>
 <h2 id="从操作界面转向感知界面">从“操作界面”转向“感知界面”</h2>
 <p>大多数数字产品都要求用户主动发出命令。点击一个按钮，系统执行一个操作；输入一段文字，系统返回一个结果；拖动一个滑块，界面产生对应变化。</p>
 <p>这种关系非常清楚。用户知道自己做了什么，也大致知道系统为什么响应。</p>
-<p>但人的真实状态并不总是通过明确指令表达出来。</p>
+<p>但人的许多身体状态并不会以明确指令的形式出现。</p>
 <p>一个人可能皱眉，但没有想要“提交”皱眉；他可能突然靠近屏幕，也可能长时间保持沉默；他可能笑了一下，但这个笑并不一定代表高兴。很多身体和情绪信号本来就是连续的、模糊的，甚至彼此矛盾。</p>
-<p>我想尝试建立一种不同的交互逻辑：系统持续感知人的状态，让数字环境随之变化，作为对人的回应，而不再等待明确命令。</p>
-<p>这里的“界面”不再只是屏幕上的控件，而是人的身体本身。</p>
+<p>我想尝试建立一种不同的交互逻辑：系统持续读取这些可见信号，让数字环境随之变化，而不再等待用户先发出明确命令。</p>
+<p>在这种交互里，“界面”不再只存在于屏幕上的控件中，人的身体也成为界面的一部分。</p>
 <h2 id="不把情绪当成一个标签">不把情绪当成一个标签</h2>
 <p>这个项目很容易被理解成“情绪识别”。</p>
 <p>但我并不希望它变成一个判断“你现在是开心、悲伤还是愤怒”的系统。这样的判断过于简单。</p>
 <p>人的情绪很难被压缩成几个固定标签。同一个表情可能出现在完全不同的心理状态中。微笑可能来自愉快，也可能来自紧张、礼貌或不适。一个人没有明显表情，也不意味着他没有情绪。</p>
-<p>因此，这个项目更关心的不是“识别正确”，而是“系统如何解释”。</p>
-<p>摄像头捕捉到的面部变化、视线、身体姿态和运动强度，可以被转化为一组连续信号。系统无须先从这些信号得出确定的心理判断，就可以直接用它们驱动内容生成。</p>
+<p>这个项目更关心的不是“有没有识别出正确情绪”，而是系统怎样把这些信号转化为回应。</p>
+<p>摄像头捕捉到的面部变化、视线、身体姿态和运动强度，可以被转化为一组连续信号。系统无须先声称自己知道用户的心理状态，就可以直接让这些信号参与内容生成。</p>
 <p>例如，身体运动速度可能影响画面的流动强度；面部变化的幅度可能影响三维形态的变形程度；人与摄像头的距离可能改变空间的深度；长时间的静止可能让音乐和画面中的元素逐渐变得稀疏。</p>
-<p>这样，系统不必说“你现在很焦虑”，只需创造一个与当前状态有关的环境。</p>
+<p>这样，系统不必说“你现在很焦虑”，只需要创造一个与当前这些信号有关、但不必与任何情绪标签一一对应的环境。</p>
 <h2 id="一个会回应你的空间">一个会回应你的空间</h2>
 <p>我更愿意把这个作品理解成一个“情绪生成空间”，而不是一个识别工具。</p>
 <p>用户进入网页以后，首先看到的可能是一个相对稳定的场景。随着摄像头开始读取人的状态，这个场景逐渐发生变化。</p>
@@ -28,52 +28,42 @@
 <p>某些变化可以非常快速，直接对应一个动作；另一些变化则可以保留此前动作的影响，在一段时间内逐渐累积。</p>
 <p>这样，用户面对的就不再是一个简单的反馈系统，而更像一个因人的存在而逐渐改变的空间。</p>
 <h2 id="反馈不一定需要正确">反馈不一定需要“正确”</h2>
-<p>传统交互设计非常强调反馈的准确性。</p>
-<p>用户点击一个按钮，系统应该给出明确反馈。如果系统理解错误，就会被认为是一个设计问题。</p>
-<p>但在这个项目中，我反而对“误读”感兴趣。</p>
+<p>很多操作型界面强调操作与反馈的一致性。用户点击一个按钮，系统应该让人清楚知道发生了什么；如果按钮产生了完全无关的结果，通常就是设计问题。</p>
+<p>但这个作品并不试图建立这种一一对应的控制关系。我反而对“误读”感兴趣。</p>
 <p>如果一个人皱眉，系统生成了一个非常柔和的空间；如果一个人微笑，画面却开始变得紧张，这种不一致本身也可能成为体验的一部分。</p>
-<p>人的表情本来就不总能直接、准确地反映内心状态。机器对人的理解也存在这样的距离。</p>
-<p>这使系统不再像一个忠实的镜子，而更像一个有偏差的翻译器。</p>
+<p>人的表情本来就不能直接、完整地等同于内心状态，系统从这些表情得到的也只是有限信号。这使它不再像一个忠实的镜子，而更像一个带着自身规则的翻译器。</p>
 <p>它看到一个表情，然后把这个表情转换成自己的视觉和声音语言。这个转换可能接近人的感受，也可能完全偏离。</p>
 <p>我对这种偏离感兴趣，因为它引出了一个问题：当机器说它“理解”我们时，它到底理解了什么？</p>
 <h2 id="被观看与观看">被观看与观看</h2>
 <p>摄像头让这个项目天然包含另一层关系。</p>
-<p>用户在看屏幕，而屏幕背后的系统也在看用户。</p>
-<p>这种双向观看和普通网页体验不同。</p>
+<p>用户在看屏幕，而屏幕背后的系统也在持续读取用户。</p>
+<p>这种双向观看和普通网页体验不同。它也意味着摄像头不能只是一个被默默打开的传感器：用户应该知道系统读取什么、是否保存、在哪里处理，并能够拒绝或停止这种观看。数据边界不仅是隐私要求，也会直接影响作品中的“被观看”究竟是一种自愿参与，还是一种无法退出的监视。</p>
 <p>当用户意识到自己的脸正在影响画面，他可能会主动改变表情，开始尝试笑、皱眉、闭眼、靠近或离开。</p>
 <p>此时，表情的作用也变了。</p>
 <p>最开始，表情只是自然状态；随后，它变成一种试探；再之后，它甚至可能变成一种表演。</p>
 <p>用户会开始思考：“如果我这样做，它会发生什么？”</p>
 <p>系统也由此改变了人的行为。</p>
-<p>因此，交互并非单向的“人的情绪影响系统”，而是一个循环：</p>
+<p>交互并非单向的“人的情绪影响系统”，而是一个循环：</p>
 <p>人影响系统，系统产生反馈，反馈又影响人的下一次表情和动作。</p>
-<p>如果这个循环持续足够久，我们可能已经很难分清：究竟是人的情绪塑造了画面，还是画面引发了人的情绪。</p>
-<p>我认为这个循环可能是整个项目最重要的部分之一。</p>
+<p>如果这个循环持续足够久，就很难再把因果关系写成单向箭头：人的表情和动作改变画面，画面又继续影响人的下一次反应。</p>
+<p>这个反馈循环可能是整个项目最重要的部分之一。</p>
 <h2 id="情绪作为一种材料">情绪作为一种材料</h2>
 <p>在视觉艺术中，我们习惯把颜色、形状、声音、文字和空间看作材料。</p>
-<p>我想进一步提出一个问题：人的情绪状态是否也可以成为材料？</p>
-<p>这里的“材料”不是说要把人的情绪保存下来，或者把它变成一个可以被量化的对象。</p>
-<p>我更关心的是，它是否可以参与作品的生成过程。</p>
+<p>我想进一步提出一个问题：情绪在身体上留下的痕迹，是否也可以成为创作材料？</p>
+<p>这里的“材料”并不是人的真实情绪本身，更不是把情绪保存成一个可量化对象。我指的是那些能够被系统感知的外在变化，以及这些变化如何参与作品的生成过程。</p>
 <p>人的一个微小动作，可以改变空间。</p>
 <p>一段持续的凝视，可以改变声音。</p>
 <p>身体的靠近或离开，可以改变一个虚拟物体的状态。</p>
-<p>在这种关系中，作品在用户进入之前还没有完成，只有用户参与后才真正成立。每一次访问也可能产生不同结果。</p>
-<p>作品最终呈现的是人与系统共同经历的一段过程，而非一幅固定画面。</p>
+<p>在这种关系中，作品在用户进入之前只有一套生成条件，具体形态要到互动发生以后才出现。每一次访问都可能得到不同结果。</p>
+<p>作品最终呈现的不是一幅固定画面，而是一段人与系统共同形成的过程。</p>
 <h2 id="技术只是中介">技术只是中介</h2>
-<p>要实现这个项目，可能需要几个系统共同工作。</p>
-<p>网页需要访问摄像头输入。</p>
-<p>系统需要分析面部特征、身体姿态或画面中的运动。</p>
-<p>这些数据随后可以进入一个实时生成系统，驱动三维模型、粒子、光线、着色器（shader）、动画或其他视觉元素。</p>
-<p>声音部分也可以由同一组数据控制，通过程序化声音、环境音层或音乐结构产生变化。</p>
+<p>要实现这个项目，需要把感知和生成两部分连接起来。网页首先取得经过用户授权的摄像头输入，再从画面中提取面部变化、身体姿态、运动强度或距离等信号。这些信号进入实时生成系统以后，可以驱动三维模型、粒子、光线、着色器（shader）和动画，也可以控制程序化声音、环境音层或音乐结构。</p>
 <p>这些技术都很重要，但我不希望项目最终变成一次技术能力展示。</p>
 <p>面部追踪、三维生成和声音合成本身都不是作品的目的，而是连接人与数字环境的中介。</p>
-<p>真正的问题仍然是：当一个数字系统开始持续感知一个人的身体，并且不断根据这种感知改变环境时，人会如何理解自己和这个系统之间的关系？</p>
+<p>我更关心的是：当一个数字系统开始持续感知一个人的身体，并不断根据这种感知改变环境时，人会如何理解自己和这个系统之间的关系？</p>
 <h2 id="从理解人转向回应人">从“理解人”转向“回应人”</h2>
-<p>对这个项目来说，我觉得有必要区分“理解”和“回应”：系统不一定需要理解人，只需要能够回应人。</p>
-<p>“理解”意味着系统似乎知道用户真实的心理状态。要作出这样的判断，其实需要很强的依据。</p>
-<p>而“回应”更加开放。</p>
-<p>系统接收到一个变化，然后产生另一个变化。</p>
-<p>它只建立一种映射关系，并不宣称自己知道人的真实情绪。</p>
+<p>对这个项目来说，我觉得有必要区分“理解”和“回应”。这里所谓“理解”，指的是系统声称能够从外在信号推断用户真实的心理状态；这样的主张需要远强于表情追踪本身的证据。</p>
+<p>“回应”则没有这个前提。系统接收到一个变化，再产生另一个变化。它建立的是一种可感知的映射关系，而不是对人的真实情绪作出诊断。</p>
 <p>这种映射可以是柔和的，也可以是矛盾的；可以稳定，也可以逐渐失控；可以让用户感到被理解，也可以让用户意识到自己正在被一个并不了解自己的系统持续解释。</p>
 <p>这种不确定性可能恰恰是作品的一部分，无须把它当成必须消除的问题。</p>
 <h2 id="一个不稳定的数字镜子">一个不稳定的数字镜子</h2>
@@ -84,12 +74,12 @@
 <p>你靠近，它可能让声音远离。</p>
 <p>你突然笑，它可能让一个虚拟物体开始分裂。</p>
 <p>它不断接收你的状态，但从不完全复制你。</p>
-<p>因此，它既像镜子，又不像镜子。</p>
+<p>它既像镜子，又不像镜子。</p>
 <p>你能在里面发现自己的痕迹，但无法完全控制这些痕迹最后会变成什么。</p>
 <p>我希望这种体验带来一种微妙的感觉：用户觉得这个空间与自己有关，却又无法确定系统究竟如何看待自己。</p>
-<p>这种距离可能比一个“准确识别情绪”的系统更有意义。</p>
-<h2 id="我真正想研究的问题">我真正想研究的问题</h2>
-<p>这个项目最终想探索的，是几个尚无定论的问题。它的目标并不是做出一个更聪明的表情识别程序。</p>
+<p>这种距离可能比追求一个看似“准确识别情绪”的系统更接近这个作品真正关心的问题。</p>
+<h2 id="我想研究的问题">我想研究的问题</h2>
+<p>这个项目最终想探索的是一组开放问题，而不是做出一个更聪明的表情识别程序。</p>
 <p>当人的身体本身成为界面以后，交互还需要明确的命令吗？</p>
 <p>当机器不断读取人的面孔时，这种感知是一种理解，还是一种解释？</p>
 <p>当系统的回应开始影响人的下一次表情时，到底是谁在控制谁？</p>

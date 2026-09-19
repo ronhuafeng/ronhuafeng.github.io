@@ -1,15 +1,14 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Model Ergonomics：Harness 如何影响 Agent 能力 - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="同一个模型换一个 harness，表现可能完全不同。本文从模型易用性出发，讨论模型与工具、上下文、反馈和执行环境之间的匹配关系，并结合 Grok 在 Codex harness 上的运行实践，分析通用设计与专用适配的边界。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/2026-09-01_model_ergonomics_harness_and_model_fit/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0f0f10" media="(prefers-color-scheme: dark)"><meta name="robots" content="index,follow"><link rel="alternate" hreflang="zh-CN" href="https://blog.formalscience.com/posts/2026-09-01_model_ergonomics_harness_and_model_fit/"><link rel="alternate" hreflang="en" href="https://blog.formalscience.com/en/posts/2026-09-01_model_ergonomics_harness_and_model_fit/"><meta property="og:title" content="Model Ergonomics：Harness 如何影响 Agent 能力 - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="同一个模型换一个 harness，表现可能完全不同。本文从模型易用性出发，讨论模型与工具、上下文、反馈和执行环境之间的匹配关系，并结合 Grok 在 Codex harness 上的运行实践，分析通用设计与专用适配的边界。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/2026-09-01_model_ergonomics_harness_and_model_fit/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/og-default.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Model Ergonomics：Harness 如何影响 Agent 能力 - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="同一个模型换一个 harness，表现可能完全不同。本文从模型易用性出发，讨论模型与工具、上下文、反馈和执行环境之间的匹配关系，并结合 Grok 在 Codex harness 上的运行实践，分析通用设计与专用适配的边界。"><meta name="twitter:image" content="https://blog.formalscience.com/og-default.svg"><meta property="article:published_time" content="2026-09-01T00:00:00.000Z"><meta property="article:section" content="技术"><meta property="article:tag" content="Harness Engineering"><meta property="article:tag" content="AI Agents"><meta property="article:tag" content="Model Ergonomics"><meta property="article:tag" content="Codex"><meta property="article:tag" content="Grok"><link rel="stylesheet" href="/_astro/BaseLayout.VMhBbpMx.css"></head><body><a class="skip-link" href="#content" lang="zh-CN">跳到内容</a><div class="site-shell"><header class="site-header"><a class="brand" href="/"><span lang="en">Zhang Hua Feng/</span><span lang="zh-CN">張華楓</span><span lang="en">'s Notes</span></a><div class="header-actions"><nav class="nav-links" aria-label="主导航" lang="zh-CN"><a href="/">首页</a><a href="/posts" aria-current="page">文章</a><a href="/categories">分类</a><a href="/tags">标签</a><a href="/about">关于</a></nav><nav class="language-switch" aria-label="切换语言"><a href="/posts/2026-09-01_model_ergonomics_harness_and_model_fit/" lang="zh-CN" aria-current="page">中文</a><a href="/en/posts/2026-09-01_model_ergonomics_harness_and_model_fit/" lang="en">English</a></nav></div></header><main id="content"><article class="reading-shell"><header class="article-header"><div class="post-meta-row"><p class="meta"><time datetime="2026-09-01T00:00:00.000Z">2026年9月1日</time> · 约 19 分钟</p><a class="category-label" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></div><h1 class="article-title">Model Ergonomics：Harness 如何影响 Agent 能力</h1><p class="article-description">同一个模型换一个 harness，表现可能完全不同。本文从模型易用性出发，讨论模型与工具、上下文、反馈和执行环境之间的匹配关系，并结合 Grok 在 Codex harness 上的运行实践，分析通用设计与专用适配的边界。</p><nav class="translation-links" aria-label="其他语言"><span>其他语言</span><a href="/en/posts/2026-09-01_model_ergonomics_harness_and_model_fit/" lang="en">English</a></nav><div class="tag-list article-tags"><a class="tag" href="/tags/Harness%20Engineering/">Harness Engineering</a><a class="tag" href="/tags/AI%20Agents/">AI Agents</a><a class="tag" href="/tags/Model%20Ergonomics/">Model Ergonomics</a><a class="tag" href="/tags/Codex/">Codex</a><a class="tag" href="/tags/Grok/">Grok</a></div></header><details class="post-toc"><summary>本文目录</summary><nav aria-label="本文目录"><ol><li><a href="#harness-不是模型外面的壳">Harness 不是模型外面的壳</a></li><li><a href="#模型易用性关注能力是否容易发挥">模型易用性关注能力是否容易发挥</a></li><li><a href="#grok-运行在-codex-上协议兼容之后还有什么">Grok 运行在 Codex 上：协议兼容之后还有什么</a></li><li><a href="#shell-是通用接口但不是中性接口">Shell 是通用接口，但不是中性接口</a></li><li><a href="#grokbuild-是一个设计信号而不是结论">GrokBuild 是一个设计信号，而不是结论</a></li><li><a href="#通用-harness-与专用-harness-可以如何分工">通用 harness 与专用 harness 可以如何分工</a></li><li><a href="#语义层的-harness-应该保持通用">语义层的 harness 应该保持通用</a></li><li><a href="#提供方兼容层只负责协议差异">提供方兼容层只负责协议差异</a></li><li><a href="#模型易用性配置决定如何呈现能力">模型易用性配置决定如何呈现能力</a></li><li><a href="#能力支持与易用性偏好需要区分">能力支持与易用性偏好需要区分</a></li><li><a href="#模型标识可能也不是最终的抽象依据">模型标识可能也不是最终的抽象依据</a></li><li><a href="#harness-的质量通用性与适应性">Harness 的质量：通用性与适应性</a></li><li><a href="#基准测试应该评估-model--harness">基准测试应该评估 Model × Harness</a></li><li><a href="#回到-grok怎样验证模型易用性">回到 Grok：怎样验证模型易用性</a></li><li><a href="#为什么-apply_patch-是一个更合适的早期实验">为什么 apply_patch 是一个更合适的早期实验</a></li><li><a href="#增加文件工具时继续共用运行时">增加文件工具时，继续共用运行时</a></li><li><a href="#语义通用交互可特化">语义通用，交互可特化</a></li><li><a href="#footnote-label">脚注</a></li></ol></nav></details><div class="post-content"><p>在讨论一个编程智能体（coding agent）是否足够强时，我们通常首先问：它用了什么模型？</p>
-<p>模型是什么版本？推理强度（reasoning effort）设在什么级别？上下文窗口有多大？工具调用是否足够稳定？这些当然重要，因为基础模型决定了智能体能力的重要边界。</p>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Model Ergonomics：Harness 如何影响 Agent 能力 - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="同一个模型换一个 harness，表现可能完全不同。本文从模型易用性出发，讨论模型与工具、上下文、反馈和执行环境之间的匹配关系，并结合 Grok 在 Codex harness 上的运行实践，分析通用设计与专用适配的边界。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/2026-09-01_model_ergonomics_harness_and_model_fit/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0f0f10" media="(prefers-color-scheme: dark)"><meta name="robots" content="index,follow"><link rel="alternate" hreflang="zh-CN" href="https://blog.formalscience.com/posts/2026-09-01_model_ergonomics_harness_and_model_fit/"><link rel="alternate" hreflang="en" href="https://blog.formalscience.com/en/posts/2026-09-01_model_ergonomics_harness_and_model_fit/"><meta property="og:title" content="Model Ergonomics：Harness 如何影响 Agent 能力 - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="同一个模型换一个 harness，表现可能完全不同。本文从模型易用性出发，讨论模型与工具、上下文、反馈和执行环境之间的匹配关系，并结合 Grok 在 Codex harness 上的运行实践，分析通用设计与专用适配的边界。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/2026-09-01_model_ergonomics_harness_and_model_fit/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/og-default.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Model Ergonomics：Harness 如何影响 Agent 能力 - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="同一个模型换一个 harness，表现可能完全不同。本文从模型易用性出发，讨论模型与工具、上下文、反馈和执行环境之间的匹配关系，并结合 Grok 在 Codex harness 上的运行实践，分析通用设计与专用适配的边界。"><meta name="twitter:image" content="https://blog.formalscience.com/og-default.svg"><meta property="article:published_time" content="2026-09-01T00:00:00.000Z"><meta property="article:section" content="技术"><meta property="article:tag" content="Harness Engineering"><meta property="article:tag" content="AI Agents"><meta property="article:tag" content="Model Ergonomics"><meta property="article:tag" content="Codex"><meta property="article:tag" content="Grok"><link rel="stylesheet" href="/_astro/BaseLayout.VMhBbpMx.css"></head><body><a class="skip-link" href="#content" lang="zh-CN">跳到内容</a><div class="site-shell"><header class="site-header"><a class="brand" href="/"><span lang="en">Zhang Hua Feng/</span><span lang="zh-CN">張華楓</span><span lang="en">'s Notes</span></a><div class="header-actions"><nav class="nav-links" aria-label="主导航" lang="zh-CN"><a href="/">首页</a><a href="/posts" aria-current="page">文章</a><a href="/categories">分类</a><a href="/tags">标签</a><a href="/about">关于</a></nav><nav class="language-switch" aria-label="切换语言"><a href="/posts/2026-09-01_model_ergonomics_harness_and_model_fit/" lang="zh-CN" aria-current="page">中文</a><a href="/en/posts/2026-09-01_model_ergonomics_harness_and_model_fit/" lang="en">English</a></nav></div></header><main id="content"><article class="reading-shell"><header class="article-header"><div class="post-meta-row"><p class="meta"><time datetime="2026-09-01T00:00:00.000Z">2026年9月1日</time> · 约 20 分钟</p><a class="category-label" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></div><h1 class="article-title">Model Ergonomics：Harness 如何影响 Agent 能力</h1><p class="article-description">同一个模型换一个 harness，表现可能完全不同。本文从模型易用性出发，讨论模型与工具、上下文、反馈和执行环境之间的匹配关系，并结合 Grok 在 Codex harness 上的运行实践，分析通用设计与专用适配的边界。</p><nav class="translation-links" aria-label="其他语言"><span>其他语言</span><a href="/en/posts/2026-09-01_model_ergonomics_harness_and_model_fit/" lang="en">English</a></nav><div class="tag-list article-tags"><a class="tag" href="/tags/Harness%20Engineering/">Harness Engineering</a><a class="tag" href="/tags/AI%20Agents/">AI Agents</a><a class="tag" href="/tags/Model%20Ergonomics/">Model Ergonomics</a><a class="tag" href="/tags/Codex/">Codex</a><a class="tag" href="/tags/Grok/">Grok</a></div></header><details class="post-toc"><summary>本文目录</summary><nav aria-label="本文目录"><ol><li><a href="#harness-不是模型外面的壳">Harness 不是模型外面的壳</a></li><li><a href="#模型易用性关注能力是否容易发挥">模型易用性关注能力是否容易发挥</a></li><li><a href="#grok-运行在-codex-上协议兼容之后还有什么">Grok 运行在 Codex 上：协议兼容之后还有什么</a></li><li><a href="#shell-是通用接口但不是中性接口">Shell 是通用接口，但不是中性接口</a></li><li><a href="#grokbuild-是一个设计信号而不是结论">GrokBuild 是一个设计信号，而不是结论</a></li><li><a href="#通用-harness-与专用-harness-可以如何分工">通用 harness 与专用 harness 可以如何分工</a></li><li><a href="#语义层的-harness-应该保持通用">语义层的 harness 应该保持通用</a></li><li><a href="#提供方兼容层只负责协议差异">提供方兼容层只负责协议差异</a></li><li><a href="#模型易用性配置决定如何呈现能力">模型易用性配置决定如何呈现能力</a></li><li><a href="#能力支持与易用性偏好需要区分">能力支持与易用性偏好需要区分</a></li><li><a href="#模型标识可能也不是最终的抽象依据">模型标识可能也不是最终的抽象依据</a></li><li><a href="#harness-的质量通用性与适应性">Harness 的质量：通用性与适应性</a></li><li><a href="#基准测试应该评估-model--harness">基准测试应该评估 Model × Harness</a></li><li><a href="#回到-grok怎样验证模型易用性">回到 Grok：怎样验证模型易用性</a></li><li><a href="#为什么-apply_patch-是一个更合适的早期实验">为什么 apply_patch 是一个更合适的早期实验</a></li><li><a href="#增加文件工具时继续共用运行时">增加文件工具时，继续共用运行时</a></li><li><a href="#语义通用交互可特化">语义通用，交互可特化</a></li><li><a href="#footnote-label">脚注</a></li></ol></nav></details><div class="post-content"><p>在讨论一个编程智能体（coding agent）是否足够强时，我们通常首先问：它用了什么模型？</p>
+<p>模型是什么版本？推理强度（reasoning effort）设在什么级别？上下文窗口有多大？工具调用是否足够稳定？这些当然重要，但基础模型只是智能体最终表现的一个组成部分。</p>
 <p>但在实际构建智能体系统时，很快会遇到一个更难解释的现象：</p>
 <p><strong>同一个模型，换一个 harness，表现可能完全不同。</strong></p>
-<p>这里的 harness，是位于模型与真实执行环境之间的系统层。它决定模型能看到什么上下文，可以调用哪些工具，工具以什么形式出现，执行结果怎样返回，什么时候压缩上下文，错误之后怎样恢复，以及一项任务如何从开始持续推进到结束。</p>
+<p>本文所说的 harness 是位于模型与真实执行环境之间的系统层。它决定模型能看到什么上下文，可以调用哪些工具，工具以什么形式出现，执行结果怎样返回，什么时候压缩上下文，错误之后怎样恢复，以及一项任务如何从开始持续推进到结束。</p>
 <p>在此前的 <a href="/posts/2026-06-18_harness_engineering_beyond_models/">《Harness Engineering：模型之外的工程》</a> 中，我把 harness 看成模型之外的执行结构：工具、权限、验证、观察、记忆和反馈共同决定一个智能体能否可靠工作。继续沿着这个方向看，还会出现一个更具体的问题：即使两个 harness 提供了相同的能力，它们是否都以模型容易使用的方式提供了这些能力？</p>
-<p>本文把这种匹配关系称为 <strong>模型易用性（Model ergonomics）</strong>。</p>
-<p>“模型易用性”还不是经过严格标准化的学术术语。现有研究更常使用智能体计算机接口（Agent-Computer Interface，ACI）、智能体支架（agent scaffolding）、工具接口（tool interface）或 harness 设计等概念。不过，模型易用性很适合描述一个越来越重要的工程问题：</p>
+<p>本文把这种匹配关系称为 <strong>模型易用性（Model ergonomics）</strong>。这是本文为了讨论方便使用的工程术语，并不是已经标准化的学术概念。现有研究更常使用智能体计算机接口（Agent-Computer Interface，ACI）、智能体支架（agent scaffolding）、工具接口（tool interface）或 harness 设计等说法。这里用“模型易用性”，是为了集中描述一个具体问题：</p>
 <blockquote>
 <p>harness 是否以适合某个模型的方式提供环境能力，让它更容易理解情况、作出决策、执行操作，并在出错后恢复？</p>
 </blockquote>
-<p>这个问题意味着，智能体的实际能力不能只归因于模型，也不能简单归因于 harness。真正需要研究的是两者之间的匹配。</p>
+<p>这意味着智能体的实际能力既不能只归因于模型，也不能简单归因于 harness；模型与 harness 之间的匹配同样需要研究。</p>
 <h2 id="harness-不是模型外面的壳">Harness 不是模型外面的壳</h2>
 <p>早期的大语言模型应用很容易被理解成一条简单链路：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>task</span></span>
@@ -37,14 +36,12 @@
 <span class="line"><span>...</span></span></code></pre>
 <p>模型不是直接面对计算机，而是面对 harness 为它构造出来的世界。</p>
 <p><a href="https://arxiv.org/abs/2405.15793">SWE-agent</a> 在 2024 年提出 Agent-Computer Interface 时，已经明确指出这一点：语言模型智能体是一种新的计算机用户，因此为它设计怎样的接口，会显著影响软件工程任务中的行为和性能。<sup><a href="#user-content-fn-1" id="user-content-fnref-1" data-footnote-ref aria-describedby="footnote-label">1</a></sup></p>
-<p>这意味着，实际观察到的智能体能力更接近：</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Capability = f(Model, Harness, Environment, Budget)</span></span></code></pre>
-<p>而不是：</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Capability = f(Model)</span></span></code></pre>
-<p>其中尤其值得单独关注的是 <code>Model × Harness</code> 的交互项。</p>
-<p>2026 年的 <a href="https://arxiv.org/abs/2605.27922">Harness-Bench</a> 更直接地研究了这一问题。它把工具、上下文、状态、权限、约束和恢复机制都视为 harness 的组成部分，并比较不同模型与 harness 配置下的执行轨迹。一个重要结论是：报告智能体能力时，更适合以 <strong>模型与 harness 的组合配置（model-harness configuration）</strong> 为单位，而不能把结果简单归因于基础模型。<sup><a href="#user-content-fn-2" id="user-content-fnref-2" data-footnote-ref aria-describedby="footnote-label">2</a></sup></p>
-<p>因此，“这个模型有多强”在智能体场景中，本身就是一个不完整的问题。</p>
-<p>更准确的问题应该是：</p>
+<p>可以用一个概念式来表达这种关系：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Observed capability = f(Model, Harness, Environment, Budget)</span></span></code></pre>
+<p>它不是可直接计算的公式，只是提醒我们：实际测到的是一套完整配置的表现，而不是模型权重的孤立属性。其中尤其值得单独研究的是 <code>Model × Harness</code> 的交互。</p>
+<p>2026 年的 <a href="https://arxiv.org/abs/2605.27922">Harness-Bench</a> 更直接地研究了这一问题。它把工具、上下文、状态、权限、约束和恢复机制都视为 harness 的组成部分，并比较不同模型与 harness 配置下的执行轨迹。论文据此主张：报告智能体能力时，更适合以 <strong>模型与 harness 的组合配置（model-harness configuration）</strong> 为单位，而不能把结果简单归因于基础模型。<sup><a href="#user-content-fn-2" id="user-content-fnref-2" data-footnote-ref aria-describedby="footnote-label">2</a></sup></p>
+<p>所以只问“这个模型有多强”，在智能体场景中本身就是一个不完整的问题。</p>
+<p>更准确的问题是：</p>
 <blockquote>
 <p>在什么 harness、什么工具环境、什么上下文策略和什么执行预算下，这个模型能够表现出怎样的能力？</p>
 </blockquote>
@@ -53,10 +50,10 @@
 <p>一个模型理论上能够完成某项操作，并不意味着当前 harness 给它的就是最合适的操作接口。</p>
 <p>假设模型只有一个非常强的工具：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>exec_command(command)</span></span></code></pre>
-<p>那么从能力范围来看，它几乎可以自己构造完整的本地工具集。模型可以通过 shell、Python、Perl、awk 或其他程序实现文件读取、目录遍历、搜索、批量处理、修改文件和运行测试。</p>
-<p>因此，从“能否完成操作”的角度看，一个通用 shell 已经非常接近图灵完备。</p>
+<p>那么从操作覆盖范围来看，它可以临时组合出很大一部分本地工具能力。模型可以通过 shell、Python、Perl、awk 或其他程序完成文件读取、目录遍历、搜索、批量处理、修改文件和运行测试。</p>
+<p>所以问题不在于 shell “能不能表达”这些操作。通用 shell 的表达范围已经很广，真正需要比较的是模型使用这种接口时要承担多少额外决策和操作成本。</p>
 <p>但模型面对的问题并不只有表达能力。</p>
-<p>它还需要决定下一步应该采取什么行动，构造正确参数，控制副作用，理解工具结果，并在失败后恢复。于是，harness 的质量还取决于：</p>
+<p>它还需要决定下一步应该采取什么行动，构造正确参数，控制副作用，理解工具结果，并在失败后恢复。harness 的质量还取决于：</p>
 <ul>
 <li>模型是否容易选择正确的行动；</li>
 <li>一次行动的粒度是否合适；</li>
@@ -66,9 +63,9 @@
 <li>上下文是否保留了下一步需要的状态；</li>
 <li>模型犯错后是否容易恢复，并继续有效推进任务。</li>
 </ul>
-<p>因此：</p>
+<p>可以把这个区别写成：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>capability completeness ≠ ergonomic fit</span></span></code></pre>
-<p>一个接口可能有很强的理论表达能力，却让模型承担过多底层决策。另一个接口可能提供了许多方便的结构化工具，却因为工具过多、语义重叠，让模型需要从更多行动选项中作出选择，也就是扩大了行动搜索空间（action search space）。模型易用性研究的正是这两种情况之间的关系。</p>
+<p>一个接口可能覆盖大量操作，却让模型承担过多底层决策；另一个接口可能提供很多结构化工具，却因为工具过多、语义重叠，让模型面对更多相似选项。这里所谓行动搜索空间（action search space），不是一个固定可测的数字，而是指模型在每一步需要区分和选择的可行动作集合。模型易用性关心的正是这种接口设计如何影响稳定执行。</p>
 <h2 id="grok-运行在-codex-上协议兼容之后还有什么">Grok 运行在 Codex 上：协议兼容之后还有什么</h2>
 <p>这个问题在 Grok 运行于 Codex harness 的实践中表现得很具体。</p>
 <p>我们的目标是让 Grok 尽可能沿用 Codex 已有的执行系统，而不必重新实现一个编程智能体。这些系统包括任务（Thread）和会话（session）的生命周期、上下文和历史记录、沙箱与审批、MCP、Code Mode、多智能体协作（Multi-Agent）、ToolRouter，以及 App Server 和 UI 契约。</p>
@@ -82,7 +79,7 @@
 <blockquote>
 <p>Codex 的现有 harness 能不能通过 Grok API 正确工作？</p>
 </blockquote>
-<p>但模型开始真正执行编程任务 之后，又出现了另一类问题。</p>
+<p>但当模型开始执行编程任务后，又出现了另一类问题。</p>
 <p>例如，在需要一次读取多个文件时，我们观察到 Grok 经常通过 <code>exec_command</code> 临时生成 Python 程序：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">python3</span><span style="color:#9ECBFF"> -</span><span style="color:#F97583"> &lt;&lt;</span><span style="color:#9ECBFF">'PY'</span></span>
 <span class="line"><span style="color:#9ECBFF">from pathlib import Path</span></span>
@@ -90,8 +87,8 @@
 <span class="line"><span style="color:#9ECBFF">for path in paths:</span></span>
 <span class="line"><span style="color:#9ECBFF">    print(Path(path).read_text())</span></span>
 <span class="line"><span style="color:#9ECBFF">PY</span></span></code></pre>
-<p>这种做法并不意味着 Grok 无法使用 Codex：它成功使用了 Codex 提供的 shell，通常也能完成任务。</p>
-<p>真正值得问的是：</p>
+<p>这种做法并不意味着 Grok 无法使用 Codex。在我们观察到的任务里，它能够通过 Codex 提供的 shell 完成文件操作；真正值得研究的是，这种路径是否稳定、是否增加了不必要的步骤，以及是否影响任务成功率和恢复成本。</p>
+<p>更值得问的是：</p>
 <blockquote>
 <p>为什么模型会反复在 shell 内重新构造一个文件读取抽象？</p>
 </blockquote>
@@ -99,7 +96,7 @@
 <h2 id="shell-是通用接口但不是中性接口">Shell 是通用接口，但不是中性接口</h2>
 <p>在本文使用的、已接入 Grok 的 Codex <code>release/rust-v0.151.0</code> 中，Grok 4.6 的模型目录（model catalog） 配置了 <code>UnifiedExec</code>，而 <code>apply_patch_tool_type</code> 为 <code>None</code>。<sup><a href="#user-content-fn-4" id="user-content-fnref-4" data-footnote-ref aria-describedby="footnote-label">4</a></sup></p>
 <p>Codex 的工具规划代码会为 Unified Exec 注册 <code>exec_command</code> 和 <code>write_stdin</code>；原生的 <code>ApplyPatchHandler</code> 则只有在 <code>model_info.apply_patch_tool_type</code> 存在时才会进入工具注册表。<sup><a href="#user-content-fn-5" id="user-content-fnref-5" data-footnote-ref aria-describedby="footnote-label">5</a></sup></p>
-<p>因此，在这个具体配置中，Grok 获得了一个表达能力很强的 shell，却没有获得 Codex 原生的 <code>apply_patch</code> 工具。</p>
+<p>在这个具体配置中，Grok 获得了一个表达能力很强的 shell，却没有获得 Codex 原生的 <code>apply_patch</code> 工具。</p>
 <p>这个事实本身还不能证明 harness 设计有问题，更不能直接得出“给 Grok 增加更多文件工具，表现一定会更好”的结论。</p>
 <p>但它揭示了通用 harness（generalized harness）中一个容易被忽略的问题：</p>
 <p><strong>通用接口并不意味着没有设计偏置。</strong></p>
@@ -108,7 +105,7 @@
 <p>这种设计看起来十分通用，因为任何模型都能使用，而且大量计算机操作都能通过 shell 表达。</p>
 <p>但选择 shell 作为所有行动的通用表示方式，本身就是一个明确的设计选择。它隐含着一个假设：模型能够稳定处理 shell 语法、引号、批处理、副作用、标准输出，以及 grep、sed、find、Python 等工具的组合。</p>
 <p>对于擅长这些操作的模型，这种自由度可能很有用。对于另一个模型，同样的自由度可能只是增加了需要选择的行动，并带来额外的操作步骤。</p>
-<p>因此，通用 harness 并不意味着完全没有专用设计。对特定交互方式的偏向，往往只是隐藏在了一个被认为足够通用的抽象之中。</p>
+<p>这也说明，通用 harness 并不意味着完全没有专用设计。对特定交互方式的偏向，往往只是隐藏在了一个被认为足够通用的抽象之中。</p>
 <h2 id="grokbuild-是一个设计信号而不是结论">GrokBuild 是一个设计信号，而不是结论</h2>
 <p>xAI 自己开源的 <a href="https://github.com/xai-org/grok-build">GrokBuild</a> 提供了一个很有意思的对照。</p>
 <p>它的工具运行时中存在一组明确标记为 Codex-specific 的工具：</p>
@@ -131,13 +128,13 @@
 <span class="line"><span>...                    grep_files</span></span>
 <span class="line"><span>                       apply_patch</span></span>
 <span class="line"><span>                       ...</span></span></code></pre>
-<p>如果同一个模型在两种环境中的行为明显不同，那么差异至少不能全部归因于模型权重。</p>
+<p>如果同一个模型在两种环境中的行为明显不同，这个现象至少提醒我们：不能在没有控制 harness 差异的情况下，把结果全部归因于模型权重。</p>
 <p>更值得注意的是，GrokBuild 的 <code>ToolConfig</code> 还区分了规范工具身份与客户端看到的呈现形式：工具名称、参数名称和描述都可以单独覆盖。<sup><a href="#user-content-fn-7" id="user-content-fnref-7" data-footnote-ref aria-describedby="footnote-label">7</a></sup></p>
-<p>这暗示了一个重要的架构方向：</p>
+<p>这个设计提供了一个值得验证的架构方向：</p>
 <blockquote>
-<p>工具本身的定义，与模型看到的工具形式，不一定要放在同一层。</p>
+<p>工具的内部语义，与模型看到的名称、参数和描述，不一定要放在同一层。</p>
 </blockquote>
-<p>这比单纯复制 GrokBuild 的具体工具更值得借鉴。</p>
+<p>这比直接复制 GrokBuild 的具体工具更值得研究，因为它允许系统保持同一执行语义，同时单独调整模型面对的接口。</p>
 <h2 id="通用-harness-与专用-harness-可以如何分工">通用 harness 与专用 harness 可以如何分工</h2>
 <p>承认模型易用性的重要性之后，也很容易走向另一个极端：既然不同模型适合不同的接口，就为每个模型维护一套专用 harness（specialized harness）。</p>
 <p>例如：</p>
@@ -145,16 +142,16 @@
 <span class="line"><span>Model B ToolRouter</span></span>
 <span class="line"><span>Grok ToolRouter</span></span>
 <span class="line"><span>...</span></span></code></pre>
-<p>短期内，这样做很容易提高基准测试（benchmark）的成绩。</p>
+<p>短期内，这样做有时能针对某个模型改善基准测试（benchmark）表现。</p>
 <p>某个模型不会使用一种工具，就给它换一种工具；某种上下文组织方式效果不好，就加一条针对该模型的分支；某个模型容易在特定位置停滞，就为它写一条专用的恢复规则。</p>
-<p>如果一直这样发展，最终会产生另一种问题：</p>
+<p>但如果每个局部问题都通过复制一套模型专用实现来解决，很快会出现另一类成本：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>semantic divergence</span></span>
 <span class="line"><span>test explosion</span></span>
 <span class="line"><span>model-version drift</span></span>
 <span class="line"><span>duplicate runtimes</span></span>
 <span class="line"><span>upgrade difficulty</span></span></code></pre>
 <p>模型本身也在持续变化。今天必要的临时补救方案，下一次模型升级后可能已经毫无价值，甚至会反过来限制新模型的能力。</p>
-<p>因此，真正的问题不是：</p>
+<p>问题不在于：</p>
 <blockquote>
 <p>选择通用 harness，还是专用 harness？</p>
 </blockquote>
@@ -195,18 +192,18 @@
 <span class="line"><span>└────────────────────────────────────┘</span></span></code></pre>
 <p>这三层分别解决不同的问题。</p>
 <h2 id="语义层的-harness-应该保持通用">语义层的 harness 应该保持通用</h2>
-<p>第一层是通用语义 harness。这一层应该尽量避免针对个别模型编写专用实现。</p>
-<p>例如 Read File、Apply Patch、Exec、MCP Call、Web Search 和 Spawn Agent，都可以作为智能体系统中具有统一定义的规范语义操作（canonical semantic operations）。</p>
+<p>第一层是通用语义 harness。这一层应该尽量避免把模型偏好写进核心执行语义。</p>
+<p>例如 Read File、Apply Patch、Exec、MCP Call、Web Search 和 Spawn Agent，可以在一个具体系统中被定义为稳定的规范语义操作（canonical semantic operations）。这里列出的不是所有 harness 都必须采用的标准工具集，而是一种架构示例。</p>
 <p>同样，沙箱、权限、历史记录、工具生命周期、持久化和取消机制，也应该保持统一。</p>
-<p>这一层最重要的不是让每个模型看到完全相同的界面，而是：</p>
+<p>这一层最重要的不是让每个模型看到完全相同的界面，而是保证同一种操作最终经过一致的执行和权限边界：</p>
 <blockquote>
-<p><strong>执行权（execution authority）必须由同一套系统掌握。</strong></p>
+<p><strong>specialize presentation; keep execution authority unified.</strong></p>
 </blockquote>
 <p>如果 Codex 已经拥有 ToolRegistry、ToolRouter、沙箱、历史记录和扩展运行时，那么为了支持 Grok 再创建一套 Grok ToolRouter，通常意味着架构开始分裂。</p>
-<p>这也是目前 <a href="https://github.com/ronhuafeng/mini-proxy-core/blob/main/docs/architecture/codex-third-party-provider-north-star.md">Codex Third-Party Provider North Star</a> 所坚持的边界：Codex 核心保留统一的规范概念；提供方特有的行为，只在必要的最小后端边界内进行映射。<sup><a href="#user-content-fn-8" id="user-content-fnref-8" data-footnote-ref aria-describedby="footnote-label">8</a></sup></p>
+<p>这也是本文引用的 <a href="https://github.com/ronhuafeng/mini-proxy-core/blob/main/docs/architecture/codex-third-party-provider-north-star.md">Codex Third-Party Provider North Star</a> 所采用的设计边界：Codex 核心保留统一的规范概念；能够明确归因于提供方 API 和传输契约的差异，才在后端适配边界处理。<sup><a href="#user-content-fn-8" id="user-content-fnref-8" data-footnote-ref aria-describedby="footnote-label">8</a></sup></p>
 <h2 id="提供方兼容层只负责协议差异">提供方兼容层只负责协议差异</h2>
-<p>第二层是提供方兼容层。不同后端确实存在协议差异，因此这一层可以分别适配。</p>
-<p>以 Grok 为例，这里可以处理：</p>
+<p>第二层是提供方兼容层。不同后端存在真实的 API、认证、请求格式和工具编码差异，这一层负责把这些差异投影回统一语义。</p>
+<p>以 Grok 为例，这一层可以处理：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>logical Codex reasoning</span></span>
 <span class="line"><span>        ↓</span></span>
 <span class="line"><span>Grok wire reasoning</span></span>
@@ -248,7 +245,7 @@
 <li>出错后的恢复提示；</li>
 <li>直接提供（direct）、延迟提供（deferred）或其他工具呈现策略。</li>
 </ul>
-<p>这里最重要的一条边界是：</p>
+<p>最重要的边界是：</p>
 <blockquote>
 <p><strong>specialize the interface, not the execution authority.</strong></p>
 </blockquote>
@@ -281,8 +278,8 @@
 <p>根据当前基准测试，这种接口是否更容易让模型稳定发挥？</p>
 </blockquote>
 <p>两者的稳定性完全不同。</p>
-<p>能力是否受支持，通常可以从 API、模型或完整执行链中得到明确证据。易用性策略则来自经验判断，完全可能随着模型版本、系统提示词、工具实现或训练方法的变化而失效。</p>
-<p>因此，模型易用性策略应该满足几个条件：</p>
+<p>能力是否受支持，通常可以从 API 契约、模型声明和端到端执行结果中得到相对明确的证据。易用性策略则更像经验性假设，可能随着模型版本、系统提示词、工具实现、预算或训练方式变化而失效。</p>
+<p>因此，模型易用性策略需要满足几个条件：</p>
 <ul>
 <li>有基准测试或执行轨迹作为证据；</li>
 <li>可以单独替换；</li>
@@ -299,7 +296,7 @@
 <span class="line"><span>model-a</span></span>
 <span class="line"><span>model-b</span></span></code></pre>
 <p>选择不同的配置。</p>
-<p>但真正值得理解的是模型背后的行为维度，例如：</p>
+<p>但模型标识本身也可能只是一个粗粒度代理。更值得研究的是一些可通过实验观察的行为维度，例如：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>shell fluency</span></span>
 <span class="line"><span>tool-schema adherence</span></span>
 <span class="line"><span>parallel-call reliability</span></span>
@@ -307,9 +304,9 @@
 <span class="line"><span>self-recovery strength</span></span>
 <span class="line"><span>action-granularity preference</span></span>
 <span class="line"><span>planning reliability</span></span></code></pre>
-<p>这些维度目前还没有形成足够成熟的标准，因此，现在就把它们固定为正式的数据模式，还为时过早。</p>
+<p>这些名称目前只是候选维度，并没有形成成熟、统一的测量标准。现在就把它们固定成长期数据模式还为时过早，更合理的是先把它们当作实验假设。</p>
 <p>但它们指出了更重要的研究问题。</p>
-<p>我们真正想知道的不是：</p>
+<p>我们想知道的不是：</p>
 <blockquote>
 <p>Grok 应该有哪些特殊代码？</p>
 </blockquote>
@@ -327,25 +324,13 @@
 </blockquote>
 <p>这是传统意义上的可移植性（portability）。</p>
 <p>还应该考察第二个维度：<strong>适应性（Adaptability）</strong>。</p>
-<p>它问的是：</p>
-<blockquote>
-<p>接入一个新模型后，需要增加多少机制，才能让它接近自身作为智能体时的能力上限？</p>
-</blockquote>
+<p>它关心的是：接入一个新模型以后，harness 能否通过范围有限、可验证、可回退的接口调整改善执行表现，而不必复制整套运行时。这里的重点不是“为模型增加多少特殊代码”，而是适配成本是否局部、可测、可维护。</p>
 <p>于是会出现两种完全不同的系统。</p>
 <p>一个 harness 可以支持一百个模型，却只给所有模型提供同一个接口，功能限于它们都能使用的最小公约数。</p>
 <p>另一个 harness 则可能保留同一套语义内核，同时让不同模型使用各自经过验证的工具呈现方式、上下文策略和恢复策略。</p>
 <p>只统计“支持多少模型”，无法区分这两种 harness 的质量。</p>
-<p>甚至可以用一个并不严格、但很有启发性的概念来描述它：</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Harness Efficiency(Model)</span></span>
-<span class="line"><span>    =</span></span>
-<span class="line"><span>Observed Agent Capability(Model, Harness)</span></span>
-<span class="line"><span>    /</span></span>
-<span class="line"><span>Potential Agent Capability(Model)</span></span></code></pre>
-<p>分母实际上无法直接观测，因此它不是一个可以直接计算的工程指标。</p>
-<p>但它表达了一个重要目标：</p>
-<blockquote>
-<p>一个好的 harness 不只是让模型“能运行”，而应该减少接口和执行循环对模型能力发挥的损耗。</p>
-</blockquote>
+<p>这里不适合强行定义一个“harness efficiency”比率，因为所谓模型的“潜在能力上限”既不可直接观测，也依赖任务、环境和预算。更实际的目标是做成对照实验：固定模型、任务和预算，只改变 harness 的某个因素，再观察成功率、成本、延迟、恢复行为和执行轨迹如何变化。</p>
+<p>一个好的 harness 不只是让模型“能运行”，还应该减少接口、上下文组织和执行循环给任务完成带来的额外摩擦。</p>
 <h2 id="基准测试应该评估-model--harness">基准测试应该评估 Model × Harness</h2>
 <p>基准测试的设计也需要随之调整。</p>
 <p>假设我们观察到：</p>
@@ -354,21 +339,21 @@
 <span class="line"><span></span></span>
 <span class="line"><span>Model B + Harness X = 52</span></span>
 <span class="line"><span>Model B + Harness Y = 69</span></span></code></pre>
-<p>那么“Model A 和 Model B 谁更强”已经不是一个定义完整的问题。</p>
+<p>那么单独问“Model A 和 Model B 谁更强”就缺少必要条件，因为观察结果明显依赖 harness。</p>
 <p>至少应该改成：</p>
 <blockquote>
 <p>在怎样的 harness、预算和环境下，哪一种模型与 harness 的组合更有效？</p>
 </blockquote>
 <p>近期的 <a href="https://arxiv.org/abs/2608.26218">Same Model, Different Harness</a> 采用了更直接的做法：固定模型，改变上下文管理和任务停滞时的处理方式，再观察编程智能体的结果如何变化。这个工作仍是较新的预印本，因此具体结果不宜单独视为成熟共识，但研究设计本身清楚地展示了如何单独考察 harness 带来的影响。<sup><a href="#user-content-fn-9" id="user-content-fnref-9" data-footnote-ref aria-describedby="footnote-label">9</a></sup></p>
 <p><a href="https://arxiv.org/abs/2606.09498">Self-Harness</a> 则从另一个方向出发：从执行轨迹中发现特定模型的失败模式，再提出范围较小的 harness 改动，并通过回归测试验证。<sup><a href="#user-content-fn-10" id="user-content-fnref-10" data-footnote-ref aria-describedby="footnote-label">10</a></sup></p>
-<p>这些工作指向了同一种研究方法：</p>
+<p>这些工作虽然研究设置不同，却支持同一种方法论：</p>
 <blockquote>
 <p>模型易用性应该通过受控实验研究，而不是通过“这个调用看起来不够优雅”来决定。</p>
 </blockquote>
 <h2 id="回到-grok怎样验证模型易用性">回到 Grok：怎样验证模型易用性</h2>
-<p>因此，对于 Grok 在 Codex 中频繁通过 Python 组织文件操作这件事，我不会从“怎样阻止它写 Python”开始。</p>
+<p>对于 Grok 在 Codex 中频繁通过 Python 组织文件操作这件事，我不会从“怎样阻止它写 Python”开始。</p>
 <p>使用 Python 本身并不代表失败。</p>
-<p>应该首先定义真正重要的观测量，例如：</p>
+<p>应该首先定义重要的观测量，例如：</p>
 <ul>
 <li>任务是否成功；</li>
 <li>补丁是否正确；</li>
@@ -394,37 +379,36 @@
 <span class="line"><span></span></span>
 <span class="line"><span>E. current surface</span></span>
 <span class="line"><span>   + read_file / list_dir / grep_files</span></span></code></pre>
-<p>如果实验结果是：</p>
+<p>下面的数字只是示意。假设实验结果是：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>A  61%</span></span>
 <span class="line"><span>B  62%</span></span>
 <span class="line"><span>C  69%</span></span>
 <span class="line"><span>D  69%</span></span>
 <span class="line"><span>E  72%</span></span></code></pre>
-<p>那么针对模型易用性作出的专用调整就有明确价值。</p>
+<p>而且改善能在重复实验和回归任务中保持，那么针对模型易用性作出的专用调整就有明确价值。</p>
 <p>如果结果只是：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>A  61%</span></span>
 <span class="line"><span>E  62%</span></span></code></pre>
-<p>而维护成本和工具接口范围都明显增加，那么仅仅把 Python 调用比例从 80% 降到 10%，并没有足够的工程价值。</p>
+<p>差异又落在实验噪声范围内，而维护成本和工具接口范围明显增加，那么即使 Python 调用比例从 80% 降到 10%，也不足以证明这个调整有工程价值。</p>
 <p>工具调用变得“更漂亮”，不等于智能体变得更强。</p>
 <h2 id="为什么-apply_patch-是一个更合适的早期实验">为什么 <code>apply_patch</code> 是一个更合适的早期实验</h2>
-<p>在当前 Grok × Codex 的具体实现里，我会优先研究 <code>apply_patch</code>，而不是立即增加完整的 <code>read_file / list_dir / grep_files</code> 工具组。</p>
+<p>在本文讨论的 Grok × Codex 配置里，我会优先把 <code>apply_patch</code> 作为一个较窄的实验，而不是立即增加完整的 <code>read_file / list_dir / grep_files</code> 工具组。</p>
 <p>原因首先是架构成本。</p>
 <p>Codex 已经拥有原生的 <code>ApplyPatchHandler</code>，只是当前 Grok 模型目录 没有启用对应的 <code>apply_patch_tool_type</code>。</p>
-<p>因此，验证 Grok 是否可以通过现有的可逆工具映射，正确使用原生 <code>apply_patch</code>，是一个比增加全新工具集合更窄的实验。</p>
-<p>其次，结构化工具在模型易用性之外还有一项价值：它明确保留了操作意图。</p>
+<p>相比增加全新的工具集合，更窄的实验是验证 Grok 是否可以通过现有的可逆工具映射正确使用原生 <code>apply_patch</code>。</p>
+<p>其次，结构化工具在模型易用性之外还有一项价值：它把操作意图保留在工具调用的结构中。</p>
 <p>当模型调用：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>apply_patch</span></span></code></pre>
 <p>时，harness 知道模型正在修改文件。</p>
 <p>当模型调用：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>exec_command("python3 ...")</span></span></code></pre>
 <p>修改文件时，操作的具体含义就隐藏在了通用的代码执行中。</p>
-<p>前一种形式更容易与沙箱、审批、执行跟踪、遥测、回放和失败分类配合。</p>
-<p>因此，结构化工具的价值不只在于“模型是否更喜欢调用它”，还在于它可能让整个 harness 更容易理解智能体正在执行的操作。</p>
+<p>前一种形式更容易被沙箱、审批、执行跟踪、遥测、回放和失败分类直接识别。结构化工具的价值因此不只在于模型是否更容易使用，还在于它能让 harness 在不解析任意代码的情况下知道“这是一项文件修改”。</p>
 <h2 id="增加文件工具时继续共用运行时">增加文件工具时，继续共用运行时</h2>
 <p>假设基准测试最终证明 Grok 确实明显受益于 <code>read_file</code>、<code>list_dir</code> 或 <code>grep_files</code>。</p>
 <p>这仍然不意味着应该把 GrokBuild 的整个工具运行时移植进 Codex。</p>
 <p>Codex 已经允许扩展工具接入同一个 ToolRegistry 和 ToolRouter。<sup><a href="#user-content-fn-11" id="user-content-fnref-11" data-footnote-ref aria-describedby="footnote-label">11</a></sup></p>
-<p>因此，更合理的结构应该是：</p>
+<p>更合理的结构是：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>model-facing compatibility tool</span></span>
 <span class="line"><span>        ↓</span></span>
 <span class="line"><span>Codex extension adapter</span></span>
@@ -439,7 +423,7 @@
 <span class="line"><span>one execution authority</span></span></code></pre>
 <p>这正是通用语义 harness 与针对模型的易用性适配能够同时成立的关键。</p>
 <h2 id="语义通用交互可特化">语义通用，交互可特化</h2>
-<p>最终，我认为 通用 harness 与专用 harness 之间最有价值的分工，可以用一句话概括：</p>
+<p>最终，我认为通用 harness 与专用 harness 之间最有价值的分工可以用一句话概括：</p>
 <blockquote>
 <p><strong>语义尽可能保持通用；易用性方面，允许根据测量结果进行专用适配。</strong></p>
 </blockquote>
@@ -451,10 +435,9 @@
 <span class="line"><span>Measured Model Ergonomic Profiles</span></span></code></pre>
 <p>第一层阻止系统随着模型数量增加而不断分裂。</p>
 <p>第二层处理不同后端实际存在的协议差异。</p>
-<p>第三层承认一个越来越明显的事实：不同模型并不是完全相同的“API 消费者”。</p>
-<p>它们可能有不同的工具选择习惯、上下文容忍度、行动粒度、恢复模式和执行倾向。</p>
+<p>第三层承认一个需要通过实验持续验证的事实：不同模型即使接入同一 API，也可能表现出不同的工具选择习惯、上下文容忍度、行动粒度和恢复模式。</p>
 <p>成熟的 harness 应该承认这些差异，同时避免因此为每个模型重新实现一套智能体运行时。</p>
-<p>真正困难、也真正体现 harness engineering 水平的地方，是保留统一的语义、安全边界和执行权，同时允许根据模型的实际行为，对接口进行范围有限、可以验证的调整。</p>
+<p>难点在于保留统一的语义、安全边界和执行权，同时允许根据模型的实际行为，对接口进行范围有限、可以验证的调整。</p>
 <p>过去，我们首先关心的是：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Can the model run?</span></span></code></pre>
 <p>后来变成：</p>
@@ -464,9 +447,8 @@
 <p>模型易用性把问题又向前推进了一步：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Does this harness allow this model</span></span>
 <span class="line"><span>to use its capabilities efficiently and reliably?</span></span></code></pre>
-<p>这可能会成为评价智能体 harness 的一个基本维度。</p>
-<p>模型决定智能体能力的潜在边界，而 harness 决定这些能力能够以什么方式、以多大比例变成可靠的现实行为。</p>
-<p>因此，需要优化的不只是模型本身，还包括模型与 harness 组成的整个系统。</p>
+<p>这可以成为评价智能体 harness 的一个基本维度。</p>
+<p>更准确地说，可观测的智能体能力由模型、harness、环境、任务和预算共同约束。优化其中任何一个部分，都不应假设其他部分是透明的常量。需要被测量和改进的，是模型与 harness 共同组成的执行系统。</p>
 <section data-footnotes class="footnotes"><h2 class="sr-only" id="footnote-label">Footnotes</h2>
 <ol>
 <li id="user-content-fn-1">
