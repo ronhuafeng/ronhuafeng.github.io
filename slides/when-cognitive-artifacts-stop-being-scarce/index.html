@@ -1,0 +1,385 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>当认知产物不再稀缺 - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="从数学、软件工程与形式化方法出发，讨论 AI 如何改变知识工作的能力信号、培养路径与激励结构。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><meta name="robots" content="index,follow"><link rel="canonical" href="https://blog.formalscience.com/slides/when-cognitive-artifacts-stop-being-scarce/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta property="og:title" content="当认知产物不再稀缺 - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="从数学、软件工程与形式化方法出发，讨论 AI 如何改变知识工作的能力信号、培养路径与激励结构。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/slides/when-cognitive-artifacts-stop-being-scarce/"><meta property="article:published_time" content="2026-09-29T00:00:00.000Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="当认知产物不再稀缺 - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="从数学、软件工程与形式化方法出发，讨论 AI 如何改变知识工作的能力信号、培养路径与激励结构。"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@6.0.2/dist/reveal.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@6.0.2/dist/theme/serif.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@6.0.2/dist/plugin/highlight/monokai.css"><style>
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background: #fff;
+      }
+
+      .slide-back-link {
+        position: fixed;
+        top: max(0.8rem, env(safe-area-inset-top));
+        left: max(0.8rem, env(safe-area-inset-left));
+        z-index: 100;
+        display: inline-flex;
+        align-items: center;
+        min-height: 2rem;
+        padding: 0.2rem 0.65rem;
+        border: 1px solid rgb(127 127 127 / 28%);
+        border-radius: 999px;
+        background: rgb(255 255 255 / 82%);
+        color: #222;
+        font: 500 0.78rem/1.2 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        text-decoration: none;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+
+      .slide-back-link:hover,
+      .slide-back-link:focus-visible {
+        background: #fff;
+      }
+
+      .reveal pre {
+        width: 100%;
+      }
+
+      .slides-noscript {
+        max-width: 42rem;
+        margin: 5rem auto;
+        padding: 1.5rem;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.6;
+      }
+
+      @media print {
+        .slide-back-link {
+          display: none;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .reveal .slides section {
+          transition: none !important;
+        }
+      }
+    </style></head><body><a class="slide-back-link" href="/">← 返回博客</a><div class="reveal"><div class="slides"><section data-markdown><textarea data-template># 当认知产物不再稀缺
+
+### 数学、软件工程与形式化方法中的同一个变化
+
+AI 首先改变的，可能不是“谁更聪明”。
+
+它改变的是：**一些过去昂贵的认知产物，正在变得更容易生产。**
+
+---
+
+## 先限定问题
+
+这里不需要假设 AI 已经能够独立解决所有数学难题，也不需要预测某个职业会消失。
+
+只需要考虑一个更弱、也更稳定的条件：
+
+&gt; 高质量的 proof、code 和 formal proof，边际生产成本持续下降。
+
+如果这个条件成立，很多原有制度就需要重新解释。
+
+---
+
+## 旧的知识工作闭环
+
+过去常见的关系大致是：
+
+```text
+长期训练
+   ↓
+稀缺产物
+   ↓
+能力信号
+   ↓
+岗位、声望、收入
+```
+
+一篇论文、一套复杂代码、一个机器可检查的证明，都不仅是成果。
+
+它们也被用来判断：**做出成果的人具有什么能力。**
+
+这个代理从来不完美，但过去通常足够有用。
+
+---
+
+## 当产物变便宜，信号会先变弱
+
+假设两个人提交了质量相近的成果。
+
+一个人独立完成了大部分推理。
+
+另一个人主要负责提出目标、约束 agent、检查结果和修改方向。
+
+最终产物可能很接近，但两人的贡献结构并不相同。
+
+因此真正变化的是：
+
+&gt; **我们越来越难只看产物，就反推出人的能力。**
+
+这不是说人的能力不重要。
+
+而是说“产物 → 能力”的映射正在变得不稳定。
+
+---
+
+## 数学：proof 不等于 understanding
+
+当 proof search 和 proof construction 更容易被机器协助以后，证明本身仍然重要，但它承载的信息会变化。
+
+新的稀缺问题逐渐变成：
+
+- 为什么这个问题值得研究？
+- 证明里真正起作用的机制是什么？
+- 哪个定义是自然的，哪个只是技术装置？
+- 这个结果与已有理论如何连接？
+- 哪些方向值得继续投入人的时间？
+
+**证明正确**和**人类理解了这段数学**不是同一个判断。
+
+---
+
+## 软件工程：code 不等于 engineering
+
+软件工程不是单纯写代码：
+
+```text
+需求
+→ 约束
+→ 架构
+→ 实现
+→ 测试
+→ 上线
+→ 运维
+→ 责任
+```
+
+AI 首先显著降低的是其中一部分实现成本。
+
+这会提高工程师的产出，但也会削弱“代码量”作为能力信号的意义。
+
+真正难的问题逐渐前移：
+
+&gt; 我们到底应该构建什么，以及哪些约束不能被破坏？
+
+---
+
+## 新人的培养链也会受到冲击
+
+很多 senior engineer 的能力来自长期经历：
+
+```text
+小任务
+→ 犯错
+→ 调试
+→ 维护旧系统
+→ 处理事故
+→ 形成系统直觉
+```
+
+而小任务、常规修改和重复实现，恰好是最容易自动化的一层。
+
+对单个公司来说，减少 junior 工作可能很合理。
+
+对整个行业来说，却会留下一个问题：
+
+&gt; **未来的 senior 从哪里来？**
+
+这不是简单的岗位数量问题，而是培养机制问题。
+
+---
+
+## Formal methods 的矛盾更明显
+
+形式化方法同时受到两股力量推动。
+
+一方面，proof construction 很适合自动化：
+
+```text
+生成
+→ verifier 检查
+→ 返回错误
+→ 修改
+→ 再检查
+```
+
+另一方面，如果 AI 生成的软件越来越多，我们反而更需要机器验证。
+
+所以可能出现一种看似矛盾的结果：
+
+&gt; **证明劳动变便宜，但 verification 作为基础设施变得更重要。**
+
+---
+
+## Verification 解决不了 specification problem
+
+形式化验证能够回答：
+
+```text
+Implementation satisfies Specification
+```
+
+它不能自动推出：
+
+```text
+Specification captures Human Intent
+```
+
+例如，一个金融系统可以被完整证明“余额永远不会小于零”。
+
+但如果 specification 从未要求“提款必须经过合法授权”，证明仍然可能完全正确。
+
+错误不在 proof。
+
+错误在我们一开始就没有把真正关心的性质写进去。
+
+---
+
+## 三个领域，其实在经历同一种迁移
+
+| 领域 | 更容易生产的东西 | 重新变得稀缺的东西 |
+| --- | --- | --- |
+| 数学 | proof | 问题选择、理解、解释 |
+| 软件工程 | code | specification、architecture、ownership |
+| Formal methods | formal proof | invariant、trust boundary、assurance |
+
+共同点不是“AI 替代了人”。
+
+而是：
+
+&gt; **artifact production 的稀缺性下降以后，人的价值会向选择、解释和责任迁移。**
+
+---
+
+## 四种新的稀缺能力
+
+**Judgment**：知道什么问题值得解决，什么结果值得相信。
+
+**Specification**：把目标和约束写清楚，让系统不会“正确地做错事”。
+
+**Understanding**：说明结果为什么成立、为什么重要、什么时候失效。
+
+**Accountability**：在高风险系统里，明确谁对目标、假设和最终决策负责。
+
+它们彼此相关，但不是同一个概念。
+
+---
+
+## 这不是一个 sunk-cost argument
+
+“培养一个数学家或工程师已经花了十几年，所以应该继续保留原来的岗位。”
+
+这个理由并不充分。
+
+更强的理由是：
+
+&gt; **成熟的专业能力需要很长时间才能形成，也可能需要很长时间才能重建。**
+
+当未来需求高度不确定，而能力流失又难以快速恢复时，保留一部分专业共同体具有期权价值。
+
+缓冲的对象应该是能力，而不是旧工种。
+
+---
+
+## 激励制度要重新拆分“成果”
+
+一个项目可以包含不同贡献：
+
+```text
+提出问题
+设计约束
+组织搜索
+生成结果
+验证结果
+解释机制
+维护基础设施
+承担上线责任
+```
+
+过去这些贡献经常被压缩成一个名字：
+
+“作者”。
+
+当生成过程发生变化以后，信用、招聘和晋升也需要把这些贡献重新拆开。
+
+否则我们既无法正确评价人，也无法激励真正稀缺的工作。
+
+---
+
+## 职业身份可能随之改变
+
+```text
+数学家
+theorem producer
+      ↓
+knowledge steward
+```
+
+```text
+软件工程师
+code producer
+      ↓
+system decision maker
+```
+
+```text
+formal methods engineer
+proof producer
+      ↓
+assurance architect
+```
+
+这些未必会成为正式职位名称。
+
+它们表达的是同一个方向：**从生产产物，转向决定产物应该是什么、如何被理解，以及谁对它负责。**
+
+---
+
+## 这套判断没有声称什么
+
+它没有声称：
+
+- 三类职业的总就业一定下降；
+- AI 已经能够承担所有重要判断；
+- 人类天然比机器更适合 specification 或 judgment；
+- 论文、代码和 proof 会失去价值。
+
+它只提出一个更有限的判断：
+
+&gt; **如果认知产物的生产成本持续下降，那么依赖“产物稀缺性”建立起来的评价与激励制度，就必须调整。**
+
+---
+
+## 背景资料
+
+这套论证主要讨论激励结构，而不是用 benchmark 直接推导就业结论。
+
+下面三类材料只用于确认能力变化的背景：
+
+- [METR：Task-Completion Time Horizons of Frontier AI Models](https://metr.org/time-horizons/)：软件类 agent 能完成的任务跨度持续增长。
+- [OpenAI：Our First Proof submissions](https://openai.com/index/first-proof-submissions/)：研究级数学问题已经成为模型能力评估对象。
+- [Lean FRO：Theorem Proving in Industry with Lean](https://lean-lang.org/presentations/20260604_DFMD/)：AI、程序与机器可检查证明正在进入同一工程流程。
+
+这些材料支持“生产方式正在变化”。
+
+它们本身并不证明某个职业会减少，也不证明人的 judgment 可以被自动替代。
+
+---
+
+# 最后一个问题
+
+如果高质量的认知产物越来越容易获得，
+
+**我们究竟应该为什么样的人类能力付费？**
+
+也许不是因为一个人能生产更多 artifact。
+
+而是因为他能够判断：
+
+&gt; 什么值得被生产，什么值得被相信，什么值得被理解，以及什么必须有人负责。</textarea></section></div></div><noscript><p class="slides-noscript">此演示文稿需要 JavaScript 才能显示。</p></noscript><script src="https://cdn.jsdelivr.net/npm/reveal.js@6.0.2/dist/reveal.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@6.0.2/dist/plugin/markdown.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@6.0.2/dist/plugin/highlight.js"></script><script>
+      Reveal.initialize({
+        hash: true,
+        controls: true,
+        progress: true,
+        slideNumber: "c/t",
+        center: true,
+        transition: "slide",
+        navigationMode: "linear",
+        plugins: [RevealMarkdown, RevealHighlight],
+      });
+    </script></body></html>
