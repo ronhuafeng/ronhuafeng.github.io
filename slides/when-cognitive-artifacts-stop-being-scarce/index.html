@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>当认知产物不再稀缺 - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="从数学、软件工程与形式化方法出发，讨论 AI 如何改变知识工作的能力信号、培养路径与激励结构。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><meta name="robots" content="index,follow"><link rel="canonical" href="https://blog.formalscience.com/slides/when-cognitive-artifacts-stop-being-scarce/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta property="og:title" content="当认知产物不再稀缺 - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="从数学、软件工程与形式化方法出发，讨论 AI 如何改变知识工作的能力信号、培养路径与激励结构。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/slides/when-cognitive-artifacts-stop-being-scarce/"><meta property="article:published_time" content="2026-09-29T00:00:00.000Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="当认知产物不再稀缺 - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="从数学、软件工程与形式化方法出发，讨论 AI 如何改变知识工作的能力信号、培养路径与激励结构。"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@6.0.2/dist/reveal.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@6.0.2/dist/theme/serif.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@6.0.2/dist/plugin/highlight/monokai.css"><style>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>当认知产物不再稀缺 - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="如果部分成果更容易生成，我们如何识别贡献、培养能力，并安排责任？"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><meta name="robots" content="index,follow"><link rel="canonical" href="https://blog.formalscience.com/slides/when-cognitive-artifacts-stop-being-scarce/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta property="og:title" content="当认知产物不再稀缺 - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="如果部分成果更容易生成，我们如何识别贡献、培养能力，并安排责任？"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/slides/when-cognitive-artifacts-stop-being-scarce/"><meta property="article:published_time" content="2026-09-29T00:00:00.000Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="当认知产物不再稀缺 - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="如果部分成果更容易生成，我们如何识别贡献、培养能力，并安排责任？"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@6.0.2/dist/reveal.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@6.0.2/dist/theme/white.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@6.0.2/dist/plugin/highlight/monokai.css"><style>
       html,
       body {
         margin: 0;
@@ -121,334 +121,237 @@
           transition: none !important;
         }
       }
-    </style></head><body><a class="slide-back-link" href="/">← 返回博客</a><div class="reveal"><div class="slides"><section data-markdown><textarea data-template># 当认知产物不再稀缺
+    </style><link rel="stylesheet" href="/_astro/_slug_.kBsNsEEu.css"></head><body class="editorial"><a class="slide-back-link" href="/">← 返回博客</a><div class="reveal"><div class="slides"><section data-markdown><textarea data-template>&lt;!-- .slide: class=&quot;cover&quot; --&gt;
+&lt;div class=&quot;slide-content&quot;&gt;
+&lt;p class=&quot;eyebrow&quot;&gt;数学 · 软件工程 · 形式化方法&lt;/p&gt;
+&lt;h1&gt;当认知产物&lt;br&gt;&lt;em&gt;不再稀缺&lt;/em&gt;&lt;/h1&gt;
+&lt;p class=&quot;cover-question&quot;&gt;成果更容易生成以后，&lt;br&gt;我们如何识别人的贡献？&lt;/p&gt;
+&lt;p class=&quot;footnote&quot;&gt;一个条件论证：假设部分达到既定要求的成果，其生成成本继续下降。&lt;/p&gt;
+&lt;/div&gt;
 
-### 数学、软件工程与形式化方法中的同一个变化
-
-AI 首先改变的，可能不是“谁更聪明”。
-
-它改变的是：**一些过去昂贵的认知产物，正在变得更容易生产。**
-
----
-
-## 先限定问题
-
-这里不需要假设 AI 已经能够独立解决所有数学难题，也不需要预测某个职业会消失。
-
-只需要考虑一个更弱、也更稳定的条件：
-
-&gt; 高质量的 proof、code 和 formal proof，边际生产成本持续下降。
-
-如果这个条件成立，很多原有制度就需要重新解释。
+Note:
+这里的“认知产物”指可交付、可检查、可复用的证明、代码等成果。标题描述一种讨论条件，不宣称所有知识成果已不再稀缺。生成成本也不等于审查、集成、维护和风险控制在内的端到端成本。
 
 ---
 
-## 旧的知识工作闭环
+&lt;div class=&quot;slide-content&quot;&gt;
+&lt;p class=&quot;eyebrow&quot;&gt;成果与贡献&lt;/p&gt;
+&lt;h2&gt;同样的成果，可以来自&lt;br&gt;不同的贡献路径&lt;/h2&gt;
+&lt;div class=&quot;comparison&quot;&gt;
+&lt;div&gt;&lt;p class=&quot;column-label&quot;&gt;路径 A&lt;/p&gt;&lt;h3&gt;独立完成主要推理&lt;/h3&gt;&lt;p&gt;构造证明或实现&lt;br&gt;检查并修正自己的结果&lt;/p&gt;&lt;/div&gt;
+&lt;div&gt;&lt;p class=&quot;column-label&quot;&gt;路径 B&lt;/p&gt;&lt;h3&gt;组织工具完成任务&lt;/h3&gt;&lt;p&gt;提出目标与约束&lt;br&gt;筛选结果，发现并纠正问题&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p class=&quot;takeaway&quot;&gt;成品质量相近，&lt;strong&gt;个人做过的判断未必相同。&lt;/strong&gt;&lt;/p&gt;
+&lt;p class=&quot;footnote&quot;&gt;示意比较。两条路径都可能包含高水平贡献，成品本身不足以完成归因。&lt;/p&gt;
+&lt;/div&gt;
 
-过去常见的关系大致是：
-
-```text
-长期训练
-   ↓
-稀缺产物
-   ↓
-能力信号
-   ↓
-岗位、声望、收入
-```
-
-一篇论文、一套复杂代码、一个机器可检查的证明，都不仅是成果。
-
-它们也被用来判断：**做出成果的人具有什么能力。**
-
-这个代理从来不完美，但过去通常足够有用。
+Note:
+这里不把独立推理排在工具协作之上，也不把使用工具等同于缺乏能力。主张只是：当得到相近成品的路径更多，评价者需要额外证据，才能判断某个人究竟做了什么。这比“所有成果的能力信号都下降”更有限。
 
 ---
 
-## 当产物变便宜，信号会先变弱
+&lt;!-- .slide: class=&quot;case-slide&quot; --&gt;
+&lt;div class=&quot;slide-content&quot;&gt;
+&lt;p class=&quot;eyebrow&quot;&gt;一项具体的判断&lt;/p&gt;
+&lt;h2&gt;一笔未经授权的提款，&lt;br&gt;仍然满足余额非负&lt;/h2&gt;
+&lt;div class=&quot;transaction&quot; aria-label=&quot;账户余额 100，提款 30，剩余 70&quot;&gt;
+&lt;div&gt;&lt;span&gt;原余额&lt;/span&gt;&lt;strong&gt;100&lt;/strong&gt;&lt;/div&gt;&lt;span class=&quot;operator&quot; aria-hidden=&quot;true&quot;&gt;−&lt;/span&gt;&lt;div&gt;&lt;span&gt;提款&lt;/span&gt;&lt;strong&gt;30&lt;/strong&gt;&lt;/div&gt;&lt;span class=&quot;operator&quot; aria-hidden=&quot;true&quot;&gt;=&lt;/span&gt;&lt;div&gt;&lt;span&gt;剩余余额&lt;/span&gt;&lt;strong&gt;70&lt;/strong&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;property-row&quot;&gt;&lt;span&gt;已写出的性质&lt;/span&gt;&lt;strong&gt;余额 ≥ 0&lt;/strong&gt;&lt;span class=&quot;pass&quot;&gt;满足&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;property-row missing fragment&quot;&gt;&lt;span&gt;遗漏的要求&lt;/span&gt;&lt;strong&gt;提款者有合法授权&lt;/strong&gt;&lt;span&gt;不满足&lt;/span&gt;&lt;/div&gt;
+&lt;p class=&quot;footnote&quot;&gt;示意例，仅讨论一个性质。数字帮助展示反例，不代表真实金融系统。&lt;/p&gt;
+&lt;/div&gt;
 
-假设两个人提交了质量相近的成果。
-
-一个人独立完成了大部分推理。
-
-另一个人主要负责提出目标、约束 agent、检查结果和修改方向。
-
-最终产物可能很接近，但两人的贡献结构并不相同。
-
-因此真正变化的是：
-
-&gt; **我们越来越难只看产物，就反推出人的能力。**
-
-这不是说人的能力不重要。
-
-而是说“产物 → 能力”的映射正在变得不稳定。
+Note:
+可先展示余额非负的性质，再揭示授权要求。即使实现对所有模型内行为都满足余额非负，也无法据此推出提款授权正确。这里不把一次计算当作形式化证明，计算只展示两个性质可以分离。
 
 ---
 
-## 数学：proof 不等于 understanding
+&lt;div class=&quot;slide-content&quot;&gt;
+&lt;p class=&quot;eyebrow&quot;&gt;验证的边界&lt;/p&gt;
+&lt;h2&gt;证明覆盖的是&lt;br&gt;&lt;em&gt;已经写下来的要求&lt;/em&gt;&lt;/h2&gt;
+&lt;div class=&quot;boundary-statement&quot;&gt;&lt;p&gt;在给定模型与假设下，&lt;/p&gt;&lt;p&gt;&lt;strong&gt;实现满足规格&lt;/strong&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;div class=&quot;split-notes&quot;&gt;&lt;div&gt;&lt;h3&gt;规格需要检查&lt;/h3&gt;&lt;p&gt;是否遗漏授权？&lt;br&gt;是否表达了真正的目标？&lt;/p&gt;&lt;/div&gt;&lt;div&gt;&lt;h3&gt;假设需要检查&lt;/h3&gt;&lt;p&gt;身份信息是否可信？&lt;br&gt;运行环境是否符合模型？&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p class=&quot;footnote&quot;&gt;证明的范围与现实中的目标、环境之间，仍然需要可检查的连接。&lt;/p&gt;
+&lt;/div&gt;
 
-当 proof search 和 proof construction 更容易被机器协助以后，证明本身仍然重要，但它承载的信息会变化。
-
-新的稀缺问题逐渐变成：
-
-- 为什么这个问题值得研究？
-- 证明里真正起作用的机制是什么？
-- 哪个定义是自然的，哪个只是技术装置？
-- 这个结果与已有理论如何连接？
-- 哪些方向值得继续投入人的时间？
-
-**证明正确**和**人类理解了这段数学**不是同一个判断。
+Note:
+形式化验证提供的保证依赖所采用的模型、规格与假设。编译、部署、外部系统和运行时环境是否在保证范围内，需要明确说明。自动化也可以帮助检查规格与假设，本页没有主张这些工作只能由人完成。
 
 ---
 
-## 软件工程：code 不等于 engineering
+&lt;!-- .slide: class=&quot;thesis-slide&quot; --&gt;
+&lt;div class=&quot;slide-content&quot;&gt;
+&lt;p class=&quot;eyebrow&quot;&gt;核心判断&lt;/p&gt;
+&lt;h2&gt;生成路径变多以后，&lt;br&gt;仅看成品难以回答&lt;br&gt;&lt;em&gt;“这个人贡献了什么？”&lt;/em&gt;&lt;/h2&gt;
+&lt;p class=&quot;thesis-support&quot;&gt;评审、招聘与晋升若要识别个人贡献，&lt;br&gt;就需要成品之外的证据。&lt;/p&gt;
+&lt;p class=&quot;footnote&quot;&gt;条件推论。它没有直接给出职业数量、收入分配或人的永久优势。&lt;/p&gt;
+&lt;/div&gt;
 
-软件工程不是单纯写代码：
-
-```text
-需求
-→ 约束
-→ 架构
-→ 实现
-→ 测试
-→ 上线
-→ 运维
-→ 责任
-```
-
-AI 首先显著降低的是其中一部分实现成本。
-
-这会提高工程师的产出，但也会削弱“代码量”作为能力信号的意义。
-
-真正难的问题逐渐前移：
-
-&gt; 我们到底应该构建什么，以及哪些约束不能被破坏？
+Note:
+生成方式变化与个人能力信号的关系，需要通过贡献路径来解释，而不是仅从成本下降跳到“人的判断更值钱”。成果仍有使用价值，也仍能提供部分信息。更准确的变化是：成品作为个人贡献的唯一依据可能不够。
 
 ---
 
-## 新人的培养链也会受到冲击
+&lt;div class=&quot;slide-content evidence-slide&quot;&gt;
+&lt;p class=&quot;eyebrow&quot;&gt;能力变化的背景&lt;/p&gt;
+&lt;h2&gt;三份材料，三个观察窗口&lt;/h2&gt;
+&lt;div class=&quot;evidence-list&quot;&gt;
+&lt;div&gt;&lt;span class=&quot;evidence-index&quot;&gt;01&lt;/span&gt;&lt;div&gt;&lt;h3&gt;&lt;a href=&quot;https://metr.org/time-horizons/&quot;&gt;METR · 任务时间跨度&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;在一组目标明确、相对独立的技术任务上，AI agent 可完成的任务跨度总体上升。&lt;/p&gt;&lt;p class=&quot;qualification&quot;&gt;以人类专家耗时衡量任务难度，不是 AI 的连续运行时长。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div&gt;&lt;span class=&quot;evidence-index&quot;&gt;02&lt;/span&gt;&lt;div&gt;&lt;h3&gt;&lt;a href=&quot;https://openai.com/index/first-proof-submissions/&quot;&gt;OpenAI · First Proof&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;公开研究级数学题的完整证明尝试，接受领域专家检查。&lt;/p&gt;&lt;p class=&quot;qualification&quot;&gt;有人类提示、反馈与择优选择，不是严格控制实验。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div&gt;&lt;span class=&quot;evidence-index&quot;&gt;03&lt;/span&gt;&lt;div&gt;&lt;h3&gt;&lt;a href=&quot;https://lean-lang.org/presentations/20260604_DFMD/&quot;&gt;Lean FRO · 工程案例&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;展示 AI、程序和机器可检查的证明如何进入同一工程流程。&lt;/p&gt;&lt;p class=&quot;qualification&quot;&gt;案例与工具进展介绍，不是通用生产率测量。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p class=&quot;footnote&quot;&gt;这些材料提供技术背景；并未直接测量端到端成本、工资或就业变化。&lt;/p&gt;
+&lt;/div&gt;
 
-很多 senior engineer 的能力来自长期经历：
-
-```text
-小任务
-→ 犯错
-→ 调试
-→ 维护旧系统
-→ 处理事故
-→ 形成系统直觉
-```
-
-而小任务、常规修改和重复实现，恰好是最容易自动化的一层。
-
-对单个公司来说，减少 junior 工作可能很合理。
-
-对整个行业来说，却会留下一个问题：
-
-&gt; **未来的 senior 从哪里来？**
-
-这不是简单的岗位数量问题，而是培养机制问题。
+Note:
+METR：Task-Completion Time Horizons of Frontier AI Models，页面更新于 2026-05-08。任务主要来自软件工程、机器学习和网络安全，通常比真实工作更清晰、独立。成功概率不能解释为全面可靠，超过 16 小时的估计有明确可靠性限制。https://metr.org/time-horizons/
+OpenAI：Our First Proof submissions，2026-02-20。首次提交公开于 2026-02-14。报告中的正确性判断存在不确定性并有修订。这里的可检查证明指专家检查，不代表 Lean 式机器核验。https://openai.com/index/first-proof-submissions/
+Sebastian Ullrich / Lean FRO：Theorem Proving in Industry with Lean，Dutch Formal Methods Day，2026-06-04。案例中的保证均有具体命题、前提和信任边界。https://lean-lang.org/presentations/20260604_DFMD/
 
 ---
 
-## Formal methods 的矛盾更明显
+&lt;div class=&quot;slide-content&quot;&gt;
+&lt;p class=&quot;eyebrow&quot;&gt;数学&lt;/p&gt;
+&lt;h2&gt;正确证明与理解，需要不同的证据&lt;/h2&gt;
+&lt;div class=&quot;comparison unequal&quot;&gt;
+&lt;div&gt;&lt;p class=&quot;column-label&quot;&gt;证明回答&lt;/p&gt;&lt;h3 class=&quot;large-claim&quot;&gt;结论是否&lt;br&gt;由前提推出？&lt;/h3&gt;&lt;/div&gt;
+&lt;div&gt;&lt;p class=&quot;column-label&quot;&gt;理解还要回答&lt;/p&gt;&lt;ul class=&quot;plain-list&quot;&gt;&lt;li&gt;哪个机制真正起作用？&lt;/li&gt;&lt;li&gt;换一个假设，哪里会失效？&lt;/li&gt;&lt;li&gt;它与已有理论如何连接？&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p class=&quot;takeaway&quot;&gt;问题选择、证明构造和解释，&lt;strong&gt;可以分别评价。&lt;/strong&gt;&lt;/p&gt;
+&lt;p class=&quot;footnote&quot;&gt;同一个人可能完成多个环节，使用工具也可能帮助形成理解。&lt;/p&gt;
+&lt;/div&gt;
 
-形式化方法同时受到两股力量推动。
-
-一方面，proof construction 很适合自动化：
-
-```text
-生成
-→ verifier 检查
-→ 返回错误
-→ 修改
-→ 再检查
-```
-
-另一方面，如果 AI 生成的软件越来越多，我们反而更需要机器验证。
-
-所以可能出现一种看似矛盾的结果：
-
-&gt; **证明劳动变便宜，但 verification 作为基础设施变得更重要。**
+Note:
+不从“证明不等于理解”推导“机器不能理解”。这里是在区分需要不同证据的评价对象：证明有效、作者理解、问题值得研究。复述一个结果不一定足够，解释关键机制、适用范围和相邻反例能提供更多信息。
 
 ---
 
-## Verification 解决不了 specification problem
+&lt;div class=&quot;slide-content&quot;&gt;
+&lt;p class=&quot;eyebrow&quot;&gt;软件工程&lt;/p&gt;
+&lt;h2&gt;实现只是&lt;br&gt;需求到运行的一段&lt;/h2&gt;
+&lt;ol class=&quot;workline&quot;&gt;&lt;li&gt;&lt;span&gt;01&lt;/span&gt;&lt;h3&gt;确定目标&lt;/h3&gt;&lt;p&gt;允许谁提款？&lt;br&gt;保护谁的权益？&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;02&lt;/span&gt;&lt;h3&gt;写出约束&lt;/h3&gt;&lt;p&gt;授权与额度&lt;br&gt;失败时的行为&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;03&lt;/span&gt;&lt;h3&gt;生成实现&lt;/h3&gt;&lt;p&gt;代码与测试&lt;br&gt;集成到系统&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;04&lt;/span&gt;&lt;h3&gt;验收与运行&lt;/h3&gt;&lt;p&gt;检查证据&lt;br&gt;处理变更与事故&lt;/p&gt;&lt;/li&gt;&lt;/ol&gt;
+&lt;p class=&quot;takeaway&quot;&gt;实现更容易生成时，&lt;strong&gt;项目总成本仍取决于整个过程。&lt;/strong&gt;&lt;/p&gt;
+&lt;p class=&quot;footnote&quot;&gt;这些工作一直存在。需要重新辨认的是谁做了什么，以及各环节的成本如何变化。&lt;/p&gt;
+&lt;/div&gt;
 
-形式化验证能够回答：
-
-```text
-Implementation satisfies Specification
-```
-
-它不能自动推出：
-
-```text
-Specification captures Human Intent
-```
-
-例如，一个金融系统可以被完整证明“余额永远不会小于零”。
-
-但如果 specification 从未要求“提款必须经过合法授权”，证明仍然可能完全正确。
-
-错误不在 proof。
-
-错误在我们一开始就没有把真正关心的性质写进去。
+Note:
+工程评审一直在考察设计、协作和运维，不以代码行数为唯一评价标准。AI 介入以后，重点是原有证据是否仍能准确反映分工，以及验证、集成、维护的成本是否随生成成本同步下降。
 
 ---
 
-## 三个领域，其实在经历同一种迁移
+&lt;div class=&quot;slide-content&quot;&gt;
+&lt;p class=&quot;eyebrow&quot;&gt;形式化方法&lt;/p&gt;
+&lt;h2&gt;证明构造与验证需求可以同时变化&lt;/h2&gt;
+&lt;div class=&quot;comparison&quot;&gt;
+&lt;div&gt;&lt;p class=&quot;column-label&quot;&gt;单份成果&lt;/p&gt;&lt;h3&gt;构造证明的成本&lt;br&gt;可能下降&lt;/h3&gt;&lt;p&gt;工具生成候选证明&lt;br&gt;检查器返回结果&lt;br&gt;据此修改候选&lt;/p&gt;&lt;/div&gt;
+&lt;div&gt;&lt;p class=&quot;column-label&quot;&gt;系统整体&lt;/p&gt;&lt;h3&gt;需要验证的对象&lt;br&gt;可能增多&lt;/h3&gt;&lt;p&gt;更多生成代码&lt;br&gt;更多变更与组合&lt;br&gt;更多需要明确的保证&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p class=&quot;takeaway&quot;&gt;总工作量如何变化，&lt;strong&gt;还取决于规模、范围与可靠性要求。&lt;/strong&gt;&lt;/p&gt;
+&lt;p class=&quot;footnote&quot;&gt;可能的机制，不是已测得的需求增长。技术背景：&lt;a href=&quot;https://lean-lang.org/presentations/20260604_DFMD/&quot;&gt;Lean FRO 工程报告&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
 
-| 领域 | 更容易生产的东西 | 重新变得稀缺的东西 |
-| --- | --- | --- |
-| 数学 | proof | 问题选择、理解、解释 |
-| 软件工程 | code | specification、architecture、ownership |
-| Formal methods | formal proof | invariant、trust boundary、assurance |
-
-共同点不是“AI 替代了人”。
-
-而是：
-
-&gt; **artifact production 的稀缺性下降以后，人的价值会向选择、解释和责任迁移。**
-
----
-
-## 四种新的稀缺能力
-
-**Judgment**：知道什么问题值得解决，什么结果值得相信。
-
-**Specification**：把目标和约束写清楚，让系统不会“正确地做错事”。
-
-**Understanding**：说明结果为什么成立、为什么重要、什么时候失效。
-
-**Accountability**：在高风险系统里，明确谁对目标、假设和最终决策负责。
-
-它们彼此相关，但不是同一个概念。
+Note:
+生成、核验和修正可以形成自动化循环，但不能由此推断验证基础设施或专业人员需求的净增减。部署更多验证也不等于每份证明更贵。需分别看单位成本、对象数量、规格范围、核验可靠性和工程整合成本。
 
 ---
 
-## 这不是一个 sunk-cost argument
+&lt;div class=&quot;slide-content&quot;&gt;
+&lt;p class=&quot;eyebrow&quot;&gt;评价对象&lt;/p&gt;
+&lt;h2&gt;能力需要证据，责任需要安排&lt;/h2&gt;
+&lt;div class=&quot;ability-list&quot;&gt;&lt;div&gt;&lt;h3&gt;判断&lt;/h3&gt;&lt;p&gt;为何选这个问题？为何接受这个结果？&lt;/p&gt;&lt;/div&gt;&lt;div&gt;&lt;h3&gt;规格表达&lt;/h3&gt;&lt;p&gt;目标和约束写在哪里？遗漏如何发现？&lt;/p&gt;&lt;/div&gt;&lt;div&gt;&lt;h3&gt;理解与解释&lt;/h3&gt;&lt;p&gt;为何成立？换了条件，结论还能用吗？&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;responsibility&quot;&gt;&lt;h3&gt;责任机制&lt;/h3&gt;&lt;p&gt;谁有权决定，谁负责审查，谁发布，谁补救？&lt;/p&gt;&lt;/div&gt;
+&lt;p class=&quot;footnote&quot;&gt;前三项是需要识别的能力。问责还依赖权限、流程和组织安排，不能只靠个人品质。&lt;/p&gt;
+&lt;/div&gt;
 
-“培养一个数学家或工程师已经花了十几年，所以应该继续保留原来的岗位。”
-
-这个理由并不充分。
-
-更强的理由是：
-
-&gt; **成熟的专业能力需要很长时间才能形成，也可能需要很长时间才能重建。**
-
-当未来需求高度不确定，而能力流失又难以快速恢复时，保留一部分专业共同体具有期权价值。
-
-缓冲的对象应该是能力，而不是旧工种。
+Note:
+这些能力并非因为 AI 才出现，也不意味着它们天然或永久属于人类。把它们从最终成品中拆出来评价，是为了让贡献可以被看见。Accountability 涉及角色权限、审查义务、发布决定和事后补救，不能简单列成第四种个人技能。
 
 ---
 
-## 激励制度要重新拆分“成果”
+&lt;!-- .slide: class=&quot;record-slide&quot; --&gt;
+&lt;div class=&quot;slide-content&quot;&gt;
+&lt;p class=&quot;eyebrow&quot;&gt;一个可用的做法&lt;/p&gt;
+&lt;h2&gt;成品旁边，留下一份贡献记录&lt;/h2&gt;
+&lt;p class=&quot;intro&quot;&gt;以提款授权为例，一次关键判断可以这样记录：&lt;/p&gt;
+&lt;dl class=&quot;contribution-record&quot;&gt;&lt;div&gt;&lt;dt&gt;作了什么判断&lt;/dt&gt;&lt;dd&gt;“余额非负”不足以保护账户，还需检查授权。&lt;/dd&gt;&lt;/div&gt;&lt;div&gt;&lt;dt&gt;依据是什么&lt;/dt&gt;&lt;dd&gt;构造余额仍为正、但提款者无权限的反例。&lt;/dd&gt;&lt;/div&gt;&lt;div&gt;&lt;dt&gt;留下什么证据&lt;/dt&gt;&lt;dd&gt;补充授权规格，并关联检查结果及适用假设。&lt;/dd&gt;&lt;/div&gt;&lt;div&gt;&lt;dt&gt;贡献如何区分&lt;/dt&gt;&lt;dd&gt;分别标明问题提出、生成、审查与发布决定。&lt;/dd&gt;&lt;/div&gt;&lt;/dl&gt;
+&lt;p class=&quot;takeaway&quot;&gt;评价具体贡献，&lt;strong&gt;也记录工具参与和证据的边界。&lt;/strong&gt;&lt;/p&gt;
+&lt;p class=&quot;footnote&quot;&gt;示例模板，不是实际项目记录。它可以用于评审、招聘讨论和项目复盘。&lt;/p&gt;
+&lt;/div&gt;
 
-一个项目可以包含不同贡献：
-
-```text
-提出问题
-设计约束
-组织搜索
-生成结果
-验证结果
-解释机制
-维护基础设施
-承担上线责任
-```
-
-过去这些贡献经常被压缩成一个名字：
-
-“作者”。
-
-当生成过程发生变化以后，信用、招聘和晋升也需要把这些贡献重新拆开。
-
-否则我们既无法正确评价人，也无法激励真正稀缺的工作。
+Note:
+记录应简短，指向真实规格、反例、检查报告或决策记录，不以“写得很完整”代替事实。还应保留维护基础设施、组织搜索和解释机制等实际贡献。对于重要发布，需明确决策者与补救安排。没有要求保存全部推理过程，也不把冗长过程文档当作新的绩效指标。
 
 ---
 
-## 职业身份可能随之改变
+&lt;div class=&quot;slide-content&quot;&gt;
+&lt;p class=&quot;eyebrow&quot;&gt;培养路径&lt;/p&gt;
+&lt;h2&gt;常规任务减少时，&lt;br&gt;判断练习需要有意保留&lt;/h2&gt;
+&lt;p class=&quot;intro&quot;&gt;如果常规任务减少，新人获得反馈的机会也可能改变。&lt;/p&gt;
+&lt;ol class=&quot;practice-list&quot;&gt;&lt;li&gt;&lt;span&gt;预测&lt;/span&gt;&lt;p&gt;使用工具前，先判断结果应该满足什么。&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;检查&lt;/span&gt;&lt;p&gt;解释失败和反例，定位遗漏的约束。&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;修正&lt;/span&gt;&lt;p&gt;修改后验证，再跟踪真实运行中的变化。&lt;/p&gt;&lt;/li&gt;&lt;/ol&gt;
+&lt;p class=&quot;takeaway&quot;&gt;培养要保留&lt;strong&gt;作判断、获得反馈、承担适当责任&lt;/strong&gt;的机会。&lt;/p&gt;
+&lt;p class=&quot;footnote&quot;&gt;培养风险与设计建议；不意味着新人岗位必然减少，也不排除 AI 帮助学习。&lt;/p&gt;
+&lt;/div&gt;
 
-```text
-数学家
-theorem producer
-      ↓
-knowledge steward
-```
-
-```text
-软件工程师
-code producer
-      ↓
-system decision maker
-```
-
-```text
-formal methods engineer
-proof producer
-      ↓
-assurance architect
-```
-
-这些未必会成为正式职位名称。
-
-它们表达的是同一个方向：**从生产产物，转向决定产物应该是什么、如何被理解，以及谁对它负责。**
+Note:
+原有小任务、调试、维护和事故处理常为学习提供反馈。如果这些工作形式变化，组织应观察学习结果并设计替代练习，而不是机械保留低效劳动。练习需要适当的真实约束、逐步提高的自主权和可靠指导。
 
 ---
 
-## 这套判断没有声称什么
+&lt;div class=&quot;slide-content&quot;&gt;
+&lt;p class=&quot;eyebrow&quot;&gt;制度选择&lt;/p&gt;
+&lt;h2&gt;专业能力的保留，需要面向未来的理由&lt;/h2&gt;
+&lt;div class=&quot;comparison unequal&quot;&gt;&lt;div&gt;&lt;p class=&quot;column-label&quot;&gt;已经发生的投入&lt;/p&gt;&lt;h3&gt;“培养了很多年”&lt;/h3&gt;&lt;p&gt;单凭过去的成本，&lt;br&gt;不足以决定继续投入。&lt;/p&gt;&lt;/div&gt;&lt;div&gt;&lt;p class=&quot;column-label&quot;&gt;仍需评估的条件&lt;/p&gt;&lt;ul class=&quot;plain-list&quot;&gt;&lt;li&gt;未来是否仍可能需要？&lt;/li&gt;&lt;li&gt;失去后是否难以重建？&lt;/li&gt;&lt;li&gt;保留与重建各有什么成本？&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p class=&quot;takeaway&quot;&gt;在这些条件下，&lt;strong&gt;保留部分能力可能有价值。&lt;/strong&gt;&lt;/p&gt;
+&lt;p class=&quot;footnote&quot;&gt;条件性的制度建议，不直接推导维持某种岗位、人数或职业名称。&lt;/p&gt;
+&lt;/div&gt;
 
-它没有声称：
-
-- 三类职业的总就业一定下降；
-- AI 已经能够承担所有重要判断；
-- 人类天然比机器更适合 specification 或 judgment；
-- 论文、代码和 proof 会失去价值。
-
-它只提出一个更有限的判断：
-
-&gt; **如果认知产物的生产成本持续下降，那么依赖“产物稀缺性”建立起来的评价与激励制度，就必须调整。**
+Note:
+保留专业能力的理由，应来自未来需求与重建难度。能力的未来需求、重建周期以及持续维护成本，必须分别评估。技术能力材料无法单独证明某一保留方案值得实施。
 
 ---
 
-## 背景资料
+&lt;div class=&quot;slide-content limits-slide&quot;&gt;
+&lt;p class=&quot;eyebrow&quot;&gt;论证走到哪里&lt;/p&gt;
+&lt;h2&gt;重新识别贡献，&lt;br&gt;不必等待职业预测&lt;/h2&gt;
+&lt;div class=&quot;comparison&quot;&gt;&lt;div&gt;&lt;p class=&quot;column-label&quot;&gt;可以提出的调整&lt;/p&gt;&lt;h3&gt;让评价更具体&lt;/h3&gt;&lt;p&gt;区分选择、生成、验证与解释&lt;br&gt;观察能力如何形成&lt;br&gt;明确重要决策的责任安排&lt;/p&gt;&lt;/div&gt;&lt;div&gt;&lt;p class=&quot;column-label&quot;&gt;还需要独立证据&lt;/p&gt;&lt;h3&gt;就业与收入如何变化&lt;/h3&gt;&lt;p&gt;岗位总数是否增减&lt;br&gt;哪些能力获得更高回报&lt;br&gt;谁能长期保有比较优势&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p class=&quot;takeaway&quot;&gt;成果依然有价值。&lt;strong&gt;评价成果与评价贡献，需要不同的信息。&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
 
-这套论证主要讨论激励结构，而不是用 benchmark 直接推导就业结论。
-
-下面三类材料只用于确认能力变化的背景：
-
-- [METR：Task-Completion Time Horizons of Frontier AI Models](https://metr.org/time-horizons/)：软件类 agent 能完成的任务跨度持续增长。
-- [OpenAI：Our First Proof submissions](https://openai.com/index/first-proof-submissions/)：研究级数学问题已经成为模型能力评估对象。
-- [Lean FRO：Theorem Proving in Industry with Lean](https://lean-lang.org/presentations/20260604_DFMD/)：AI、程序与机器可检查证明正在进入同一工程流程。
-
-这些材料支持“生产方式正在变化”。
-
-它们本身并不证明某个职业会减少，也不证明人的 judgment 可以被自动替代。
+Note:
+不预测所有职业消失，也不声称人类天然更擅长判断或规格表达。职业身份可能随实际分工变化，但命名不能代替机制解释。是否“为某种人类能力付费”仍是开放的制度问题。
 
 ---
 
-# 最后一个问题
+&lt;!-- .slide: class=&quot;closing-slide&quot; --&gt;
+&lt;div class=&quot;slide-content&quot;&gt;
+&lt;p class=&quot;eyebrow&quot;&gt;留下的一个问题&lt;/p&gt;
+&lt;h2&gt;当成果更容易获得，&lt;br&gt;我们如何让&lt;br&gt;&lt;em&gt;贡献也清楚可见？&lt;/em&gt;&lt;/h2&gt;
+&lt;p class=&quot;closing-line&quot;&gt;谁作了什么判断？&lt;br&gt;依据是什么？&lt;br&gt;出了问题，由谁处理？&lt;/p&gt;
+&lt;p class=&quot;footnote&quot;&gt;评价贡献 · 培养能力 · 安排责任&lt;/p&gt;
+&lt;/div&gt;
 
-如果高质量的认知产物越来越容易获得，
-
-**我们究竟应该为什么样的人类能力付费？**
-
-也许不是因为一个人能生产更多 artifact。
-
-而是因为他能够判断：
-
-&gt; 什么值得被生产，什么值得被相信，什么值得被理解，以及什么必须有人负责。</textarea></section></div></div><noscript><p class="slides-noscript">此演示文稿需要 JavaScript 才能显示。</p></noscript><script src="https://cdn.jsdelivr.net/npm/reveal.js@6.0.2/dist/reveal.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@6.0.2/dist/plugin/markdown.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@6.0.2/dist/plugin/highlight.js"></script><script>
+Note:
+收束到可实际改变的评价方式，而不是用技术趋势替代对职业、工资和社会价值的独立论证。下一个项目可以先尝试一份简短贡献记录，检查它是否真的帮助团队理解关键判断与责任。</textarea></section></div></div><noscript><p class="slides-noscript">此演示文稿需要 JavaScript 才能显示。</p></noscript><script src="https://cdn.jsdelivr.net/npm/reveal.js@6.0.2/dist/reveal.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@6.0.2/dist/plugin/markdown.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@6.0.2/dist/plugin/highlight.js"></script><script>
+      const editorial = document.body.classList.contains("editorial");
+      const isPrint = new URLSearchParams(location.search).has("print-pdf");
+      // The smallest stage must keep 21px body text above 17px after scaling.
+      const readingQuery = window.matchMedia("(max-width: 1100px), (max-height: 700px)");
+      const isReading = () => editorial && !isPrint && readingQuery.matches;
+      document.body.classList.toggle("reading", isReading());
+      const dimensions = () => editorial && !isReading()
+        ? { width: 1280, height: 720, margin: isPrint ? 0 : 0.02 }
+        : { width: "100%", height: "100%", margin: 0 };
       Reveal.initialize({
         hash: true,
         controls: true,
         progress: true,
         slideNumber: "c/t",
-        width: "100%",
-        height: "100%",
-        margin: 0,
+        ...dimensions(),
+        ...(editorial ? { pdfSeparateFragments: false, pdfMaxPagesPerSlide: 1 } : {}),
+        fragments: !isReading(),
         center: false,
-        // Keep one readable, scrollable slide per page at every viewport size.
+        // Small screens reflow the same content; page controls remain consistent.
         scrollActivationWidth: null,
         // Let touch gestures scroll long slides instead of advancing the deck.
         touch: false,
@@ -457,10 +360,15 @@ assurance architect
           [32, 33, 34, 35, 36, 38, 40].includes(event.keyCode)
           && event.target.closest(".slides section")
         ),
-        transition: "slide",
+        transition: editorial ? "fade" : "slide",
         navigationMode: "linear",
         plugins: [RevealMarkdown, RevealHighlight],
       }).then(() => {
         Reveal.getSlides().forEach((section) => { section.tabIndex = 0; });
+        readingQuery.addEventListener("change", () => {
+          document.body.classList.toggle("reading", isReading());
+          Reveal.configure({ ...dimensions(), fragments: !isReading() });
+          Reveal.layout();
+        });
       });
     </script></body></html>
