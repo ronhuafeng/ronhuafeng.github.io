@@ -1,27 +1,22 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>在 Agent 辅助编程中引入 TLA+：一份经验报告 - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="本文报告在 Coding Agent 工作流中使用 TLA+ 模型检查的经验：以过期回调问题给出可复现的最小模型，讨论负向配置与 vacuity 检测的关系，并基于十项有仓库提交佐证的发现指出，问题多在建模与模型–实现对照中被发现，TLC 主要为修复后的模型提供有界穷举结论。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/model-with-tla-agent-assisted-coding/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="application-name" content="華楓 Notes"><meta name="apple-mobile-web-app-title" content="華楓 Notes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0f0f10" media="(prefers-color-scheme: dark)"><meta name="robots" content="index,follow"><meta property="og:title" content="在 Agent 辅助编程中引入 TLA+：一份经验报告 - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="本文报告在 Coding Agent 工作流中使用 TLA+ 模型检查的经验：以过期回调问题给出可复现的最小模型，讨论负向配置与 vacuity 检测的关系，并基于十项有仓库提交佐证的发现指出，问题多在建模与模型–实现对照中被发现，TLC 主要为修复后的模型提供有界穷举结论。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/model-with-tla-agent-assisted-coding/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/og-default.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="在 Agent 辅助编程中引入 TLA+：一份经验报告 - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="本文报告在 Coding Agent 工作流中使用 TLA+ 模型检查的经验：以过期回调问题给出可复现的最小模型，讨论负向配置与 vacuity 检测的关系，并基于十项有仓库提交佐证的发现指出，问题多在建模与模型–实现对照中被发现，TLC 主要为修复后的模型提供有界穷举结论。"><meta name="twitter:image" content="https://blog.formalscience.com/og-default.svg"><meta property="article:published_time" content="2026-11-16T00:00:00.000Z"><meta property="article:section" content="技术"><meta property="article:tag" content="TLA+"><meta property="article:tag" content="Coding Agent"><meta property="article:tag" content="Model Checking"><meta property="article:tag" content="Formal Methods"><meta property="article:tag" content="并发系统"><link rel="stylesheet" href="/_astro/BaseLayout.CkF81Ls9.css"></head><body><a class="skip-link" href="#content" lang="zh-CN">跳到内容</a><div class="site-shell"><header class="site-header"><a class="brand" href="/"><span lang="en">Zhang Hua Feng/</span><span lang="zh-CN">張華楓</span><span lang="en">'s Notes</span></a><div class="header-actions"><nav class="nav-links" aria-label="主导航" lang="zh-CN"><a href="/">首页</a><a href="/posts" aria-current="page">文章</a><a href="/slides/">幻灯片</a><a href="/posts/thought-index/">书签</a><a href="/categories">分类</a><a href="/tags">标签</a><a href="/about">关于</a></nav><nav class="language-switch" aria-label="切换语言"><a href="/posts/model-with-tla-agent-assisted-coding/" lang="zh-CN" aria-current="page">中文</a><a href="/en" lang="en" title="English home">English</a></nav></div></header><main id="content"><article class="article-page" data-reading-article><header class="article-header"><div class="post-meta-row"><p class="meta"><time datetime="2026-11-16T00:00:00.000Z">2026年11月16日</time> · 约 26 分钟</p><a class="category-label" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></div><h1 class="article-title">在 Agent 辅助编程中引入 TLA+：一份经验报告</h1><p class="article-description">本文报告在 Coding Agent 工作流中使用 TLA+ 模型检查的经验：以过期回调问题给出可复现的最小模型，讨论负向配置与 vacuity 检测的关系，并基于十项有仓库提交佐证的发现指出，问题多在建模与模型–实现对照中被发现，TLC 主要为修复后的模型提供有界穷举结论。</p><div class="tag-list article-tags"><a class="tag" href="/tags/TLA%2B/">TLA+</a><a class="tag" href="/tags/Coding%20Agent/">Coding Agent</a><a class="tag" href="/tags/Model%20Checking/">Model Checking</a><a class="tag" href="/tags/Formal%20Methods/">Formal Methods</a><a class="tag" href="/tags/%E5%B9%B6%E5%8F%91%E7%B3%BB%E7%BB%9F/">并发系统</a></div></header><div class="article-reading-layout has-toc"><div class="article-main-column"><div class="post-content" data-reading-content><h2 id="1-引言">1 引言</h2>
-<p>异步与并发系统中存在一类缺陷：每个函数在顺序执行下都正确，错误只在特定的事件交错下出现。典型情形如下。一个后台操作针对资源 <code>worker-A</code> 启动；操作完成之前，该资源被删除并以同一名称重建；随后旧操作的回调到达，提交逻辑只比较名称，于是把旧结果写入了新资源（图 1）。</p>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Agent 辅助编程中的 TLA+：如何判断模型真的检验了问题 - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="一份关于 Coding Agent、TLA+ 与模型判别性的工程经验报告。本文以过期回调的可复现模型说明正向检查为何可能空洞，通过负向见证检出 Agent 编写的模型错误，并以十项仓库提交佐证的发现讨论建模、TLC 和实现对照各自提供的证据。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/model-with-tla-agent-assisted-coding/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="application-name" content="華楓 Notes"><meta name="apple-mobile-web-app-title" content="華楓 Notes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0f0f10" media="(prefers-color-scheme: dark)"><meta name="robots" content="index,follow"><meta property="og:title" content="Agent 辅助编程中的 TLA+：如何判断模型真的检验了问题 - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="一份关于 Coding Agent、TLA+ 与模型判别性的工程经验报告。本文以过期回调的可复现模型说明正向检查为何可能空洞，通过负向见证检出 Agent 编写的模型错误，并以十项仓库提交佐证的发现讨论建模、TLC 和实现对照各自提供的证据。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/model-with-tla-agent-assisted-coding/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/og-default.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Agent 辅助编程中的 TLA+：如何判断模型真的检验了问题 - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="一份关于 Coding Agent、TLA+ 与模型判别性的工程经验报告。本文以过期回调的可复现模型说明正向检查为何可能空洞，通过负向见证检出 Agent 编写的模型错误，并以十项仓库提交佐证的发现讨论建模、TLC 和实现对照各自提供的证据。"><meta name="twitter:image" content="https://blog.formalscience.com/og-default.svg"><meta property="article:published_time" content="2026-11-16T00:00:00.000Z"><meta property="article:section" content="技术"><meta property="article:tag" content="TLA+"><meta property="article:tag" content="Coding Agent"><meta property="article:tag" content="Model Checking"><meta property="article:tag" content="Formal Methods"><meta property="article:tag" content="并发系统"><link rel="stylesheet" href="/_astro/BaseLayout.CkF81Ls9.css"></head><body><a class="skip-link" href="#content" lang="zh-CN">跳到内容</a><div class="site-shell"><header class="site-header"><a class="brand" href="/"><span lang="en">Zhang Hua Feng/</span><span lang="zh-CN">張華楓</span><span lang="en">'s Notes</span></a><div class="header-actions"><nav class="nav-links" aria-label="主导航" lang="zh-CN"><a href="/">首页</a><a href="/posts" aria-current="page">文章</a><a href="/slides/">幻灯片</a><a href="/posts/thought-index/">书签</a><a href="/categories">分类</a><a href="/tags">标签</a><a href="/about">关于</a></nav><nav class="language-switch" aria-label="切换语言"><a href="/posts/model-with-tla-agent-assisted-coding/" lang="zh-CN" aria-current="page">中文</a><a href="/en" lang="en" title="English home">English</a></nav></div></header><main id="content"><article class="article-page" data-reading-article><header class="article-header"><div class="post-meta-row"><p class="meta"><time datetime="2026-11-16T00:00:00.000Z">2026年11月16日</time> · 约 24 分钟</p><a class="category-label" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></div><h1 class="article-title">Agent 辅助编程中的 TLA+：如何判断模型真的检验了问题</h1><p class="article-description">一份关于 Coding Agent、TLA+ 与模型判别性的工程经验报告。本文以过期回调的可复现模型说明正向检查为何可能空洞，通过负向见证检出 Agent 编写的模型错误，并以十项仓库提交佐证的发现讨论建模、TLC 和实现对照各自提供的证据。</p><div class="tag-list article-tags"><a class="tag" href="/tags/TLA%2B/">TLA+</a><a class="tag" href="/tags/Coding%20Agent/">Coding Agent</a><a class="tag" href="/tags/Model%20Checking/">Model Checking</a><a class="tag" href="/tags/Formal%20Methods/">Formal Methods</a><a class="tag" href="/tags/%E5%B9%B6%E5%8F%91%E7%B3%BB%E7%BB%9F/">并发系统</a></div></header><div class="article-reading-layout has-toc"><div class="article-main-column"><div class="post-content" data-reading-content><h2 id="1-为什么模型检查通过还不够">1 为什么模型检查通过还不够</h2>
+<p>一个异步操作针对名为 <code>worker-A</code> 的资源启动。它尚未完成时，资源被删除，又以相同名称重建。旧操作随后返回；如果提交逻辑只核对名称，旧结果就可能写入新资源（图 1）。顺序执行每一步都可能合理，错误却出现在步骤的交错中。</p>
 <p><img src="/posts/model-with-tla-agent-assisted-coding/images/stale-callback-timeline.svg" alt="旧资源回调延迟到达并错误提交到新资源的事件时序"></p>
-<p><em>图 1：过期回调写入新资源的事件时序。</em></p>
-<p>为区分同一逻辑名称下先后存在的实体，本文把其中每一代称为一个 incarnation。上例中，回调携带的是为第 1 代计算的结果，提交时资源已是第 2 代。缺陷的成因不在某一条语句，而在于授权条件随时间失效：结果生成时具有写入权限，提交时该权限已随资源替换而失效。</p>
-<p>以测试为中心的反馈循环难以稳定覆盖这类缺陷。测试只执行被显式构造的事件顺序，而可能的顺序随参与者与动作数量组合增长；若开发者或 Coding Agent 未预见“启动、替换、回调、提交”这一顺序，对应的测试就不会存在。模型检查给出系统的状态、改变状态的动作以及不允许出现的状态，由 TLC 在有限配置内枚举全部可达状态（图 2）。</p>
+<p><em>图 1：旧操作的回调在资源重建后到达，并错误地写入新资源。</em></p>
+<p>这里的关键不是名称，而是身份。同名资源在不同时刻可以是不同的实体；本文将资源的每一代称为一个 incarnation。操作启动时绑定第 1 代，提交时资源已变为第 2 代，原有授权不能自动延续。要检验这个错误，模型至少需要区分两代资源，并允许“启动—替换—完成—提交”的顺序。</p>
+<p>TLA+ 可以把状态、状态转换和不能出现的状态写成规约，由 TLC 在有限配置内枚举可达状态<sup><a href="#user-content-fn-lamport" id="user-content-fnref-lamport" data-footnote-ref aria-describedby="footnote-label">1</a></sup><sup><a href="#user-content-fn-tlc" id="user-content-fnref-tlc" data-footnote-ref aria-describedby="footnote-label">2</a></sup>。但检查器回答的是“<strong>这个模型在这个配置下是否违反所写的性质</strong>”，而不是“程序是否正确”。如果模型没有表达资源换代、配置排除了替换，或者性质被写得过弱，TLC 即使穷举所有可达状态，也可能得到一个与实际风险无关的通过结果。</p>
 <p><img src="/posts/model-with-tla-agent-assisted-coding/images/agent-testing-vs-model-checking.svg" alt="常规测试与 TLA+ Model Checking 的状态探索对比"></p>
-<p><em>图 2：测试执行选定的场景，TLC 枚举有限模型的全部可达状态。本图为示意，不代表覆盖率统计。</em></p>
-<p>本文是一份经验报告，记录在 Coding Agent 工作流中使用 TLA+ 的做法与观察。所用方法已整理为 Agent Skill model-with-tla<sup><a href="#user-content-fn-skill" id="user-content-fnref-skill" data-footnote-ref aria-describedby="footnote-label">1</a></sup>，笔者同时是该 Skill 的作者。本文不提出新的验证技术，贡献在于以下三点：</p>
+<p><em>图 2：测试执行选定的事件顺序；TLC 穷举有限模型的可达状态。示意图不表示实际覆盖率。</em></p>
+<p>当 Coding Agent 参与编写规约时，问题还多了一层：Agent 能生成可以被工具解析、也能通过检查的模型，但这不等于它准确抓住了需求中的风险。本文关注的是如何让检查结果具有可解释的证据价值，而不只是获得一个 <code>success</code>。</p>
+<p>实践中需要回答三个不同的问题：</p>
 <ol>
-<li>一个可复现的最小示例，包括模型、正向与负向配置以及 TLC 的实际输出（第 3 节）；</li>
-<li>把“负向配置”这一工程实践与 vacuity 检测、变异分析联系起来，并报告 Agent 编写模型时实际出现的空洞模型（第 4 节）；</li>
-<li>对作者使用记录中十项有仓库提交佐证的发现进行分类（第 5、6 节）。分类结果表明，问题主要在建模与模型–实现对照中被发现；TLC 的主要作用是在修复之后，为修复后的模型提供有限配置内的穷举结论（第 7 节）。</li>
+<li><strong>模型有判别力吗？</strong> 它能否表达并到达我们知道应该禁止的行为？</li>
+<li><strong>检查具体证实了什么？</strong> TLC 在哪些状态空间、环境假设和时间预算内得出了结果？</li>
+<li><strong>模型对应实现吗？</strong> 模型中的身份、原子边界和外部副作用，是否与代码实际允许的行为一致？</li>
 </ol>
-<p>第 2 节回顾相关工作，第 8 节讨论效度威胁。附录 A 描述工作流，附录 B 说明工具的使用方式。</p>
-<h2 id="2-相关工作">2 相关工作</h2>
-<p><strong>TLA+ 与工业实践。</strong> TLA+ 是 Lamport 提出的规约语言<sup><a href="#user-content-fn-lamport" id="user-content-fnref-lamport" data-footnote-ref aria-describedby="footnote-label">2</a></sup>，TLC 是其显式状态模型检查器<sup><a href="#user-content-fn-tlc" id="user-content-fnref-tlc" data-footnote-ref aria-describedby="footnote-label">3</a></sup>。Newcombe 等报告了 Amazon Web Services 在设计阶段使用 TLA+ 发现分布式协议中深层缺陷的经验<sup><a href="#user-content-fn-aws" id="user-content-fnref-aws" data-footnote-ref aria-describedby="footnote-label">4</a></sup>。本文关注的不是规约本身的表达力，而是规约由 Coding Agent 编写时的工作方式与风险。</p>
-<p><strong>Vacuity 检测与变异分析。</strong> 一条时序性质可能因为其前件永不成立而“空洞地”满足，Beer 等与 Kupferman、Vardi 系统研究了这类 vacuity 的检测<sup><a href="#user-content-fn-beer" id="user-content-fnref-beer" data-footnote-ref aria-describedby="footnote-label">5</a></sup><sup><a href="#user-content-fn-kv" id="user-content-fnref-kv" data-footnote-ref aria-describedby="footnote-label">6</a></sup>。本文所说的判别性（第 4 节）是同一问题在配置层面的表现：配置排除了错误行为，性质便空洞地成立。负向配置则类似变异分析<sup><a href="#user-content-fn-mutation" id="user-content-fnref-mutation" data-footnote-ref aria-describedby="footnote-label">7</a></sup>：人为注入一个已知缺陷，检查验证手段能否将其“杀死”。Endres 等在评估 LLM 生成的后置条件时，以能否区分有缺陷的程序作为指标，称为 discriminative power<sup><a href="#user-content-fn-nl2postcond" id="user-content-fnref-nl2postcond" data-footnote-ref aria-describedby="footnote-label">8</a></sup>，与本文的判别性出于同一考虑。</p>
-<p><strong>小范围假设。</strong> 有限配置上的检查结论能否推广，依赖于 Jackson 提出的小范围假设：多数缺陷在小规模实例中即可暴露<sup><a href="#user-content-fn-jackson" id="user-content-fnref-jackson" data-footnote-ref aria-describedby="footnote-label">9</a></sup>。本文的有界结论（第 7.1 节）以此为前提，但不构成对任意规模的证明。</p>
-<p><strong>模型与实现的一致性。</strong> Davis 等在 MongoDB 中尝试把实现轨迹与 TLA+ 规约对照<sup><a href="#user-content-fn-xmodel" id="user-content-fnref-xmodel" data-footnote-ref aria-describedby="footnote-label">10</a></sup>；Cirstea 等把分布式程序的轨迹校验归约为受约束的 TLC 模型检查，并在所有被研究的程序中发现了规约与实现的不一致<sup><a href="#user-content-fn-tracevalidation" id="user-content-fnref-tracevalidation" data-footnote-ref aria-describedby="footnote-label">11</a></sup>。本文的案例只使用了受控测试，没有做轨迹校验，因此关于实现的结论弱于这些工作（第 7.2 节）。</p>
-<p><strong>LLM 生成形式化规约。</strong> 近期研究评估了 LLM 从自然语言生成 TLA+ 规约的能力，报告的语义正确率很低<sup><a href="#user-content-fn-llmtla" id="user-content-fnref-llmtla" data-footnote-ref aria-describedby="footnote-label">12</a></sup>。与之不同，本文中的规约不是一次性生成的产物，而是 Agent 在工作流中迭代编写、由 TLC 与负向配置反复检查的模型；第 4 节报告的空洞模型说明，这种迭代同样需要机械化的检查手段。</p>
-<h2 id="3-最小示例过期回调">3 最小示例：过期回调</h2>
-<h3 id="31-模型">3.1 模型</h3>
-<p>模型不模拟程序的每一行，只保留影响“提交是否合法”的状态：资源当前的 incarnation、每个操作启动时绑定的 incarnation、操作所处的阶段，以及资源上最后一次写入来自哪一代的操作。</p>
+<p>下面先给出可运行的最小模型，再讨论负向见证（negative witness）如何检测空洞模型。之后分析 2026 年 7—11 月 Coding Agent 使用记录中十项有仓库提交佐证的发现。作者同时是所用 Agent Skill <code>model-with-tla</code> 的作者<sup><a href="#user-content-fn-skill" id="user-content-fnref-skill" data-footnote-ref aria-describedby="footnote-label">3</a></sup>；本文报告观察与局限，不把这些案例当作方法优越性的对照实验。</p>
+<h2 id="2-最小实验过期回调如何逃过检查">2 最小实验：过期回调如何逃过检查</h2>
+<h3 id="21-保留决定提交是否合法的状态">2.1 保留决定提交是否合法的状态</h3>
+<p>模型不复刻业务代码，只保留四类状态：资源当前的 incarnation、每个操作启动时绑定的 incarnation、操作阶段，以及最后一次写入来自哪一代。<code>Ops</code> 有两个操作，允许 TLC 探索它们与资源替换之间的交错。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>---------------------------- MODULE StaleCallback ----------------------------</span></span>
 <span class="line"><span>EXTENDS Naturals</span></span>
 <span class="line"><span></span></span>
@@ -87,11 +82,10 @@
 <span class="line"><span>\* 资源上的最后一次写入，只能来自绑定当前 incarnation 的操作</span></span>
 <span class="line"><span>NoStaleWrite == lastWriter \in {0, incarnation}</span></span>
 <span class="line"><span>=============================================================================</span></span></code></pre>
-<p>模型中没有出现名称 <code>worker-A</code>。名称在整个过程中不变，因此“只比较名称”的提交逻辑在模型中等价于不做任何比较，对应 <code>CheckIncarnation = FALSE</code>。<code>Replace</code> 将 <code>lastWriter</code> 置为 0，表示新一代资源上尚无写入。<code>Ops</code> 包含两个操作，使 TLC 同时探索操作之间的交错。</p>
-<p>操作被拆分为 <code>StartOp</code>、<code>Complete</code> 与 <code>Commit</code> 三个动作，因为缺陷只在“绑定 incarnation”与“提交”之间插入 <code>Replace</code> 时出现；若把操作建模为单一原子动作，该交错在模型中不可表达。模型粒度因此由待检查的性质决定，而不是由源代码的结构决定。</p>
-<p>待检查的性质 <code>NoStaleWrite</code> 是状态不变量：任意时刻，资源上的最后一次写入要么不存在，要么来自绑定当前 incarnation 的操作。“每次提交都必须获得授权”是动作性质，在 TLA+ 中应写作 <code>[][\A o \in Ops : Commit(o) =&gt; opBinding[o] = incarnation]_vars</code>，而不能把动作直接置于 <code>□</code> 之下。在本模型中两者等价，理由如下。<code>lastWriter</code> 只在两个动作中改变：<code>Commit(o)</code> 把它置为 <code>opBinding[o]</code>，<code>Replace</code> 把它置为 0。若每次提交都满足 <code>opBinding[o] = incarnation</code>，则提交后 <code>lastWriter = incarnation</code>，替换后 <code>lastWriter = 0</code>，不变量保持。反之，若某次提交违反该条件，由于 <code>StartOp</code> 绑定时 <code>incarnation ≥ 1</code>，有 <code>opBinding[o] ≠ 0</code>，且 <code>opBinding[o] ≠ incarnation</code>，提交后的状态即违反 <code>NoStaleWrite</code>。采用状态不变量，便于直接作为 <code>tla-check</code> 的预期结果 <code>invariant:NoStaleWrite</code>。</p>
-<h3 id="32-反例">3.2 反例</h3>
-<p>对应缺陷实现的配置如下：</p>
+<p>名称 <code>worker-A</code> 不在模型中变化。因此，在这个抽象层次上，“只检查名称”相当于没有检查资源代际，即 <code>CheckIncarnation = FALSE</code>。<code>Replace</code> 把 <code>lastWriter</code> 清零，表示新一代资源尚未被写入。<code>StartOp</code>、<code>Complete</code> 和 <code>Commit</code> 必须分开：若将一次异步调用看成不可分割的动作，替换就无法插入绑定与提交之间，目标缺陷会被模型结构排除。</p>
+<p><code>NoStaleWrite</code> 是状态不变量：最后一次写入要么不存在，要么来自当前 incarnation。它与“每次提交都不能使用过期绑定”在这个模型中具有相同的违例判据：<code>Commit</code> 写入绑定代际，<code>Replace</code> 清空最后写入标记，其他动作不改变该标记。因此用不变量即可捕获过期提交，不必把源代码的每一步都带入规约。</p>
+<h3 id="22-从反例中读取错误顺序">2.2 从反例中读取错误顺序</h3>
+<p>缺陷配置保留资源替换，但关闭提交时的代际校验：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>CONSTANTS</span></span>
 <span class="line"><span>  Ops = {o1, o2}</span></span>
 <span class="line"><span>  MaxIncarnation = 2</span></span>
@@ -99,8 +93,7 @@
 <span class="line"><span>SPECIFICATION Spec</span></span>
 <span class="line"><span>INVARIANTS TypeOK NoStaleWrite</span></span>
 <span class="line"><span>CHECK_DEADLOCK FALSE</span></span></code></pre>
-<p>所有操作结束、incarnation 达到上限后，模型没有后继状态。这是有限配置的自然终点，不代表系统死锁，因此关闭死锁检查。</p>
-<p>TLC 默认采用广度优先搜索，所报告的是最短的违例轨迹。本例在 28 个不同状态内找到违例，轨迹长 5 步。以下摘自实际输出，省略了源码位置以及在整条轨迹中始终处于 <code>idle</code> 的 <code>o2</code>：</p>
+<p>TLC 在该配置下发现 <code>NoStaleWrite</code> 违例。下面是实际输出的精简摘录；省略源码位置和整个轨迹中始终为 <code>idle</code> 的 <code>o2</code>：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Error: Invariant NoStaleWrite is violated.</span></span>
 <span class="line"><span>State 1: &lt;Initial predicate&gt;</span></span>
 <span class="line"><span>/\ incarnation = 1  /\ lastWriter = 0  /\ opBinding = (o1 :&gt; 0)  /\ opPhase = (o1 :&gt; "idle")</span></span>
@@ -112,286 +105,89 @@
 <span class="line"><span>/\ incarnation = 2  /\ lastWriter = 0  /\ opBinding = (o1 :&gt; 1)  /\ opPhase = (o1 :&gt; "done")</span></span>
 <span class="line"><span>State 5: &lt;Commit(o1)&gt;</span></span>
 <span class="line"><span>/\ incarnation = 2  /\ lastWriter = 1  /\ opBinding = (o1 :&gt; 1)  /\ opPhase = (o1 :&gt; "committed")</span></span></code></pre>
-<p>该轨迹与图 1 的四个事件一一对应：<code>o1</code> 在第 1 代启动，资源被替换为第 2 代，<code>o1</code> 的结果返回并被提交，最终 <code>lastWriter = 1</code> 而 <code>incarnation = 2</code>。</p>
-<h3 id="33-修复与配置">3.3 修复与配置</h3>
-<p>修复为 <code>Commit</code> 中的守卫：仅当操作绑定的 incarnation 等于当前 incarnation 时允许提交，过期结果经 <code>Discard</code> 丢弃。为使修复前后共用同一模型，守卫是否生效由常量 <code>CheckIncarnation</code> 控制。表 1 列出三个配置的检查结果，均在一台 Apple Silicon Mac 上以 TLC 1.8.0 预发布版、单个 worker 执行，每个配置耗时不到 1 秒。</p>
+<p>轨迹包含 <strong>5 个状态、4 次状态转换</strong>：<code>o1</code> 绑定第 1 代，<code>Replace</code> 创建第 2 代，<code>Complete</code> 返回旧结果，<code>Commit</code> 将第 1 代的结果写入当前资源。初始状态不是一次转换，因此不把“5 个状态”写成“5 步操作”。这一反例说明缺陷配置确实能够到达目标错误。</p>
+<h3 id="23-同样的通过结果可能有相反的含义">2.3 同样的通过结果，可能有相反的含义</h3>
+<p>修复是在 <code>Commit</code> 中检查 <code>opBinding[o] = incarnation</code>，并通过 <code>Discard</code> 丢弃过期结果。为了用同一份规约对照修复前后行为，<code>CheckIncarnation</code> 控制该守卫是否启用。表 1 的结果在 Apple Silicon Mac 上用 TLC 1.8.0 预发布版、单个 worker 得到；三个配置均在 1 秒内完成。</p>
 <p><em>表 1：<code>StaleCallback</code> 各配置的检查结果。</em></p>
-<table>
-<thead>
-<tr>
-<th>配置</th>
-<th><code>MaxIncarnation</code></th>
-<th><code>CheckIncarnation</code></th>
-<th>预期</th>
-<th>结果</th>
-<th>不同状态数</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>Buggy.cfg</code></td>
-<td>2</td>
-<td><code>FALSE</code></td>
-<td><code>invariant:NoStaleWrite</code></td>
-<td>违例，5 步反例</td>
-<td>28</td>
-</tr>
-<tr>
-<td><code>Fixed.cfg</code></td>
-<td>3</td>
-<td><code>TRUE</code></td>
-<td><code>success</code></td>
-<td>通过</td>
-<td>224</td>
-</tr>
-<tr>
-<td><code>Vacuous.cfg</code></td>
-<td>1</td>
-<td><code>FALSE</code></td>
-<td><code>success</code></td>
-<td>通过</td>
-<td>16</td>
-</tr>
-</tbody>
-</table>
-<p><code>Fixed.cfg</code> 是修复后的回归检查。<code>Buggy.cfg</code> 在修复后仍需保留：它不再描述当前实现，而是作为负向见证，证明模型能够表达并捕获目标错误。此后每次修改模型，两者都应重新执行，前者必须通过，后者必须以 <code>NoStaleWrite</code> 违例结束。模型与三个配置文件可直接下载运行：<a href="/posts/model-with-tla-agent-assisted-coding/tla/StaleCallback.tla">StaleCallback.tla</a>、<a href="/posts/model-with-tla-agent-assisted-coding/tla/Buggy.cfg">Buggy.cfg</a>、<a href="/posts/model-with-tla-agent-assisted-coding/tla/Fixed.cfg">Fixed.cfg</a>、<a href="/posts/model-with-tla-agent-assisted-coding/tla/Vacuous.cfg">Vacuous.cfg</a>。</p>
-<h2 id="4-判别性与负向见证">4 判别性与负向见证</h2>
-<p>表 1 中的 <code>Vacuous.cfg</code> 使用缺陷实现，却通过了检查。原因在于 <code>MaxIncarnation = 1</code> 时 <code>Replace</code> 不可能发生，过期结果不存在，<code>NoStaleWrite</code> 也就不可能被违反。这一通过结果不支持任何关于提交逻辑的结论，是配置层面的 vacuity。</p>
-<p>model-with-tla 把模型的这一性质称为判别性（discriminability）：模型不仅要允许正确行为，还必须能够表达并到达目标错误。对每条重要的 Safety 性质，工作流要求提供一个负向见证（negative witness），即预期以该性质违例结束的配置。它在作用上相当于一个人为注入的变异体：若验证手段未能使其失败，正向检查的通过便不足为据。</p>
-<p>当模型由 Agent 编写时，负向见证还承担另一项职能：防止模型被修改到恰好通过。在不改动缺陷提交逻辑的前提下，至少有三种修改可以使 <code>StaleCallback</code> 通过检查：</p>
+<p><code>Fixed.cfg</code> 的通过结果表明：在其有限配置下，修复模型没有到达 <code>NoStaleWrite</code> 违例。<code>Vacuous.cfg</code> 也通过了，却仍使用 <code>CheckIncarnation = FALSE</code>。区别在于它设置了 <code>MaxIncarnation = 1</code>，资源无法替换，过期写入自然无法出现。两次“通过”在输出形式上相同，在证据意义上却不同。</p>
+<p><code>Buggy.cfg</code> 因而不应在修复后被删除。它是保留已知错误的负向见证：每次改动规约时，修复配置应通过，缺陷配置应当准确违反 <code>NoStaleWrite</code>。模型和三个配置文件可直接运行：<a href="/posts/model-with-tla-agent-assisted-coding/tla/StaleCallback.tla">StaleCallback.tla</a>、<a href="/posts/model-with-tla-agent-assisted-coding/tla/Buggy.cfg">Buggy.cfg</a>、<a href="/posts/model-with-tla-agent-assisted-coding/tla/Fixed.cfg">Fixed.cfg</a>、<a href="/posts/model-with-tla-agent-assisted-coding/tla/Vacuous.cfg">Vacuous.cfg</a>。</p>
+<h2 id="3-负向见证检查模型能否识别已知错误">3 负向见证：检查模型能否识别已知错误</h2>
+<h3 id="31-判别性不是检查器的附加保证">3.1 判别性不是检查器的附加保证</h3>
+<p>本文把模型的<strong>判别性</strong>（discriminability）定义为：对于某条待检查的性质，在指定的负向配置中，模型能够表达并到达一个预期违反该性质的行为。正向配置检查“没有发现坏状态”；负向配置检查“已知坏状态是否还找得到”。两者相互补充，但任何一方都不能取代另一方。</p>
+<p>这一做法与模型检查中的 vacuity 检测有关<sup><a href="#user-content-fn-beer" id="user-content-fnref-beer" data-footnote-ref aria-describedby="footnote-label">4</a></sup><sup><a href="#user-content-fn-kv" id="user-content-fnref-kv" data-footnote-ref aria-describedby="footnote-label">5</a></sup>，也借用了变异分析的思路：保留一个已知错误，确认验证机制能够使它失败<sup><a href="#user-content-fn-mutation" id="user-content-fnref-mutation" data-footnote-ref aria-describedby="footnote-label">6</a></sup>。它不是声称已经覆盖所有错误，而是针对一个明确的错误类别检验模型是否还有识别能力。类似地，LLM 生成后置条件的研究也以区分有缺陷程序的能力评价规约<sup><a href="#user-content-fn-nl2postcond" id="user-content-fnref-nl2postcond" data-footnote-ref aria-describedby="footnote-label">7</a></sup>。</p>
+<p>以第 2 节的模型为例，下面三种操作都可能让一个仍允许过期提交的模型通过检查：</p>
 <ul>
-<li>缩小常量，如令 <code>MaxIncarnation = 1</code>；</li>
-<li>削弱性质，如将 <code>NoStaleWrite</code> 改为 <code>lastWriter &lt;= incarnation</code>，旧结果写入新资源时 <code>1 &lt;= 2</code> 仍然成立；</li>
-<li>为环境动作添加过强的守卫，如要求 <code>Replace</code> 只能在没有进行中操作时发生（41 个不同状态，通过）。产品无法阻止资源在操作进行期间被删除，该守卫实际上是把缺陷假设掉了。</li>
+<li>将 <code>MaxIncarnation</code> 缩为 1，让 <code>Replace</code> 永远不能发生；</li>
+<li>把 <code>NoStaleWrite</code> 弱化为 <code>lastWriter &lt;= incarnation</code>，使第 1 代写入第 2 代不再违例；</li>
+<li>给 <code>Replace</code> 加上“没有正在运行的操作才能替换”的守卫，排除产品原本允许的并发情形。</li>
 </ul>
-<p>三种修改都会使 <code>Buggy.cfg</code> 不再违例：以 <code>--expect invariant:NoStaleWrite</code> 执行时，<code>tla-check</code> 报告观察结果为 <code>success</code>，与预期不符，并以退出码 4 结束。需要说明，以上三种修改是为演示而构造的；在第 5 节所述的使用记录中，并未观察到 Agent 为通过检查而如此修改模型。</p>
-<p>使用记录中实际出现的，是无意写出的空洞模型（表 2 中的 F7）。在一个委托授权网关的模型中，Agent 写下了如下动作子句：</p>
+<p>这些是为说明机制而构造的修改，<strong>不是</strong>观察到 Agent 为了通过检查而故意作弊的证据。对目标负向配置，它们都会使预期的 <code>NoStaleWrite</code> 违例消失；<code>tla-check</code> 因此将“预期违例、实际通过”报告为不匹配，并以退出码 4 结束。第三种修改对应的演示配置访问了 41 个不同状态。错误不是检查器漏报，而是待检查的行为已被规约或配置排除。</p>
+<h3 id="32-实际案例-f7一个括号错误制造了空洞模型">3.2 实际案例 F7：一个括号错误制造了空洞模型</h3>
+<p>使用记录中，Agent 的确写出过无意的空洞模型。一个委托授权网关模型包含如下动作子句：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>/\ startedWithAuthority' = startedWithAuthority /\ active /\ approved = payload</span></span></code></pre>
-<p>其意图是把三个条件的合取赋给 <code>startedWithAuthority'</code>。但 TLA+ 中 <code>=</code> 的优先级高于 <code>/\</code>，该子句实际被解析为 <code>(startedWithAuthority' = startedWithAuthority) /\ active /\ (approved = payload)</code>：变量保持原值，后两项成为动作的守卫。<code>startedWithAuthority</code> 因而永远不会变为假，授权性质 <code>AuthorizedEffect</code> 也就不可能被违反。正向配置照常通过；暴露问题的是负向配置，它们预期违例，实际却通过，<code>tla-check</code> 报告不匹配。补上括号后，负向配置按预期失败。同类错误在同一工作过程中的另一个模型里再次出现，同样由负向配置检出。</p>
-<p>负向见证有其边界：它只能确认已预见的错误类别可以被捕获，不能发现模型中根本没有表达的状态或动作。模型遗漏了什么，仍需通过需求核对与人工审查来判断。</p>
-<h2 id="5-案例收集与概览">5 案例收集与概览</h2>
-<p><strong>数据来源。</strong> 数据取自作者 2026 年 7 月至 11 月间的 Coding Agent 会话记录，包括 Codex 的会话目录（含压缩归档）与 Claude Code 的项目会话记录。其中 84 个未压缩的 Codex 会话文件提及 model-with-tla，但多数只是因为该 Skill 出现在可用技能列表中。</p>
-<p><strong>筛选。</strong> 先以 Skill 名称、<code>tla-check</code> 调用以及 TLC 的违例输出为关键词检索，排除只在技能列表中提及该 Skill 的会话、Skill 自身的开发与评测会话，以及模型未进入代码库的会话。随后由两个 LLM agent 分别阅读剩余会话，对每项发现按“首先由何种手段发现”和“TLC 起了什么作用”分类。对纳入表 2 的每一项，作者核对了对应仓库中包含模型、配置或代码修复的提交。分类本身未经第二人独立复核（见第 8 节）。</p>
-<p><strong>分析单位。</strong> 分析单位是一项发现，即一个被识别并处理的缺陷或模型问题，而不是一次会话或一个模型。只产生了有意构造的违例、没有新发现的建模，未计入表 2。</p>
+<p>Agent 想表达的是把三个条件的合取赋给 <code>startedWithAuthority'</code>。但在 TLA+ 中，<code>=</code> 的优先级高于 <code>/\</code>，实际解析为 <code>(startedWithAuthority' = startedWithAuthority) /\ active /\ (approved = payload)</code>。也就是说，第一个条件要求变量保持不变，后两个条件成为动作的守卫；代码并没有按预期更新授权状态。</p>
+<p>在该模型的初始条件和转换关系下，<code>startedWithAuthority</code> 无法变为假，于是授权性质 <code>AuthorizedEffect</code> 不能以预期方式被违反。正向配置继续通过。异常信号来自负向配置：它们本应产生指定性质的违例，却得到 <code>success</code>。排查并补上括号后，负向配置重新按预期报错。同类问题在同一工作过程的另一模型中再次出现，也由负向配置检出；表 2 将这两次记作同一类发现 F7，而非两个独立项目。</p>
+<p>这个案例比人为缩小 <code>MaxIncarnation</code> 更能说明 Agent 场景的风险：形式化语言的语法合法，工具也如实检查了模型，但 Agent 以为自己写下的状态转换与实际解析结果不同。负向见证提供了一个反馈信号，迫使编写者重新检查模型的语义。</p>
+<h3 id="33-负向见证能证实什么不能证实什么">3.3 负向见证能证实什么，不能证实什么</h3>
+<p>负向见证只能支持一个有限结论：<strong>对于预先指定的错误类别和配置，当前模型没有把它排除或掩盖。</strong> 它不能证明性质完整，不能保证模型包含了所有重要动作，更不能单独证明实现正确。一个模型即使通过正、负向检查，仍可能遗漏真实系统的某个中间状态。</p>
+<p>因此，负向见证应当与需求核对、环境假设审查和模型—实现对照一起使用，而不是被当作模型正确性的证书。</p>
+<h2 id="4-使用记录十项发现以及首先发现的局限">4 使用记录：十项发现，以及“首先发现”的局限</h2>
+<p>数据来自作者 2026 年 7—11 月的 Codex 和 Claude Code 会话记录及其关联仓库。检索线索包括 Skill 名称、<code>tla-check</code> 调用和 TLC 违例输出。84 个未压缩的 Codex 会话文件提及 <code>model-with-tla</code>，但多数只是在可用 Skill 列表中出现，不能视作实际建模次数。</p>
+<p>筛选时排除了只列出 Skill 的会话、Skill 本身的开发与评测会话，以及模型未进入代码库的会话。两个 LLM agent 分别阅读剩余记录，按“首次从何处识别问题”和“TLC 起了什么作用”分类；作者核对了每项发现对应的模型、配置或代码修复提交。分析单位是<strong>一项发现</strong>，不是一个会话、一次 TLC 运行或一个项目。分类没有经过第二位独立研究者复核。</p>
 <p><em>表 2：有仓库提交佐证的发现。项目 A 为公开项目；项目 B、C 为工作项目，D 为个人项目，均已匿名。</em></p>
-<table>
-<thead>
-<tr>
-<th>编号</th>
-<th>项目</th>
-<th>场景</th>
-<th>问题</th>
-<th>首先由何发现</th>
-<th>TLC 的作用</th>
-<th>处理结果</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>F1</td>
-<td>A</td>
-<td>设计期</td>
-<td>取消投递后 worker 不释放派发租约</td>
-<td>TLC 反例</td>
-<td>给出反例</td>
-<td>列为设计要求</td>
-</tr>
-<tr>
-<td>F2</td>
-<td>A</td>
-<td>设计期</td>
-<td>从未发出的投递永不过期</td>
-<td>模型–实现对照</td>
-<td>无直接作用</td>
-<td>代码修复</td>
-</tr>
-<tr>
-<td>F3</td>
-<td>A</td>
-<td>设计期</td>
-<td>负向变体在原配置下无法失败</td>
-<td>负向见证未失败</td>
-<td>暴露空洞配置</td>
-<td>修正配置</td>
-</tr>
-<tr>
-<td>F4</td>
-<td>B</td>
-<td>故障诊断</td>
-<td>关闭后取消责任丢失</td>
-<td>线上故障；建模扩大了修复范围</td>
-<td>负向见证与修复后有界检查</td>
-<td>代码修复</td>
-</tr>
-<tr>
-<td>F5</td>
-<td>B</td>
-<td>审查</td>
-<td>较旧响应回滚较新视图</td>
-<td>建模式审查</td>
-<td>反例确认，修复后有界检查</td>
-<td>代码修复</td>
-</tr>
-<tr>
-<td>F6</td>
-<td>D</td>
-<td>审查</td>
-<td>墙钟回拨导致较新观察被拒绝</td>
-<td>模型–实现对照</td>
-<td>以负向配置编码该缺陷</td>
-<td>代码修复</td>
-</tr>
-<tr>
-<td>F7</td>
-<td>C</td>
-<td>建模</td>
-<td>运算符优先级使模型空洞（两次）</td>
-<td>负向见证结果不匹配</td>
-<td>暴露空洞模型</td>
-<td>修正模型</td>
-</tr>
-<tr>
-<td>F8</td>
-<td>C</td>
-<td>实现</td>
-<td>单次使用凭据可能被重复使用</td>
-<td>建模前的代码阅读</td>
-<td>修复后有界检查</td>
-<td>代码修复</td>
-</tr>
-<tr>
-<td>F9</td>
-<td>C</td>
-<td>实现</td>
-<td>排队请求的等待不受截止时间约束</td>
-<td>测试</td>
-<td>复现，修复后有界检查</td>
-<td>代码修复</td>
-</tr>
-<tr>
-<td>F10</td>
-<td>C</td>
-<td>实现</td>
-<td>并发编辑共享默认设置丢失更新</td>
-<td>测试（先于模型）</td>
-<td>负向见证与回归检查</td>
-<td>代码修复</td>
-</tr>
-</tbody>
-</table>
-<p>十项发现中，由 TLC 反例首先揭示的只有 F1；由建模或模型–实现对照首先发现的有 F2、F5、F6，F4 中建模则扩大了已知故障的修复范围；由测试、代码阅读或线上故障首先发现的有 F4、F8、F9、F10；F3 与 F7 是模型自身的缺陷，均由负向见证暴露。第 6 节详述 F1–F4。</p>
-<h2 id="6-案例研究">6 案例研究</h2>
-<h3 id="61-认领协议的设计期建模f1f3">6.1 认领协议的设计期建模（F1–F3）</h3>
-<p>项目 A 是一个由 agent 处理团队消息的协作系统<sup><a href="#user-content-fn-kinmesh" id="user-content-fnref-kinmesh" data-footnote-ref aria-describedby="footnote-label">13</a></sup>。消息进入收件箱后，worker 认领一条投递（delivery），将其派发至执行端，并观察执行端上的运行是否结束。系统计划引入运行槽位：每个 agent 的并发运行数有上限，停滞的运行须让出槽位，同一任务同一时刻至多一个运行。实现之前，Agent 先对该认领协议建模。</p>
-<p>模型共 416 行，覆盖了两个 worker 之间的租约竞争、worker 停滞或崩溃后携带过期状态恢复、执行端上的运行可能永不结束，以及人工的停止等待、取消与恢复操作。模型声明 6 条 Safety 性质和 2 条 Liveness 性质，并为其中 7 条各提供一个负向变体。主配置为 2 个 agent、2 个 worker、4 条投递。检查在一台 10 核 Apple Silicon Mac 上以 TLC 1.8.0 预发布版执行，JVM 堆为 7.3 GB。各次检查见表 3。</p>
+<p>这十项记录不适合简单换算成工具的“发现率”。按会话中可见的先后顺序，F1 的设计缺口由 TLC 反例首先揭示；F2、F5、F6 主要由建模或模型—实现对照识别；F3、F7 是负向见证暴露的模型或配置问题；F4、F8、F9、F10 的初始线索则来自线上故障、代码阅读或测试。F4 的建模又扩大了原有修复范围。</p>
+<p>“首先发现”是一种记录分类，不是独立贡献的因果分解。为写出可检查的模型而精确定义状态，本身可能受到之后必须通过 TLC 的约束；反例检查也可能引导下一轮建模。没有等投入的代码审查或无 TLC 建模对照，就无法估计哪种活动单独创造了多少价值。以下两个场景展示的，是这些活动如何相互作用，而非胜负排名。</p>
+<h2 id="5-详细案例设计缺口与外部副作用">5 详细案例：设计缺口与外部副作用</h2>
+<h3 id="51-认领协议反例空洞配置与实现语义f1f3">5.1 认领协议：反例、空洞配置与实现语义（F1–F3）</h3>
+<p>项目 A 是一个由 Agent 处理团队消息的协作系统<sup><a href="#user-content-fn-kinmesh" id="user-content-fnref-kinmesh" data-footnote-ref aria-describedby="footnote-label">8</a></sup>。worker 认领投递（delivery），将其派发到执行端，并等待运行结束。系统计划增加运行槽位限制：每个 agent 的并发运行数有上限，停滞的运行要让出槽位，同一任务同一时刻最多只有一个运行。实现之前，Agent 对认领协议进行了建模。</p>
+<p>模型共有 416 行，包含两个 worker 的租约竞争、携带过期状态的恢复、可能永不结束的外部运行，以及人工停止等待、取消和恢复等操作；声明 6 条 Safety 性质和 2 条 Liveness 性质，为其中 7 条准备了负向变体。主配置为 2 个 agent、2 个 worker、4 条投递。检查在一台 10 核 Apple Silicon Mac 上使用 TLC 1.8.0 预发布版，JVM 堆为 7.3 GB；不同配置的实际结果见表 3。</p>
 <p><em>表 3：项目 A 认领协议模型的检查记录。“精简”指去除了不影响任何性质的状态与动作，并限制了人工操作次数的版本；“—”表示会话记录中未注明。</em></p>
-<table>
-<thead>
-<tr>
-<th>模型</th>
-<th>配置</th>
-<th>检查内容</th>
-<th>TLC worker</th>
-<th>结果</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>原始</td>
-<td><code>BacklogCap = 1</code>，4 条投递</td>
-<td>Safety + Liveness</td>
-<td>1</td>
-<td>8 小时内未完成，中止</td>
-</tr>
-<tr>
-<td>原始</td>
-<td>负向变体 <code>GiveWayFreesTask</code>，<code>BacklogCap = 1</code></td>
-<td>预期违例</td>
-<td>—</td>
-<td>1700 万个状态内未违例（空洞）</td>
-</tr>
-<tr>
-<td>原始</td>
-<td>负向变体 <code>GiveWayFreesTask</code>，<code>BacklogCap = 2</code></td>
-<td>预期违例</td>
-<td>—</td>
-<td>3 秒内违例</td>
-</tr>
-<tr>
-<td>原始</td>
-<td>其余 6 个负向变体</td>
-<td>预期违例</td>
-<td>—</td>
-<td>均违反各自的性质，耗时 1–74 秒</td>
-</tr>
-<tr>
-<td>原始</td>
-<td><code>BacklogCap = 2</code>，4 条投递</td>
-<td>Safety</td>
-<td>4</td>
-<td>3.14 亿个状态，通过</td>
-</tr>
-<tr>
-<td>精简</td>
-<td><code>BacklogCap = 1</code>，4 条投递</td>
-<td>Safety</td>
-<td>8</td>
-<td>8500 万个状态，33 分钟，通过</td>
-</tr>
-<tr>
-<td>精简</td>
-<td><code>BacklogCap = 1</code>，4 条投递</td>
-<td>Liveness</td>
-<td>—</td>
-<td>约每分钟 6 万个状态，估计需一天以上，中止</td>
-</tr>
-<tr>
-<td>精简</td>
-<td>3 条投递</td>
-<td>Liveness</td>
-<td>8</td>
-<td>未完成，中止</td>
-</tr>
-</tbody>
-</table>
-<p><strong>反例的分诊（F1）。</strong> 第一个反例违反 Liveness 性质 <code>QueuedDispatches</code>，其成因在模型而不在设计：模型允许一个正常运行的 worker 在下一步之前失去租约，而产品的时限设定排除了这种情况。修正环境假设后，第二个反例违反不变量 <code>Settled</code>：投递被人工取消时，没有任何规则要求持有其派发租约的 worker 释放租约。这是协议设计中的真实缺口，随后被列为实现必须满足的要求。可见，反例在作为设计缺陷处理之前需要先分诊：它可能指向设计，也可能只说明模型对环境的描述有误。</p>
-<p><strong>空洞的负向变体（F3）。</strong> 负向变体 <code>GiveWayFreesTask</code>（让出槽位时一并释放任务锁）应当违反“同一任务至多一个运行”，但在 1700 万个状态内没有失败。原因是积压上限 <code>BacklogCap</code> 被设为 1：第一个运行让出槽位后积压即达上限，派发随之暂停，同一任务的第二个运行无从产生，任务规则从未生效。正向检查对该性质的通过因而是空洞的，与 <code>Vacuous.cfg</code> 属于同一类问题。上限改为 2 后，该变体在 3 秒内失败，对应的正向 Safety 配置在 3.14 亿个状态上通过。</p>
-<p><strong>状态空间规模。</strong> 状态规模主要来自 2 个 agent 与 2 个 worker 之间的交错，而非某个单独的动作。精简后，Safety 检查可在 33 分钟内完成，Liveness 检查仍不可行。最终结论按实际覆盖范围记录：4 条投递下的 Safety 性质已验证；7 个负向变体均在原始模型上确认违例，未在精简模型上重新执行；Liveness 性质未验证。模型检查随之由验收条件改为建议性检查。</p>
-<p><strong>模型与实现的对照（F2）。</strong> 模型将“已派发”定义为一个显式的状态谓词：启动记录已写入。实现中没有对应的状态字段，该条件由其他字段间接推断。两者的语义差异构成了一个实际缺陷：实现以“启动参数已生成”近似“可能已在执行端运行”，而启动参数在调用执行端之前即已写入，因此一条从未发出、又被退回队列的投递永远不会满足过期条件。修复引入了与模型一致的显式状态：worker 在调用执行端之前，在自身租约下将投递标记为 <code>uncertain</code>；若租约已失效，则不调用执行端<sup><a href="#user-content-fn-kinmesh-fix" id="user-content-fnref-kinmesh-fix" data-footnote-ref aria-describedby="footnote-label">14</a></sup>。该缺陷不是由 TLC 反例给出的，而是在为模型状态寻找实现对应物时发现的。</p>
-<p>在这一案例中，F1–F3 都出现在建模与早期检查阶段；此后耗时最长的 Liveness 检查没有产生新的反例。这说明检查规模、时间预算以及哪些检查构成验收条件，应在建模开始时确定。</p>
-<h3 id="62-外部副作用的取消责任f4">6.2 外部副作用的取消责任（F4）</h3>
-<p>项目 B 中有一个管理临时远程开发环境的控制面：关闭环境时，需要取消代码托管平台上正在运行的 CI 任务。在一次平台局部故障中，查询任务状态的请求失败；此时关闭已被记录，取消请求却未发出，任务持续运行。</p>
-<p>最初的修复只移除了失败的状态查询。随后的建模表明，原模型把关闭视为单一步骤。将其拆分为“记录关闭意图”“发出取消”与“平台确认取消”三步后，模型暴露出一个中间状态：关闭一经记录，重复的关闭请求便不再具有发出取消的权限，取消责任在该状态下丢失。最终的修复把待取消状态持久化，仅在平台接受取消后才清除，并以不变量 <code>CancelResponsibilityRetained</code> 加以检查；保留旧行为的负向配置违反该不变量，修复后的模型在其全部可达状态上满足它。模型没有发现这次故障，但它把修复范围从移除一次查询，扩展为在中间状态中保留取消责任。</p>
-<p>该案例说明，提交权限与清理责任可以分离：一个操作可能已无权修改当前状态，却仍需为其造成的外部效果负责。对应地，模型需要显式表达效果归属（effect ownership）、取消能够撤回与不能撤回的内容，以及系统在有限步内到达稳定终态的收敛（convergence）要求。</p>
-<h2 id="7-讨论">7 讨论</h2>
-<h3 id="71-模型检查在流程中的角色">7.1 模型检查在流程中的角色</h3>
-<p>表 2 显示，TLC 很少是缺陷的首个发现者。发现多发生在建模过程中：为写出模型，Agent 必须精确定义状态谓词，再以这些定义对照实现，F2 与 F6 即为此类。由反例直接揭示设计缺口的情形（F1）只有一项。但这一观察只是相关性描述：本文没有对照条件，无法判断同等投入的代码审查能否发现同样的问题（第 8 节）。</p>
-<p>TLC 的主要作用体现在修复之后。测试复现一条违例顺序，修复后该顺序通过，只说明这一顺序不再出错。TLC 对修复后的模型做穷举检查，说明在给定的有限配置内，模型中不存在违反该性质的事件交错；负向配置则确认这一结论不是空洞的。例如在 F4 中，测试检查的是若干条显式构造的顺序，而 <code>CancelResponsibilityRetained</code> 在修复后模型的全部可达状态上成立；在 6.1 节中，Safety 检查覆盖了 4 条投递下的 8500 万个状态。本文把这类结论称为有界穷举结论（bounded exhaustive result）。它有两重限定：其一，它只针对给定配置，向更大规模的推广依赖小范围假设；其二，它只针对模型，不直接适用于代码。</p>
-<p>据此，在本文所述的流程中，建模首先是一种迫使定义精确化的设计审查，承担发现问题的职能；TLC 则在修复之后，为修复后的模型提供有界穷举结论。</p>
-<h3 id="72-结论的边界">7.2 结论的边界</h3>
-<p>即使检查结果不是空洞的，其适用范围也有三方面的限制。</p>
-<p>其一，TLC 只检查给定的模型与配置。模型遗漏的状态、被配置排除的路径，都不在结论覆盖之内。</p>
-<p>其二，Safety 与 Liveness 依赖不同的前提。Safety 断言坏事不会发生；Liveness 断言在给定假设下，好事终将发生。例如，对 <code>Complete</code> 施加弱公平（weak fairness），模型中的响应便终将到达；但这等于假设外部服务终将响应。这是一条需要单独声明的环境假设，而不是 TLC 验证得到的结论。</p>
-<p>其三，模型与实现之间的对应关系需要单独验证。本文的案例以受控测试把反例映射到实现（附录 A），没有做轨迹校验<sup><a href="#user-content-fn-xmodel" id="user-content-fnref-xmodel-2" data-footnote-ref aria-describedby="footnote-label">10</a></sup><sup><a href="#user-content-fn-tracevalidation" id="user-content-fnref-tracevalidation-2" data-footnote-ref aria-describedby="footnote-label">11</a></sup>，也没有做 refinement 证明。因此，“修复后的代码满足该性质”这一陈述在本文中只得到测试层面的支持，而“修复后的模型在给定配置内满足该性质”得到的是穷举支持，二者不应混同。</p>
-<h3 id="73-成本与适用范围">7.3 成本与适用范围</h3>
-<p>检查成本取决于相互交错的参与者数量，而非模型的行数：第 3 节的模型 60 余行，各配置在 1 秒内完成；6.1 节的模型 416 行，含 Liveness 的完整检查在 8 小时内未能完成。无论规模如何，最需要人工判断的环节都是：决定模型保留哪些状态，确认负向见证成立，以及为检查设定预算。这些环节可以由 Agent 起草，但也是 Agent 最容易出错的地方（F3、F7）。本文没有记录建模所耗费的人工时间与 Agent 交互次数，无法给出成本的定量估计。</p>
-<p>纯展示性的界面、静态内容或没有复杂生命周期的确定性操作，通常以测试与代码审查即可覆盖。模型检查适用于涉及并发请求、异步回调、资源替换、重试与去重、取消后的副作用、事务中间状态、超时恢复或进展要求的系统，尤其是正常路径易于实现、而异常路径会改变资源身份、操作权限或副作用责任的功能。</p>
-<h2 id="8-效度威胁">8 效度威胁</h2>
-<p><strong>利益相关与选择偏差。</strong> 作者是 model-with-tla 的作者，全部数据来自作者自己的项目与会话，项目类型、建模动机与写作风格都可能有偏向。十项发现的样本很小，不足以支持频率意义上的结论。</p>
-<p><strong>分类的可靠性。</strong> “首先由何发现”依据会话记录判断，而会话中未被记录的人工思考无法观察；分类先由 LLM agent 完成，作者核对了各项发现对应的提交，但没有对分类结果做第二人的独立复核。</p>
-<p><strong>可核实性。</strong> 项目 A 公开，其模型与修复可在仓库中查阅；项目 B、C、D 的发现经过匿名处理，读者无法独立核实，其证据强度弱于项目 A 与第 3 节的最小示例。</p>
-<p><strong>缺少对照。</strong> 本文没有在相同问题上比较建模、代码审查与测试的效果，7.1 节关于发现途径的陈述只是描述性的。</p>
-<p><strong>量化数据。</strong> 状态数与耗时来自单一硬件上的单次运行。表 3 中精简前后的模型行为不同，二者的状态数不能直接比较。</p>
+<p><strong>F1：先分诊反例，再判断设计。</strong> TLC 首先报告了 <code>QueuedDispatches</code> 的 Liveness 反例，但这是模型环境假设的问题：它允许正常运行的 worker 在下一步之前失去租约，而产品的时限设定排除了这种情况。修正假设后，另一个反例违反 <code>Settled</code>：投递被人工取消，却没有规则要求 worker 释放其派发租约。后一个反例对应真实的设计缺口，随后成为实现要求。反例本身不自动等于代码 Bug；首先要判断它是否来自产品允许的行为。</p>
+<p><strong>F3：负向配置没有失败，也是发现。</strong> 负向变体 <code>GiveWayFreesTask</code> 模拟“让出槽位时错误地释放任务锁”，预期违反“同一任务至多一个运行”。但在 <code>BacklogCap = 1</code> 的配置中，TLC 探索 1700 万个状态仍未找到违例。进一步分析发现，积压达到上限后派发暂停，第二个运行根本不会启动；配置把本应测试的行为排除了。将 <code>BacklogCap</code> 改为 2 后，3 秒内出现预期违例。这里不能把“1700 万状态未失败”直接当成安全证据，决定性信息来自对不可达原因的分析及修正后的负向检查。</p>
+<p><strong>F2：查找模型状态在代码中的对应物。</strong> 模型把“已派发”定义为启动记录已写入；实现却通过其他字段推断这一状态，并把“启动参数已生成”近似为“可能已在执行端运行”。启动参数实际在调用执行端前就已写入，导致一条从未发出的投递被退回队列后无法满足过期条件。修复引入显式的 <code>uncertain</code> 状态：worker 在自身租约下、调用执行端之前写入它；若租约已失效，就不再调用执行端<sup><a href="#user-content-fn-kinmesh-fix" id="user-content-fnref-kinmesh-fix" data-footnote-ref aria-describedby="footnote-label">9</a></sup>。这个问题没有由 TLC 反例直接提出，而是在寻找模型与实现状态的对应关系时暴露。</p>
+<p><strong>检查的成本与停止条件。</strong> 表 3 中，原始模型的完整 Safety + Liveness 检查在 8 小时内未完成；Safety 在 <code>BacklogCap = 2</code> 下检查 3.14 亿个状态后通过。精简模型的 Safety 检查在 <code>BacklogCap = 1</code> 下访问 8500 万个状态、耗时 33 分钟；Liveness 检查仍未完成。精简改变了模型行为，两个状态数不能直接用来比较效率。最终可报告的范围是：特定配置下 Safety 已检查，7 个负向变体在原始模型上确认了违例，精简模型没有重新运行全部负向变体，Liveness 未完成验证。项目也因此将模型检查从硬性验收条件改为建议性检查。</p>
+<h3 id="52-关闭操作取消责任不能随状态消失f4">5.2 关闭操作：取消责任不能随状态消失（F4）</h3>
+<p>项目 B 的控制面负责管理临时远程开发环境。关闭环境时，还需要取消代码托管平台上仍在运行的 CI 任务。一次平台局部故障使“查询任务状态”失败：本地已记录关闭，取消请求却未发出，外部任务继续运行。</p>
+<p>最初的修复只是移除那次易失败的查询。之后建模时，Agent 将原本单步的“关闭”拆成“记录关闭意图”“发出取消请求”“平台确认取消”。这个拆分显露了被原修复遗漏的中间状态：关闭意图一旦记录，重复关闭不再具备触发取消的权限，尚未完成的取消责任于是消失。</p>
+<p>最终实现持久保存待取消状态，只有平台接受取消后才清除；模型以不变量 <code>CancelResponsibilityRetained</code> 检查这一要求。保留旧行为的负向配置违反不变量，修复模型在其有限配置的可达状态上满足它。此处，线上故障先于建模；建模并未“发现”原故障，却改变了修复范围，从绕过一次失败查询转为保证中间状态中责任不丢失。</p>
+<p>F4 还揭示一种重要区分：操作失去修改当前资源的权限，不等于它造成的外部效果已被撤销。身份和提交授权、取消责任和最终收敛应分别建模；尤其在外部 API 超时后，不能把“没有收到响应”当成“平台没有执行”。</p>
+<h2 id="6-从检查输出到工程证据">6 从检查输出到工程证据</h2>
+<h3 id="61-三道不同的关口">6.1 三道不同的关口</h3>
+<p>以上案例可以组织成一个逐层检查的工作流，而不是“写模型—跑 TLC—宣布正确”的直线流程。</p>
+<p>第一道关口是<strong>表达能力</strong>。从需求定义身份、状态与动作边界；对重要 Safety 性质配备能达到指定违例的负向见证。F3 和 F7 表明，工具运行成功不意味着这道关口已经通过。</p>
+<p>第二道关口是<strong>有限模型检查</strong>。在明确的配置和环境假设下运行 TLC，区分预期性质违例、其他性质先行违例、检查成功、资源预算耗尽与未完成。负向结果必须命中指定性质，不能把任何报错都算成成功的负向见证。F1 的反例分诊说明，找到轨迹后仍需要判断环境假设是否符合产品。</p>
+<p>第三道关口是<strong>实现对应</strong>。将模型的抽象状态、原子切分和反例轨迹对应到代码，必要时用可控的事件顺序写回归测试。F2 的问题恰恰出现于模型状态与实现字段无法一一对应的地方。模型通过并不自动把结果传递到实现；本文也没有做正式的 refinement 证明或生产轨迹校验。</p>
+<p>三道关口不构成互相替代的证明链：前两道能提高模型检查结论的可解释性，第三道提供部分代码层面的证据，但仍不足以推出任意环境下实现正确。</p>
+<h3 id="62-safetyliveness-与环境假设不能混为一谈">6.2 Safety、Liveness 与环境假设不能混为一谈</h3>
+<p>Safety 关心坏状态是否可达，Liveness 关心系统能否持续取得进展。后者往往依赖公平性或外部服务最终响应的假设。例如，若假定 <code>Complete</code> 满足弱公平，模型可能据此得到“操作最终完成”的结论；这不是 TLC 证明了真实网络服务一定响应，而是模型把该条件作为前提。</p>
+<p>同样，状态穷举只覆盖指定的有限配置。小范围假设认为许多缺陷能在小规模实例中暴露<sup><a href="#user-content-fn-jackson" id="user-content-fnref-jackson" data-footnote-ref aria-describedby="footnote-label">10</a></sup>，但这不意味着小配置的通过可以无条件推广到更大的系统。表 3 的结果应当连同参与者数量、配置常量、检查类型以及中止的任务一起阅读。</p>
+<h3 id="63-发现确认与修复不应争夺同一个标签">6.3 发现、确认与修复不应争夺同一个标签</h3>
+<p>十项发现里，TLC 不是最常见的第一条问题线索；它在反例确认、负向见证和修复后有限检查中发挥了不同作用。这既不支持“TLC 只是最后盖章”，也不支持“缺陷主要由 TLC 自动发现”。可观察到的工作方式更接近一个反馈循环：精确定义状态会推动审查，TLC 暴露某些错误或无效配置，开发者再修正规约或实现，随后重新检查。</p>
+<p>把“第一次注意到问题”与“为修复提供何种证据”分开记录，比用单一发现数量评价形式化方法更有信息量。</p>
+<h3 id="64-成本适用范围与停止条件">6.4 成本、适用范围与停止条件</h3>
+<p>最小模型只有约 60 行，各配置不到 1 秒；认领协议模型 416 行，有些 Liveness 检查在数小时后仍未完成。运行成本主要取决于参与者、动作和状态的组合，而不是代码行数。本文没有可靠记录建模人工时间或 Agent 交互成本，不能据此估算投入产出比。</p>
+<p>并发认领、资源替换、重试与去重、外部取消、超时恢复和跨步骤副作用，通常值得考虑这种建模方式；纯展示页面、静态内容或简单确定性操作，测试和代码审查往往更经济。开始建模时就应写明检查规模、时间预算、必须通过的 Safety 性质、负向见证以及 Liveness 能否作为验收条件。没有完成的检查应明确标为未完成，而不是归入通过。</p>
+<h2 id="7-与已有工作的关系">7 与已有工作的关系</h2>
+<p>TLA+ 和 TLC 在工业界的应用已有成熟先例。AWS 的经验说明，设计阶段的形式化规约可以暴露分布式协议中的深层问题<sup><a href="#user-content-fn-aws" id="user-content-fnref-aws" data-footnote-ref aria-describedby="footnote-label">11</a></sup>。本文没有提出新的模型检查算法，讨论的是 Coding Agent 参与规约编写后，怎样判断检查结果与工程问题是否相干。</p>
+<p>模型检查研究长期关注空洞满足（vacuity）：性质成立可能只是因为使其有意义的前提从未出现<sup><a href="#user-content-fn-beer" id="user-content-fnref-beer-2" data-footnote-ref aria-describedby="footnote-label">4</a></sup><sup><a href="#user-content-fn-kv" id="user-content-fnref-kv-2" data-footnote-ref aria-describedby="footnote-label">5</a></sup>。第 2 节的 <code>Vacuous.cfg</code> 和 F3 是配置使关键行为不可达的具体实例；负向见证则采用类似变异分析的办法，要求已知错误必须被目标性质检出<sup><a href="#user-content-fn-mutation" id="user-content-fnref-mutation-2" data-footnote-ref aria-describedby="footnote-label">6</a></sup>。这与后置条件研究所强调的 discriminative power 有相通之处<sup><a href="#user-content-fn-nl2postcond" id="user-content-fnref-nl2postcond-2" data-footnote-ref aria-describedby="footnote-label">7</a></sup>，但不能据此宣称二者是完全相同的评价指标。</p>
+<p>另一条研究路线关注<strong>规约与程序的联系</strong>。MongoDB 的 eXtreme Modelling 使用程序轨迹对照 TLA+ 模型<sup><a href="#user-content-fn-xmodel" id="user-content-fnref-xmodel" data-footnote-ref aria-describedby="footnote-label">12</a></sup>；针对分布式程序的轨迹校验工作进一步研究了如何检查实现行为与规约的符合性<sup><a href="#user-content-fn-tracevalidation" id="user-content-fnref-tracevalidation" data-footnote-ref aria-describedby="footnote-label">13</a></sup>。本文案例仅将抽象反例映射为受控测试，没有进行这类轨迹验证，因而对实现所能提出的保证较弱。</p>
+<p>已有研究也直接评估了 LLM 从自然语言生成 TLA+ 规约的语义正确性，并指出结果存在明显风险<sup><a href="#user-content-fn-llmtla" id="user-content-fnref-llmtla" data-footnote-ref aria-describedby="footnote-label">14</a></sup>。本文的场景不是一次生成即结束：Agent 可以在 TLC 与负向配置反馈下迭代修模。F7 表明，反馈机制有实际作用；同时，它也说明工具并不会自动替 Agent 理解规约语义。</p>
+<h2 id="8-证据局限">8 证据局限</h2>
+<p><strong>样本选择与利益相关。</strong> 数据只来自作者自己的项目；作者也是 <code>model-with-tla</code> 的开发者。筛选保留了有提交佐证的发现，但无法构成全部建模尝试的无偏样本，也不支持任何总体发现率。</p>
+<p><strong>分类误差与缺少对照。</strong> 首次发现途径依据会话可见记录判断，无法观察未记录的人工思考。两个 LLM agent 辅助分类，但没有第二名独立研究者复核；同时没有同等投入的普通代码审查或不使用 TLC 的建模组，不能据此估计因果效果。</p>
+<p><strong>复核范围不同。</strong> 项目 A 及其模型、修复提交可以公开查阅；项目 B、C、D 已匿名，读者无法独立核实。第 2 节的最小模型最容易复现，但它证明的是机制可行，不代表十项发现的普遍性。</p>
+<p><strong>配置与测量范围。</strong> 状态数和时间来自特定硬件上的运行，部分检查因预算中止。TLC 的通过只覆盖给定模型、配置和性质；受控测试只覆盖被执行的实现轨迹。两类证据都不能自动替代对真实环境行为的证明。</p>
 <h2 id="9-结论">9 结论</h2>
-<p>本文报告了在 Coding Agent 工作流中使用 TLA+ 的经验。最小示例展示了从模型、反例、修复到正负向配置的完整过程；负向配置作为配置层面的 vacuity 检测，在实际使用中检出了 Agent 无意写出的空洞模型与空洞配置。对十项有提交佐证的发现的分类表明，问题主要在建模与模型–实现对照中被发现，TLC 反例直接揭示设计缺口的情形较少；TLC 的主要作用是在修复之后，为修复后的模型提供有界穷举结论。这一结论只针对模型与给定配置，代码层面的保证仍依赖受控测试，或尚未在本文中使用的轨迹校验。上述观察来自单一作者的小样本，需要在更多项目与独立评估中检验。</p>
+<p>在这些 Coding Agent 使用记录中，建模迫使开发者说明身份、授权与中间状态，TLC 提供反例、负向见证反馈以及指定配置下的穷举检查。重要的不是把缺陷发现归功于哪一个单独环节，而是让每一环节的证据回答它实际能回答的问题。</p>
+<p>本文最直接的工程建议是：<strong>对重要性质，同时维护应当通过的配置和必须命中指定违例的负向配置。</strong> 正向结果说明有限模型中未发现错误；负向结果说明至少一个已知错误仍可被模型表达和识别。接着再用实现对照、受控测试与明确的环境假设限定结论范围。这样得到的不是“Agent 已证明程序正确”，而是一组可复查、能指出自身失效方式的工程证据。</p>
 <h2 id="附录-a工作流">附录 A：工作流</h2>
 <p>model-with-tla 把建模、配置、反例解读与负向见证设计组织为可重复的工作流：Skill 规定何时值得建模、如何划定模型边界与定义性质、各类任务可修改的文件范围；TLC 负责穷举；<code>tla-check</code> 以固定版本的工具链执行 SANY 与 TLC，比较预期结果与实际观察，并输出结构化证据（图 3）。</p>
 <p><img src="/posts/model-with-tla-agent-assisted-coding/images/verification-evidence-chain.svg" alt="model-with-tla 的完整工作流：需求、模型检查、实现映射和验证证据"></p>
 <p><em>图 3：model-with-tla 工作流：需求、模型检查、实现映射与验证证据。</em></p>
-<p><strong>以需求而非实现为起点。</strong> 把实现直接翻译为 TLA+，检查通过也只能说明模型满足它自身声明的性质。在第 3 节的例子中，若照实现只建模名称，<code>NoStaleWrite</code> 根本无法表述。工作流因此要求分别记录产品需求与已确认的设计决策、当前实现的行为、外部系统提供的保证，以及尚未证实的假设。例如，外部 API 调用超时并不证明操作未执行；若业务要求避免重复副作用，模型必须保留“操作已生效而响应丢失”的可能，除非外部契约明确排除这种情况（图 4）。</p>
+<p><strong>以需求而非实现为起点。</strong> 把实现直接翻译为 TLA+，检查通过也只能说明模型满足它自身声明的性质。在第 2 节的例子中，若照实现只建模名称，<code>NoStaleWrite</code> 根本无法表述。工作流因此要求分别记录产品需求与已确认的设计决策、当前实现的行为、外部系统提供的保证，以及尚未证实的假设。例如，外部 API 调用超时并不证明操作未执行；若业务要求避免重复副作用，模型必须保留“操作已生效而响应丢失”的可能，除非外部契约明确排除这种情况（图 4）。</p>
 <p><img src="/posts/model-with-tla-agent-assisted-coding/images/effectful-api-cut-points.svg" alt="一次包含外部副作用的 API 调用为何需要拆分状态转换"></p>
 <p><em>图 4：一次带外部副作用的调用中的三个边界：外部接受请求、响应送达与本地提交。超时分支表示结果未知，而非外部操作未发生。</em></p>
-<p><strong>从反例到测试。</strong> TLC 的反例是抽象的状态轨迹，需要映射到领域事件与实现中的关键边界，再构造为可重复执行的受控测试（图 5）。对第 3 节的轨迹，对应的测试在回调处暂停操作（State 2），删除并重建资源（State 3），放行回调（State 4、5），最后断言第 2 代资源未被旧结果修改。</p>
+<p><strong>从反例到测试。</strong> TLC 的反例是抽象的状态轨迹，需要映射到领域事件与实现中的关键边界，再构造为可重复执行的受控测试（图 5）。对第 2 节的轨迹，对应的测试在回调处暂停操作（State 2），删除并重建资源（State 3），放行回调（State 4、5），最后断言第 2 代资源未被旧结果修改。</p>
 <picture>
   <source media="(max-width: 640px)" srcset="/posts/model-with-tla-agent-assisted-coding/images/counterexample-to-test-mobile.svg">
   <img src="/posts/model-with-tla-agent-assisted-coding/images/counterexample-to-test.svg" alt="TLC 反例映射到领域事件、代码边界和受控回归测试的四个阶段" loading="lazy" style="display: block; width: 100%; height: auto;">
@@ -443,7 +239,7 @@
 <p>Codex CLI 中的安装命令：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">codex</span><span style="color:#9ECBFF"> plugin</span><span style="color:#9ECBFF"> marketplace</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> ronhuafeng/skills-release</span><span style="color:#79B8FF"> --ref</span><span style="color:#9ECBFF"> main</span></span></code></pre>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">codex</span><span style="color:#9ECBFF"> plugin</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> ronhuafeng-engineering@ronhuafeng-skills</span></span></code></pre>
-<p>运行环境需要 Java 11 或更高版本及 <code>uv</code>；TLA+ 工具链与 <code>tla-check</code> 已随 Skill 分发。该 Skill 设置了 <code>disable-model-invocation</code>，需要由用户显式调用并指定模式。按 7.3 节的建议，调用时宜同时给出检查规模、时间预算与验收范围，例如：</p>
+<p>运行环境需要 Java 11 或更高版本及 <code>uv</code>；TLA+ 工具链与 <code>tla-check</code> 已随 Skill 分发。该 Skill 设置了 <code>disable-model-invocation</code>，需要由用户显式调用并指定模式。按 6.4 节的建议，调用时宜同时给出检查规模、时间预算与验收范围，例如：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>/ronhuafeng-engineering:model-with-tla design 为收件箱的认领协议建模。Safety 检查使用 2 个 worker、3 条投递，单次不超过 10 分钟；每条 Safety 性质配一个负向配置；Liveness 检查仅作参考，不作为验收条件。</span></span></code></pre>
 <p>以第 3 节的模型为例，执行负向配置的命令如下（<code>Fixed.cfg</code> 将预期改为 <code>success</code>）：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">"&lt;skill-directory&gt;/.tools/tla-check"</span><span style="color:#9ECBFF"> check</span><span style="color:#79B8FF"> \</span></span>
@@ -452,51 +248,51 @@
 <span class="line"><span style="color:#79B8FF">  --expect</span><span style="color:#9ECBFF"> invariant:NoStaleWrite</span></span></code></pre>
 <section data-footnotes class="footnotes"><h2 class="sr-only" id="footnote-label">Footnotes</h2>
 <ol>
-<li id="user-content-fn-skill">
-<p>model-with-tla 的源码与参考文档见 <a href="https://github.com/ronhuafeng/skills-release/tree/main/catalog/engineering/model-with-tla">ronhuafeng/skills-release</a>，其中包括 <a href="https://github.com/ronhuafeng/skills-release/blob/main/catalog/engineering/model-with-tla/references/model-adequacy.md">Model Adequacy</a>、<a href="https://github.com/ronhuafeng/skills-release/blob/main/catalog/engineering/model-with-tla/references/identity-and-epochs.md">Identity and Epochs</a>、<a href="https://github.com/ronhuafeng/skills-release/blob/main/catalog/engineering/model-with-tla/references/effects-and-convergence.md">Effects and Convergence</a>、<a href="https://github.com/ronhuafeng/skills-release/blob/main/catalog/engineering/model-with-tla/references/tlc-tool.md">TLC Tool</a> 与 <a href="https://github.com/ronhuafeng/skills-release/blob/main/catalog/engineering/model-with-tla/references/evidence-closure.md">Evidence Closure</a>。 <a href="#user-content-fnref-skill" data-footnote-backref="" aria-label="Back to reference 1" class="data-footnote-backref">↩</a></p>
-</li>
 <li id="user-content-fn-lamport">
-<p>Leslie Lamport. <em>Specifying Systems: The TLA+ Language and Tools for Hardware and Software Engineers</em>. Addison-Wesley, 2002. <a href="#user-content-fnref-lamport" data-footnote-backref="" aria-label="Back to reference 2" class="data-footnote-backref">↩</a></p>
+<p>Leslie Lamport. <em>Specifying Systems: The TLA+ Language and Tools for Hardware and Software Engineers</em>. Addison-Wesley, 2002. <a href="#user-content-fnref-lamport" data-footnote-backref="" aria-label="Back to reference 1" class="data-footnote-backref">↩</a></p>
 </li>
 <li id="user-content-fn-tlc">
-<p>Yuan Yu, Panagiotis Manolios, Leslie Lamport. Model Checking TLA+ Specifications. In <em>Correct Hardware Design and Verification Methods (CHARME)</em>, LNCS 1703, 1999. <a href="#user-content-fnref-tlc" data-footnote-backref="" aria-label="Back to reference 3" class="data-footnote-backref">↩</a></p>
+<p>Yuan Yu, Panagiotis Manolios, Leslie Lamport. Model Checking TLA+ Specifications. In <em>Correct Hardware Design and Verification Methods (CHARME)</em>, LNCS 1703, 1999. <a href="#user-content-fnref-tlc" data-footnote-backref="" aria-label="Back to reference 2" class="data-footnote-backref">↩</a></p>
 </li>
-<li id="user-content-fn-aws">
-<p>Chris Newcombe, Tim Rath, Fan Zhang, Bogdan Munteanu, Marc Brooker, Michael Deardeuff. How Amazon Web Services Uses Formal Methods. <em>Communications of the ACM</em> 58(4), 2015. <a href="#user-content-fnref-aws" data-footnote-backref="" aria-label="Back to reference 4" class="data-footnote-backref">↩</a></p>
+<li id="user-content-fn-skill">
+<p>model-with-tla 的源码与参考文档见 <a href="https://github.com/ronhuafeng/skills-release/tree/main/catalog/engineering/model-with-tla">ronhuafeng/skills-release</a>，其中包括 <a href="https://github.com/ronhuafeng/skills-release/blob/main/catalog/engineering/model-with-tla/references/model-adequacy.md">Model Adequacy</a>、<a href="https://github.com/ronhuafeng/skills-release/blob/main/catalog/engineering/model-with-tla/references/identity-and-epochs.md">Identity and Epochs</a>、<a href="https://github.com/ronhuafeng/skills-release/blob/main/catalog/engineering/model-with-tla/references/effects-and-convergence.md">Effects and Convergence</a>、<a href="https://github.com/ronhuafeng/skills-release/blob/main/catalog/engineering/model-with-tla/references/tlc-tool.md">TLC Tool</a> 与 <a href="https://github.com/ronhuafeng/skills-release/blob/main/catalog/engineering/model-with-tla/references/evidence-closure.md">Evidence Closure</a>。 <a href="#user-content-fnref-skill" data-footnote-backref="" aria-label="Back to reference 3" class="data-footnote-backref">↩</a></p>
 </li>
 <li id="user-content-fn-beer">
-<p>Ilan Beer, Shoham Ben-David, Cindy Eisner, Yoav Rodeh. Efficient Detection of Vacuity in Temporal Model Checking. <em>Formal Methods in System Design</em> 18(2), 2001. <a href="#user-content-fnref-beer" data-footnote-backref="" aria-label="Back to reference 5" class="data-footnote-backref">↩</a></p>
+<p>Ilan Beer, Shoham Ben-David, Cindy Eisner, Yoav Rodeh. Efficient Detection of Vacuity in Temporal Model Checking. <em>Formal Methods in System Design</em> 18(2), 2001. <a href="#user-content-fnref-beer" data-footnote-backref="" aria-label="Back to reference 4" class="data-footnote-backref">↩</a> <a href="#user-content-fnref-beer-2" data-footnote-backref="" aria-label="Back to reference 4-2" class="data-footnote-backref">↩<sup>2</sup></a></p>
 </li>
 <li id="user-content-fn-kv">
-<p>Orna Kupferman, Moshe Y. Vardi. Vacuity Detection in Temporal Model Checking. <em>International Journal on Software Tools for Technology Transfer</em> 4(2), 2003. <a href="#user-content-fnref-kv" data-footnote-backref="" aria-label="Back to reference 6" class="data-footnote-backref">↩</a></p>
+<p>Orna Kupferman, Moshe Y. Vardi. Vacuity Detection in Temporal Model Checking. <em>International Journal on Software Tools for Technology Transfer</em> 4(2), 2003. <a href="#user-content-fnref-kv" data-footnote-backref="" aria-label="Back to reference 5" class="data-footnote-backref">↩</a> <a href="#user-content-fnref-kv-2" data-footnote-backref="" aria-label="Back to reference 5-2" class="data-footnote-backref">↩<sup>2</sup></a></p>
 </li>
 <li id="user-content-fn-mutation">
-<p>Richard A. DeMillo, Richard J. Lipton, Frederick G. Sayward. Hints on Test Data Selection: Help for the Practicing Programmer. <em>IEEE Computer</em> 11(4), 1978. <a href="#user-content-fnref-mutation" data-footnote-backref="" aria-label="Back to reference 7" class="data-footnote-backref">↩</a></p>
+<p>Richard A. DeMillo, Richard J. Lipton, Frederick G. Sayward. Hints on Test Data Selection: Help for the Practicing Programmer. <em>IEEE Computer</em> 11(4), 1978. <a href="#user-content-fnref-mutation" data-footnote-backref="" aria-label="Back to reference 6" class="data-footnote-backref">↩</a> <a href="#user-content-fnref-mutation-2" data-footnote-backref="" aria-label="Back to reference 6-2" class="data-footnote-backref">↩<sup>2</sup></a></p>
 </li>
 <li id="user-content-fn-nl2postcond">
-<p>Madeline Endres, Sarah Fakhoury, Saikat Chakraborty, Shuvendu K. Lahiri. Can Large Language Models Transform Natural Language Intent into Formal Method Postconditions? <em>Proceedings of the ACM on Software Engineering</em> (FSE), 2024. <a href="https://arxiv.org/abs/2310.01831">arXiv:2310.01831</a>。 <a href="#user-content-fnref-nl2postcond" data-footnote-backref="" aria-label="Back to reference 8" class="data-footnote-backref">↩</a></p>
-</li>
-<li id="user-content-fn-jackson">
-<p>Daniel Jackson. <em>Software Abstractions: Logic, Language, and Analysis</em>. MIT Press, 2006. <a href="#user-content-fnref-jackson" data-footnote-backref="" aria-label="Back to reference 9" class="data-footnote-backref">↩</a></p>
-</li>
-<li id="user-content-fn-xmodel">
-<p>A. Jesse Jiryu Davis, Max Hirschhorn, Judah Schvimer. eXtreme Modelling in Practice. <em>Proceedings of the VLDB Endowment</em> 13(9), 2020. <a href="#user-content-fnref-xmodel" data-footnote-backref="" aria-label="Back to reference 10" class="data-footnote-backref">↩</a> <a href="#user-content-fnref-xmodel-2" data-footnote-backref="" aria-label="Back to reference 10-2" class="data-footnote-backref">↩<sup>2</sup></a></p>
-</li>
-<li id="user-content-fn-tracevalidation">
-<p>Horatiu Cirstea, Markus A. Kuppe, Benjamin Loillier, Stephan Merz. Validating Traces of Distributed Programs Against TLA+ Specifications. In <em>Software Engineering and Formal Methods (SEFM)</em>, LNCS, 2024. <a href="https://arxiv.org/abs/2404.16075">arXiv:2404.16075</a>。 <a href="#user-content-fnref-tracevalidation" data-footnote-backref="" aria-label="Back to reference 11" class="data-footnote-backref">↩</a> <a href="#user-content-fnref-tracevalidation-2" data-footnote-backref="" aria-label="Back to reference 11-2" class="data-footnote-backref">↩<sup>2</sup></a></p>
-</li>
-<li id="user-content-fn-llmtla">
-<p>Can LLMs Write Correct TLA+ Specifications? Evaluating Natural-Language-to-TLA+ Generation. <a href="https://arxiv.org/abs/2606.05792">arXiv:2606.05792</a>, 2026. <a href="#user-content-fnref-llmtla" data-footnote-backref="" aria-label="Back to reference 12" class="data-footnote-backref">↩</a></p>
+<p>Madeline Endres, Sarah Fakhoury, Saikat Chakraborty, Shuvendu K. Lahiri. Can Large Language Models Transform Natural Language Intent into Formal Method Postconditions? <em>Proceedings of the ACM on Software Engineering</em> (FSE), 2024. <a href="https://arxiv.org/abs/2310.01831">arXiv:2310.01831</a>。 <a href="#user-content-fnref-nl2postcond" data-footnote-backref="" aria-label="Back to reference 7" class="data-footnote-backref">↩</a> <a href="#user-content-fnref-nl2postcond-2" data-footnote-backref="" aria-label="Back to reference 7-2" class="data-footnote-backref">↩<sup>2</sup></a></p>
 </li>
 <li id="user-content-fn-kinmesh">
-<p>项目 A 即 <a href="https://github.com/ronhuafeng/kinmesh">ronhuafeng/kinmesh</a>。模型文件见提交 <a href="https://github.com/ronhuafeng/kinmesh/blob/7649826/tests/model/Inbox.tla">7649826</a> 中的 <code>tests/model/Inbox.tla</code>；表 3 的数据取自该次建模的会话记录与仓库提交。该设计其后被替换，模型未保留在当前代码库中。 <a href="#user-content-fnref-kinmesh" data-footnote-backref="" aria-label="Back to reference 13" class="data-footnote-backref">↩</a></p>
+<p>项目 A 即 <a href="https://github.com/ronhuafeng/kinmesh">ronhuafeng/kinmesh</a>。模型文件见提交 <a href="https://github.com/ronhuafeng/kinmesh/blob/7649826/tests/model/Inbox.tla">7649826</a> 中的 <code>tests/model/Inbox.tla</code>；表 3 的数据取自该次建模的会话记录与仓库提交。该设计其后被替换，模型未保留在当前代码库中。 <a href="#user-content-fnref-kinmesh" data-footnote-backref="" aria-label="Back to reference 8" class="data-footnote-backref">↩</a></p>
 </li>
 <li id="user-content-fn-kinmesh-fix">
-<p>提交 <a href="https://github.com/ronhuafeng/kinmesh/commit/7d032f2">7d032f2</a>。 <a href="#user-content-fnref-kinmesh-fix" data-footnote-backref="" aria-label="Back to reference 14" class="data-footnote-backref">↩</a></p>
+<p>提交 <a href="https://github.com/ronhuafeng/kinmesh/commit/7d032f2">7d032f2</a>。 <a href="#user-content-fnref-kinmesh-fix" data-footnote-backref="" aria-label="Back to reference 9" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-jackson">
+<p>Daniel Jackson. <em>Software Abstractions: Logic, Language, and Analysis</em>. MIT Press, 2006. <a href="#user-content-fnref-jackson" data-footnote-backref="" aria-label="Back to reference 10" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-aws">
+<p>Chris Newcombe, Tim Rath, Fan Zhang, Bogdan Munteanu, Marc Brooker, Michael Deardeuff. How Amazon Web Services Uses Formal Methods. <em>Communications of the ACM</em> 58(4), 2015. <a href="#user-content-fnref-aws" data-footnote-backref="" aria-label="Back to reference 11" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-xmodel">
+<p>A. Jesse Jiryu Davis, Max Hirschhorn, Judah Schvimer. eXtreme Modelling in Practice. <em>Proceedings of the VLDB Endowment</em> 13(9), 2020. <a href="#user-content-fnref-xmodel" data-footnote-backref="" aria-label="Back to reference 12" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-tracevalidation">
+<p>Horatiu Cirstea, Markus A. Kuppe, Benjamin Loillier, Stephan Merz. Validating Traces of Distributed Programs Against TLA+ Specifications. In <em>Software Engineering and Formal Methods (SEFM)</em>, LNCS, 2024. <a href="https://arxiv.org/abs/2404.16075">arXiv:2404.16075</a>。 <a href="#user-content-fnref-tracevalidation" data-footnote-backref="" aria-label="Back to reference 13" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-llmtla">
+<p>Can LLMs Write Correct TLA+ Specifications? Evaluating Natural-Language-to-TLA+ Generation. <a href="https://arxiv.org/abs/2606.05792">arXiv:2606.05792</a>, 2026. <a href="#user-content-fnref-llmtla" data-footnote-backref="" aria-label="Back to reference 14" class="data-footnote-backref">↩</a></p>
 </li>
 </ol>
 </section>
-</div></div><aside class="article-toc-rail" aria-label="本文目录"><div class="toc-rail-sticky"><div class="toc-rail-header"><span>本文目录</span><span class="toc-progress" data-reading-progress>0%</span></div><nav class="toc-navigation toc-navigation-rail" aria-label="本文目录" data-toc-nav><ol class="toc-list"><li><a href="#1-引言" data-toc-link>1 引言</a></li><li><a href="#2-相关工作" data-toc-link>2 相关工作</a></li><li><a href="#3-最小示例过期回调" data-toc-link>3 最小示例：过期回调</a></li><li class="toc-subheading"><a href="#31-模型" data-toc-link>3.1 模型</a></li><li class="toc-subheading"><a href="#32-反例" data-toc-link>3.2 反例</a></li><li class="toc-subheading"><a href="#33-修复与配置" data-toc-link>3.3 修复与配置</a></li><li><a href="#4-判别性与负向见证" data-toc-link>4 判别性与负向见证</a></li><li><a href="#5-案例收集与概览" data-toc-link>5 案例收集与概览</a></li><li><a href="#6-案例研究" data-toc-link>6 案例研究</a></li><li class="toc-subheading"><a href="#61-认领协议的设计期建模f1f3" data-toc-link>6.1 认领协议的设计期建模（F1–F3）</a></li><li class="toc-subheading"><a href="#62-外部副作用的取消责任f4" data-toc-link>6.2 外部副作用的取消责任（F4）</a></li><li><a href="#7-讨论" data-toc-link>7 讨论</a></li><li class="toc-subheading"><a href="#71-模型检查在流程中的角色" data-toc-link>7.1 模型检查在流程中的角色</a></li><li class="toc-subheading"><a href="#72-结论的边界" data-toc-link>7.2 结论的边界</a></li><li class="toc-subheading"><a href="#73-成本与适用范围" data-toc-link>7.3 成本与适用范围</a></li><li><a href="#8-效度威胁" data-toc-link>8 效度威胁</a></li><li><a href="#9-结论" data-toc-link>9 结论</a></li><li><a href="#附录-a工作流" data-toc-link>附录 A：工作流</a></li><li><a href="#附录-b工具使用" data-toc-link>附录 B：工具使用</a></li><li><a href="#footnote-label" data-toc-link>脚注</a></li></ol></nav></div></aside></div></article><button class="mobile-toc-launcher" type="button" aria-controls="post-toc-dialog" aria-expanded="false" data-toc-launcher hidden><span>目录</span><span class="toc-launcher-separator" aria-hidden="true">·</span><span data-reading-progress>0%</span></button><dialog class="toc-sheet" id="post-toc-dialog" aria-labelledby="post-toc-dialog-title" data-toc-dialog><div class="toc-sheet-handle" aria-hidden="true"></div><header class="toc-sheet-header"><div><h2 id="post-toc-dialog-title">本文目录</h2><p class="toc-sheet-status"><span>当前</span><strong data-current-section>开头</strong><span aria-hidden="true">·</span><span data-reading-progress>0%</span></p></div><button class="toc-sheet-close" type="button" aria-label="关闭目录" data-toc-close><span aria-hidden="true">×</span></button></header><nav class="toc-navigation toc-navigation-sheet" aria-label="本文目录" data-toc-nav><ol class="toc-list"><li><a href="#1-引言" data-toc-link>1 引言</a></li><li><a href="#2-相关工作" data-toc-link>2 相关工作</a></li><li><a href="#3-最小示例过期回调" data-toc-link>3 最小示例：过期回调</a></li><li class="toc-subheading"><a href="#31-模型" data-toc-link>3.1 模型</a></li><li class="toc-subheading"><a href="#32-反例" data-toc-link>3.2 反例</a></li><li class="toc-subheading"><a href="#33-修复与配置" data-toc-link>3.3 修复与配置</a></li><li><a href="#4-判别性与负向见证" data-toc-link>4 判别性与负向见证</a></li><li><a href="#5-案例收集与概览" data-toc-link>5 案例收集与概览</a></li><li><a href="#6-案例研究" data-toc-link>6 案例研究</a></li><li class="toc-subheading"><a href="#61-认领协议的设计期建模f1f3" data-toc-link>6.1 认领协议的设计期建模（F1–F3）</a></li><li class="toc-subheading"><a href="#62-外部副作用的取消责任f4" data-toc-link>6.2 外部副作用的取消责任（F4）</a></li><li><a href="#7-讨论" data-toc-link>7 讨论</a></li><li class="toc-subheading"><a href="#71-模型检查在流程中的角色" data-toc-link>7.1 模型检查在流程中的角色</a></li><li class="toc-subheading"><a href="#72-结论的边界" data-toc-link>7.2 结论的边界</a></li><li class="toc-subheading"><a href="#73-成本与适用范围" data-toc-link>7.3 成本与适用范围</a></li><li><a href="#8-效度威胁" data-toc-link>8 效度威胁</a></li><li><a href="#9-结论" data-toc-link>9 结论</a></li><li><a href="#附录-a工作流" data-toc-link>附录 A：工作流</a></li><li><a href="#附录-b工具使用" data-toc-link>附录 B：工具使用</a></li><li><a href="#footnote-label" data-toc-link>脚注</a></li></ol></nav></dialog><noscript><details class="post-toc-noscript"><summary>本文目录</summary><nav class="toc-navigation" aria-label="本文目录" data-toc-nav><ol class="toc-list"><li><a href="#1-引言" data-toc-link>1 引言</a></li><li><a href="#2-相关工作" data-toc-link>2 相关工作</a></li><li><a href="#3-最小示例过期回调" data-toc-link>3 最小示例：过期回调</a></li><li class="toc-subheading"><a href="#31-模型" data-toc-link>3.1 模型</a></li><li class="toc-subheading"><a href="#32-反例" data-toc-link>3.2 反例</a></li><li class="toc-subheading"><a href="#33-修复与配置" data-toc-link>3.3 修复与配置</a></li><li><a href="#4-判别性与负向见证" data-toc-link>4 判别性与负向见证</a></li><li><a href="#5-案例收集与概览" data-toc-link>5 案例收集与概览</a></li><li><a href="#6-案例研究" data-toc-link>6 案例研究</a></li><li class="toc-subheading"><a href="#61-认领协议的设计期建模f1f3" data-toc-link>6.1 认领协议的设计期建模（F1–F3）</a></li><li class="toc-subheading"><a href="#62-外部副作用的取消责任f4" data-toc-link>6.2 外部副作用的取消责任（F4）</a></li><li><a href="#7-讨论" data-toc-link>7 讨论</a></li><li class="toc-subheading"><a href="#71-模型检查在流程中的角色" data-toc-link>7.1 模型检查在流程中的角色</a></li><li class="toc-subheading"><a href="#72-结论的边界" data-toc-link>7.2 结论的边界</a></li><li class="toc-subheading"><a href="#73-成本与适用范围" data-toc-link>7.3 成本与适用范围</a></li><li><a href="#8-效度威胁" data-toc-link>8 效度威胁</a></li><li><a href="#9-结论" data-toc-link>9 结论</a></li><li><a href="#附录-a工作流" data-toc-link>附录 A：工作流</a></li><li><a href="#附录-b工具使用" data-toc-link>附录 B：工具使用</a></li><li><a href="#footnote-label" data-toc-link>脚注</a></li></ol></nav></details></noscript></main><footer class="footer" lang="zh-CN"><span>记录是生活的微小仪式感</span><div class="footer-meta"><a href="/rss.xml">RSS</a><span>© 2026 Zhang Hua Feng/張華楓&#39;s Notes</span></div></footer></div><script>
+</div></div><aside class="article-toc-rail" aria-label="本文目录"><div class="toc-rail-sticky"><div class="toc-rail-header"><span>本文目录</span><span class="toc-progress" data-reading-progress>0%</span></div><nav class="toc-navigation toc-navigation-rail" aria-label="本文目录" data-toc-nav><ol class="toc-list"><li><a href="#1-为什么模型检查通过还不够" data-toc-link>1 为什么模型检查通过还不够</a></li><li><a href="#2-最小实验过期回调如何逃过检查" data-toc-link>2 最小实验：过期回调如何逃过检查</a></li><li class="toc-subheading"><a href="#21-保留决定提交是否合法的状态" data-toc-link>2.1 保留决定提交是否合法的状态</a></li><li class="toc-subheading"><a href="#22-从反例中读取错误顺序" data-toc-link>2.2 从反例中读取错误顺序</a></li><li class="toc-subheading"><a href="#23-同样的通过结果可能有相反的含义" data-toc-link>2.3 同样的通过结果，可能有相反的含义</a></li><li><a href="#3-负向见证检查模型能否识别已知错误" data-toc-link>3 负向见证：检查模型能否识别已知错误</a></li><li class="toc-subheading"><a href="#31-判别性不是检查器的附加保证" data-toc-link>3.1 判别性不是检查器的附加保证</a></li><li class="toc-subheading"><a href="#32-实际案例-f7一个括号错误制造了空洞模型" data-toc-link>3.2 实际案例 F7：一个括号错误制造了空洞模型</a></li><li class="toc-subheading"><a href="#33-负向见证能证实什么不能证实什么" data-toc-link>3.3 负向见证能证实什么，不能证实什么</a></li><li><a href="#4-使用记录十项发现以及首先发现的局限" data-toc-link>4 使用记录：十项发现，以及“首先发现”的局限</a></li><li><a href="#5-详细案例设计缺口与外部副作用" data-toc-link>5 详细案例：设计缺口与外部副作用</a></li><li class="toc-subheading"><a href="#51-认领协议反例空洞配置与实现语义f1f3" data-toc-link>5.1 认领协议：反例、空洞配置与实现语义（F1–F3）</a></li><li class="toc-subheading"><a href="#52-关闭操作取消责任不能随状态消失f4" data-toc-link>5.2 关闭操作：取消责任不能随状态消失（F4）</a></li><li><a href="#6-从检查输出到工程证据" data-toc-link>6 从检查输出到工程证据</a></li><li class="toc-subheading"><a href="#61-三道不同的关口" data-toc-link>6.1 三道不同的关口</a></li><li class="toc-subheading"><a href="#62-safetyliveness-与环境假设不能混为一谈" data-toc-link>6.2 Safety、Liveness 与环境假设不能混为一谈</a></li><li class="toc-subheading"><a href="#63-发现确认与修复不应争夺同一个标签" data-toc-link>6.3 发现、确认与修复不应争夺同一个标签</a></li><li class="toc-subheading"><a href="#64-成本适用范围与停止条件" data-toc-link>6.4 成本、适用范围与停止条件</a></li><li><a href="#7-与已有工作的关系" data-toc-link>7 与已有工作的关系</a></li><li><a href="#8-证据局限" data-toc-link>8 证据局限</a></li><li><a href="#9-结论" data-toc-link>9 结论</a></li><li><a href="#附录-a工作流" data-toc-link>附录 A：工作流</a></li><li><a href="#附录-b工具使用" data-toc-link>附录 B：工具使用</a></li><li><a href="#footnote-label" data-toc-link>脚注</a></li></ol></nav></div></aside></div></article><button class="mobile-toc-launcher" type="button" aria-controls="post-toc-dialog" aria-expanded="false" data-toc-launcher hidden><span>目录</span><span class="toc-launcher-separator" aria-hidden="true">·</span><span data-reading-progress>0%</span></button><dialog class="toc-sheet" id="post-toc-dialog" aria-labelledby="post-toc-dialog-title" data-toc-dialog><div class="toc-sheet-handle" aria-hidden="true"></div><header class="toc-sheet-header"><div><h2 id="post-toc-dialog-title">本文目录</h2><p class="toc-sheet-status"><span>当前</span><strong data-current-section>开头</strong><span aria-hidden="true">·</span><span data-reading-progress>0%</span></p></div><button class="toc-sheet-close" type="button" aria-label="关闭目录" data-toc-close><span aria-hidden="true">×</span></button></header><nav class="toc-navigation toc-navigation-sheet" aria-label="本文目录" data-toc-nav><ol class="toc-list"><li><a href="#1-为什么模型检查通过还不够" data-toc-link>1 为什么模型检查通过还不够</a></li><li><a href="#2-最小实验过期回调如何逃过检查" data-toc-link>2 最小实验：过期回调如何逃过检查</a></li><li class="toc-subheading"><a href="#21-保留决定提交是否合法的状态" data-toc-link>2.1 保留决定提交是否合法的状态</a></li><li class="toc-subheading"><a href="#22-从反例中读取错误顺序" data-toc-link>2.2 从反例中读取错误顺序</a></li><li class="toc-subheading"><a href="#23-同样的通过结果可能有相反的含义" data-toc-link>2.3 同样的通过结果，可能有相反的含义</a></li><li><a href="#3-负向见证检查模型能否识别已知错误" data-toc-link>3 负向见证：检查模型能否识别已知错误</a></li><li class="toc-subheading"><a href="#31-判别性不是检查器的附加保证" data-toc-link>3.1 判别性不是检查器的附加保证</a></li><li class="toc-subheading"><a href="#32-实际案例-f7一个括号错误制造了空洞模型" data-toc-link>3.2 实际案例 F7：一个括号错误制造了空洞模型</a></li><li class="toc-subheading"><a href="#33-负向见证能证实什么不能证实什么" data-toc-link>3.3 负向见证能证实什么，不能证实什么</a></li><li><a href="#4-使用记录十项发现以及首先发现的局限" data-toc-link>4 使用记录：十项发现，以及“首先发现”的局限</a></li><li><a href="#5-详细案例设计缺口与外部副作用" data-toc-link>5 详细案例：设计缺口与外部副作用</a></li><li class="toc-subheading"><a href="#51-认领协议反例空洞配置与实现语义f1f3" data-toc-link>5.1 认领协议：反例、空洞配置与实现语义（F1–F3）</a></li><li class="toc-subheading"><a href="#52-关闭操作取消责任不能随状态消失f4" data-toc-link>5.2 关闭操作：取消责任不能随状态消失（F4）</a></li><li><a href="#6-从检查输出到工程证据" data-toc-link>6 从检查输出到工程证据</a></li><li class="toc-subheading"><a href="#61-三道不同的关口" data-toc-link>6.1 三道不同的关口</a></li><li class="toc-subheading"><a href="#62-safetyliveness-与环境假设不能混为一谈" data-toc-link>6.2 Safety、Liveness 与环境假设不能混为一谈</a></li><li class="toc-subheading"><a href="#63-发现确认与修复不应争夺同一个标签" data-toc-link>6.3 发现、确认与修复不应争夺同一个标签</a></li><li class="toc-subheading"><a href="#64-成本适用范围与停止条件" data-toc-link>6.4 成本、适用范围与停止条件</a></li><li><a href="#7-与已有工作的关系" data-toc-link>7 与已有工作的关系</a></li><li><a href="#8-证据局限" data-toc-link>8 证据局限</a></li><li><a href="#9-结论" data-toc-link>9 结论</a></li><li><a href="#附录-a工作流" data-toc-link>附录 A：工作流</a></li><li><a href="#附录-b工具使用" data-toc-link>附录 B：工具使用</a></li><li><a href="#footnote-label" data-toc-link>脚注</a></li></ol></nav></dialog><noscript><details class="post-toc-noscript"><summary>本文目录</summary><nav class="toc-navigation" aria-label="本文目录" data-toc-nav><ol class="toc-list"><li><a href="#1-为什么模型检查通过还不够" data-toc-link>1 为什么模型检查通过还不够</a></li><li><a href="#2-最小实验过期回调如何逃过检查" data-toc-link>2 最小实验：过期回调如何逃过检查</a></li><li class="toc-subheading"><a href="#21-保留决定提交是否合法的状态" data-toc-link>2.1 保留决定提交是否合法的状态</a></li><li class="toc-subheading"><a href="#22-从反例中读取错误顺序" data-toc-link>2.2 从反例中读取错误顺序</a></li><li class="toc-subheading"><a href="#23-同样的通过结果可能有相反的含义" data-toc-link>2.3 同样的通过结果，可能有相反的含义</a></li><li><a href="#3-负向见证检查模型能否识别已知错误" data-toc-link>3 负向见证：检查模型能否识别已知错误</a></li><li class="toc-subheading"><a href="#31-判别性不是检查器的附加保证" data-toc-link>3.1 判别性不是检查器的附加保证</a></li><li class="toc-subheading"><a href="#32-实际案例-f7一个括号错误制造了空洞模型" data-toc-link>3.2 实际案例 F7：一个括号错误制造了空洞模型</a></li><li class="toc-subheading"><a href="#33-负向见证能证实什么不能证实什么" data-toc-link>3.3 负向见证能证实什么，不能证实什么</a></li><li><a href="#4-使用记录十项发现以及首先发现的局限" data-toc-link>4 使用记录：十项发现，以及“首先发现”的局限</a></li><li><a href="#5-详细案例设计缺口与外部副作用" data-toc-link>5 详细案例：设计缺口与外部副作用</a></li><li class="toc-subheading"><a href="#51-认领协议反例空洞配置与实现语义f1f3" data-toc-link>5.1 认领协议：反例、空洞配置与实现语义（F1–F3）</a></li><li class="toc-subheading"><a href="#52-关闭操作取消责任不能随状态消失f4" data-toc-link>5.2 关闭操作：取消责任不能随状态消失（F4）</a></li><li><a href="#6-从检查输出到工程证据" data-toc-link>6 从检查输出到工程证据</a></li><li class="toc-subheading"><a href="#61-三道不同的关口" data-toc-link>6.1 三道不同的关口</a></li><li class="toc-subheading"><a href="#62-safetyliveness-与环境假设不能混为一谈" data-toc-link>6.2 Safety、Liveness 与环境假设不能混为一谈</a></li><li class="toc-subheading"><a href="#63-发现确认与修复不应争夺同一个标签" data-toc-link>6.3 发现、确认与修复不应争夺同一个标签</a></li><li class="toc-subheading"><a href="#64-成本适用范围与停止条件" data-toc-link>6.4 成本、适用范围与停止条件</a></li><li><a href="#7-与已有工作的关系" data-toc-link>7 与已有工作的关系</a></li><li><a href="#8-证据局限" data-toc-link>8 证据局限</a></li><li><a href="#9-结论" data-toc-link>9 结论</a></li><li><a href="#附录-a工作流" data-toc-link>附录 A：工作流</a></li><li><a href="#附录-b工具使用" data-toc-link>附录 B：工具使用</a></li><li><a href="#footnote-label" data-toc-link>脚注</a></li></ol></nav></details></noscript></main><footer class="footer" lang="zh-CN"><span>记录是生活的微小仪式感</span><div class="footer-meta"><a href="/rss.xml">RSS</a><span>© 2026 Zhang Hua Feng/張華楓&#39;s Notes</span></div></footer></div><script>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
           navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {});
