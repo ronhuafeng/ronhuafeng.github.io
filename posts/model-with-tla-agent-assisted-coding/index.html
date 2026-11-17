@@ -1,106 +1,246 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>给 Coding Agent 加上时序检查：使用 TLA+ 建模与发现并发问题 - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="介绍 model-with-tla 如何通过 Agent Skill、TLC Model Checker 和配套验证工具，把时序、并发与生命周期的形式化检查纳入日常 Agent-assisted coding。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/model-with-tla-agent-assisted-coding/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="application-name" content="華楓 Notes"><meta name="apple-mobile-web-app-title" content="華楓 Notes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0f0f10" media="(prefers-color-scheme: dark)"><meta name="robots" content="index,follow"><meta property="og:title" content="给 Coding Agent 加上时序检查：使用 TLA+ 建模与发现并发问题 - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="介绍 model-with-tla 如何通过 Agent Skill、TLC Model Checker 和配套验证工具，把时序、并发与生命周期的形式化检查纳入日常 Agent-assisted coding。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/model-with-tla-agent-assisted-coding/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/og-default.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="给 Coding Agent 加上时序检查：使用 TLA+ 建模与发现并发问题 - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="介绍 model-with-tla 如何通过 Agent Skill、TLC Model Checker 和配套验证工具，把时序、并发与生命周期的形式化检查纳入日常 Agent-assisted coding。"><meta name="twitter:image" content="https://blog.formalscience.com/og-default.svg"><meta property="article:published_time" content="2026-11-16T00:00:00.000Z"><meta property="article:section" content="技术"><meta property="article:tag" content="TLA+"><meta property="article:tag" content="Coding Agent"><meta property="article:tag" content="Model Checking"><meta property="article:tag" content="Formal Methods"><meta property="article:tag" content="并发系统"><link rel="stylesheet" href="/_astro/BaseLayout.CkF81Ls9.css"></head><body><a class="skip-link" href="#content" lang="zh-CN">跳到内容</a><div class="site-shell"><header class="site-header"><a class="brand" href="/"><span lang="en">Zhang Hua Feng/</span><span lang="zh-CN">張華楓</span><span lang="en">'s Notes</span></a><div class="header-actions"><nav class="nav-links" aria-label="主导航" lang="zh-CN"><a href="/">首页</a><a href="/posts" aria-current="page">文章</a><a href="/slides/">幻灯片</a><a href="/posts/thought-index/">书签</a><a href="/categories">分类</a><a href="/tags">标签</a><a href="/about">关于</a></nav><nav class="language-switch" aria-label="切换语言"><a href="/posts/model-with-tla-agent-assisted-coding/" lang="zh-CN" aria-current="page">中文</a><a href="/en" lang="en" title="English home">English</a></nav></div></header><main id="content"><article class="article-page" data-reading-article><header class="article-header"><div class="post-meta-row"><p class="meta"><time datetime="2026-11-16T00:00:00.000Z">2026年11月16日</time> · 约 14 分钟</p><a class="category-label" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></div><h1 class="article-title">给 Coding Agent 加上时序检查：使用 TLA+ 建模与发现并发问题</h1><p class="article-description">介绍 model-with-tla 如何通过 Agent Skill、TLC Model Checker 和配套验证工具，把时序、并发与生命周期的形式化检查纳入日常 Agent-assisted coding。</p><div class="tag-list article-tags"><a class="tag" href="/tags/TLA%2B/">TLA+</a><a class="tag" href="/tags/Coding%20Agent/">Coding Agent</a><a class="tag" href="/tags/Model%20Checking/">Model Checking</a><a class="tag" href="/tags/Formal%20Methods/">Formal Methods</a><a class="tag" href="/tags/%E5%B9%B6%E5%8F%91%E7%B3%BB%E7%BB%9F/">并发系统</a></div></header><div class="article-reading-layout has-toc"><div class="article-main-column"><div class="post-content" data-reading-content><p><em>model-with-tla：一个结合 Agent Skill、TLC Model Checker 和实现验证的工作流。</em></p>
-<p>Coding Agent 已经可以完成相当复杂的软件开发任务。给它一份需求，它能够阅读现有代码、设计实现、编写测试、执行检查并修复错误。</p>
-<p>但有一类问题仍然很难仅靠这样的开发流程发现：<strong>代码在正常执行顺序下完全正确，却在某种异步事件交错、资源生命周期变化或失败恢复路径中产生错误。</strong></p>
-<p>例如，一个后台任务正在处理某个资源。任务尚未完成时，资源被删除并重建，新的资源复用了原来的 ID。随后，旧任务的异步回调到达，把已经过期的结果写入新资源。</p>
-<p>这里可能没有明显的数据竞争。每个函数单独执行都符合预期，正常路径的单元测试也能通过。真正出错的是操作的时间关系：一个结果在生成时拥有的权限，在提交时已经失效。</p>
-<p>这类问题可以通过更细致的测试发现，但测试必须先构造出相应的事件顺序。如果开发者和 Coding Agent 都没有意识到这条路径，它就可能长期不在测试范围内。</p>
-<p>我在过去几个月里尝试将 TLA+ 引入 Agent-assisted coding，并把相关工作封装为一个 Agent Skill：<a href="https://github.com/ronhuafeng/skills-release/tree/main/catalog/engineering/model-with-tla">model-with-tla</a>。</p>
-<p>它不是一个自动证明代码正确的工具，而是一套围绕形式化模型组织开发和验证工作的流程：让 Agent 根据需求建立状态机，用 TLC 系统探索模型中的可能行为，找到违反要求的反例，再将这些反例映射到实现与测试中。</p>
-<p>它要解决的核心问题是：</p>
-<p><strong>能否让 Coding Agent 在实现之外，建立一份独立的、可以主动寻找反例的行为模型？</strong></p>
-<h2 id="为什么需要在代码之外建立模型">为什么需要在代码之外建立模型？</h2>
-<p>常规的 Agent coding loop 通过测试结果推动代码修订：</p>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>给 Coding Agent 加一道模型检查：用 TLA+ 找出并关上并发与生命周期问题 - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="以一个旧回调写入新资源的 bug 和一次真实项目经历为例，介绍 model-with-tla：让 Coding Agent 用 TLA+ 把并发与生命周期的概念写精确，用 TLC 在修复后给出有范围的穷举结论，并用负向见证确认这个结论不是空洞的。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/model-with-tla-agent-assisted-coding/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="application-name" content="華楓 Notes"><meta name="apple-mobile-web-app-title" content="華楓 Notes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0f0f10" media="(prefers-color-scheme: dark)"><meta name="robots" content="index,follow"><meta property="og:title" content="给 Coding Agent 加一道模型检查：用 TLA+ 找出并关上并发与生命周期问题 - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="以一个旧回调写入新资源的 bug 和一次真实项目经历为例，介绍 model-with-tla：让 Coding Agent 用 TLA+ 把并发与生命周期的概念写精确，用 TLC 在修复后给出有范围的穷举结论，并用负向见证确认这个结论不是空洞的。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/model-with-tla-agent-assisted-coding/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/og-default.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="给 Coding Agent 加一道模型检查：用 TLA+ 找出并关上并发与生命周期问题 - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="以一个旧回调写入新资源的 bug 和一次真实项目经历为例，介绍 model-with-tla：让 Coding Agent 用 TLA+ 把并发与生命周期的概念写精确，用 TLC 在修复后给出有范围的穷举结论，并用负向见证确认这个结论不是空洞的。"><meta name="twitter:image" content="https://blog.formalscience.com/og-default.svg"><meta property="article:published_time" content="2026-11-16T00:00:00.000Z"><meta property="article:section" content="技术"><meta property="article:tag" content="TLA+"><meta property="article:tag" content="Coding Agent"><meta property="article:tag" content="Model Checking"><meta property="article:tag" content="Formal Methods"><meta property="article:tag" content="并发系统"><link rel="stylesheet" href="/_astro/BaseLayout.CkF81Ls9.css"></head><body><a class="skip-link" href="#content" lang="zh-CN">跳到内容</a><div class="site-shell"><header class="site-header"><a class="brand" href="/"><span lang="en">Zhang Hua Feng/</span><span lang="zh-CN">張華楓</span><span lang="en">'s Notes</span></a><div class="header-actions"><nav class="nav-links" aria-label="主导航" lang="zh-CN"><a href="/">首页</a><a href="/posts" aria-current="page">文章</a><a href="/slides/">幻灯片</a><a href="/posts/thought-index/">书签</a><a href="/categories">分类</a><a href="/tags">标签</a><a href="/about">关于</a></nav><nav class="language-switch" aria-label="切换语言"><a href="/posts/model-with-tla-agent-assisted-coding/" lang="zh-CN" aria-current="page">中文</a><a href="/en" lang="en" title="English home">English</a></nav></div></header><main id="content"><article class="article-page" data-reading-article><header class="article-header"><div class="post-meta-row"><p class="meta"><time datetime="2026-11-16T00:00:00.000Z">2026年11月16日</time> · 约 24 分钟</p><a class="category-label" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></div><h1 class="article-title">给 Coding Agent 加一道模型检查：用 TLA+ 找出并关上并发与生命周期问题</h1><p class="article-description">以一个旧回调写入新资源的 bug 和一次真实项目经历为例，介绍 model-with-tla：让 Coding Agent 用 TLA+ 把并发与生命周期的概念写精确，用 TLC 在修复后给出有范围的穷举结论，并用负向见证确认这个结论不是空洞的。</p><div class="tag-list article-tags"><a class="tag" href="/tags/TLA%2B/">TLA+</a><a class="tag" href="/tags/Coding%20Agent/">Coding Agent</a><a class="tag" href="/tags/Model%20Checking/">Model Checking</a><a class="tag" href="/tags/Formal%20Methods/">Formal Methods</a><a class="tag" href="/tags/%E5%B9%B6%E5%8F%91%E7%B3%BB%E7%BB%9F/">并发系统</a></div></header><div class="article-reading-layout has-toc"><div class="article-main-column"><div class="post-content" data-reading-content><p>一个后台任务正在处理资源 <code>worker-A</code>。任务还没完成，<code>worker-A</code> 被删除并重建，新资源沿用了同一个名字。随后旧任务的回调到达，提交逻辑只比较名字，于是把旧结果写进了新资源。</p>
+<p><img src="/posts/model-with-tla-agent-assisted-coding/images/stale-callback-timeline.svg" alt="旧资源回调延迟到达并错误提交到新资源的事件时序"></p>
+<p>为了区分这两个 <code>worker-A</code>，下文把同一个逻辑名下的每一代实体称为一个 <strong>incarnation</strong>：删除前是第 1 代，重建后是第 2 代。旧回调带回的是为第 1 代计算的结果，却提交到了第 2 代上。</p>
+<p>这个 bug 里每个函数单独看都没错，正常路径的测试也能通过。出错的是事件顺序：结果产生时有权写入，等到提交时，这个权限已经随着资源替换失效了。只要测试没有专门构造“启动、替换、回调、提交”这条顺序，它就不会暴露，而写测试的人或 Agent 得先想到这条顺序才会去构造它。</p>
+<p>过去几个月，我在尝试把 TLA+ 放进 Agent-assisted coding，并把做法整理成了一个 Agent Skill：<a href="https://github.com/ronhuafeng/skills-release/tree/main/catalog/engineering/model-with-tla">model-with-tla</a>。做法是让 Agent 在写实现之外，再写一份描述系统状态和动作的模型。这份模型带来两样测试给不了的东西。一是写模型本身会逼出精确的定义：什么叫“已派发”，谁有权提交，谁负责清理。定义写下来再拿去对照代码，很多问题在这一步就暴露了。二是 TLC 会穷举模型里所有的事件交错：修复之前，它给出具体的反例；修复之后，它给出一个有范围的结论，即在给定的有限配置里，没有任何一种顺序会违反要求。它不证明代码正确，但能回答测试很难回答的问题：在这个范围里，还有没有我们没想到的顺序。</p>
+<p>下面先用 <code>worker-A</code> 这个例子把建模、找反例、修复和回归检查完整走一遍，再讲一次真实项目里的经历，最后介绍 Skill 本身和使用方法。</p>
+<h2 id="测试循环漏掉了什么">测试循环漏掉了什么</h2>
 <picture>
   <source media="(max-width: 640px)" srcset="/posts/model-with-tla-agent-assisted-coding/images/agent-coding-loop-mobile.svg">
   <img src="/posts/model-with-tla-agent-assisted-coding/images/agent-coding-loop.svg" alt="常规 Agent coding loop：需求、实现、测试和失败反馈，以及测试覆盖的隐含前提" loading="lazy" style="display: block; width: 100%; height: auto;">
 </picture>
 <p><em>失败反馈能帮助 Agent 修正已被测试表达的问题，却不能保证未被测试覆盖的事件交错会自行暴露。</em></p>
-<p>这套流程对大量任务已经足够有效，但它能否发现某个错误，仍取决于测试是否包含了触发该错误的行为。</p>
-<p>对于异步和并发系统，错误往往不取决于某个函数的输入，而取决于多个动作发生的相对顺序。</p>
-<p>例如，Task A 先读取资源状态；它等待异步结果时，Task B 替换了资源。随后 Task A 收到属于旧资源的结果，准备提交。单看每个函数可能都没有异常，关键是<strong>提交发生在资源替换之后</strong>。</p>
-<p>如果 Task A 的提交逻辑只检查资源 ID，而不检查资源的具体生命周期，就可能写入一个逻辑 ID 相同、实际却已经被替换的资源。</p>
-<p>问题不一定出在某一行条件判断，而可能出在整个系统对资源身份、异步结果和提交权限的理解上。</p>
-<p>TLA+ 提供了另一种检查方式。</p>
-<p>开发者不必首先编写某条确定的执行路径，而是定义系统有哪些状态、哪些动作可以改变状态，以及哪些情况绝对不允许发生。</p>
-<p>TLC Model Checker 随后探索给定有限模型的可达状态和动作交错，寻找违反指定性质的路径。</p>
+<p>Agent 的常规循环是写实现、跑测试、根据失败修代码。它很擅长修复已经被测试表达出来的问题，但能否发现 <code>worker-A</code> 这类 bug，取决于测试里是否已经有那条事件顺序。并发和生命周期问题难就难在这里：错误不是由某个输入值触发的，而是由几个动作的相对顺序触发的，可能的顺序又随动作数量快速增长。</p>
+<p>TLA+ 换了一个出发点。你不写某条具体的执行路径，而是写清楚系统有哪些状态、哪些动作可以改变状态、哪些状态绝不允许出现。TLC Model Checker 随后在给定的有限配置里枚举所有可达状态，寻找违反要求的路径。</p>
 <p><img src="/posts/model-with-tla-agent-assisted-coding/images/agent-testing-vs-model-checking.svg" alt="常规测试与 TLA+ Model Checking 的状态探索对比"></p>
 <p><em>示意图：普通测试执行选定的场景；TLC 系统探索给定有限模型的可达状态。图中不代表实际覆盖率统计。</em></p>
-<p>TLA+ 并不要求逐行模拟程序的执行。它关注的是那些会改变系统正确性的状态和动作。</p>
-<p>例如，对于上述问题，模型可能只需要表达：</p>
+<h2 id="把例子写成-tla">把例子写成 TLA+</h2>
+<p>模型不需要模拟程序的每一行，只需保留会影响“这次提交是否合法”的东西：资源当前是第几代、每个操作启动时绑定的是哪一代、操作进行到了哪一步，以及资源上最后一次写入来自哪一代的操作。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>---------------------------- MODULE StaleCallback ----------------------------</span></span>
+<span class="line"><span>EXTENDS Naturals</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>CONSTANTS Ops,             \* 可能并发的异步操作</span></span>
+<span class="line"><span>          MaxIncarnation,  \* worker-A 最多被重建到第几代</span></span>
+<span class="line"><span>          CheckIncarnation \* Commit 是否校验 incarnation</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>VARIABLES incarnation,  \* worker-A 当前是第几代实体</span></span>
+<span class="line"><span>          opPhase,      \* 每个操作所处阶段</span></span>
+<span class="line"><span>          opBinding,    \* 每个操作启动时绑定的 incarnation</span></span>
+<span class="line"><span>          lastWriter    \* 当前资源上最后一次写入来自哪一代的操作，0 表示尚无写入</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>vars == &lt;&lt;incarnation, opPhase, opBinding, lastWriter&gt;&gt;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>TypeOK ==</span></span>
+<span class="line"><span>  /\ incarnation \in 1..MaxIncarnation</span></span>
+<span class="line"><span>  /\ opPhase \in [Ops -&gt; {"idle", "running", "done", "committed", "discarded"}]</span></span>
+<span class="line"><span>  /\ opBinding \in [Ops -&gt; 0..MaxIncarnation]</span></span>
+<span class="line"><span>  /\ lastWriter \in 0..MaxIncarnation</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Init ==</span></span>
+<span class="line"><span>  /\ incarnation = 1</span></span>
+<span class="line"><span>  /\ opPhase = [o \in Ops |-&gt; "idle"]</span></span>
+<span class="line"><span>  /\ opBinding = [o \in Ops |-&gt; 0]</span></span>
+<span class="line"><span>  /\ lastWriter = 0</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>StartOp(o) ==            \* 操作启动，记下此刻的 incarnation</span></span>
+<span class="line"><span>  /\ opPhase[o] = "idle"</span></span>
+<span class="line"><span>  /\ opPhase' = [opPhase EXCEPT ![o] = "running"]</span></span>
+<span class="line"><span>  /\ opBinding' = [opBinding EXCEPT ![o] = incarnation]</span></span>
+<span class="line"><span>  /\ UNCHANGED &lt;&lt;incarnation, lastWriter&gt;&gt;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Replace ==               \* 删除并重建 worker-A：名字不变，换一代实体</span></span>
+<span class="line"><span>  /\ incarnation &lt; MaxIncarnation</span></span>
+<span class="line"><span>  /\ incarnation' = incarnation + 1</span></span>
+<span class="line"><span>  /\ lastWriter' = 0</span></span>
+<span class="line"><span>  /\ UNCHANGED &lt;&lt;opPhase, opBinding&gt;&gt;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Complete(o) ==           \* 异步结果返回</span></span>
+<span class="line"><span>  /\ opPhase[o] = "running"</span></span>
+<span class="line"><span>  /\ opPhase' = [opPhase EXCEPT ![o] = "done"]</span></span>
+<span class="line"><span>  /\ UNCHANGED &lt;&lt;incarnation, opBinding, lastWriter&gt;&gt;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Commit(o) ==             \* 把结果写入当前叫 worker-A 的资源</span></span>
+<span class="line"><span>  /\ opPhase[o] = "done"</span></span>
+<span class="line"><span>  /\ CheckIncarnation =&gt; opBinding[o] = incarnation</span></span>
+<span class="line"><span>  /\ opPhase' = [opPhase EXCEPT ![o] = "committed"]</span></span>
+<span class="line"><span>  /\ lastWriter' = opBinding[o]</span></span>
+<span class="line"><span>  /\ UNCHANGED &lt;&lt;incarnation, opBinding&gt;&gt;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Discard(o) ==            \* 丢弃已经过期的结果</span></span>
+<span class="line"><span>  /\ opPhase[o] = "done"</span></span>
+<span class="line"><span>  /\ opBinding[o] # incarnation</span></span>
+<span class="line"><span>  /\ opPhase' = [opPhase EXCEPT ![o] = "discarded"]</span></span>
+<span class="line"><span>  /\ UNCHANGED &lt;&lt;incarnation, opBinding, lastWriter&gt;&gt;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Next ==</span></span>
+<span class="line"><span>  \/ Replace</span></span>
+<span class="line"><span>  \/ \E o \in Ops : StartOp(o) \/ Complete(o) \/ Commit(o) \/ Discard(o)</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Spec == Init /\ [][Next]_vars</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>\* 资源上的最后一次写入，只能来自绑定当前 incarnation 的操作</span></span>
+<span class="line"><span>NoStaleWrite == lastWriter \in {0, incarnation}</span></span>
+<span class="line"><span>=============================================================================</span></span></code></pre>
+<p>几处建模选择需要交代一下。</p>
+<p>名字 <code>worker-A</code> 在模型里根本没有出现。它从不变化，所以“只比较名字”的提交逻辑在模型里等价于什么都不比较，也就是 <code>CheckIncarnation = FALSE</code>。<code>Replace</code> 把 <code>lastWriter</code> 置回 0，表示新一代资源上还没有任何写入。<code>Ops</code> 里放了两个操作，让 TLC 也去探索两个操作互相交错的情况，虽然最短的反例只需要其中一个。</p>
+<p>要检查的性质 <code>NoStaleWrite</code> 是一个状态不变量：任何时刻，资源上的最后一次写入要么不存在，要么来自绑定当前 incarnation 的操作。直觉上更想写的是“每次 Commit 都必须获得授权”，但这是关于动作的性质，在 TLA+ 里要写成 <code>[][\A o \in Ops : Commit(o) =&gt; opBinding[o] = incarnation]_vars</code> 这样的形式，不能直接把动作放进 <code>□</code>。在这个模型里两种写法表达的是同一个要求；状态不变量读起来更直接，也能直接交给 <code>tla-check</code> 的 <code>--expect invariant:NoStaleWrite</code>。</p>
+<p>配置文件 <code>Buggy.cfg</code> 对应有 bug 的实现：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>CONSTANTS</span></span>
+<span class="line"><span>  Ops = {o1, o2}</span></span>
+<span class="line"><span>  MaxIncarnation = 2</span></span>
+<span class="line"><span>  CheckIncarnation = FALSE</span></span>
+<span class="line"><span>SPECIFICATION Spec</span></span>
+<span class="line"><span>INVARIANTS TypeOK NoStaleWrite</span></span>
+<span class="line"><span>CHECK_DEADLOCK FALSE</span></span></code></pre>
+<p>关闭死锁检查是有意的。所有操作结束、incarnation 也到达上限之后，模型没有后继状态，这是有限配置的自然终点，不代表系统卡死。</p>
+<h3 id="tlc-找到的反例">TLC 找到的反例</h3>
+<p>用 Skill 自带的 <code>tla-check</code> 运行这个配置，并声明预期结果是 <code>NoStaleWrite</code> 被违反：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">"&lt;skill-directory&gt;/.tools/tla-check"</span><span style="color:#9ECBFF"> check</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --module</span><span style="color:#9ECBFF"> "</span><span style="color:#E1E4E8">$PWD</span><span style="color:#9ECBFF">/StaleCallback.tla"</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --config</span><span style="color:#9ECBFF"> "</span><span style="color:#E1E4E8">$PWD</span><span style="color:#9ECBFF">/Buggy.cfg"</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --expect</span><span style="color:#9ECBFF"> invariant:NoStaleWrite</span></span></code></pre>
+<p>TLC 在探索了 28 个不同状态后报告违反，并给出一条 5 步的轨迹。下面摘自实际输出，省略了源码位置和整条轨迹中始终处于 <code>idle</code> 的 <code>o2</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Error: Invariant NoStaleWrite is violated.</span></span>
+<span class="line"><span>State 1: &lt;Initial predicate&gt;</span></span>
+<span class="line"><span>/\ incarnation = 1  /\ lastWriter = 0  /\ opBinding = (o1 :&gt; 0)  /\ opPhase = (o1 :&gt; "idle")</span></span>
+<span class="line"><span>State 2: &lt;StartOp(o1)&gt;</span></span>
+<span class="line"><span>/\ incarnation = 1  /\ lastWriter = 0  /\ opBinding = (o1 :&gt; 1)  /\ opPhase = (o1 :&gt; "running")</span></span>
+<span class="line"><span>State 3: &lt;Replace&gt;</span></span>
+<span class="line"><span>/\ incarnation = 2  /\ lastWriter = 0  /\ opBinding = (o1 :&gt; 1)  /\ opPhase = (o1 :&gt; "running")</span></span>
+<span class="line"><span>State 4: &lt;Complete(o1)&gt;</span></span>
+<span class="line"><span>/\ incarnation = 2  /\ lastWriter = 0  /\ opBinding = (o1 :&gt; 1)  /\ opPhase = (o1 :&gt; "done")</span></span>
+<span class="line"><span>State 5: &lt;Commit(o1)&gt;</span></span>
+<span class="line"><span>/\ incarnation = 2  /\ lastWriter = 1  /\ opBinding = (o1 :&gt; 1)  /\ opPhase = (o1 :&gt; "committed")</span></span></code></pre>
+<p>读这条轨迹不需要懂 TLA+：<code>o1</code> 在第 1 代时启动，资源被替换为第 2 代，<code>o1</code> 的结果返回，提交之后 <code>lastWriter = 1</code> 而 <code>incarnation = 2</code>。它和开头时序图里的四个事件一一对应（<code>o1</code> 就是图中的 Operation X），区别在于这条路径是 TLC 自己找出来的，不是我事先画好的。</p>
+<h3 id="修复与两份配置">修复与两份配置</h3>
+<p>修复就是 <code>Commit</code> 里那一行守卫：结果只有在绑定的 incarnation 等于当前 incarnation 时才能提交；过期的结果走 <code>Discard</code>，不再写入。为了让修复前后用同一个模型检查，我用常量 <code>CheckIncarnation</code> 控制这行守卫是否生效。下表是我在本机运行的三个配置，每次都在 1 秒内完成：</p>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th><code>MaxIncarnation</code></th>
+<th><code>CheckIncarnation</code></th>
+<th>期望</th>
+<th>TLC 结果</th>
+<th>不同状态数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Buggy.cfg</code></td>
+<td>2</td>
+<td><code>FALSE</code></td>
+<td><code>invariant:NoStaleWrite</code></td>
+<td>违反，5 步反例</td>
+<td>28</td>
+</tr>
+<tr>
+<td><code>Fixed.cfg</code></td>
+<td>3</td>
+<td><code>TRUE</code></td>
+<td><code>success</code></td>
+<td>通过</td>
+<td>224</td>
+</tr>
+<tr>
+<td><code>Vacuous.cfg</code></td>
+<td>1</td>
+<td><code>FALSE</code></td>
+<td><code>success</code></td>
+<td>通过</td>
+<td>16</td>
+</tr>
+</tbody>
+</table>
+<p>模型和三个配置都可以直接下载运行：<a href="/posts/model-with-tla-agent-assisted-coding/tla/StaleCallback.tla">StaleCallback.tla</a>、<a href="/posts/model-with-tla-agent-assisted-coding/tla/Buggy.cfg">Buggy.cfg</a>、<a href="/posts/model-with-tla-agent-assisted-coding/tla/Fixed.cfg">Fixed.cfg</a>、<a href="/posts/model-with-tla-agent-assisted-coding/tla/Vacuous.cfg">Vacuous.cfg</a>。</p>
+<p><code>Fixed.cfg</code> 是修复后的回归检查：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">"&lt;skill-directory&gt;/.tools/tla-check"</span><span style="color:#9ECBFF"> check</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --module</span><span style="color:#9ECBFF"> "</span><span style="color:#E1E4E8">$PWD</span><span style="color:#9ECBFF">/StaleCallback.tla"</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --config</span><span style="color:#9ECBFF"> "</span><span style="color:#E1E4E8">$PWD</span><span style="color:#9ECBFF">/Fixed.cfg"</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --expect</span><span style="color:#9ECBFF"> success</span></span></code></pre>
+<p><code>Buggy.cfg</code> 在修复之后也不能删。它不再描述“当前代码”，而是一份负向见证：证明这个模型确实能表达并捕获目标错误。之后每次修改模型，两份配置都要重跑，一份必须通过，一份必须以 <code>NoStaleWrite</code> 失败。表里的第三行说明了为什么需要后者。</p>
+<h2 id="一个-pass-什么时候才有意义">一个 PASS 什么时候才有意义</h2>
+<p><code>Vacuous.cfg</code> 用的是有 bug 的提交逻辑，却通过了检查。原因很简单：<code>MaxIncarnation = 1</code> 时 <code>Replace</code> 永远不会发生，过期结果根本不存在，<code>NoStaleWrite</code> 自然不会被违反。这个 PASS 什么都没有证明。</p>
+<p><code>model-with-tla</code> 把这一点叫作模型的 <strong>discriminability</strong>：模型不仅要允许正确行为，还必须能表达并到达目标错误。对重要的 Safety 性质，要准备一份像 <code>Buggy.cfg</code> 这样的负向见证（negative witness），确认 TLC 会因为预期的那条性质失败。</p>
+<p>由 Agent 写模型时，还要防一种情况：模型被改到恰好通过。要得到 PASS，并不一定要修复任何东西。我在同一个模型上演示了两种改法，都没有改动有 bug 的提交逻辑：</p>
 <ul>
-<li>当前资源的 incarnation；</li>
-<li>正在执行的操作所绑定的 incarnation；</li>
-<li>资源替换事件；</li>
-<li>异步操作完成事件；</li>
-<li>结果是否被允许提交。</li>
+<li><strong>削弱性质</strong>：把 <code>NoStaleWrite</code> 改成 <code>lastWriter &lt;= incarnation</code>。旧结果写入新资源时，<code>1 &lt;= 2</code> 依然成立，检查通过；</li>
+<li><strong>给环境动作加过强的守卫</strong>：要求 <code>Replace</code> 只能在没有进行中操作时发生。TLC 同样通过，只探索了 41 个状态。但产品无法阻止用户在操作进行中删除资源，这个守卫等于把 bug 假设掉了。</li>
 </ul>
-<p>然后检查一个 Safety 性质：<strong>旧资源上的操作，不能在资源被替换后修改新资源的状态。</strong></p>
-<p>如果模型允许违反该性质的路径，TLC 就能给出相应的状态转换序列。</p>
-<p>这让开发者不必完全依赖自己预先想象危险的事件顺序。</p>
-<h2 id="model-with-tla-是什么">model-with-tla 是什么？</h2>
-<p><a href="https://github.com/ronhuafeng/skills-release/tree/main/catalog/engineering/model-with-tla">model-with-tla</a> 是一套用于并发和有状态系统的 Agent Skill。</p>
-<p>它将三个部分组合起来：</p>
-<p><strong>第一部分是 Agent Skill。</strong> 它告诉 Coding Agent 什么时候值得建模、如何确定模型边界、如何定义性质，以及不同任务允许修改哪些文件和系统状态。</p>
-<p><strong>第二部分是 TLA+ 与 TLC。</strong> TLA+ 负责表达状态机和正确性要求，TLC 在给定的有限配置中探索状态空间，检查不变量和时序性质，并生成反例。</p>
-<p><strong>第三部分是配套的检查与验证工具。</strong> Skill 包含固定版本的 TLA+ 工具链，以及一个统一的 <code>tla-check</code> 命令，用于执行 SANY/TLC、检查预期结果并输出结构化证据。</p>
-<p>三者的职责不同。</p>
-<p>Agent 负责理解需求、建立抽象、解释反例和定位代码；TLC 负责执行模型检查；配套工具负责让检查过程和检查结果具备可重复、可判断的工程接口。</p>
-<p>这套工作流不仅用于创建新的 TLA+ 模型，也可以用于已有系统的故障诊断、实现修改、审查和回归验证。</p>
-<h2 id="一次完整的建模与验证流程">一次完整的建模与验证流程</h2>
-<p>整个工作流可以表示为：</p>
+<p>再加上前面的“缩小常量”，三种改法都会让模型恰好通过。它们也都会让 <code>Buggy.cfg</code> 不再失败：我用 <code>--expect invariant:NoStaleWrite</code> 重跑负向配置，<code>tla-check</code> 报告实际结果是 <code>success</code>，与预期不符，以退出码 4 结束。这三种改法是我为演示构造的；在我翻过的会话记录里，没有看到 Agent 为了通过检查而这样改模型。但只要任务被表述成“让检查通过”，它们就都是现成的捷径，负向见证能把这些捷径堵上。</p>
+<p>记录里真实出现过的，是无意中写出的空洞模型。在一个工作项目里，Agent 给一个委托授权网关建模时写下了这样一行：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>/\ startedWithAuthority' = startedWithAuthority /\ active /\ approved = payload</span></span></code></pre>
+<p>本意是把三个条件的合取赋给 <code>startedWithAuthority'</code>。但在 TLA+ 里 <code>=</code> 的优先级高于 <code>/\</code>，这一行实际被解析成 <code>(startedWithAuthority' = startedWithAuthority) /\ active /\ (approved = payload)</code>：变量保持原值，后两项变成了这个动作的守卫。<code>startedWithAuthority</code> 因此永远不会变成假，要检查的授权性质也永远不会被违反。正向配置照常通过；暴露问题的是负向配置，它们预期违反 <code>AuthorizedEffect</code>，实际却通过了，<code>tla-check</code> 报告结果不匹配。加上括号之后，负向配置按预期失败。同一个会话里，大约 80 分钟后，Agent 在另一个模型里犯了同样的错误，也是被负向配置拦了下来。</p>
+<p>它也有边界。负向见证只能确认你想到的那类错误可以被捕获，不能发现你根本没有建模的状态或动作。模型遗漏了什么，仍然要靠需求核对和人的审查。</p>
+<h2 id="一次真实的使用kinmesh-的认领协议">一次真实的使用：kinmesh 的认领协议</h2>
+<p><code>worker-A</code> 是为这篇文章写的小例子，每个配置一秒内跑完。真实项目要复杂得多。下面是我在个人项目 <a href="https://github.com/ronhuafeng/kinmesh">kinmesh</a> 里用 Claude Code 走这套流程的一次经历，发生在 2026 年 11 月 14 日，前后大约十个小时。文中的数字都来自那次会话的记录和仓库提交。</p>
+<p>kinmesh 让 agent 处理团队里的消息。消息进入 Inbox 后，worker 认领一条投递（delivery），把它派发到执行 agent 的后端 T3，再观察 T3 上的 run 是否结束。当时计划引入运行槽位（run slot）：每个 agent 同时运行的 run 有上限，卡住的 run 要让出槽位，同一个任务同时只能有一个 run。动手实现之前，我让 Agent 先用 model-with-tla 给这套认领协议建模。</p>
+<p>这个模型（<a href="https://github.com/ronhuafeng/kinmesh/blob/7649826/tests/model/Inbox.tla">Inbox.tla</a>，416 行）覆盖了两个 worker 之间的租约竞争、worker 卡住或崩溃后带着过期状态回来、T3 上的 run 可能永远不结束，以及人可以停止等待、取消或恢复一条投递。它声明了 6 条安全性质和 2 条活性性质，并准备了 7 个已知错误的变体，每个对应一条性质。检查规模是 2 个 agent、2 个 worker、4 条投递。</p>
+<h3 id="前两个反例一个错在模型一个错在设计">前两个反例：一个错在模型，一个错在设计</h3>
+<p>第一次完整检查运行了一分钟左右，就给出了活性性质 <code>QueuedDispatches</code> 的反例。Agent 读完轨迹，判断问题出在模型本身：模型允许一个正常运行的 worker 在下一步之前就丢掉租约，而产品里的时限设定排除了这种情况。改成只有卡住的 worker 才会丢租约之后，第二次检查报告不变量 <code>Settled</code> 被违反：一条投递被人取消时，持有它派发租约的 worker 没有任何规则要求它放手，于是一直占着。这是协议设计里真实存在的缺口，它变成了后续实现必须满足的一条要求。</p>
+<p>所以拿到反例之后还要先分诊。它可能说明设计有问题，也可能只说明模型对环境的描述不对，后者修的是模型，不是代码。</p>
+<h3 id="一条性质在-1700-万个状态里都没被检验到">一条性质在 1700 万个状态里都没被检验到</h3>
+<p>7 个错误变体中，<code>GiveWayFreesTask</code>（让出槽位时连任务锁一起放掉）应当违反“同一任务同时最多一个 run”。它跑到 1700 万个状态都没有失败。原因在配置：积压上限 <code>BacklogCap</code> 设成了 1，第一个 run 让出槽位后积压就到了上限，派发随之暂停，同一任务的第二个 run 根本发不出去，任务规则也就从未起作用。换句话说，正向检查对这条性质的通过是空的。这和上文 <code>Vacuous.cfg</code> 是同一类问题，只是藏在一个 400 多行的模型里，没有负向变体就不会被发现。</p>
+<p>把上限改成 2 之后，这个变体 3 秒就失败了。新增的上限为 2 的安全性配置检查了 3.14 亿个状态，全部通过。</p>
+<h3 id="状态空间爆炸">状态空间爆炸</h3>
+<p>带活性性质的完整检查用单线程跑了 8 个小时还没结束，活性检查的状态图占了 5.6 GB，磁盘只剩 26 GB 可用。状态主要来自 2 个 agent 与 2 个 worker 的交错组合，而不是哪个单独的动作。</p>
+<p>Agent 随后精简了模型：去掉不影响任何性质的 T3“等待审批”状态，把“在 T3 里停止”并入“结束”，用“卡住”来表示崩溃，并限制每次检查里人工操作的次数。精简后，4 条投递的安全性检查用 8 个线程、33 分钟、8500 万个状态通过。但加上活性之后，每分钟只能推进约 6 万个状态，估计要跑一天以上。它于是提议把检查拆开：4 条投递只查安全性，并按 worker 做对称化；活性改用 3 条投递的较小实例。</p>
+<p>查到这里，我决定不再跑了。Agent 停掉了所有 TLC 进程，删掉运行留下的状态文件，共释放约 9 GB，并把 TLC 检查从 issue 的验收条件改成“建议，不强制”。模型仍然提交进了仓库，PR 里写明了验证到哪一步：4 条投递的安全性已通过；7 个错误变体都在各自的性质上失败，但那是在精简前的模型上确认的；精简后模型的活性没有验证。</p>
+<h3 id="修掉的-bug-来自模型与代码的对照">修掉的 bug 来自模型与代码的对照</h3>
+<p>回头核对代码时，Agent 发现代码里没有明确的“已派发”标记，而是靠别的字段间接推断；模型里“已派发”的定义则是“启动记录已写入”。用模型的定义一对照，就暴露出一个当时就会触发的 bug：投递在真正发给 T3 之前就写好了启动参数，过期逻辑把“有启动参数”当成“可能已在 T3 里”，于是一条被退回队列、从没发出去的投递永远不会过期。</p>
+<p>修复（<a href="https://github.com/ronhuafeng/kinmesh/commit/7d032f2">7d032f2</a>）让 worker 在调用 T3 之前，先在自己的租约下把投递标成 <code>uncertain</code>；如果租约已经丢了，就停在这一步，不去调用 T3。这个 bug 不是 TLC 反例直接给出的。写模型时，Agent 不得不给“已派发”下一个精确定义，拿这个定义对照代码，它才浮现出来。</p>
+<h3 id="几个小时后模型被删掉了">几个小时后，模型被删掉了</h3>
+<p>当天下午，run slot 这套设计被“每个话题一段 agent 对话”的新方案取代，模型也随之删除（<a href="https://github.com/ronhuafeng/kinmesh/commit/fb7ad95">fb7ad95</a>）。</p>
+<p>回头看，这次的收获和代价都很具体。<code>Settled</code> 的设计缺口在开始检查后十几分钟内出现；空洞的变体是在检查进度时发现的；过期 bug 来自模型和代码的对照。之后数小时的活性检查没有给出新的反例，却占满了时间和磁盘。Agent 写一个 400 行的模型很快，但它倾向于写“完整”的模型；规模要控制在什么范围、哪些检查必须通过、哪些只作参考，最好在开始之前就定下来。</p>
+<h2 id="model-with-tla-做了什么">model-with-tla 做了什么</h2>
+<p>上面两个例子里，从写模型、配置到解读反例和设计负向见证，都由 Agent 起草。<a href="https://github.com/ronhuafeng/skills-release/tree/main/catalog/engineering/model-with-tla">model-with-tla</a> 要做的，是让这件事在日常开发里有章可循：Skill 告诉 Agent 什么时候值得建模、如何划定模型边界和定义性质、不同任务允许改哪些文件；TLC 负责穷举；<code>tla-check</code> 用固定版本的工具链执行 SANY 和 TLC，比对预期结果并输出结构化证据，让检查可以重复执行、结果可以机器判断。</p>
 <p><img src="/posts/model-with-tla-agent-assisted-coding/images/verification-evidence-chain.svg" alt="model-with-tla 的完整工作流：需求、模型检查、实现映射和验证证据"></p>
-<h3 id="第一步确定要求而不是复制当前实现">第一步：确定要求，而不是复制当前实现</h3>
-<p>Agent 首先需要明确系统应该满足什么行为。</p>
-<p>这一步非常重要，因为当前代码可能正是错误的来源。</p>
-<p>如果简单地把现有实现翻译成 TLA+，即使 TLC 检查全部通过，也只能说明模型内部没有违反它自己指定的性质，不能说明实现符合真正的产品要求。</p>
-<p>因此，Skill 要求区分：</p>
-<ul>
-<li>产品要求和已确认的设计决策；</li>
-<li>当前实现的行为；</li>
-<li>外部系统提供的事实与保证；</li>
-<li>尚未证实的假设。</li>
-</ul>
-<p>例如，一个外部 API 调用超时，并不能直接证明操作没有执行成功。如果业务要求避免重复副作用，那么模型就必须保留「操作成功但响应丢失」这种可能性，除非外部 API 有明确契约排除它。</p>
-<h3 id="第二步抽象出影响正确性的状态和动作">第二步：抽象出影响正确性的状态和动作</h3>
-<p>TLA+ 模型通常通过 <code>Init</code> 描述初始状态，通过 <code>Next</code> 描述允许发生的状态转换，再通过 Safety 和 Liveness 性质表达正确性要求。</p>
-<p>重点不是把程序的全部细节搬进模型，而是找出哪些中间状态会改变正确性。</p>
-<p>例如，一个代码中的 API 调用可能实际包含：</p>
+<h3 id="从要求出发而不是翻译现有实现">从要求出发，而不是翻译现有实现</h3>
+<p>当前代码可能正是错误的来源。如果直接把实现翻译成 TLA+，TLC 全部通过也只能说明模型没有违反它自己声明的性质，不能说明实现符合产品要求。在 <code>worker-A</code> 的例子里，如果 Agent 照着代码只建模名字，<code>NoStaleWrite</code> 这条性质根本写不出来。</p>
+<p>所以 Skill 要求把几类信息分开记录：产品要求和已确认的设计决策、当前实现的行为、外部系统提供的保证，以及尚未证实的假设。例如，外部 API 调用超时并不能证明操作没有执行。如果业务要求避免重复副作用，模型就必须保留“操作已成功但响应丢失”的可能，除非外部 API 有明确的契约排除它。</p>
+<h3 id="按要检查的性质决定切分点">按要检查的性质决定切分点</h3>
+<p>模型的粒度由要检查的性质决定，而不是由源代码有多少函数决定。上面的模型把一次操作拆成 <code>StartOp</code>、<code>Complete</code> 和 <code>Commit</code>，因为 bug 只在“绑定 incarnation”和“提交”之间插入 <code>Replace</code> 时才会出现。如果把整个操作写成一个原子动作，<code>Replace</code> 就插不进去，TLC 也就找不到这个反例。<code>Complete</code> 和 <code>Commit</code> 分开，则是为了表达“结果已经返回、但还没决定提交还是丢弃”这个中间状态。</p>
+<p>同样的考虑也适用于带外部副作用的调用：</p>
 <p><img src="/posts/model-with-tla-agent-assisted-coding/images/effectful-api-cut-points.svg" alt="一次包含外部副作用的 API 调用为何需要拆分状态转换"></p>
 <p><em>图中分开了外部接受请求、响应是否送达与本地提交三个边界。右侧的超时分支意味着结果未知，而不是外部操作未发生。<a href="/posts/model-with-tla-agent-assisted-coding/images/effectful-api-cut-points.svg">查看可缩放的 SVG 原图</a>。</em></p>
-<p>这些阶段可能需要拆成不同的模型动作。</p>
-<p>因为外部操作已经生效、但本地还不知道结果时，重试就可能产生重复副作用。一个同时发生的取消操作，也可能改变提交权限，却不能撤销已经发生的外部效果。</p>
-<p>反过来，如果某个日志写入或 UI loading 状态不会改变待检查的行为，就不需要为了模拟代码细节而引入新的状态变量。</p>
-<p><strong>模型的粒度应由需要检查的正确性性质决定，而不是由源代码有多少函数或语句决定。</strong></p>
-<h3 id="第三步通过-tlc-寻找反例">第三步：通过 TLC 寻找反例</h3>
-<p>在模型建立之后，Agent 使用 TLC 检查声明的性质。</p>
-<p>一次正向检查可以回答：在指定的有限状态空间中，是否找到了违反性质的行为？</p>
-<p>但仅仅检查通过还不够。</p>
-<p>假设模型的要求是不能选择错误的资源，可是模型的资源集合中只有一个合法资源。此时，TLC 不可能发现错误选择，因为错误目标根本不存在。</p>
-<p><img src="/posts/model-with-tla-agent-assisted-coding/images/safety-discriminability.svg" alt="对比空洞的 TLC PASS 与具备负向见证的 Safety 检查"></p>
-<p><em>左侧的配置排除了错误值，即使检查通过也无法支持目标性质；右侧先让错误动作产生预期的失败，再检查修正后的行为。<a href="/posts/model-with-tla-agent-assisted-coding/images/safety-discriminability.svg">查看可缩放的 SVG 原图</a>。</em></p>
-<p><code>model-with-tla</code> 因此要求检查模型的 <strong>discriminability</strong>：模型不仅要允许正确行为，还必须有能力表示并识别目标错误。</p>
-<p>对重要的 Safety 性质，应能构造相应的 negative witness，使错误行为在模型中可达，并确认 TLC 因预期性质被违反而失败。</p>
-<p>这避免了一个常见问题：模型看似经过严格检查，实际上却没有包含它声称已经排除的错误。</p>
-<h3 id="第四步把反例转成可执行的测试">第四步：把反例转成可执行的测试</h3>
-<p>TLC 输出的 counterexample 是抽象状态轨迹。Agent 需要将它映射到领域事件、实现中的关键边界，以及可以重复执行的受控测试。</p>
+<p>外部操作已经生效、本地却还不知道结果时重试，就可能产生重复副作用；同时到来的取消可以收回提交权限，却撤销不了已经发生的外部效果。反过来，日志写入或 UI loading 状态如果不影响待检查的行为，就不需要变成模型里的变量。</p>
+<h3 id="把反例变成测试">把反例变成测试</h3>
+<p>TLC 的反例是抽象的状态轨迹。Agent 需要把它映射到领域事件和代码里的关键边界，再写成可以重复执行的受控测试。</p>
 <picture>
   <source media="(max-width: 640px)" srcset="/posts/model-with-tla-agent-assisted-coding/images/counterexample-to-test-mobile.svg">
   <img src="/posts/model-with-tla-agent-assisted-coding/images/counterexample-to-test.svg" alt="TLC 反例映射到领域事件、代码边界和受控回归测试的四个阶段" loading="lazy" style="display: block; width: 100%; height: auto;">
 </picture>
 <p><em>这是一条语义映射链，不是模型结果自动证明实现正确的推导链。</em></p>
-<p>在旧回调的例子中，受控测试先暂停旧操作的回调，再替换资源，随后释放回调，并断言新资源的状态没有被旧结果修改。测试需要保留反例中的身份、事件顺序和受检查的性质；正常路径的成功测试无法替代这条针对性验证。</p>
-<h3 id="第五步检查模型实现和外部证据是否一致">第五步：检查模型、实现和外部证据是否一致</h3>
-<p>模型通过不等于代码通过。</p>
-<p>一个正确的模型可能把某段行为视为原子操作，但实际代码在两个语句之间允许另一个任务插入。也可能模型正确区分了资源 incarnation，而实现只使用可复用的资源 ID。</p>
-<p>因此，<code>model-with-tla</code> 会分别检查不同来源的证据，并核对它们是否使用一致的身份、操作和终态语义。</p>
+<p>上面那条 5 步轨迹对应的测试是：启动操作后，在回调处暂停它（State 2）；删除并重建 <code>worker-A</code>（State 3）；放行回调（State 4、5）；最后断言第 2 代资源的状态没有被旧结果修改，这对应 <code>NoStaleWrite</code>。测试要保留反例中的身份、事件顺序和被检查的性质，正常路径的成功测试替代不了它。</p>
+<h3 id="核对模型实现和外部证据">核对模型、实现和外部证据</h3>
+<p>模型通过不等于代码通过。模型可能把某段行为当作原子操作，而实际代码在两条语句之间允许别的任务插入；模型区分了 incarnation，实现却可能仍然只用可复用的名字。所以 <code>model-with-tla</code> 会分别收集不同来源的证据，并核对它们是否使用一致的身份、操作和终态语义。</p>
 <picture>
   <source media="(max-width: 640px)" srcset="/posts/model-with-tla-agent-assisted-coding/images/evidence-layers-mobile.svg">
   <img src="/posts/model-with-tla-agent-assisted-coding/images/evidence-layers.svg" alt="五层证据来源：需求模型、低层义务、受控实现轨迹、外部验证、稳定终态观察；以及完成状态分类" loading="lazy" style="display: block; width: 100%; height: auto;">
 </picture>
 <p><em>这些是需要相互对应的证据来源，不是一个 PASS 就能逐层自动推出后续结果的流程。</em></p>
-<p>一个局部性质检查、有限配置下的 refinement 检查，以及具有一般性证明的 refinement，是不同强度的结论。若证据尚不完整，工作流用 <code>closed</code>、<code>scoped</code>、<code>drifted</code>、<code>blocked</code>、<code>unproved</code> 标注范围和缺口，避免把局部成功扩大为对整个系统的保证。</p>
-<h2 id="如何在-coding-agent-中使用">如何在 Coding Agent 中使用？</h2>
-<p>Skill 将工作划分为五种操作模式。</p>
+<p>证据不完整时，工作流不会笼统地报告“已验证”，而是给结论标上一个状态：</p>
+<ul>
+<li><code>closed</code>：结论需要的每一层证据都在，且语义对得上；</li>
+<li><code>scoped</code>：内部行为有证据支持，但平台、兼容性或时序方面的结论只在记录过的环境里成立；</li>
+<li><code>drifted</code>：证据曾经对齐，但模型、实现、工具链或外部环境后来变了；</li>
+<li><code>blocked</code>：某个前提缺失，证据无法收集，这既不说明通过，也不说明失败；</li>
+<li><code>unproved</code>：关键的一层缺失、互相矛盾、空洞（比如上面的 <code>Vacuous.cfg</code>），或者依赖没有依据的假设。</li>
+</ul>
+<h2 id="在-coding-agent-中使用">在 Coding Agent 中使用</h2>
+<h3 id="安装与调用">安装与调用</h3>
+<p>Skill 随 <code>ronhuafeng-engineering</code> 插件发布。在 Claude Code 里：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>/plugin marketplace add ronhuafeng/skills-release</span></span>
+<span class="line"><span>/plugin install ronhuafeng-engineering@ronhuafeng-skills</span></span></code></pre>
+<p>在 Codex CLI 里：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">codex</span><span style="color:#9ECBFF"> plugin</span><span style="color:#9ECBFF"> marketplace</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> ronhuafeng/skills-release</span><span style="color:#79B8FF"> --ref</span><span style="color:#9ECBFF"> main</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">codex</span><span style="color:#9ECBFF"> plugin</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> ronhuafeng-engineering@ronhuafeng-skills</span></span></code></pre>
+<p>本机还需要 Java 11 或更新版本和 <code>uv</code>。TLA+ 工具链和 <code>tla-check</code> 已经打包在 Skill 里，不用另外下载。</p>
+<p>这个 Skill 设置了 <code>disable-model-invocation</code>，Agent 不会自己决定调用它，需要你显式调用并指定模式。在 Claude Code 里，kinmesh 那次的调用方式是：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>/ronhuafeng-engineering:model-with-tla design 给 Inbox 的认领协议建模。安全性检查用 2 个 worker、3 条投递，单次不超过 10 分钟；每条安全性质配一个负向配置；活性检查只作参考，不作为验收条件。</span></span></code></pre>
+<p>后半句是 kinmesh 留下的教训：检查规模和时间预算、哪些检查必须通过，最好在开始时就写进请求里，而不是等 TLC 跑了几个小时再决定。</p>
+<h3 id="五种模式">五种模式</h3>
+<p>Skill 把工作分成五种模式：</p>
 <table>
 <thead>
 <tr>
@@ -137,76 +277,42 @@
 </tr>
 </tbody>
 </table>
-<p>例如，在开发一个包含异步任务、取消和重试的功能之前，可以显式调用 <code>model-with-tla</code> 的 <code>design</code> 模式，让 Agent 先整理状态和操作边界，构造模型并检查性质。</p>
-<p>如果已经出现故障，则可以先使用 <code>diagnose</code>，要求 Agent 保留现有实现，重点复现错误路径。确认问题后，再通过 <code>refine</code> 修改有权限变更的代码和测试。</p>
-<p>已有模型的项目可以使用 <code>verify</code> 重新运行检查，检查代码与模型是否仍然遵守相同的身份、生命周期、外部副作用和终态语义。</p>
-<p>Skill 也会按任务选择所需的参考文档，而不是每次都要求 Agent 处理全部形式化概念。</p>
-<h3 id="配套的-tla-check-工具">配套的 tla-check 工具</h3>
-<p>Skill 自带 <code>tla-check</code> 入口，统一执行 SANY/TLC。</p>
-<p>例如，检查一个模型的正向配置：</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">"&lt;skill-directory&gt;/.tools/tla-check"</span><span style="color:#9ECBFF"> check</span><span style="color:#79B8FF"> \</span></span>
-<span class="line"><span style="color:#79B8FF">  --module</span><span style="color:#9ECBFF"> "/absolute/path/Model.tla"</span><span style="color:#79B8FF"> \</span></span>
-<span class="line"><span style="color:#79B8FF">  --config</span><span style="color:#9ECBFF"> "/absolute/path/Model.cfg"</span><span style="color:#79B8FF"> \</span></span>
-<span class="line"><span style="color:#79B8FF">  --expect</span><span style="color:#9ECBFF"> success</span></span></code></pre>
-<p>对于预期违反 <code>NoDuplicate</code> 的负向配置，可以将期望改为：</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>--expect invariant:NoDuplicate</span></span></code></pre>
-<p>工具不仅检查进程是否成功结束，还会比较<strong>预期的检查结果与实际观察到的结果</strong>。</p>
-<p>如果期望的是 <code>NoDuplicate</code> 被违反，但 TLC 首先报告 <code>TypeOK</code> 违反，那么这不算成功重现目标问题。</p>
-<p>工具还会验证所使用的 TLA+ JAR、版本信息和校验和，检查 Java 兼容性，隔离 TLC 生成的临时状态，并返回包含状态数量、搜索深度、执行耗时和诊断信息的结构化结果。</p>
-<p>当前工具要求 Java 11 或更新版本，以及 <code>uv</code>。首次初始化检查环境时还需要网络连接。</p>
-<p>这些机制不负责判断模型是否抽象正确，但能减少 Agent 在工具调用、版本漂移和结果解释上的不确定性。</p>
-<h2 id="一个具体例子旧回调修改了新资源">一个具体例子：旧回调修改了新资源</h2>
-<p>重新考虑开头的资源管理问题。</p>
-<p>系统中有一个逻辑资源 <code>worker-A</code>。资源被替换后仍然可以使用相同的名字，但旧资源和新资源并不是同一个生命周期中的实体。</p>
-<p><img src="/posts/model-with-tla-agent-assisted-coding/images/stale-callback-timeline.svg" alt="旧资源回调延迟到达并错误提交到新资源的事件时序"></p>
-<p>假设 Operation X 绑定的是 incarnation 1，而当前资源已经进入 incarnation 2。</p>
-<p>一个只比较 <code>worker-A</code> 名字的提交逻辑可能接受旧结果，导致新资源被错误修改。</p>
-<p>对应的模型可以检查如下 Safety 性质（以时序逻辑记号表达）：</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>□(Commit(r) ⇒ Authorized(r, current))</span></span></code></pre>
-<p>也就是说，任何被提交的结果，都必须满足当前状态下的提交权限要求。</p>
-<p>具体怎样定义 <code>Authorized</code>，取决于系统的产品契约。它可能需要比较资源 incarnation、operation identity、观察版本或当前用户意图。</p>
-<p>当 TLC 给出违反该性质的路径后，Agent 可以将其映射到资源替换、回调处理和状态提交代码，并构造控制事件顺序的测试。</p>
-<p>还有一个需要继续处理的边界：如果旧操作不仅返回结果，还在外部系统创建了资源，那么拒绝旧结果的提交并不意味着外部资源已经消失。</p>
-<p>此时仍然需要知道哪个操作负责清理该资源、清理是否确认完成，以及清理失败时系统应该保持什么状态。</p>
-<p>这就是为什么 <code>model-with-tla</code> 不仅关注并发交错，还显式建模 identity、epoch、effect ownership、cancellation 和 convergence。</p>
-<p>很多时序问题的根源并非执行顺序本身，而是<strong>系统在状态变化之后，仍然错误地接受了旧操作的权限、观察或责任假设。</strong></p>
-<h2 id="为什么-tla-和-coding-agent-的组合值得尝试">为什么 TLA+ 和 Coding Agent 的组合值得尝试？</h2>
-<p>这种组合的价值不是让 LLM 自己完成形式化证明。</p>
-<p>LLM 仍然负责理解系统、设计状态抽象和解释模型结果。它可能遗漏重要状态，也可能错误理解需求。</p>
-<p>但一旦模型和性质定义明确，TLC 就能在指定的有限状态空间中系统地探索执行路径，而不必依赖 LLM 自己逐条猜测所有可能的事件顺序。</p>
-<p>两者因此形成互补：</p>
-<p><strong>Coding Agent 负责构造和修改可检查的系统模型，TLC 负责寻找违反模型约束的行为，Agent 再负责把反例转化为实现修改和回归测试。</strong></p>
-<p>这种分工带来三个实际变化。</p>
-<p>首先，形式化建模的成本降低了。过去需要开发者手工完成的大量建模、配置编写、结果分析和测试映射工作，现在可以由 Agent 协助执行。</p>
-<p>其次，模型检查提供了独立于 LLM 主观判断的反馈。与要求 Agent 再次阅读自己生成的代码相比，一条由 TLC 找到的反例具有明确的状态和执行顺序，更容易成为可复现的工程问题。</p>
-<p>最后，重要的时序假设可以被保留为可重新执行的模型与配置，而不是只存在于某次对话、代码审查意见或临时测试中。</p>
-<p>这些收益并不意味着所有系统都值得建模。更适合的对象通常具有明确的状态生命周期、多个可能交错的操作，以及对异常顺序、重试、取消或恢复行为的要求。</p>
-<h2 id="形式化检查能保证什么不能保证什么">形式化检查能保证什么，不能保证什么？</h2>
-<p>使用 TLA+ 时，最重要的不是得到一个成功标记，而是明确成功结果的适用范围。</p>
-<p><strong>第一，TLC 检查的是指定模型和配置。</strong> 如果模型遗漏了一个重要状态，或者配置通过限制状态空间排除了错误路径，检查通过并不能证明被遗漏的行为安全。</p>
-<p><strong>第二，Safety 和 Liveness 依赖不同的条件。</strong> Safety 检查坏事是否可能发生；Liveness 检查在规定假设下，好事是否最终发生。</p>
-<p>例如，对一个 completion action 施加 weak fairness，并不能保证外部服务真的返回响应。只有当相应动作持续 enabled 时，弱公平性才提供所需的调度保证。外部事件是否出现，需要单独建模或明确声明为环境假设。</p>
-<p><strong>第三，模型与实现之间存在需要验证的映射关系。</strong> 有限模型检查、受控代码测试和真实平台观测是不同层次的证据，不能互相替代。</p>
-<p><code>model-with-tla</code> 的 model adequacy、refinement 和 evidence closure 机制，主要就是为了让 Agent 在自动化过程中保留这些边界。</p>
-<p>它们提高了结论的可审查性，却不能自动消除模型建错、需求不完整或外部系统违反假设的风险。</p>
-<h2 id="什么时候值得使用">什么时候值得使用？</h2>
-<p>对于纯展示性的 UI、静态内容或没有复杂状态生命周期的确定性操作，普通测试和代码审查通常已经足够。</p>
-<p>如果系统涉及并发请求、异步回调、资源替换、重试和去重、取消后的副作用、事务中间状态、超时恢复，或者必须最终完成的进展要求，那么通过 TLA+ 检查这些状态转换就更有价值。</p>
-<p>尤其值得在实现前建模的是那些<strong>正常路径容易实现，但异常路径会改变资源身份、操作权限或外部副作用责任</strong>的功能。</p>
-<p>这类错误一旦进入真实系统，往往难以通过普通日志和偶发的集成测试复现。</p>
+<p>开发一个包含异步任务、取消和重试的功能之前，可以先用 <code>design</code> 模式让 Agent 整理状态和操作边界、构造模型并检查性质。已经出现故障时，先用 <code>diagnose</code> 保留现有实现、复现错误路径，比如得到上面那条 5 步轨迹；确认问题后再用 <code>refine</code> 修改代码和测试。已有模型的项目可以用 <code>verify</code> 重跑 <code>Buggy.cfg</code> 和 <code>Fixed.cfg</code> 这样的检查，看代码与模型是否还遵守同样的身份、生命周期、外部副作用和终态语义。Skill 也会按任务只加载需要的参考文档，而不是每次都让 Agent 处理全部形式化概念。</p>
+<p><code>tla-check</code> 比较的是预期结果和实际观察到的结果，而不只是进程是否正常退出。支持的预期包括 <code>success</code>、<code>invariant:&lt;name&gt;</code>、<code>temporal</code>、<code>deadlock</code> 等。比如负向配置期望的是 <code>NoStaleWrite</code> 被违反，如果 TLC 先报告了 <code>TypeOK</code> 违反，说明模型在到达目标错误之前就出了别的问题，这不算重现目标错误，<code>tla-check</code> 会报告不匹配。它还会校验 TLA+ JAR 的版本和校验和，把 TLC 生成的临时状态隔离在仓库之外，并在结果里给出状态数、搜索深度和耗时。这些机制不判断抽象是否正确，但能减少 Agent 在工具调用、版本漂移和结果解释上的出错空间。</p>
+<h2 id="拒绝旧结果之后副作用和清理">拒绝旧结果之后：副作用和清理</h2>
+<p>上面的修复只解决了一半问题。假设 <code>o1</code> 不仅返回结果，还在外部系统里创建了一块磁盘，那么 <code>Discard</code> 拒绝了提交，这块磁盘依然存在。接下来要回答的是：谁负责清理它，清理是否被确认完成，清理失败时系统应该停在什么状态，以及系统最终能否回到一个没有孤儿资源的稳定状态。</p>
+<p>这些问题对应着 Skill 参考文档里的几个概念：effect ownership 记录外部资源由哪个操作负责；cancellation 处理取消能收回什么、收不回什么；convergence 要求系统在有限步内到达稳定终态。提交权限和清理责任可以分离：过期操作已经无权写入新资源，却仍然要为自己创建的外部资源负责。</p>
+<p>这不是假想的问题。在一个工作项目里，一套控制面负责开启和关闭临时的远程开发环境，关闭时要取消代码托管平台上正在运行的 CI 任务。一次平台局部故障中，查询任务状态的请求返回了 520：关闭已经记下了，取消请求却没有发出去，任务一直在跑。Agent 最初的修复只是去掉了那次状态查询。随后用 model-with-tla 复查，原模型把 Close 当成一步；拆成“记录关闭意图”“发出取消”“平台确认取消”三步之后，问题才清楚：关闭一旦记下，再次执行 Close 就不再有权发出取消，取消的责任在中间状态里丢掉了。最终的修复把“待取消”作为一项持久状态保存下来，只在平台接受取消之后才清除，并用不变量 <code>CancelResponsibilityRetained</code> 检查它。模型没有发现这次事故，但它让修复的范围从“删掉一次查询”扩大到“保留取消责任”。</p>
+<p>很多时序问题的根源并不只是执行顺序，而是系统在状态变化之后，仍然沿用了旧操作的权限、观察或责任假设。要检查这一半问题，上面的模型还需要增加外部资源和清理动作；这里不再展开。</p>
+<h2 id="结论的边界">结论的边界</h2>
+<p>前面讲的是一次 PASS 会不会是空洞的。即使不空洞，它覆盖的范围也有限。</p>
+<p>第一，TLC 检查的只是指定的模型和配置。模型遗漏了某个状态，或者配置把错误路径排除在外，检查通过并不能证明被遗漏的行为是安全的。<code>Vacuous.cfg</code> 就是后一种情况。</p>
+<p>第二，Safety 和 Liveness 依赖不同的条件。Safety 检查坏事是否可能发生；Liveness 检查在规定的假设下，好事是否最终会发生。比如，给 <code>Complete</code> 加上弱公平（weak fairness），模型里的响应就一定会最终到达；但这等于假设外部服务最终会响应。它是一条需要单独声明的环境假设，而不是 TLC 验证出来的结论。</p>
+<p>第三，模型和实现之间的映射需要单独验证。有限模型检查、受控代码测试和真实平台观测是不同层次的证据，不能互相替代。Skill 里的 model adequacy（模型是否足以支撑结论）、refinement（低层模型或实现是否遵守高层模型）和 evidence closure（上面那组状态标注）就是为了在自动化过程中保住这些边界。它们让结论更容易审查，但不能消除模型建错、需求不完整或外部系统违反假设的风险。</p>
+<h2 id="什么时候值得用">什么时候值得用</h2>
+<p>这个组合的价值不在于让 LLM 完成形式化证明。LLM 仍然负责理解系统、设计抽象和解释结果，也仍然可能遗漏状态或误解需求。变化在于，一旦模型和性质写定，探索执行路径的工作就交给了 TLC，而不再依赖 LLM 逐条猜测事件顺序。由此带来两个实际的好处：</p>
+<ul>
+<li>TLC 的反馈独立于 LLM 自己的判断。比起让 Agent 再读一遍自己写的代码，一条有明确状态和顺序的反例更容易变成可复现的工程问题；</li>
+<li>重要的时序假设被留成了可以重跑的模型和配置，而不是只存在于某次对话、某条代码审查意见或某个临时测试里。</li>
+</ul>
+<p>回看过去几个月的会话记录，TLC 很少是第一个发现 bug 的。大多数违反来自有意构造的负向配置，或者问题先被测试、代码审查复现，再写进模型。发现问题的时刻，多数在写模型的过程中：为了写出模型，Agent 必须把“已派发”“取消责任”“授权”这些概念定义清楚，再拿定义去对照代码。kinmesh 的 <code>Settled</code> 缺口是少数由反例直接指出的例外。</p>
+<p>但发现只是一半。测试复现了一条出错的顺序，修复后这条顺序通过，说明的是这一条顺序不再出错。TLC 对修复后的模型做穷举检查，说明的是在给定的有限配置里，没有任何一种事件交错会违反这条性质；负向配置再确认这条性质确实能被违反，通过不是空洞的。取消责任那个例子里，测试检查的是写出来的几条顺序，<code>CancelResponsibilityRetained</code> 则在模型的全部可达状态上成立；kinmesh 的安全性检查覆盖了 4 条投递下的 8500 万个状态。这是有边界的证明：它覆盖的是模型和配置，不是代码本身，也不是任意规模的系统。但它回答的恰恰是测试难以回答的问题：除了我们想到的那条顺序，还有没有别的。</p>
+<p>所以在这套流程里，建模首先是一种强制精确化的设计审查，负责把问题找出来；TLC 的主要作用则是在修复之后，为“这一类问题已经关上”给出一个有明确范围的完备性结论。</p>
+<p>成本的差别很大。<code>worker-A</code> 的模型 60 多行，每个配置 1 秒内跑完；kinmesh 的模型 416 行，带活性的完整检查 8 小时都没跑完。运行成本主要取决于有多少个参与者互相交错，而不是模型写了多少行。不管哪种规模，最需要人判断的都是决定模型保留什么、确认负向见证成立、给检查定预算。这些 Agent 可以起草，但也正是它最容易出错的地方。</p>
+<p>因此，并不是所有代码都值得建模。纯展示性的 UI、静态内容或没有复杂生命周期的确定性操作，用普通测试和代码审查通常就够了。值得建模的是涉及并发请求、异步回调、资源替换、重试和去重、取消后的副作用、事务中间状态、超时恢复，或者有“必须最终完成”这类进展要求的系统。尤其是那些正常路径容易实现、异常路径却会改变资源身份、操作权限或副作用责任的功能。这类错误一旦进入线上，往往很难靠日志和偶发的集成测试复现。</p>
 <h2 id="结语">结语</h2>
-<p>Coding Agent 让软件实现变得更快，但实现速度的提高并不会自动增加对并发行为和生命周期边界的理解。</p>
-<p><code>model-with-tla</code> 尝试在日常 Agent-assisted coding 中加入一条不同的反馈路径：从行为要求构建可检查的状态机，由 TLC 寻找反例，再通过受控测试和外部证据核对实现。上文的反例映射图与证据层图分别展示了这条路径的两个关键部分。</p>
-<p>它并不是要为每一段代码提供完整的形式化证明，而是让那些过去容易停留在开发者直觉中的时序假设，变成可以表达、检查、反驳和回归验证的工程对象。</p>
-<p><strong>这套工作流最重要的改变，是让 Coding Agent 不仅负责生成一个实现，还能够在实现之外，系统地寻找这个实现可能违反的行为契约。</strong></p>
+<p>Coding Agent 让实现变快了，但实现变快并不会自动带来对并发行为和生命周期边界的理解。<code>model-with-tla</code> 尝试在日常开发中加入一条不同的反馈路径：从行为要求出发写出可检查的状态机，让 TLC 寻找反例，并在修复之后对整个有限配置给出穷举结论，用负向见证确认这个结论不是空洞的，再通过受控测试和外部证据核对实现。</p>
+<p>它不打算为每段代码提供完整的形式化证明。它要做的，是把那些过去停留在开发者直觉里的时序假设，变成可以表达、检查、反驳和回归验证的工程对象，让 Coding Agent 不只负责写出一个实现，还能系统地去找这个实现可能违反的行为契约。</p>
 <p>项目与实现细节：</p>
 <ul>
 <li><a href="https://github.com/ronhuafeng/skills-release/tree/main/catalog/engineering/model-with-tla">model-with-tla Skill</a></li>
 <li><a href="https://github.com/ronhuafeng/skills-release/blob/main/catalog/engineering/model-with-tla/references/model-adequacy.md">Model Adequacy</a></li>
+<li><a href="https://github.com/ronhuafeng/skills-release/blob/main/catalog/engineering/model-with-tla/references/identity-and-epochs.md">Identity and Epochs</a></li>
+<li><a href="https://github.com/ronhuafeng/skills-release/blob/main/catalog/engineering/model-with-tla/references/effects-and-convergence.md">Effects and Convergence</a></li>
 <li><a href="https://github.com/ronhuafeng/skills-release/blob/main/catalog/engineering/model-with-tla/references/tlc-tool.md">TLC Tool</a></li>
 <li><a href="https://github.com/ronhuafeng/skills-release/blob/main/catalog/engineering/model-with-tla/references/evidence-closure.md">Evidence Closure</a></li>
 </ul>
-</div></div><aside class="article-toc-rail" aria-label="本文目录"><div class="toc-rail-sticky"><div class="toc-rail-header"><span>本文目录</span><span class="toc-progress" data-reading-progress>0%</span></div><nav class="toc-navigation toc-navigation-rail" aria-label="本文目录" data-toc-nav><ol class="toc-list"><li><a href="#为什么需要在代码之外建立模型" data-toc-link>为什么需要在代码之外建立模型？</a></li><li><a href="#model-with-tla-是什么" data-toc-link>model-with-tla 是什么？</a></li><li><a href="#一次完整的建模与验证流程" data-toc-link>一次完整的建模与验证流程</a></li><li class="toc-subheading"><a href="#第一步确定要求而不是复制当前实现" data-toc-link>第一步：确定要求，而不是复制当前实现</a></li><li class="toc-subheading"><a href="#第二步抽象出影响正确性的状态和动作" data-toc-link>第二步：抽象出影响正确性的状态和动作</a></li><li class="toc-subheading"><a href="#第三步通过-tlc-寻找反例" data-toc-link>第三步：通过 TLC 寻找反例</a></li><li class="toc-subheading"><a href="#第四步把反例转成可执行的测试" data-toc-link>第四步：把反例转成可执行的测试</a></li><li class="toc-subheading"><a href="#第五步检查模型实现和外部证据是否一致" data-toc-link>第五步：检查模型、实现和外部证据是否一致</a></li><li><a href="#如何在-coding-agent-中使用" data-toc-link>如何在 Coding Agent 中使用？</a></li><li class="toc-subheading"><a href="#配套的-tla-check-工具" data-toc-link>配套的 tla-check 工具</a></li><li><a href="#一个具体例子旧回调修改了新资源" data-toc-link>一个具体例子：旧回调修改了新资源</a></li><li><a href="#为什么-tla-和-coding-agent-的组合值得尝试" data-toc-link>为什么 TLA+ 和 Coding Agent 的组合值得尝试？</a></li><li><a href="#形式化检查能保证什么不能保证什么" data-toc-link>形式化检查能保证什么，不能保证什么？</a></li><li><a href="#什么时候值得使用" data-toc-link>什么时候值得使用？</a></li><li><a href="#结语" data-toc-link>结语</a></li></ol></nav></div></aside></div></article><button class="mobile-toc-launcher" type="button" aria-controls="post-toc-dialog" aria-expanded="false" data-toc-launcher hidden><span>目录</span><span class="toc-launcher-separator" aria-hidden="true">·</span><span data-reading-progress>0%</span></button><dialog class="toc-sheet" id="post-toc-dialog" aria-labelledby="post-toc-dialog-title" data-toc-dialog><div class="toc-sheet-handle" aria-hidden="true"></div><header class="toc-sheet-header"><div><h2 id="post-toc-dialog-title">本文目录</h2><p class="toc-sheet-status"><span>当前</span><strong data-current-section>开头</strong><span aria-hidden="true">·</span><span data-reading-progress>0%</span></p></div><button class="toc-sheet-close" type="button" aria-label="关闭目录" data-toc-close><span aria-hidden="true">×</span></button></header><nav class="toc-navigation toc-navigation-sheet" aria-label="本文目录" data-toc-nav><ol class="toc-list"><li><a href="#为什么需要在代码之外建立模型" data-toc-link>为什么需要在代码之外建立模型？</a></li><li><a href="#model-with-tla-是什么" data-toc-link>model-with-tla 是什么？</a></li><li><a href="#一次完整的建模与验证流程" data-toc-link>一次完整的建模与验证流程</a></li><li class="toc-subheading"><a href="#第一步确定要求而不是复制当前实现" data-toc-link>第一步：确定要求，而不是复制当前实现</a></li><li class="toc-subheading"><a href="#第二步抽象出影响正确性的状态和动作" data-toc-link>第二步：抽象出影响正确性的状态和动作</a></li><li class="toc-subheading"><a href="#第三步通过-tlc-寻找反例" data-toc-link>第三步：通过 TLC 寻找反例</a></li><li class="toc-subheading"><a href="#第四步把反例转成可执行的测试" data-toc-link>第四步：把反例转成可执行的测试</a></li><li class="toc-subheading"><a href="#第五步检查模型实现和外部证据是否一致" data-toc-link>第五步：检查模型、实现和外部证据是否一致</a></li><li><a href="#如何在-coding-agent-中使用" data-toc-link>如何在 Coding Agent 中使用？</a></li><li class="toc-subheading"><a href="#配套的-tla-check-工具" data-toc-link>配套的 tla-check 工具</a></li><li><a href="#一个具体例子旧回调修改了新资源" data-toc-link>一个具体例子：旧回调修改了新资源</a></li><li><a href="#为什么-tla-和-coding-agent-的组合值得尝试" data-toc-link>为什么 TLA+ 和 Coding Agent 的组合值得尝试？</a></li><li><a href="#形式化检查能保证什么不能保证什么" data-toc-link>形式化检查能保证什么，不能保证什么？</a></li><li><a href="#什么时候值得使用" data-toc-link>什么时候值得使用？</a></li><li><a href="#结语" data-toc-link>结语</a></li></ol></nav></dialog><noscript><details class="post-toc-noscript"><summary>本文目录</summary><nav class="toc-navigation" aria-label="本文目录" data-toc-nav><ol class="toc-list"><li><a href="#为什么需要在代码之外建立模型" data-toc-link>为什么需要在代码之外建立模型？</a></li><li><a href="#model-with-tla-是什么" data-toc-link>model-with-tla 是什么？</a></li><li><a href="#一次完整的建模与验证流程" data-toc-link>一次完整的建模与验证流程</a></li><li class="toc-subheading"><a href="#第一步确定要求而不是复制当前实现" data-toc-link>第一步：确定要求，而不是复制当前实现</a></li><li class="toc-subheading"><a href="#第二步抽象出影响正确性的状态和动作" data-toc-link>第二步：抽象出影响正确性的状态和动作</a></li><li class="toc-subheading"><a href="#第三步通过-tlc-寻找反例" data-toc-link>第三步：通过 TLC 寻找反例</a></li><li class="toc-subheading"><a href="#第四步把反例转成可执行的测试" data-toc-link>第四步：把反例转成可执行的测试</a></li><li class="toc-subheading"><a href="#第五步检查模型实现和外部证据是否一致" data-toc-link>第五步：检查模型、实现和外部证据是否一致</a></li><li><a href="#如何在-coding-agent-中使用" data-toc-link>如何在 Coding Agent 中使用？</a></li><li class="toc-subheading"><a href="#配套的-tla-check-工具" data-toc-link>配套的 tla-check 工具</a></li><li><a href="#一个具体例子旧回调修改了新资源" data-toc-link>一个具体例子：旧回调修改了新资源</a></li><li><a href="#为什么-tla-和-coding-agent-的组合值得尝试" data-toc-link>为什么 TLA+ 和 Coding Agent 的组合值得尝试？</a></li><li><a href="#形式化检查能保证什么不能保证什么" data-toc-link>形式化检查能保证什么，不能保证什么？</a></li><li><a href="#什么时候值得使用" data-toc-link>什么时候值得使用？</a></li><li><a href="#结语" data-toc-link>结语</a></li></ol></nav></details></noscript></main><footer class="footer" lang="zh-CN"><span>记录是生活的微小仪式感</span><div class="footer-meta"><a href="/rss.xml">RSS</a><span>© 2026 Zhang Hua Feng/張華楓&#39;s Notes</span></div></footer></div><script>
+</div></div><aside class="article-toc-rail" aria-label="本文目录"><div class="toc-rail-sticky"><div class="toc-rail-header"><span>本文目录</span><span class="toc-progress" data-reading-progress>0%</span></div><nav class="toc-navigation toc-navigation-rail" aria-label="本文目录" data-toc-nav><ol class="toc-list"><li><a href="#测试循环漏掉了什么" data-toc-link>测试循环漏掉了什么</a></li><li><a href="#把例子写成-tla" data-toc-link>把例子写成 TLA+</a></li><li class="toc-subheading"><a href="#tlc-找到的反例" data-toc-link>TLC 找到的反例</a></li><li class="toc-subheading"><a href="#修复与两份配置" data-toc-link>修复与两份配置</a></li><li><a href="#一个-pass-什么时候才有意义" data-toc-link>一个 PASS 什么时候才有意义</a></li><li><a href="#一次真实的使用kinmesh-的认领协议" data-toc-link>一次真实的使用：kinmesh 的认领协议</a></li><li class="toc-subheading"><a href="#前两个反例一个错在模型一个错在设计" data-toc-link>前两个反例：一个错在模型，一个错在设计</a></li><li class="toc-subheading"><a href="#一条性质在-1700-万个状态里都没被检验到" data-toc-link>一条性质在 1700 万个状态里都没被检验到</a></li><li class="toc-subheading"><a href="#状态空间爆炸" data-toc-link>状态空间爆炸</a></li><li class="toc-subheading"><a href="#修掉的-bug-来自模型与代码的对照" data-toc-link>修掉的 bug 来自模型与代码的对照</a></li><li class="toc-subheading"><a href="#几个小时后模型被删掉了" data-toc-link>几个小时后，模型被删掉了</a></li><li><a href="#model-with-tla-做了什么" data-toc-link>model-with-tla 做了什么</a></li><li class="toc-subheading"><a href="#从要求出发而不是翻译现有实现" data-toc-link>从要求出发，而不是翻译现有实现</a></li><li class="toc-subheading"><a href="#按要检查的性质决定切分点" data-toc-link>按要检查的性质决定切分点</a></li><li class="toc-subheading"><a href="#把反例变成测试" data-toc-link>把反例变成测试</a></li><li class="toc-subheading"><a href="#核对模型实现和外部证据" data-toc-link>核对模型、实现和外部证据</a></li><li><a href="#在-coding-agent-中使用" data-toc-link>在 Coding Agent 中使用</a></li><li class="toc-subheading"><a href="#安装与调用" data-toc-link>安装与调用</a></li><li class="toc-subheading"><a href="#五种模式" data-toc-link>五种模式</a></li><li><a href="#拒绝旧结果之后副作用和清理" data-toc-link>拒绝旧结果之后：副作用和清理</a></li><li><a href="#结论的边界" data-toc-link>结论的边界</a></li><li><a href="#什么时候值得用" data-toc-link>什么时候值得用</a></li><li><a href="#结语" data-toc-link>结语</a></li></ol></nav></div></aside></div></article><button class="mobile-toc-launcher" type="button" aria-controls="post-toc-dialog" aria-expanded="false" data-toc-launcher hidden><span>目录</span><span class="toc-launcher-separator" aria-hidden="true">·</span><span data-reading-progress>0%</span></button><dialog class="toc-sheet" id="post-toc-dialog" aria-labelledby="post-toc-dialog-title" data-toc-dialog><div class="toc-sheet-handle" aria-hidden="true"></div><header class="toc-sheet-header"><div><h2 id="post-toc-dialog-title">本文目录</h2><p class="toc-sheet-status"><span>当前</span><strong data-current-section>开头</strong><span aria-hidden="true">·</span><span data-reading-progress>0%</span></p></div><button class="toc-sheet-close" type="button" aria-label="关闭目录" data-toc-close><span aria-hidden="true">×</span></button></header><nav class="toc-navigation toc-navigation-sheet" aria-label="本文目录" data-toc-nav><ol class="toc-list"><li><a href="#测试循环漏掉了什么" data-toc-link>测试循环漏掉了什么</a></li><li><a href="#把例子写成-tla" data-toc-link>把例子写成 TLA+</a></li><li class="toc-subheading"><a href="#tlc-找到的反例" data-toc-link>TLC 找到的反例</a></li><li class="toc-subheading"><a href="#修复与两份配置" data-toc-link>修复与两份配置</a></li><li><a href="#一个-pass-什么时候才有意义" data-toc-link>一个 PASS 什么时候才有意义</a></li><li><a href="#一次真实的使用kinmesh-的认领协议" data-toc-link>一次真实的使用：kinmesh 的认领协议</a></li><li class="toc-subheading"><a href="#前两个反例一个错在模型一个错在设计" data-toc-link>前两个反例：一个错在模型，一个错在设计</a></li><li class="toc-subheading"><a href="#一条性质在-1700-万个状态里都没被检验到" data-toc-link>一条性质在 1700 万个状态里都没被检验到</a></li><li class="toc-subheading"><a href="#状态空间爆炸" data-toc-link>状态空间爆炸</a></li><li class="toc-subheading"><a href="#修掉的-bug-来自模型与代码的对照" data-toc-link>修掉的 bug 来自模型与代码的对照</a></li><li class="toc-subheading"><a href="#几个小时后模型被删掉了" data-toc-link>几个小时后，模型被删掉了</a></li><li><a href="#model-with-tla-做了什么" data-toc-link>model-with-tla 做了什么</a></li><li class="toc-subheading"><a href="#从要求出发而不是翻译现有实现" data-toc-link>从要求出发，而不是翻译现有实现</a></li><li class="toc-subheading"><a href="#按要检查的性质决定切分点" data-toc-link>按要检查的性质决定切分点</a></li><li class="toc-subheading"><a href="#把反例变成测试" data-toc-link>把反例变成测试</a></li><li class="toc-subheading"><a href="#核对模型实现和外部证据" data-toc-link>核对模型、实现和外部证据</a></li><li><a href="#在-coding-agent-中使用" data-toc-link>在 Coding Agent 中使用</a></li><li class="toc-subheading"><a href="#安装与调用" data-toc-link>安装与调用</a></li><li class="toc-subheading"><a href="#五种模式" data-toc-link>五种模式</a></li><li><a href="#拒绝旧结果之后副作用和清理" data-toc-link>拒绝旧结果之后：副作用和清理</a></li><li><a href="#结论的边界" data-toc-link>结论的边界</a></li><li><a href="#什么时候值得用" data-toc-link>什么时候值得用</a></li><li><a href="#结语" data-toc-link>结语</a></li></ol></nav></dialog><noscript><details class="post-toc-noscript"><summary>本文目录</summary><nav class="toc-navigation" aria-label="本文目录" data-toc-nav><ol class="toc-list"><li><a href="#测试循环漏掉了什么" data-toc-link>测试循环漏掉了什么</a></li><li><a href="#把例子写成-tla" data-toc-link>把例子写成 TLA+</a></li><li class="toc-subheading"><a href="#tlc-找到的反例" data-toc-link>TLC 找到的反例</a></li><li class="toc-subheading"><a href="#修复与两份配置" data-toc-link>修复与两份配置</a></li><li><a href="#一个-pass-什么时候才有意义" data-toc-link>一个 PASS 什么时候才有意义</a></li><li><a href="#一次真实的使用kinmesh-的认领协议" data-toc-link>一次真实的使用：kinmesh 的认领协议</a></li><li class="toc-subheading"><a href="#前两个反例一个错在模型一个错在设计" data-toc-link>前两个反例：一个错在模型，一个错在设计</a></li><li class="toc-subheading"><a href="#一条性质在-1700-万个状态里都没被检验到" data-toc-link>一条性质在 1700 万个状态里都没被检验到</a></li><li class="toc-subheading"><a href="#状态空间爆炸" data-toc-link>状态空间爆炸</a></li><li class="toc-subheading"><a href="#修掉的-bug-来自模型与代码的对照" data-toc-link>修掉的 bug 来自模型与代码的对照</a></li><li class="toc-subheading"><a href="#几个小时后模型被删掉了" data-toc-link>几个小时后，模型被删掉了</a></li><li><a href="#model-with-tla-做了什么" data-toc-link>model-with-tla 做了什么</a></li><li class="toc-subheading"><a href="#从要求出发而不是翻译现有实现" data-toc-link>从要求出发，而不是翻译现有实现</a></li><li class="toc-subheading"><a href="#按要检查的性质决定切分点" data-toc-link>按要检查的性质决定切分点</a></li><li class="toc-subheading"><a href="#把反例变成测试" data-toc-link>把反例变成测试</a></li><li class="toc-subheading"><a href="#核对模型实现和外部证据" data-toc-link>核对模型、实现和外部证据</a></li><li><a href="#在-coding-agent-中使用" data-toc-link>在 Coding Agent 中使用</a></li><li class="toc-subheading"><a href="#安装与调用" data-toc-link>安装与调用</a></li><li class="toc-subheading"><a href="#五种模式" data-toc-link>五种模式</a></li><li><a href="#拒绝旧结果之后副作用和清理" data-toc-link>拒绝旧结果之后：副作用和清理</a></li><li><a href="#结论的边界" data-toc-link>结论的边界</a></li><li><a href="#什么时候值得用" data-toc-link>什么时候值得用</a></li><li><a href="#结语" data-toc-link>结语</a></li></ol></nav></details></noscript></main><footer class="footer" lang="zh-CN"><span>记录是生活的微小仪式感</span><div class="footer-meta"><a href="/rss.xml">RSS</a><span>© 2026 Zhang Hua Feng/張華楓&#39;s Notes</span></div></footer></div><script>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
           navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {});

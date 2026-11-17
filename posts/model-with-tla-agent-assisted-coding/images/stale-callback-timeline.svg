@@ -24,7 +24,7 @@
       <text x="152" y="435" fill="#7c3826">实现只比较逻辑 ID worker-A，把旧结果提交到新资源状态。</text>
     </g>
     <path d="M42 473 H958" stroke="#e2e8f0" stroke-width="2"/>
-    <text x="42" y="508" font-size="18" fill="#64748b">应检查的 Safety 性质</text>
-    <text x="42" y="552" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="22" font-weight="600" fill="#0f172a">□(Commit(r) ⇒ Authorized(r, current))</text>
+    <text x="42" y="508" font-size="18" fill="#64748b">应检查的 Safety 不变量</text>
+    <text x="42" y="552" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="22" font-weight="600" fill="#0f172a">NoStaleWrite == lastWriter \in {0, incarnation}</text>
   </g>
 </svg>
