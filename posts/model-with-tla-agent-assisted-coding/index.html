@@ -9,19 +9,15 @@
 <p>它要解决的核心问题是：</p>
 <p><strong>能否让 Coding Agent 在实现之外，建立一份独立的、可以主动寻找反例的行为模型？</strong></p>
 <h2 id="为什么需要在代码之外建立模型">为什么需要在代码之外建立模型？</h2>
-<p>一般的 Agent coding loop 大致是：</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>需求</span></span>
-<span class="line"><span>  → 生成实现</span></span>
-<span class="line"><span>  → 编写测试</span></span>
-<span class="line"><span>  → 执行测试</span></span>
-<span class="line"><span>  → 根据失败修改代码</span></span></code></pre>
-<p>这套流程对大量任务已经足够有效。但它有一个隐含前提：测试能够覆盖重要的错误行为。</p>
+<p>常规的 Agent coding loop 通过测试结果推动代码修订：</p>
+<picture>
+  <source media="(max-width: 640px)" srcset="/posts/model-with-tla-agent-assisted-coding/images/agent-coding-loop-mobile.svg">
+  <img src="/posts/model-with-tla-agent-assisted-coding/images/agent-coding-loop.svg" alt="常规 Agent coding loop：需求、实现、测试和失败反馈，以及测试覆盖的隐含前提" loading="lazy" style="display: block; width: 100%; height: auto;">
+</picture>
+<p><em>失败反馈能帮助 Agent 修正已被测试表达的问题，却不能保证未被测试覆盖的事件交错会自行暴露。</em></p>
+<p>这套流程对大量任务已经足够有效，但它能否发现某个错误，仍取决于测试是否包含了触发该错误的行为。</p>
 <p>对于异步和并发系统，错误往往不取决于某个函数的输入，而取决于多个动作发生的相对顺序。</p>
-<p>考虑以下情况：</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Task A: 读取资源状态</span></span>
-<span class="line"><span>Task B: 替换资源</span></span>
-<span class="line"><span>Task A: 收到旧操作的结果</span></span>
-<span class="line"><span>Task A: 提交结果</span></span></code></pre>
+<p>例如，Task A 先读取资源状态；它等待异步结果时，Task B 替换了资源。随后 Task A 收到属于旧资源的结果，准备提交。单看每个函数可能都没有异常，关键是<strong>提交发生在资源替换之后</strong>。</p>
 <p>如果 Task A 的提交逻辑只检查资源 ID，而不检查资源的具体生命周期，就可能写入一个逻辑 ID 相同、实际却已经被替换的资源。</p>
 <p>问题不一定出在某一行条件判断，而可能出在整个系统对资源身份、异步结果和提交权限的理解上。</p>
 <p>TLA+ 提供了另一种检查方式。</p>
@@ -86,35 +82,23 @@
 <p>对重要的 Safety 性质，应能构造相应的 negative witness，使错误行为在模型中可达，并确认 TLC 因预期性质被违反而失败。</p>
 <p>这避免了一个常见问题：模型看似经过严格检查，实际上却没有包含它声称已经排除的错误。</p>
 <h3 id="第四步把反例转成可执行的测试">第四步：把反例转成可执行的测试</h3>
-<p>TLC 输出的 counterexample 是状态转换轨迹。</p>
-<p>Agent 需要进一步把它翻译成实际系统中的事件：</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>初始状态</span></span>
-<span class="line"><span>  → 操作 A 开始</span></span>
-<span class="line"><span>  → 资源或权限发生变化</span></span>
-<span class="line"><span>  → 延迟事件到达</span></span>
-<span class="line"><span>  → 出现被禁止的结果</span></span>
-<span class="line"><span>  → 定位对应实现边界</span></span>
-<span class="line"><span>  → 构造固定顺序的测试</span></span></code></pre>
-<p>这一步连接了形式化模型和真实代码。</p>
-<p>例如，假设 TLC 发现旧资源的回调可以在替换后修改新资源。Agent 就可以构造一个受控测试：</p>
-<p>先启动旧操作，暂停其完成回调；替换资源；再释放旧回调；最后断言新资源的状态没有被修改。</p>
-<p>这个测试比普通的正常路径测试更有针对性，因为它直接来自一个已知能够破坏模型不变量的执行序列。</p>
+<p>TLC 输出的 counterexample 是抽象状态轨迹。Agent 需要将它映射到领域事件、实现中的关键边界，以及可以重复执行的受控测试。</p>
+<picture>
+  <source media="(max-width: 640px)" srcset="/posts/model-with-tla-agent-assisted-coding/images/counterexample-to-test-mobile.svg">
+  <img src="/posts/model-with-tla-agent-assisted-coding/images/counterexample-to-test.svg" alt="TLC 反例映射到领域事件、代码边界和受控回归测试的四个阶段" loading="lazy" style="display: block; width: 100%; height: auto;">
+</picture>
+<p><em>这是一条语义映射链，不是模型结果自动证明实现正确的推导链。</em></p>
+<p>在旧回调的例子中，受控测试先暂停旧操作的回调，再替换资源，随后释放回调，并断言新资源的状态没有被旧结果修改。测试需要保留反例中的身份、事件顺序和受检查的性质；正常路径的成功测试无法替代这条针对性验证。</p>
 <h3 id="第五步检查模型实现和外部证据是否一致">第五步：检查模型、实现和外部证据是否一致</h3>
 <p>模型通过不等于代码通过。</p>
 <p>一个正确的模型可能把某段行为视为原子操作，但实际代码在两个语句之间允许另一个任务插入。也可能模型正确区分了资源 incarnation，而实现只使用可复用的资源 ID。</p>
-<p>因此，<code>model-with-tla</code> 将验证证据分为多个层次：</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Requirements model</span></span>
-<span class="line"><span>    ↓</span></span>
-<span class="line"><span>Refinement / focused obligation</span></span>
-<span class="line"><span>    ↓</span></span>
-<span class="line"><span>Controlled implementation trace</span></span>
-<span class="line"><span>    ↓</span></span>
-<span class="line"><span>External evidence</span></span>
-<span class="line"><span>    ↓</span></span>
-<span class="line"><span>Convergence observation</span></span></code></pre>
-<p>它要求明确区分一个局部性质检查、有限配置下的 refinement 检查，以及真正建立了声明范围内证明关系的 refinement。</p>
-<p>当证据不完整时，工作流不会把所有结果都报告成「验证成功」，而是采用 <code>closed</code>、<code>scoped</code>、<code>drifted</code>、<code>blocked</code>、<code>unproved</code> 等状态表达完成范围和剩余假设。</p>
-<p>这里的重点不是制造更多验证文件，而是防止 Agent 把某一层的成功错误地扩大为对整个系统的保证。</p>
+<p>因此，<code>model-with-tla</code> 会分别检查不同来源的证据，并核对它们是否使用一致的身份、操作和终态语义。</p>
+<picture>
+  <source media="(max-width: 640px)" srcset="/posts/model-with-tla-agent-assisted-coding/images/evidence-layers-mobile.svg">
+  <img src="/posts/model-with-tla-agent-assisted-coding/images/evidence-layers.svg" alt="五层证据来源：需求模型、低层义务、受控实现轨迹、外部验证、稳定终态观察；以及完成状态分类" loading="lazy" style="display: block; width: 100%; height: auto;">
+</picture>
+<p><em>这些是需要相互对应的证据来源，不是一个 PASS 就能逐层自动推出后续结果的流程。</em></p>
+<p>一个局部性质检查、有限配置下的 refinement 检查，以及具有一般性证明的 refinement，是不同强度的结论。若证据尚不完整，工作流用 <code>closed</code>、<code>scoped</code>、<code>drifted</code>、<code>blocked</code>、<code>unproved</code> 标注范围和缺口，避免把局部成功扩大为对整个系统的保证。</p>
 <h2 id="如何在-coding-agent-中使用">如何在 Coding Agent 中使用？</h2>
 <p>Skill 将工作划分为五种操作模式。</p>
 <table>
@@ -212,13 +196,7 @@
 <p>这类错误一旦进入真实系统，往往难以通过普通日志和偶发的集成测试复现。</p>
 <h2 id="结语">结语</h2>
 <p>Coding Agent 让软件实现变得更快，但实现速度的提高并不会自动增加对并发行为和生命周期边界的理解。</p>
-<p><code>model-with-tla</code> 尝试在日常 Agent-assisted coding 中加入一条不同的反馈路径：</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>理解行为要求</span></span>
-<span class="line"><span>  → 建立抽象状态机</span></span>
-<span class="line"><span>  → 检查 Safety / Liveness</span></span>
-<span class="line"><span>  → 寻找可复现反例</span></span>
-<span class="line"><span>  → 映射到代码与受控测试</span></span>
-<span class="line"><span>  → 保留范围明确的验证证据</span></span></code></pre>
+<p><code>model-with-tla</code> 尝试在日常 Agent-assisted coding 中加入一条不同的反馈路径：从行为要求构建可检查的状态机，由 TLC 寻找反例，再通过受控测试和外部证据核对实现。上文的反例映射图与证据层图分别展示了这条路径的两个关键部分。</p>
 <p>它并不是要为每一段代码提供完整的形式化证明，而是让那些过去容易停留在开发者直觉中的时序假设，变成可以表达、检查、反驳和回归验证的工程对象。</p>
 <p><strong>这套工作流最重要的改变，是让 Coding Agent 不仅负责生成一个实现，还能够在实现之外，系统地寻找这个实现可能违反的行为契约。</strong></p>
 <p>项目与实现细节：</p>
