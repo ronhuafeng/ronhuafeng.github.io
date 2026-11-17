@@ -1,0 +1,184 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>model-with-tla：TLA+ 为什么在 Agent-assisted coding 中有效？ - Zhang Hua Feng/張華楓&#39;s Notes</title><meta name="description" content="分析 model-with-tla 如何把 TLA+ 建模、TLC 反例、refinement 与实现证据连接成 Agent-assisted coding 工作流，以及它对时序、并发和生命周期缺陷的价值与边界。"><meta name="author" content="Zhang Hua Feng/張華楓's Notes"><link rel="canonical" href="https://blog.formalscience.com/posts/model-with-tla-agent-assisted-coding/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png"><link rel="alternate" type="application/rss+xml" title="Zhang Hua Feng/張華楓's Notes RSS" href="/rss.xml"><meta name="application-name" content="華楓 Notes"><meta name="apple-mobile-web-app-title" content="華楓 Notes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0f0f10" media="(prefers-color-scheme: dark)"><meta name="robots" content="index,follow"><meta property="og:title" content="model-with-tla：TLA+ 为什么在 Agent-assisted coding 中有效？ - Zhang Hua Feng/張華楓's Notes"><meta property="og:description" content="分析 model-with-tla 如何把 TLA+ 建模、TLC 反例、refinement 与实现证据连接成 Agent-assisted coding 工作流，以及它对时序、并发和生命周期缺陷的价值与边界。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.formalscience.com/posts/model-with-tla-agent-assisted-coding/"><meta property="og:site_name" content="Zhang Hua Feng/張華楓's Notes"><meta property="og:image" content="https://blog.formalscience.com/og-default.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="model-with-tla：TLA+ 为什么在 Agent-assisted coding 中有效？ - Zhang Hua Feng/張華楓's Notes"><meta name="twitter:description" content="分析 model-with-tla 如何把 TLA+ 建模、TLC 反例、refinement 与实现证据连接成 Agent-assisted coding 工作流，以及它对时序、并发和生命周期缺陷的价值与边界。"><meta name="twitter:image" content="https://blog.formalscience.com/og-default.svg"><meta property="article:published_time" content="2026-11-16T00:00:00.000Z"><meta property="article:section" content="技术"><meta property="article:tag" content="TLA+"><meta property="article:tag" content="Coding Agent"><meta property="article:tag" content="Model Checking"><meta property="article:tag" content="Formal Methods"><meta property="article:tag" content="并发系统"><link rel="stylesheet" href="/_astro/BaseLayout.CkF81Ls9.css"></head><body><a class="skip-link" href="#content" lang="zh-CN">跳到内容</a><div class="site-shell"><header class="site-header"><a class="brand" href="/"><span lang="en">Zhang Hua Feng/</span><span lang="zh-CN">張華楓</span><span lang="en">'s Notes</span></a><div class="header-actions"><nav class="nav-links" aria-label="主导航" lang="zh-CN"><a href="/">首页</a><a href="/posts" aria-current="page">文章</a><a href="/slides/">幻灯片</a><a href="/posts/thought-index/">书签</a><a href="/categories">分类</a><a href="/tags">标签</a><a href="/about">关于</a></nav><nav class="language-switch" aria-label="切换语言"><a href="/posts/model-with-tla-agent-assisted-coding/" lang="zh-CN" aria-current="page">中文</a><a href="/en" lang="en" title="English home">English</a></nav></div></header><main id="content"><article class="article-page" data-reading-article><header class="article-header"><div class="post-meta-row"><p class="meta"><time datetime="2026-11-16T00:00:00.000Z">2026年11月16日</time> · 约 11 分钟</p><a class="category-label" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></div><h1 class="article-title">model-with-tla：TLA+ 为什么在 Agent-assisted coding 中有效？</h1><p class="article-description">分析 model-with-tla 如何把 TLA+ 建模、TLC 反例、refinement 与实现证据连接成 Agent-assisted coding 工作流，以及它对时序、并发和生命周期缺陷的价值与边界。</p><div class="tag-list article-tags"><a class="tag" href="/tags/TLA%2B/">TLA+</a><a class="tag" href="/tags/Coding%20Agent/">Coding Agent</a><a class="tag" href="/tags/Model%20Checking/">Model Checking</a><a class="tag" href="/tags/Formal%20Methods/">Formal Methods</a><a class="tag" href="/tags/%E5%B9%B6%E5%8F%91%E7%B3%BB%E7%BB%9F/">并发系统</a></div></header><div class="article-reading-layout has-toc"><div class="article-main-column"><div class="post-content" data-reading-content><p><strong>Optimized question (English):</strong> How does <code>model-with-tla</code> work end to end, and why is TLA+-based formal modeling particularly effective at discovering temporal, concurrency, and lifecycle bugs in agent-assisted coding? What makes this workflow more reliable than conventional AI-generated code reviews and tests?</p>
+<p>我阅读了你仓库中的 <code>SKILL.md</code> 和五个核心命令。我的核心判断是：</p>
+<p><strong><code>model-with-tla</code> 的价值，不只是让 Coding Agent 使用 TLA+，而是把 Agent 的一部分工作从「生成看起来正确的实现」转变为「构造可检查的行为契约，主动寻找违反契约的执行路径，再用这些反例约束实现」。</strong></p>
+<p>这解决了 Agent-assisted coding 的一个重要弱点：</p>
+<blockquote>
+<p>LLM 擅长生成合理的执行路径，但不擅长系统性地发现所有可能导致错误的执行顺序。</p>
+</blockquote>
+<p>TLA+ 的 model checking 恰好提供了另一种能力：在明确的有限状态空间内，系统地探索不同的状态转换和操作交错，寻找违反指定性质的路径。</p>
+<p>而你的 workflow 又解决了单独使用 TLA+ 的另一层问题：<strong>一个通过 TLC 检查的模型，如何真正约束生产代码，而不是成为一个与实现脱节的形式化文档。</strong></p>
+<h2 id="一model-with-tla-实际是怎样工作的">一、<code>model-with-tla</code> 实际是怎样工作的？</h2>
+<p>你的设计可以概括成一条证据链：</p>
+<p><img src="/posts/model-with-tla-agent-assisted-coding/images/verification-evidence-chain.svg" alt="model-with-tla 的验证证据链：从 Requirements Model 到 TLA+、TLC、Refinement 和实现证据"></p>
+<p>最值得注意的是，你没有把上述流程做成一个只有单一路径的自动化脚本，而是拆成了五种不同的任务模式：</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>职责</th>
+<th>关键边界</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>design</code></td>
+<td>定义行为契约，设计并检查 TLA+ 模型</td>
+<td>不把现有实现当作正确性标准</td>
+</tr>
+<tr>
+<td><code>diagnose</code></td>
+<td>将已观察到的故障转化为可复现反例</td>
+<td>不修改产品代码</td>
+</tr>
+<tr>
+<td><code>refine</code></td>
+<td>将模型约束映射到低层模型、适配器、测试或实现</td>
+<td>不暗中弱化原契约</td>
+</tr>
+<tr>
+<td><code>review</code></td>
+<td>检查需求、模型、实现和证据之间是否一致</td>
+<td>只读</td>
+</tr>
+<tr>
+<td><code>verify</code></td>
+<td>重新执行既有检查，发现模型与实现之间的漂移</td>
+<td>只读，不修改检查标准</td>
+</tr>
+</tbody>
+</table>
+<p>这五种模式实际上覆盖了软件开发中不同的验证时机：设计前、故障调查中、实现修改时、代码审查时，以及回归检查时。</p>
+<p>从工程角度看，这种分工很重要。因为「发现问题」「定义正确行为」「修复代码」「证明修复有效」是不同的任务，混在同一个 Agent prompt 中，容易出现为了让结果通过而修改判定标准的问题。</p>
+<p>来源：<a href="https://github.com/ronhuafeng/skills-release/blob/main/catalog/engineering/model-with-tla/SKILL.md">SKILL.md</a>、<a href="https://github.com/ronhuafeng/skills-release/tree/main/catalog/engineering/model-with-tla/commands">commands</a>。</p>
+<h2 id="二真正关键的机制不是跑-tlc而是防止错误的模型得到正确的结果">二、真正关键的机制：不是跑 TLC，而是防止「错误的模型得到正确的结果」</h2>
+<p>读完 <code>references/model-adequacy.md</code>、<code>concurrency-contracts.md</code> 和 <code>evidence-closure.md</code> 后，我认为这里有四个特别关键的设计。</p>
+<h3 id="1-先验证模型是否有能力发现目标错误">1. 先验证模型是否有能力发现目标错误</h3>
+<p>假设系统只能选择 <code>primary</code> 或 <code>alternate</code> 两个目标，而要求是永远不能错误地选择 <code>alternate</code>。</p>
+<p>如果 Agent 写出：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Targets == {"primary"}</span></span>
+<span class="line"><span>NoAlternateTarget == target # "alternate"</span></span></code></pre>
+<p>TLC 自然会通过，但这并没有提供有意义的保证，因为错误状态从一开始就不在状态空间中。</p>
+<p>你的 workflow 不满足于 positive check，而是要求建立能够区分正确与错误的模型：</p>
+<ul>
+<li>触发错误的前置条件必须可达。</li>
+<li>被禁止的结果必须能够表示。</li>
+<li>错误动作或负向模型必须能够产生那个结果。</li>
+<li>检查必须因目标性质被违反而失败。</li>
+<li>修正后的模型必须阻止同一故障。</li>
+</ul>
+<p>这就是你在 <code>model-adequacy.md</code> 中强调的 <strong>Safety discriminability</strong>。</p>
+<p>它在 Agent-assisted coding 中尤其重要。LLM 很容易生成看起来符合需求的模型，同时无意中把真正危险的状态排除掉。没有 discriminability 检查时，形式化验证也可能成为一种更有说服力的虚假安全感。</p>
+<h3 id="2-抽象粒度由正确性决定而不是由代码结构决定">2. 抽象粒度由正确性决定，而不是由代码结构决定</h3>
+<p>这是整个 Skill 中我认为最有工程深度的一点。</p>
+<p>你的规则不是「一个函数对应一个 TLA+ action」，而是：</p>
+<p><strong>只有当一个中间点的延迟、失败或其他操作插入能够影响待检查的性质时，才需要将它拆成独立的 action。</strong></p>
+<p>例如一个 API 调用在代码中看起来只有一步：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>createResource()</span></span></code></pre>
+<p>实际可能包含：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>commit intent</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>send external request</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>external effect accepted</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>response returned / lost</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>commit resource identity</span></span></code></pre>
+<p>这里的 <code>external effect accepted</code> 和 <code>response returned</code> 之间必须允许交错，因为外部操作可能已经成功，但响应丢失。</p>
+<p>如果 Agent 将整个 API 调用建模为一个原子 action，相关的重复执行、错误重试、资源泄漏等问题就无法出现。</p>
+<p>反过来，loading indicator、普通日志或不影响目标性质的 metrics，通常不需要单独建模。</p>
+<p>这就解决了两个相反的问题：过度抽象会遗漏 bug；过度细化会导致 state explosion。</p>
+<p>你实际上定义了一套<strong>以正确性为导向的 abstraction policy</strong>，而不是简单的建模模板。</p>
+<h3 id="3-区分现实观察和操作权限">3. 区分现实、观察和操作权限</h3>
+<p>这是很多时序错误的真正根源。</p>
+<p>例如：</p>
+<ul>
+<li><code>resource absent</code> 不等于 <code>resource observation failed</code></li>
+<li><code>request cancelled</code> 不等于 <code>external effect cancelled</code></li>
+<li><code>callback delivered</code> 不等于 <code>fresh state observed</code></li>
+<li><code>same resource ID</code> 不等于 <code>same resource incarnation</code></li>
+<li><code>operation timed out</code> 不等于 <code>cleanup completed</code></li>
+</ul>
+<p>这些区分在普通代码中经常被压缩成一个 <code>status</code>、一个 Boolean 或一个对象 ID。</p>
+<p>你的 <code>identity-and-epochs.md</code> 显式区分 stable identity、resource incarnation、observation revision、operation identity、attempt budget、policy scope 和 effect ownership。</p>
+<p>这样一来，Agent 需要回答的不再只是「操作成功了吗」，而是：</p>
+<p>「这个结果属于哪次操作、哪个资源生命周期？它现在是否仍有提交权限？即使不能提交结果，它是否仍负有清理已产生外部副作用的责任？」</p>
+<p>这比单纯检查 data race 更深入。它检查的是<strong>随时间变化的 authority、knowledge 和 responsibility 是否被正确维护</strong>。</p>
+<h3 id="4-让反例真正进入实现验证而不是停留在模型里">4. 让反例真正进入实现验证，而不是停留在模型里</h3>
+<p>TLC 发现反例后，你要求将其转换成领域事件链：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>initial state</span></span>
+<span class="line"><span>→ actor / action</span></span>
+<span class="line"><span>→ authority or effect change</span></span>
+<span class="line"><span>→ forbidden result</span></span>
+<span class="line"><span>→ violated property</span></span>
+<span class="line"><span>→ implementation seam</span></span>
+<span class="line"><span>→ controlled test order</span></span>
+<span class="line"><span>→ remaining external assumption</span></span></code></pre>
+<p>这一步将形式化结果转化为 Agent 可执行的工程任务。</p>
+<p>同时，<code>refine</code> 要求明确区分 focused obligation、finite-checked refinement 和 proved refinement，不允许因为某个局部 invariant 通过，就宣称整个实现满足高层规范。</p>
+<p><code>evidence-closure.md</code> 进一步要求把模型、受控测试、真实外部环境和最终收敛状态分别记录为证据，并用 <code>closed / scoped / drifted / blocked / unproved</code> 分类。</p>
+<p>换句话说：<strong>你要求 Agent 证明它的结论处于哪一个证据边界，而不只是展示一个成功的检查结果。</strong></p>
+<p>这与 TLA+ 本身的能力边界一致：TLC 可以系统检查给定有限模型的状态空间，但结果不会自动推广到任意规模或真实实现。</p>
+<p>还有一个容易忽略的细节：你实现了独立的 <code>tla-check</code> 执行器，固定工具版本及校验和，先检查 SANY，再执行 TLC，并比较<strong>预期结果和实际结果的精确类型</strong>。</p>
+<p>例如预期是 <code>invariant:NoDuplicate</code>，但实际首先违反的是 <code>TypeOK</code>，就不能报告「已经成功重现重复执行问题」。</p>
+<p>这使得自动化验证不再只是检查命令是否返回非零，而是检查<strong>是否真的获得了想要的证据</strong>。</p>
+<p>来源：<a href="https://github.com/ronhuafeng/skills-release/blob/main/catalog/engineering/model-with-tla/references/model-adequacy.md">model adequacy</a>、<a href="https://github.com/ronhuafeng/skills-release/blob/main/catalog/engineering/model-with-tla/references/evidence-closure.md">evidence closure</a>、<a href="https://github.com/ronhuafeng/skills-release/blob/main/catalog/engineering/model-with-tla/references/tlc-tool.md">TLC tool</a>。</p>
+<h2 id="三为什么这种方法在-agent-assisted-coding-中特别有效">三、为什么这种方法在 Agent-assisted coding 中特别有效？</h2>
+<p>我认为它的有效性来自三个层面的互补。</p>
+<h3 id="1-llm-负责构造模型model-checker-负责对抗模型">1. LLM 负责构造模型，Model Checker 负责对抗模型</h3>
+<p>普通 Coding Agent 的主要工作机制是基于上下文生成代码、解释和测试，再依据执行反馈进行修正。</p>
+<p>它可以推理并发问题，但在没有外部验证工具的情况下，很难系统覆盖所有可能的事件交错。</p>
+<p>TLC 的搜索方式不同。</p>
+<p><img src="/posts/model-with-tla-agent-assisted-coding/images/agent-testing-vs-model-checking.svg" alt="常规 Agent + Tests 与 Agent + TLA+ / TLC 的检查路径对比"></p>
+<p><em>示意图：左侧是选定场景的执行，右侧是模型状态空间的系统探索；并非实际覆盖率统计。</em></p>
+<p>因此，Agent 不需要自己准确猜中所有危险时序。它需要建立足够准确、足够有辨别力的状态机，然后让 TLC 搜索违反约束的行为。</p>
+<p>两者分工可以概括为：</p>
+<p><strong>LLM 是 specification constructor 和 counterexample interpreter；TLC 是 deterministic state-space explorer。</strong></p>
+<p>这个分工比让同一个 Agent 同时编写实现、编写测试并主观判断是否正确，更容易暴露设计中的自相矛盾之处。</p>
+<h3 id="2-agent-降低了形式化方法的边际成本">2. Agent 降低了形式化方法的边际成本</h3>
+<p>TLA+ 长期以来的主要阻力之一，不是其理论价值，而是建立合适抽象模型所需的专业知识与工程时间。</p>
+<p>Agent 可以承担大量重复性工作：梳理状态变量、建立 action、编写 TLC 配置、读取错误轨迹、调整抽象、形成测试方案。</p>
+<p>但更重要的是，你的 Skill 不让 Agent 任意增加状态和细节，而是通过 <code>model-adequacy.md</code> 规定哪些区别必须保留、哪些可以忽略。</p>
+<p>这使 TLA+ 从一个可能需要专家专门开展的设计活动，转变为可以嵌入日常 Agent coding loop 的验证步骤。</p>
+<p>也就是说，真正的变化不是 TLA+ 变得更强，而是<strong>使用形式化检查的成本结构发生了变化</strong>。</p>
+<p>当生成和迭代模型的成本降低时，以往不值得单独投入形式化建模的中等复杂度异步 workflow，也开始具备较好的投入产出比。</p>
+<h3 id="3-反例提供了高密度可操作的反馈信号">3. 反例提供了高密度、可操作的反馈信号</h3>
+<p>一个普通单元测试失败，经常只能告诉 Agent 某个断言没有满足。</p>
+<p>而一个有效的 TLC counterexample 可以告诉它：</p>
+<p>哪个操作开始，哪个资源被替换，什么时候观察变得过期，哪个回调在什么条件下执行，以及哪个 invariant 首次被破坏。</p>
+<p>这种反馈具有两个重要特征：它是<strong>有序的</strong>，而且是<strong>反事实的</strong>——展示了一个实现者可能没有考虑过、但模型允许发生的执行序列。</p>
+<p>Agent 可以据此构造有针对性的 controlled test，而不是在多个函数里盲目修改代码。</p>
+<p>反例因此成为形式模型和具体实现之间的一种中间表示。</p>
+<h2 id="四用一个具体例子说明">四、用一个具体例子说明</h2>
+<p>假设有一个异步资源管理器，同一个逻辑资源 ID 可以在重启后被重新使用。</p>
+<p><img src="/posts/model-with-tla-agent-assisted-coding/images/stale-callback-timeline.svg" alt="Stale callback 导致的错误提交时序：旧资源的异步回调在资源替换后到达"></p>
+<p>这里的 Authorized 是由产品契约定义的权限谓词，通常需要比较 incarnation、operation identity 和当前 policy 等。</p>
+<p>普通测试很容易只覆盖资源没有被替换时的成功路径。</p>
+<p>TLA+ 则可以显式表示两种 incarnation、资源替换 action、异步完成 action 和结果提交 action。只要模型保留上述错误行为，TLC 就有机会找到这条交错路径。</p>
+<p>随后 Agent 将反例转成一个固定事件顺序的测试，验证旧回调不能修改新资源。</p>
+<p>如果旧操作已经创建了外部副作用，还需要单独检查 effect ownership 和 cleanup responsibility，不能因为拒绝了 stale commit 就认为副作用也自动消失了。</p>
+<p>这个例子也说明，<strong>很多所谓的时序 bug，本质上不是执行顺序本身有错，而是状态改变之后，旧操作仍被错误地授予了权限。</strong></p>
+<p>你的 <code>identity-and-epochs.md</code> 和 <code>effects-and-convergence.md</code> 正是系统性地处理这类问题。</p>
+<h2 id="五哪些边界决定了这个-workflow-的实际可靠性">五、哪些边界决定了这个 workflow 的实际可靠性？</h2>
+<p>我认为有三个地方不能忽略。</p>
+<p><strong>第一，模型和性质本身可能是错的。</strong> TLC 不能判断产品需求是否合理，也不能自动识别 Agent 是否遗漏了重要环境行为。你使用 governing requirements、model adequacy 和 negative witness 来抑制这一问题，是正确方向，但不能完全消除同一个 Agent 同时理解需求和编写模型所带来的共同错误风险。</p>
+<p><strong>第二，Safety 比真实环境中的 Liveness 更容易得到明确的有限验证。</strong> 例如，对 callback completion 施加 weak fairness，并不能保证外部系统真的发送 callback。<code>WF</code> 解决的是持续 enabled 后的调度问题，不是外部事件的到达保证。你的 <code>model-adequacy.md</code> 明确区分 environment enablement 与 local scheduling，我认为这是避免虚假进展保证的重要防线。</p>
+<p><strong>第三，模型通过不等于实现通过。</strong> 即使一份 TLA+ 模型没有发现错误，如果代码没有保持相同的原子性、身份、epoch 和 effect 语义，也可能在真实运行时违背模型。你的 refinement mapping、controlled trace 和 evidence closure 能降低这种风险，但普通测试只能提供相应范围内的一致性证据，不能自动证明完整的代码 refinement。</p>
+<p>从仓库实际配置看，Skill 采用 <code>user-invocable: true</code> 和 <code>disable-model-invocation: true</code>，也就是说它是一个显式选择的工作流，而不是所有编码任务自动强制执行的后台机制。这也合理：对于存在竞争、重试、取消、外部副作用或进展要求的系统，它更有价值；对于纯 UI 或简单确定性逻辑，建模成本可能不值得。</p>
+<p>另外，仓库里的 evaluation cases 和 oracles 是人工评估规范，而不是已执行的量化实验。因此，你几个月来的有效性观察具有实践意义，但仅凭公开文件还不能得出缺陷发现率提升了多少的统计结论。</p>
+<h2 id="六我认为它更深层的工程意义">六、我认为它更深层的工程意义</h2>
+<p>我会把 <code>model-with-tla</code> 看作一种 <strong>Agent-mediated executable specification and evidence workflow</strong>。</p>
+<p>它将三个原来相对分离的环节连接起来：自然语言需求、可执行的形式化行为规范、受控实现证据。</p>
+<p>这条连接很关键，因为 Agent-assisted coding 容易扩大代码生成的规模和速度，而代码生成得越快、跨越的状态边界越多，单靠人类 code review 和 happy-path tests 就越难维持相同的正确性信心。</p>
+<p><code>model-with-tla</code> 并没有让 Agent 获得无限的推理能力，而是引入一个独立于 LLM 语言判断的、可以反复运行的状态空间检查机制，并且为检查结果规定了严格的适用边界。</p>
+<p>因此，我认为它有效的根本原因是：</p>
+<p><strong>它把 Agent 从以「完成实现」为中心的工作方式，推动到以「构造可证伪的行为契约，并持续收集与之匹配的实现证据」为中心的工作方式。</strong></p>
+<p>其中，TLA+ 负责让时序假设显式化，TLC 负责尝试推翻它们，Agent 负责在抽象模型、反例和实际代码之间建立联系。</p>
+<p>这三者的组合，才是这个 workflow 真正有价值的部分。</p>
+</div></div><aside class="article-toc-rail" aria-label="本文目录"><div class="toc-rail-sticky"><div class="toc-rail-header"><span>本文目录</span><span class="toc-progress" data-reading-progress>0%</span></div><nav class="toc-navigation toc-navigation-rail" aria-label="本文目录" data-toc-nav><ol class="toc-list"><li><a href="#一model-with-tla-实际是怎样工作的" data-toc-link>一、model-with-tla 实际是怎样工作的？</a></li><li><a href="#二真正关键的机制不是跑-tlc而是防止错误的模型得到正确的结果" data-toc-link>二、真正关键的机制：不是跑 TLC，而是防止「错误的模型得到正确的结果」</a></li><li class="toc-subheading"><a href="#1-先验证模型是否有能力发现目标错误" data-toc-link>1. 先验证模型是否有能力发现目标错误</a></li><li class="toc-subheading"><a href="#2-抽象粒度由正确性决定而不是由代码结构决定" data-toc-link>2. 抽象粒度由正确性决定，而不是由代码结构决定</a></li><li class="toc-subheading"><a href="#3-区分现实观察和操作权限" data-toc-link>3. 区分现实、观察和操作权限</a></li><li class="toc-subheading"><a href="#4-让反例真正进入实现验证而不是停留在模型里" data-toc-link>4. 让反例真正进入实现验证，而不是停留在模型里</a></li><li><a href="#三为什么这种方法在-agent-assisted-coding-中特别有效" data-toc-link>三、为什么这种方法在 Agent-assisted coding 中特别有效？</a></li><li class="toc-subheading"><a href="#1-llm-负责构造模型model-checker-负责对抗模型" data-toc-link>1. LLM 负责构造模型，Model Checker 负责对抗模型</a></li><li class="toc-subheading"><a href="#2-agent-降低了形式化方法的边际成本" data-toc-link>2. Agent 降低了形式化方法的边际成本</a></li><li class="toc-subheading"><a href="#3-反例提供了高密度可操作的反馈信号" data-toc-link>3. 反例提供了高密度、可操作的反馈信号</a></li><li><a href="#四用一个具体例子说明" data-toc-link>四、用一个具体例子说明</a></li><li><a href="#五哪些边界决定了这个-workflow-的实际可靠性" data-toc-link>五、哪些边界决定了这个 workflow 的实际可靠性？</a></li><li><a href="#六我认为它更深层的工程意义" data-toc-link>六、我认为它更深层的工程意义</a></li></ol></nav></div></aside></div></article><button class="mobile-toc-launcher" type="button" aria-controls="post-toc-dialog" aria-expanded="false" data-toc-launcher hidden><span>目录</span><span class="toc-launcher-separator" aria-hidden="true">·</span><span data-reading-progress>0%</span></button><dialog class="toc-sheet" id="post-toc-dialog" aria-labelledby="post-toc-dialog-title" data-toc-dialog><div class="toc-sheet-handle" aria-hidden="true"></div><header class="toc-sheet-header"><div><h2 id="post-toc-dialog-title">本文目录</h2><p class="toc-sheet-status"><span>当前</span><strong data-current-section>开头</strong><span aria-hidden="true">·</span><span data-reading-progress>0%</span></p></div><button class="toc-sheet-close" type="button" aria-label="关闭目录" data-toc-close><span aria-hidden="true">×</span></button></header><nav class="toc-navigation toc-navigation-sheet" aria-label="本文目录" data-toc-nav><ol class="toc-list"><li><a href="#一model-with-tla-实际是怎样工作的" data-toc-link>一、model-with-tla 实际是怎样工作的？</a></li><li><a href="#二真正关键的机制不是跑-tlc而是防止错误的模型得到正确的结果" data-toc-link>二、真正关键的机制：不是跑 TLC，而是防止「错误的模型得到正确的结果」</a></li><li class="toc-subheading"><a href="#1-先验证模型是否有能力发现目标错误" data-toc-link>1. 先验证模型是否有能力发现目标错误</a></li><li class="toc-subheading"><a href="#2-抽象粒度由正确性决定而不是由代码结构决定" data-toc-link>2. 抽象粒度由正确性决定，而不是由代码结构决定</a></li><li class="toc-subheading"><a href="#3-区分现实观察和操作权限" data-toc-link>3. 区分现实、观察和操作权限</a></li><li class="toc-subheading"><a href="#4-让反例真正进入实现验证而不是停留在模型里" data-toc-link>4. 让反例真正进入实现验证，而不是停留在模型里</a></li><li><a href="#三为什么这种方法在-agent-assisted-coding-中特别有效" data-toc-link>三、为什么这种方法在 Agent-assisted coding 中特别有效？</a></li><li class="toc-subheading"><a href="#1-llm-负责构造模型model-checker-负责对抗模型" data-toc-link>1. LLM 负责构造模型，Model Checker 负责对抗模型</a></li><li class="toc-subheading"><a href="#2-agent-降低了形式化方法的边际成本" data-toc-link>2. Agent 降低了形式化方法的边际成本</a></li><li class="toc-subheading"><a href="#3-反例提供了高密度可操作的反馈信号" data-toc-link>3. 反例提供了高密度、可操作的反馈信号</a></li><li><a href="#四用一个具体例子说明" data-toc-link>四、用一个具体例子说明</a></li><li><a href="#五哪些边界决定了这个-workflow-的实际可靠性" data-toc-link>五、哪些边界决定了这个 workflow 的实际可靠性？</a></li><li><a href="#六我认为它更深层的工程意义" data-toc-link>六、我认为它更深层的工程意义</a></li></ol></nav></dialog><noscript><details class="post-toc-noscript"><summary>本文目录</summary><nav class="toc-navigation" aria-label="本文目录" data-toc-nav><ol class="toc-list"><li><a href="#一model-with-tla-实际是怎样工作的" data-toc-link>一、model-with-tla 实际是怎样工作的？</a></li><li><a href="#二真正关键的机制不是跑-tlc而是防止错误的模型得到正确的结果" data-toc-link>二、真正关键的机制：不是跑 TLC，而是防止「错误的模型得到正确的结果」</a></li><li class="toc-subheading"><a href="#1-先验证模型是否有能力发现目标错误" data-toc-link>1. 先验证模型是否有能力发现目标错误</a></li><li class="toc-subheading"><a href="#2-抽象粒度由正确性决定而不是由代码结构决定" data-toc-link>2. 抽象粒度由正确性决定，而不是由代码结构决定</a></li><li class="toc-subheading"><a href="#3-区分现实观察和操作权限" data-toc-link>3. 区分现实、观察和操作权限</a></li><li class="toc-subheading"><a href="#4-让反例真正进入实现验证而不是停留在模型里" data-toc-link>4. 让反例真正进入实现验证，而不是停留在模型里</a></li><li><a href="#三为什么这种方法在-agent-assisted-coding-中特别有效" data-toc-link>三、为什么这种方法在 Agent-assisted coding 中特别有效？</a></li><li class="toc-subheading"><a href="#1-llm-负责构造模型model-checker-负责对抗模型" data-toc-link>1. LLM 负责构造模型，Model Checker 负责对抗模型</a></li><li class="toc-subheading"><a href="#2-agent-降低了形式化方法的边际成本" data-toc-link>2. Agent 降低了形式化方法的边际成本</a></li><li class="toc-subheading"><a href="#3-反例提供了高密度可操作的反馈信号" data-toc-link>3. 反例提供了高密度、可操作的反馈信号</a></li><li><a href="#四用一个具体例子说明" data-toc-link>四、用一个具体例子说明</a></li><li><a href="#五哪些边界决定了这个-workflow-的实际可靠性" data-toc-link>五、哪些边界决定了这个 workflow 的实际可靠性？</a></li><li><a href="#六我认为它更深层的工程意义" data-toc-link>六、我认为它更深层的工程意义</a></li></ol></nav></details></noscript></main><footer class="footer" lang="zh-CN"><span>记录是生活的微小仪式感</span><div class="footer-meta"><a href="/rss.xml">RSS</a><span>© 2026 Zhang Hua Feng/張華楓&#39;s Notes</span></div></footer></div><script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {});
+        }, { once: true });
+      }
+    </script></body></html><script type="module">(()=>{let e=document.querySelector(`[data-reading-article]`),t=document.querySelector(`[data-reading-content]`),n=document.querySelector(`[data-toc-launcher]`),r=document.querySelector(`[data-toc-dialog]`);if(!(e instanceof HTMLElement)||!(t instanceof HTMLElement)||!(n instanceof HTMLButtonElement)||!(r instanceof HTMLDialogElement))return;let i=Array.from(document.querySelectorAll(`[data-toc-link]`)),a=Array.from(document.querySelectorAll(`[data-reading-progress]`)),o=Array.from(document.querySelectorAll(`[data-current-section]`)),s=r.querySelector(`[data-toc-close]`),c=e.querySelector(`.toc-rail-sticky`),l=c?.querySelector(`.toc-rail-header`),u=window.matchMedia(`(min-width: 1120px)`);if(!(c instanceof HTMLElement)||!(l instanceof HTMLElement))return;let d=[],f=new Set;for(let e of i){let t=e.getAttribute(`href`);if(!t||!t.startsWith(`#`)||f.has(t))continue;let n=t.slice(1);try{n=decodeURIComponent(n)}catch{}let r=document.getElementById(n);r&&(f.add(t),d.push({hash:t,target:r,label:(e.textContent??``).trim()}))}n.hidden=!1;let p=e=>{let t=`${e}%`;for(let e of a)e.textContent=t},m=null,h=e=>{let t=c.getBoundingClientRect(),n=l.getBoundingClientRect(),r=e.getBoundingClientRect(),i=Math.max(t.top,n.bottom)+8,a=t.bottom-8;r.top<i?c.scrollTop-=i-r.top:r.bottom>a&&(c.scrollTop+=r.bottom-a)},g=e=>{let t=n.ownerDocument.documentElement.lang.startsWith(`zh`)?`开头`:`Start`,r=null;for(let n of i)e&&n.getAttribute(`href`)===e?(n.setAttribute(`aria-current`,`true`),t=(n.textContent??``).trim()||t,c.contains(n)&&(r=n)):n.removeAttribute(`aria-current`);for(let e of o)e.textContent=t;e!==m&&(m=e,u.matches&&r&&h(r))},_=0,v=()=>{_=0;let i=window.innerHeight,a=e.getBoundingClientRect(),o=t.getBoundingClientRect(),s=window.scrollY+o.top,c=s+t.offsetHeight,l=s,f=Math.max(l+1,c-i*.4),m=window.scrollY+i*.28,h=Math.max(0,Math.min(1,(m-l)/(f-l)));p(Math.round(h*100));let v=Math.min(i*.3,240),y=null;for(let e of d)if(e.target.getBoundingClientRect().top<=v)y=e.hash;else break;g(y);let b=!u.matches&&o.top<i*.55&&a.bottom>i*.3&&!r.open;n.dataset.visible=b?`true`:`false`},y=()=>{_||=window.requestAnimationFrame(v)};n.addEventListener(`click`,()=>{u.matches||(r.showModal(),n.setAttribute(`aria-expanded`,`true`),n.dataset.visible=`false`)}),s instanceof HTMLButtonElement&&s.addEventListener(`click`,()=>r.close()),r.addEventListener(`click`,e=>{e.target===r&&r.close()}),r.addEventListener(`close`,()=>{n.setAttribute(`aria-expanded`,`false`),y()});for(let e of r.querySelectorAll(`[data-toc-link]`))e.addEventListener(`click`,()=>{r.open&&r.close()});u.addEventListener(`change`,()=>{m=null,u.matches&&r.open&&r.close(),y()}),window.addEventListener(`scroll`,y,{passive:!0}),window.addEventListener(`resize`,y),`ResizeObserver`in window&&new ResizeObserver(y).observe(t),y()})();</script>

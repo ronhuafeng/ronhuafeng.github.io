@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 470" width="1000" height="470" role="img" aria-labelledby="title desc">
+  <title id="title">常规 Agent 测试与 TLA+ TLC 状态空间探索的对比</title>
+  <desc id="desc">左侧普通 Agent 测试选择一个主要执行路径，其他分支未执行。右侧 TLA+ 与 TLC 系统探索模型的多个可达分支，标出一个可能的违规状态。</desc>
+  <rect x="1" y="1" width="998" height="468" rx="22" fill="#fbfdff" stroke="#e2e8f0" stroke-width="2"/>
+  <rect x="23" y="24" width="465" height="422" rx="16" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <rect x="512" y="24" width="465" height="422" rx="16" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <g font-family="-apple-system,BlinkMacSystemFont,'Noto Sans CJK SC','Microsoft YaHei',Arial,sans-serif">
+    <text x="48" y="70" font-size="25" font-weight="700" fill="#0f172a">常规 Agent + Tests</text>
+    <text x="536" y="70" font-size="25" font-weight="700" fill="#0f172a">Agent + TLA+ / TLC</text>
+    <g fill="none" stroke-width="2.4" stroke-linecap="round">
+      <path d="M75 190 L165 190 L245 117 L404 117" stroke="#cbd5e1" stroke-dasharray="6 8"/>
+      <path d="M165 190 L245 167 L404 167" stroke="#0f8f82" stroke-width="5"/>
+      <path d="M165 190 L245 220 L404 220" stroke="#cbd5e1" stroke-dasharray="6 8"/>
+      <path d="M165 190 L245 273 L404 273" stroke="#cbd5e1" stroke-dasharray="6 8"/>
+      <path d="M553 201 L618 201" stroke="#64748b"/>
+      <path d="M618 201 L709 119 M618 201 L709 205 M618 201 L709 291" stroke="#64748b"/>
+      <path d="M709 119 L838 98 M709 119 L838 127 M709 119 L838 156" stroke="#94a3b8"/>
+      <path d="M709 205 L838 184 M709 205 L838 213 M709 205 L838 242" stroke="#94a3b8"/>
+      <path d="M709 291 L838 270 M709 291 L838 299 M709 291 L838 328" stroke="#94a3b8"/>
+      <path d="M709 205 L838 242" stroke="#d7653b" stroke-width="5"/>
+    </g>
+    <circle cx="75" cy="190" r="10" fill="#0f8f82"/>
+    <circle cx="165" cy="190" r="7" fill="#0f8f82"/>
+    <g fill="#cbd5e1"><circle cx="404" cy="117" r="8"/><circle cx="404" cy="220" r="8"/><circle cx="404" cy="273" r="8"/></g>
+    <circle cx="404" cy="167" r="9" fill="#0f8f82"/>
+    <circle cx="553" cy="201" r="10" fill="#0f8f82"/>
+    <circle cx="618" cy="201" r="8" fill="#64748b"/>
+    <g fill="#64748b"><circle cx="709" cy="119" r="8"/><circle cx="709" cy="205" r="8"/><circle cx="709" cy="291" r="8"/></g>
+    <g fill="#94a3b8"><circle cx="838" cy="98" r="6"/><circle cx="838" cy="127" r="6"/><circle cx="838" cy="156" r="6"/><circle cx="838" cy="184" r="6"/><circle cx="838" cy="213" r="6"/><circle cx="838" cy="270" r="6"/><circle cx="838" cy="299" r="6"/><circle cx="838" cy="328" r="6"/></g>
+    <circle cx="838" cy="242" r="9" fill="#d7653b"/>
+    <text x="48" y="354" font-size="18" fill="#334155">执行选定的场景和调度，覆盖程度</text>
+    <text x="48" y="382" font-size="18" fill="#334155">依赖测试设计与运行环境。</text>
+    <text x="536" y="354" font-size="18" fill="#334155">系统探索有限模型的可达状态图，</text>
+    <text x="536" y="382" font-size="18" fill="#334155">包括不常见的事件交错和故障路径。</text>
+  </g>
+</svg>

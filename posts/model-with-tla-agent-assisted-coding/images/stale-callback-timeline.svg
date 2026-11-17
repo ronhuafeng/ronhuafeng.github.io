@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="1000" height="600" role="img" aria-labelledby="title desc">
+  <title id="title">Stale callback 导致的错误提交事件时序</title>
+  <desc id="desc">worker-A 的 incarnation 1 发起 Operation X，随后资源被替换成 incarnation 2，但旧操作的回调延迟到达。仅检查逻辑 ID 的实现将旧结果错误提交到新资源状态。</desc>
+  <rect x="1" y="1" width="998" height="598" rx="24" fill="#fbfdff" stroke="#e2e8f0" stroke-width="2"/>
+  <g font-family="-apple-system,BlinkMacSystemFont,'Noto Sans CJK SC','Microsoft YaHei',Arial,sans-serif">
+    <text x="42" y="56" font-size="26" font-weight="700" fill="#0f172a">可能产生 stale callback bug 的事件时序</text>
+    <path d="M95 120 V415" stroke="#cbd5e1" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="95" cy="137" r="23" fill="#e2f3fa" stroke="#9bc6ed" stroke-width="2"/>
+    <circle cx="95" cy="229" r="23" fill="#e2f3fa" stroke="#9bc6ed" stroke-width="2"/>
+    <circle cx="95" cy="321" r="23" fill="#e2f3fa" stroke="#9bc6ed" stroke-width="2"/>
+    <circle cx="95" cy="413" r="23" fill="#fff1e6" stroke="#d7653b" stroke-width="2"/>
+    <g text-anchor="middle" font-size="20" font-weight="700" fill="#164e78"><text x="95" y="144">1</text><text x="95" y="236">2</text><text x="95" y="328">3</text></g>
+    <text x="95" y="420" text-anchor="middle" font-size="20" font-weight="700" fill="#9d4026">4</text>
+    <g font-size="22" font-weight="700" fill="#0f172a">
+      <text x="152" y="128">开始异步操作</text>
+      <text x="152" y="220">资源被替换</text>
+      <text x="152" y="312">旧回调延迟到达</text>
+      <text x="152" y="404" fill="#b4462b">错误提交</text>
+    </g>
+    <g font-size="18" fill="#475569">
+      <text x="152" y="159">资源 worker-A 的 incarnation = 1，启动 Operation X。</text>
+      <text x="152" y="251">旧资源消失，新资源仍使用 worker-A，但 incarnation = 2。</text>
+      <text x="152" y="343">Operation X 返回 incarnation = 1 的结果。</text>
+      <text x="152" y="435" fill="#7c3826">实现只比较逻辑 ID worker-A，把旧结果提交到新资源状态。</text>
+    </g>
+    <path d="M42 473 H958" stroke="#e2e8f0" stroke-width="2"/>
+    <text x="42" y="508" font-size="18" fill="#64748b">应检查的 Safety 性质</text>
+    <text x="42" y="552" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="22" font-weight="600" fill="#0f172a">□(Commit(r) ⇒ Authorized(r, current))</text>
+  </g>
+</svg>
