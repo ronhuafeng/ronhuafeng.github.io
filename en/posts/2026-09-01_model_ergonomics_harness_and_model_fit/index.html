@@ -334,17 +334,8 @@
 <p>One harness may support one hundred models, but expose every model to the same lowest-common-denominator interface.</p>
 <p>Another may preserve the same semantic kernel while allowing different models to use validated tool presentation, context policies, and recovery policies.</p>
 <p>Counting only “how many models are supported” cannot distinguish the quality of these two harnesses.</p>
-<p>We can even describe the idea with a concept that is not mathematically rigorous but is still useful:</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Harness Efficiency(Model)</span></span>
-<span class="line"><span>    =</span></span>
-<span class="line"><span>Observed Agent Capability(Model, Harness)</span></span>
-<span class="line"><span>    /</span></span>
-<span class="line"><span>Potential Agent Capability(Model)</span></span></code></pre>
-<p>The denominator cannot be observed directly, so this is not an engineering metric we can calculate directly.</p>
-<p>But it expresses an important goal:</p>
-<blockquote>
-<p>A good harness should do more than let a model run. It should reduce the capability lost in the interface and execution loop.</p>
-</blockquote>
+<p>It is not useful to force this into a “harness efficiency” ratio. A model’s supposed “potential capability” is not directly observable, and it also depends on the task, environment, and budget. A more useful approach is controlled comparison: hold the model, task, environment, and budget fixed; change one harness factor; then measure how success rate, cost, latency, recovery behavior, and execution traces change.</p>
+<p>A good harness should do more than let a model run. It should reduce the extra friction introduced by interfaces, context organization, and the execution loop.</p>
 <h2 id="the-benchmark-unit-should-be-model--harness">The Benchmark Unit Should Be Model × Harness</h2>
 <p>This also changes how benchmarks should be designed.</p>
 <p>Suppose we observe:</p>
