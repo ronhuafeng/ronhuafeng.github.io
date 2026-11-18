@@ -80,7 +80,7 @@
 <p>对于包含大语言模型、工具、日志流、用户行为和自动化动作的智能体系统，用同步调用模型来理解会越来越困难。它把系统压成一条线，却无法自然表达长任务、流式输出、持续日志、并发操作和环境反馈。</p>
 <p>更合适的方式，是把智能体运行时看成一个由多个独立活动共同推进的事件系统。用户界面、工具执行器、observer、scheduler 和 planner 可以在通信模型中被视为独立参与者；实现上则可以使用 coroutine、task、线程或其他机制组织执行。大语言模型承担高层规划职责，但不是唯一主程序。</p>
 <p>CSP 强调独立过程怎样通过消息通信；coroutine 强调一个执行单元在等待时怎样让出控制权，并在条件满足后恢复。前者主要是通信模型，后者主要是执行机制。它们关注的层次不同，但都说明了一件事：当 Agent 持续面对多来源、异步变化的环境时，一条线性的 call/return 链不足以描述完整控制流。</p>
-<p>本文讨论的是 communication 和 control flow，不是生命周期分类。异步、streaming、使用 channel，甚至被建模成 CSP process，都不会自动让一个活动变成大写的 <code>Process</code>。后者只看一个判据：creator scope 结束以后，它是否还能继续存在。这个边界我在 <a href="/posts/2026-09-18_llm_agent_calling_convention/">《Structured LLM Design：按生命周期组织 Agent Runtime》</a> 中进一步展开。</p>
+<p>本文讨论的是 communication 和 control flow，不是生命周期分类。异步、streaming、使用 channel，甚至被建模成 CSP process，都不会自动让一个活动变成大写的 <code>Process</code>。后者只看一个判据：creator scope 结束以后，它是否还能继续存在。这个边界我在 <a href="/posts/2026-09-18_llm_agent_calling_convention/">《Structured LLM Design：按生命周期组织智能体运行时》</a> 中进一步展开。</p>
 <p>一旦长工具通过 handle 持续暴露状态、日志被整理成 observation、用户输入和定时触发也进入 runtime，“谁调用谁”就不再有一个永久固定的答案。更值得追踪的是：每个事件从哪里来，状态由谁持有和更新，等待时哪个执行单元让出控制权，以及什么条件会触发下一次计算。</p>
 <section data-footnotes class="footnotes"><h2 class="sr-only" id="footnote-label">Footnotes</h2>
 <ol>

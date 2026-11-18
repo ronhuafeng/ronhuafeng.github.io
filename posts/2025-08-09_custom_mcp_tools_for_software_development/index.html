@@ -111,7 +111,7 @@
 <p>这类工具的意义在于复用团队已有的脚本和命令行能力，而不是重新实现它们。原有程序继续负责执行，MCP 封装则补上能力描述、参数校验、执行控制和结构化结果。</p>
 <h4 id="command-line-tools-调试流程">Command Line Tools 调试流程</h4>
 <p><img src="/posts/2025-08-09-custom-mcp-tools/images/ppap-debug-workflow.svg" alt="Debug with Command Line Tools 预期流程"></p>
-<p>这张图表达的是一个调试闭环：从问题输入开始，工具负责执行检查、收集结果、暴露中间状态，AI 根据结果继续定位问题。调试不再是一串临时命令，而是一个可观察、可重复的流程。</p>
+<p>这张图表达的是一个调试反馈循环：从问题输入开始，工具负责执行检查、收集结果、暴露中间状态，AI 根据结果继续定位问题。调试不再是一串临时命令，而是一个可观察、可重复的流程。</p>
 <h4 id="工具选择">工具选择</h4>
 <p><img src="/posts/2025-08-09-custom-mcp-tools/images/debug-tools-01.png" alt="Debug with Command Line Tools 工具选择"></p>
 <h4 id="实际效果1">实际效果（1）</h4>
@@ -260,7 +260,7 @@
 <ul>
 <li>领域知识注入：将人类专家对 Excel 文件格式的理解整理成结构化知识，作为上下文提供给 AI，显著提升算法生成质量。</li>
 <li>渐进式优化：从最简单的规则开始，逐步增加复杂性，确保每一步都有稳定基础。</li>
-<li>自动化反馈：建立测试、反馈和优化闭环，让每一轮修改都能根据失败样本继续调整，并由测试判断是否改善。</li>
+<li>自动化反馈：建立测试驱动的反馈循环，让每一轮修改都能根据失败样本继续调整，并由测试判断是否改善。</li>
 </ul>
 <p>参考资料：Google DeepMind《AlphaEvolve: A Gemini-powered coding agent for designing advanced algorithms》。</p>
 <h2 id="总结">总结</h2>
